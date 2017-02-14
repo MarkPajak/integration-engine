@@ -1,0 +1,48 @@
+
+<div  ng-click="screensaverOff()"  ng-cloak=""  layout="column" layout-fill>
+	
+	<style>
+	.list{ border-radius: 15px;;background:black;margin:5px;width:300px;float:left;padding:10px;}
+		.panel{padding:10px;}
+	</style>
+	
+  <md-content id="content-scroller" >
+   <div  class="list" ng-repeat="list in lists | orderByDayNumber: 'tint'| orderByDayNumber: 'card_count'">
+   <div class="panel">
+<h2>{{list.title}}</h2>
+<h3>POINTS: {{list.points}}</h3>
+<p style="background-color: rgba(255, 0, 0, {{list.tint}});">DOING: {{list.card_count}} || AGE: {{list.average}}</p>
+			  
+ <div  class="description" >tracked list: {{list.name}}</div>
+ </div>
+        <div
+             class="cards-wrapx "
+             angular-grid="list.shots"
+			 autoscroll="true"
+             ag-grid-width="200"
+             ag-performant-scroll="true"
+             ag-gutter-size="12"
+             ag-id="shots"
+             ag-infinite-scroll="list.loadMoreShots()"
+             >
+          <div style="background-color: rgba(255, 255, 255, {{card.tint}});" class="cardx" ng-repeat="card in list._cards | orderByDayNumber: 'dateLastActivity': true">
+		  <a  style="{{changeheadingcolor()}}"   ng-click="screensaverOff();go(shot.id)"  >
+          
+            <div class="inside">
+              <h4>{{::card.name}}</h4>
+			  
+ <div ng-hide="{{card.age==0}}" class="description" >{{card.age}} months old</div>
+            </div>
+		</a>
+          </div>
+        </div>
+		
+       
+ </div>
+  </md-content>
+
+</div>
+
+
+
+

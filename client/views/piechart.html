@@ -1,0 +1,7 @@
+<div ng-repeat="kiosk in kiosks track by $index" class="col-lg-7" id="pie-chartx" >
+          <div class="panel panel-default">
+            <div  class="panel-body">
+              <canvas id="piex" class="chart chart-pie chart-xs" chart-data="pie_data[$index]"
+                      chart-labels="pie_labels[$index]" chart-options="pie_options[$index]"></canvas>
+			</div>     
+</div>

@@ -1,0 +1,23 @@
+<style>
+.grid {
+    width: 1250px;
+    height: 800px;
+}
+.ui-grid-menu-button {
+ 
+}
+
+</style>
+
+
+  <strong>Data Length:</strong> {{ gridOptions.data.length | number }}
+      <br>
+      <strong>Last Cell Edited:</strong> {{msg.lastCellEdited}}
+      <br>
+    <script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/pdfmake.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/vfs_fonts.js"></script>
+	<div>
+  <div  ui-grid-resize-columns ui-grid-move-columns ui-grid-cellNav ui-grid-edit ui-grid-row-edit ui-grid="gridOptions" ui-grid-selection ui-grid-exporter class="grid"></div>
+  
+  </div>

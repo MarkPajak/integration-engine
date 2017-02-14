@@ -1,0 +1,28 @@
+<main id="content" class="group" role="main" ng-controller="boardCtrl">
+<div ng-hide="currentPath === '/'"  ng-include="'views/line-chart.html'"></div>
+	<div class="col-lg-4"  >
+	   <div class="panel-body">
+	  <div class="panel">
+			   <table>
+				   <th width="150px"><h2 >NAME</h2></th>
+				   <th style="width:150px;"><h2 >SCORE</h2></th>
+					<tbody>
+						<tr  class="cards-wrapx" ng-repeat="list in lists | orderByDayNumber: 'points'| orderByDayNumber: 'points' : 'reverse'">
+					
+						   <td width="150px">
+								<h2>{{list.title}}</h2>
+							</td>   
+							<td  style="width:250px;">
+								<h3>{{list.points}}</h3>
+								<p >DOING: {{list.card_count}}</p>
+								<p ng-hide="{{list.age}}<=0" style="background-color: rgba(255, 0, 0, {{list.tint}});">
+								PENALTY: {{list.age}}</p>
+							</td>
+						</tr>
+					 </tbody>
+				</table>
+		
+			</div>
+		</div>
+	</div> 
+</main> 

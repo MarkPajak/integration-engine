@@ -1,0 +1,59 @@
+<style> 
+.container {
+	background-color: #f2f2f2;
+	font-size:25px;
+	width:80%;
+	border: 1px solid #ccc;	
+	padding: 20px;
+	top: 20px;
+	-webkit-box-shadow: 0 2px 2px 1px rgba(0,0,0,0.2);
+	box-shadow: 0 2px 2px 1px rgba(0,0,0,0.2);
+	    margin-left: 10%;
+}
+.icon{
+    -webkit-filter: invert(100%)
+}	
+textarea{
+font-size:25px !important;
+}
+
+</style>
+   <div  class="container col-md-4 col-md-offset-4" ng-controller="form_to_trello as vm">      
+ <div>
+      <h1>Annual Leave</h1>
+      <form ng-submit="vm.onSubmit()" name="vm.form" novalidate>
+	  <label>Date</label>
+	<input date-range-picker class="form-control date-picker" type="text" ng-model="datePicker.date"  options="dateRangeOptions" />  
+        <formly-form model="vm.model" fields="vm.fields" options="vm.options" form="vm.form">
+       <div class="container-fluid" ng-hide="overlapalert.length==0">
+			<table class="table  table-striped">
+			<h2>your leave dates co-incide with the following:</h2>
+			  <tr ng-repeat="x in overlapalert track by $index">
+			   <td>{{ x.name}}</td>
+			   <td>{{ x.type}}</td>
+			  <td>{{ x.group}}</td>
+			  </tr>
+			  <div class="btn btn-primary pull-right" ng-click="override_button()">OK</div>
+			</table>
+			
+		</div>
+		   <div class="container-fluid" ng-hide="ids_to_delete.length==0">
+			<table class="table  table-striped">
+			<h2>These entries will be overwritten:</h2>
+			  <tr ng-repeat="x in ids_to_delete track by $index">
+			   <td>{{ x.name}}</td>
+			   <td>{{ x.type}}</td>
+			  <td>{{ x.group}}</td>
+			  </tr>
+			  <div class="btn btn-primary pull-right" ng-click="override_button()">OK</div>
+			</table>
+			
+		</div>
+		
+	   <button type="submit" style="{{functionThatReturnsStyle()}}" class="hvr-grow btn btn-primary btn-lg" ng-disabled="overlapalert.length>0 && override">Submit</button>
+          <button type="button" class="hvr-grow  btn btn-lg  btn-default" ng-click="vm.options.resetModel()">Reset</button>
+        </formly-form>
+      </form>
+    </div>
+    </div>
+	
