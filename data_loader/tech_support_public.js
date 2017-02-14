@@ -6,7 +6,7 @@ var googe_keys=JSON.parse(fs.readFileSync('./secret/google_drive.JSON').toString
 
 
 var options={
-	CLIENT_ID:googe_keys.CLIENT_ID
+	CLIENT_ID:googe_keys.CLIENT_ID,
 	CLIENT_SECRET:googe_keys.CLIENT_SECRET,
 	REFRESH_TOKEN:googe_keys.REFRESH_TOKEN,
 	access_token:googe_keys.access_token
