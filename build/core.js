@@ -4988,6 +4988,114 @@ team.leave_taken = sortByKey(team.leave_taken, 'leave_start');
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/member/member-controller.js","/../components/member")
 },{"b55mWE":4,"buffer":3}],16:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+exports.shopify_controller = function($scope, $http, $q, $routeParams, $location,$rootScope, shopify_app
+    ) {
+	console.log('controller go')
+		$scope.gridOptions=[]
+		$scope.gridOptions.data=[]
+		$scope.gridOptions.columnDefs = [   ]
+		$scope.gridOptions = {
+			columnDefs: [
+			{ field: 'product_type' ,resizable: true},
+			{ field: 'price' ,resizable: true},
+			{ field: 'sales_value' ,resizable: true},
+			{ field: 'name' ,resizable: true},
+			{ field: 'count' ,resizable: true},
+			{ field: 'inventory_quantity' ,resizable: true},
+			{ field: 'order_status' ,resizable: true},
+			{ field: 'sku' ,resizable: true},
+			{ field: 'vendor' ,resizable: true},
+			{ field: 'date_report_run' ,resizable: true}
+			],
+			enableGridMenu: true,
+			enableSelectAll: true,
+			enableCellSelection: true,
+			enableCellEditOnFocus: true,
+			exporterCsvFilename: 'myFile.csv',
+			exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location")),
+			onRegisterApi: function(gridApi){
+			vm.gridApi = gridApi;
+			},
+			pagingOptions: { // no more in v3.0.+, use paginationPageSizes, paginationPageSize
+			// pageSizes: list of available page sizes.
+			pageSizes: [250, 500, 1000], 
+			//pageSize: currently selected page size. 
+			pageSize: 250,
+			//totalServerItems: Total items are on the server. 
+			totalServerItems: 0,
+			//currentPage: the uhm... current page.
+			currentPage: 1
+			},
+			exporterPdfDefaultStyle: {fontSize: 9},
+			exporterPdfTableStyle: {margin: [30, 30, 30, 30]},
+			exporterPdfTableHeaderStyle: {fontSize: 10, bold: true, italics: true, color: 'red'},
+			exporterPdfHeader: { text: "My Header", style: 'headerStyle' },
+			exporterPdfFooter: function ( currentPage, pageCount ) {
+			return { text: currentPage.toString() + ' of ' + pageCount.toString(), style: 'footerStyle' };
+			},
+			exporterPdfCustomFormatter: function ( docDefinition ) {
+			docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
+			docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
+			return docDefinition;
+			},exporterPdfOrientation: 'portrait',
+			exporterPdfPageSize: 'LETTER',
+			exporterPdfMaxGridWidth: 500,
+			exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location")),
+			onRegisterApi: function(gridApi){
+			$scope.gridApi = gridApi;
+			gridApi.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
+
+			});
+			}
+		};
+
+		 console.log('getData')	
+		 shopify_app.getData(function(team){
+				$scope.rows=[]
+				$scope._rows=[]
+				_.each(team,function(row){
+					console.log(row)
+					$scope._rows.push(row)
+					/*
+					for (var key in teamx[0]) {
+						var dont_shows=[
+						"_id","__v","_id","$get","$save","$query","$remove","$delete","toJSON","$update"
+						]
+						if(dont_shows.indexOf(key)==-1){
+							$scope.column_headings.push(key)
+						}				
+					}
+					*/
+					
+							
+				})
+			
+			$scope.gridOptions.data=$scope._rows;
+		})	
+}				
+
+
+
+
+
+
+
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/shopify/shopify-controller.js","/../components/shopify")
+},{"b55mWE":4,"buffer":3}],17:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+	exports.shopifyStatus = function() {
+  return {
+   controller: 'shopify_controller',
+    templateUrl: './components/shopify/shopify-page.html'
+  }
+	}
+	
+
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/shopify/shopify-directive.js","/../components/shopify")
+},{"b55mWE":4,"buffer":3}],18:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.TallyController =  function($scope, Tallys) {
 
 
@@ -5213,7 +5321,7 @@ exports.trello =   function($scope, $http, $q, $routeParams, $location,
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/team/app-controllers.js","/../components/team")
-},{"b55mWE":4,"buffer":3}],17:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],19:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.form_to_trellox =  function($scope, $http, $q, $routeParams, $location,
         screen_saver_loop,  $rootScope, detect_dragging, trello, get_trello_board, date_calc, Todos, Tallys,Team
@@ -5474,7 +5582,7 @@ var trelloroken=formData.token
 	}
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/team/form-controller.js","/../components/team")
-},{"b55mWE":4,"buffer":3}],18:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],20:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.leave_controller =  function($scope, $http, $q, $routeParams, $location,
           $rootScope, date_calc, Tallys,Team,Timeline
@@ -5761,7 +5869,7 @@ $scope.overlapalert=[]
 	}
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/team/leave-controller.js","/../components/team")
-},{"b55mWE":4,"buffer":3}],19:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],21:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.timeline_settings_controller =  function($scope, $http, $q, $routeParams, $location,
         screen_saver_loop,  $rootScope, detect_dragging, trello, get_trello_board, date_calc, Todos, Tallys,Team,Timeline,$mdEditDialog
@@ -5861,7 +5969,7 @@ myArray.push(obj);
   
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/team/team-controller.js","/../components/team")
-},{"b55mWE":4,"buffer":3}],20:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],22:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var async = require('async')
 
@@ -6071,7 +6179,7 @@ var comment_text = [colDef.field] + ": " + newValue
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/tech-support/tech-support-controller.js","/../components/tech-support")
-},{"async":1,"b55mWE":4,"buffer":3}],21:[function(require,module,exports){
+},{"async":1,"b55mWE":4,"buffer":3}],23:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	exports.techSupport = function() {
   return {
@@ -6083,7 +6191,7 @@ var comment_text = [colDef.field] + ": " + newValue
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/tech-support/tech-support-directive.js","/../components/tech-support")
-},{"b55mWE":4,"buffer":3}],22:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],24:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 var async = require('async')
@@ -6165,7 +6273,7 @@ console.log('trello card',card)
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/tech-support/trello-services.js","/../components/tech-support")
-},{"async":1,"b55mWE":4,"buffer":3}],23:[function(require,module,exports){
+},{"async":1,"b55mWE":4,"buffer":3}],25:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.timeline_settings_controller =  function($scope, $http, $q, $routeParams, $location,
         screen_saver_loop,  $rootScope, detect_dragging, trello, get_trello_board, date_calc, Todos, Tallys,Team,Timeline,$mdEditDialog,Timeline_data
@@ -6367,7 +6475,7 @@ myArray.push(obj);
   
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline-settings/timeline-settings-controller.js","/../components/timeline-settings")
-},{"b55mWE":4,"buffer":3}],24:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],26:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.timeline_controller=     function($scope, $http, $q, $routeParams, $location,
          $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate
@@ -6996,9 +7104,45 @@ $scope.dateRangeOptions = {
         })
 
     };
+	
+	
+	 
+ 
+exports.BasicDemoCtrl=   function ($mdDialog) {  
+ var originatorEv;
+
+    this.openMenu = function($mdMenu, ev) {
+      originatorEv = ev;
+      $mdMenu.open(ev);
+    };
+
+    this.notificationsEnabled = true;
+    this.toggleNotifications = function() {
+      this.notificationsEnabled = !this.notificationsEnabled;
+    };
+
+    this.redial = function() {
+      $mdDialog.show(
+        $mdDialog.alert()
+          .targetEvent(originatorEv)
+          .clickOutsideToClose(true)
+          .parent('body')
+          .title('Suddenly, a redial')
+          .textContent('You just called a friend; who told you the most amazing story. Have a cookie!')
+          .ok('That was easy')
+      );
+
+      originatorEv = null;
+    };
+
+    this.checkVoicemail = function() {
+      // This never happens.
+    };
+  }
+
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-controller.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],25:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],27:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	exports.timeLine = function() {
   return {
@@ -7007,10 +7151,17 @@ $scope.dateRangeOptions = {
   }
 	}
 	
+		exports.timelineMenu = function() {
+  return {
+   controller: 'BasicDemoCtrl',
+    templateUrl: './components/timeline/menu.html'
+  }
+	}
+	
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-directive.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],26:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],28:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_googlesheets_functions =  function (timeline_functions,$http,Timeline,$rootScope,$routeParams) {
@@ -7266,7 +7417,7 @@ exports.timeline_googlesheets_functions =  function (timeline_functions,$http,Ti
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-googlesheets-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],27:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],29:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_learning_functions = function ($http,Timeline,$rootScope) {
@@ -7386,7 +7537,7 @@ exports.timeline_learning_functions = function ($http,Timeline,$rootScope) {
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-learning-bookings-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],28:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],30:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_leave_functions =  function ($http,Timeline,$rootScope) {
@@ -7817,7 +7968,7 @@ exports.timeline_leave_functions =  function ($http,Timeline,$rootScope) {
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-leave-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],29:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],31:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_loans_functions =  function ($http,Timeline,$rootScope) {
@@ -7936,7 +8087,7 @@ exports.timeline_loans_functions =  function ($http,Timeline,$rootScope) {
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-loans-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],30:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],32:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 
@@ -8506,7 +8657,7 @@ $rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (ite
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],31:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],33:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_shopify_functions =  function ($http,Timeline,$rootScope) {
@@ -8649,9 +8800,140 @@ console.log('shopEvent',shopEvent)
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-shopify-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],32:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],34:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-exports.ProductDetailsController = function($scope, $routeParams, $http) {
+exports.users_controller = function($scope, $http, $q, $routeParams, $location,$rootScope, Team
+    ) {
+	console.log('controller go')
+		$scope.gridOptions=[]
+		$scope.gridOptions.data=[]
+		$scope.gridOptions.columnDefs = [   ]
+		$scope.gridOptions = {
+			columnDefs: [
+			{ field: 'username' ,resizable: true},
+			{ field: 'password' ,resizable: true},
+			{ field: 'email' ,resizable: true},
+			{ field: 'firstName' ,resizable: true},
+			{ field: 'lastName' ,resizable: true},
+			{ field: 'team' ,resizable: true},
+			{ field: 'trello_doing_id' ,resizable: true},
+			{ field: 'score' ,resizable: true},
+			{ field: 'bonus' ,resizable: true},
+			{ field: 'leave_start' ,resizable: true},
+			{ field: 'leave_taken' ,resizable: true},
+			{ field: 'number_days_leave' ,resizable: true}
+			],
+			
+  
+			enableGridMenu: true,
+			enableSelectAll: true,
+			enableCellSelection: true,
+			enableCellEditOnFocus: true,
+			exporterCsvFilename: 'myFile.csv',
+			exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location")),
+			onRegisterApi: function(gridApi){
+			vm.gridApi = gridApi;
+			},
+			pagingOptions: { // no more in v3.0.+, use paginationPageSizes, paginationPageSize
+			// pageSizes: list of available page sizes.
+			pageSizes: [250, 500, 1000], 
+			//pageSize: currently selected page size. 
+			pageSize: 250,
+			//totalServerItems: Total items are on the server. 
+			totalServerItems: 0,
+			//currentPage: the uhm... current page.
+			currentPage: 1
+			},
+			exporterPdfDefaultStyle: {fontSize: 9},
+			exporterPdfTableStyle: {margin: [30, 30, 30, 30]},
+			exporterPdfTableHeaderStyle: {fontSize: 10, bold: true, italics: true, color: 'red'},
+			exporterPdfHeader: { text: "My Header", style: 'headerStyle' },
+			exporterPdfFooter: function ( currentPage, pageCount ) {
+			return { text: currentPage.toString() + ' of ' + pageCount.toString(), style: 'footerStyle' };
+			},
+			exporterPdfCustomFormatter: function ( docDefinition ) {
+			docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
+			docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
+			return docDefinition;
+			},exporterPdfOrientation: 'portrait',
+			exporterPdfPageSize: 'LETTER',
+			exporterPdfMaxGridWidth: 500,
+			exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location")),
+			onRegisterApi: function(gridApi){
+			$scope.gridApi = gridApi;
+			gridApi.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
+
+
+var key = colDef.field;
+var obj = {};
+obj[key] = newValue;
+
+
+
+var query = {'id':rowEntity._id};
+
+		
+			
+				var query = {'id':rowEntity._id};
+			Team.update(query, 
+			obj
+					, function(err, affected, resp) {
+					console.log(resp)
+			})
+			
+			});
+			}
+		};
+
+		 console.log('getData')	
+			Team.query({}, function(team) {
+				$scope.rows=[]
+				$scope._rows=[]
+				_.each(team,function(row){
+					console.log(row)
+					$scope._rows.push(row)
+					/*
+					for (var key in teamx[0]) {
+						var dont_shows=[
+						"_id","__v","_id","$get","$save","$query","$remove","$delete","toJSON","$update"
+						]
+						if(dont_shows.indexOf(key)==-1){
+							$scope.column_headings.push(key)
+						}				
+					}
+					*/
+					
+							
+				})
+			
+			$scope.gridOptions.data=$scope._rows;
+		})	
+}				
+
+
+
+
+
+
+
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/user-admin/users-controller.js","/../components/user-admin")
+},{"b55mWE":4,"buffer":3}],35:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+	exports.userAdmin = function() {
+  return {
+   controller: 'users_controller',
+    templateUrl: './components/user-admin/users-page.html'
+  }
+	}
+	
+
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/user-admin/users-directive.js","/../components/user-admin")
+},{"b55mWE":4,"buffer":3}],36:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+exports.ProductDetailsController = function($location, $scope, $routeParams, $http) {
+
   var encoped = encodeURIComponent($routeParams.id);
   $http.
     get('/api/v1/product/id/' + encoded).
@@ -8669,22 +8951,22 @@ exports.ProductDetailsController = function($scope, $routeParams, $http) {
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/controllers/controllers.js","/controllers")
-},{"b55mWE":4,"buffer":3}],33:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],37:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	
-exports.NavController = function(AuthService,$scope,$http) {
+exports.NavController = function($location,AuthService,$scope,$http) {
 
   $scope.user="not logged in"
   AuthService.isLoggedIn().then(function(user){
 	  $scope.user=(user.data)
   })
-
+ $scope.$location = $location;
        
     
 };
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/controllers/navbar-controller.js","/controllers")
-},{"b55mWE":4,"buffer":3}],34:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],38:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 	exports.userMenu = function() {
@@ -8696,7 +8978,7 @@ exports.NavController = function(AuthService,$scope,$http) {
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/directives/directives.js","/directives")
-},{"b55mWE":4,"buffer":3}],35:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],39:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 /* app */
@@ -8728,12 +9010,15 @@ var team_controllers = require('../components/team/team-controller');
 var member_controllers = require('../components/member/member-controller');
 var form_controllers = require('../components/team/form-controller');
 var timeline_controllers = require('../components/timeline/timeline-controller');
+var shopify_controllers = require('../components/shopify/shopify-controller');
 var timeline_settings_controller = require('../components/timeline-settings/timeline-settings-controller');
-
+var users_controller = require('../components/user-admin/users-controller');
 
 var directives = require('../shared/directives/directives');
 var tech_support_directives = require('../components/tech-support/tech-support-directive');
+var users_directives = require('../components/user-admin/users-directive');
 var timeline_directives = require('../components/timeline/timeline-directive');
+var shopify_directives = require('../components/shopify/shopify-directive');
 
 var data_services = require('../shared/services/data-services');
 var app_services = require('../shared/services/app-services');
@@ -8774,7 +9059,8 @@ var feedback_services = require('../components/machine-monitor/feedback-services
 		'ngDragDrop',
 		'md.data.table',
 		'ui.router'	,	
-		'ui.grid', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit','ui.grid.resizeColumns'
+		'ui.grid', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit','ui.grid.resizeColumns',
+		 'ngMessages', 'material.svgAssetsCache'
 		])
 		
 		
@@ -8827,6 +9113,9 @@ _.each(team_controllers, function(controller, name) {
 _.each(member_controllers, function(controller, name) {
   app.controller(name, controller);
 });
+_.each(users_controller, function(controller, name) {
+  app.controller(name, controller);
+});
 
 
 _.each(form_controllers, function(controller, name) {
@@ -8835,6 +9124,14 @@ _.each(form_controllers, function(controller, name) {
 _.each(timeline_controllers, function(controller, name) {
   app.controller(name, controller);
 });
+
+_.each(shopify_controllers, function(controller, name) {
+  app.controller(name, controller);
+});
+
+
+
+
 _.each(timeline_settings_controller, function(controller, name) {
   app.controller(name, controller);
 });
@@ -8852,11 +9149,19 @@ _.each(timeline_settings_controller, function(controller, name) {
  _.each(tech_support_directives, function(directive, name) {
   app.directive(name, directive);
 });
+ _.each(users_directives, function(directive, name) {
+  app.directive(name, directive);
+});
+
+
 
  _.each(timeline_directives, function(directive, name) {
   app.directive(name, directive);
 });
 
+ _.each(shopify_directives, function(directive, name) {
+  app.directive(name, directive);
+});
 
 
 
@@ -8937,6 +9242,12 @@ app.config(function config(formlyConfigProvider) {
   }
 ]);
 
+ app.config(function($mdIconProvider) {
+    $mdIconProvider
+      .iconSet("call", 'img/icons/sets/communication-icons.svg', 24)
+      .iconSet("social", 'img/icons/sets/social-icons.svg', 24);
+  })
+
   formlyConfigProvider.setType({
     name: 'input',
 	overwriteOk:true,
@@ -8958,8 +9269,8 @@ app.config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
 }]);
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_8459ae73.js","/")
-},{"../components/machine-monitor/dashboard-controller":8,"../components/machine-monitor/dead-controller":9,"../components/machine-monitor/downtime-controller":10,"../components/machine-monitor/downtime-services":11,"../components/machine-monitor/feedback-controller":12,"../components/machine-monitor/feedback-services":13,"../components/machine-monitor/satisfaction-controller":14,"../components/member/member-controller":15,"../components/team/app-controllers":16,"../components/team/form-controller":17,"../components/team/leave-controller":18,"../components/team/team-controller":19,"../components/tech-support/tech-support-controller":20,"../components/tech-support/tech-support-directive":21,"../components/tech-support/trello-services":22,"../components/timeline-settings/timeline-settings-controller":23,"../components/timeline/timeline-controller":24,"../components/timeline/timeline-directive":25,"../components/timeline/timeline-googlesheets-services":26,"../components/timeline/timeline-learning-bookings-services":27,"../components/timeline/timeline-leave-services":28,"../components/timeline/timeline-loans-services":29,"../components/timeline/timeline-services":30,"../components/timeline/timeline-shopify-services":31,"../shared/controllers/controllers":32,"../shared/controllers/navbar-controller":33,"../shared/directives/directives":34,"../shared/services/app-services":36,"../shared/services/data-services":37,"b55mWE":4,"buffer":3,"underscore":7}],36:[function(require,module,exports){
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_25d47597.js","/")
+},{"../components/machine-monitor/dashboard-controller":8,"../components/machine-monitor/dead-controller":9,"../components/machine-monitor/downtime-controller":10,"../components/machine-monitor/downtime-services":11,"../components/machine-monitor/feedback-controller":12,"../components/machine-monitor/feedback-services":13,"../components/machine-monitor/satisfaction-controller":14,"../components/member/member-controller":15,"../components/shopify/shopify-controller":16,"../components/shopify/shopify-directive":17,"../components/team/app-controllers":18,"../components/team/form-controller":19,"../components/team/leave-controller":20,"../components/team/team-controller":21,"../components/tech-support/tech-support-controller":22,"../components/tech-support/tech-support-directive":23,"../components/tech-support/trello-services":24,"../components/timeline-settings/timeline-settings-controller":25,"../components/timeline/timeline-controller":26,"../components/timeline/timeline-directive":27,"../components/timeline/timeline-googlesheets-services":28,"../components/timeline/timeline-learning-bookings-services":29,"../components/timeline/timeline-leave-services":30,"../components/timeline/timeline-loans-services":31,"../components/timeline/timeline-services":32,"../components/timeline/timeline-shopify-services":33,"../components/user-admin/users-controller":34,"../components/user-admin/users-directive":35,"../shared/controllers/controllers":36,"../shared/controllers/navbar-controller":37,"../shared/directives/directives":38,"../shared/services/app-services":40,"../shared/services/data-services":41,"b55mWE":4,"buffer":3,"underscore":7}],40:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.date_calc = function($http) {	
@@ -9300,10 +9611,21 @@ exports.screen_saver_loop=function($rootScope,$location,$interval,Team) {
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/services/app-services.js","/services")
-},{"b55mWE":4,"buffer":3}],37:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],41:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var status = require('http-status');
 
+
+    exports.shopify_app =  function($resource){
+	  
+	  
+	   return $resource('/shopify_product_status_app',{ }, {
+    getData: {method:'GET', isArray: true}
+  });
+       
+
+  }
+  
 exports.AuthService = function($http) {
 
    var currentUser;
@@ -9483,4 +9805,4 @@ exports.Tallys = function($resource){
 		
 	
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/services/data-services.js","/services")
-},{"b55mWE":4,"buffer":3,"http-status":5}]},{},[35])
+},{"b55mWE":4,"buffer":3,"http-status":5}]},{},[39])

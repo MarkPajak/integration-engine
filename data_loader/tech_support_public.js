@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 var json2csv = require('json2csv');
 var fields = ['id', 'date_created'];
-var googe_keys=JSON.parse(fs.readFileSync('./secret/google_drive.JSON').toString());
+var fs = require('fs');
+var googe_keys=JSON.parse(fs.readFileSync('./secret/google_drive.json').toString());
 
 
 var options={

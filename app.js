@@ -16,6 +16,7 @@ var tech_support = require('./routes/tech_support')
 var tech_support_public = require('./routes/tech_support_public')
 var shopify_transactions = require('./routes/shopify_transaction')
 var shopify_product = require('./routes/shopify_product')
+var shopify_product_status_app = require('./routes/shopify_product_status_app')
 var shopify_aggregate = require('./routes/shopify_aggregate')
 
 var shopify = require('./routes/shopify')
@@ -67,6 +68,7 @@ app.use('/timeline_data_settings', timeline_data_settings);
 app.use('/user_data', user_data);
 app.use('/shopify_transactions', shopify_transactions);
 app.use('/shopify_product', shopify_product);
+app.use('/shopify_product_status_app', shopify_product_status_app);
 
 app.use('/shopify_aggregate', shopify_aggregate);
 

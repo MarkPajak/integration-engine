@@ -6,12 +6,12 @@ var keys=JSON.parse(fs.readFileSync('./secret/api_keys.JSON').toString());
 var request = require('request');
 var moment = require('moment');
 var _ = require('underscore');
-var url_base="https://"+keys.shopify_api+":"+keys.shopify_password+"@bristol-museums-shop.myshopify.com/admin/"
-
+var shop_id = keys.shopify_store
+var url_base="https://"+keys.shopify_api+":"+keys.shopify_password+shop_id+"/admin/"
 var Shopify_transaction = require('../../models/Shopify_transaction.js');
 var dbConfig = require('../../db');
-var mongoose = require('mongoose');
-Shopify_transaction.find({}).remove().exec(function(err, data) {
+//var mongoose = require('mongoose');
+Shopify_transaction.find({shop_id:shop_id}).remove().exec(function(err, data) {
  if(err) console.log('err' + err);
 })
 
@@ -21,7 +21,7 @@ var last_seven_days =  moment(new Date()).add(-7, 'days').format()
 
 
 // Connect to DB
-mongoose.connect(dbConfig.url);
+//mongoose.connect(dbConfig.url);
  
 
  //orders();
@@ -51,7 +51,10 @@ function product_type_from_id(item,order){
 						date: new Date(order.created_at),
 						product_type: post.product_type,
 						product_id: post.id,
+						shop_id:shop_id,
+						shop_id:shop_id,
 						title: post.title,
+						shop_id:shop_id,
 						price:post.variants[0].price,
 					
 						line_id:line_item_id
@@ -105,7 +108,7 @@ function orders(total_orders){
 						
 					}
 					else{
-					console.log('max reached')
+					console.log('max reachedxx')
 					//exit;
 					}
 				}

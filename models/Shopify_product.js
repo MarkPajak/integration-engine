@@ -3,13 +3,16 @@ var moment = require('moment');
 var Shopify_product = new mongoose.Schema({
 		
 		  
-		  _id: { type: String, required: true ,unique:true},		 
-		  product_type: { type: String },	
-		  title: { type: String, required: true },	
-		  inventory_quantity: { type: Number},
-		  revenue_to_date: { type: Number},	
-		  number_sold: { type: Number},
-		  price:{ type: Number }
+			_id: { type: String, required: true ,unique:true},	
+			shop_id: { type: String, required: true},				  
+			product_type: { type: String },	
+			sku: { type: String},
+			vendor: { type: String, required: true},
+			title: { type: String, required: true },	
+			inventory_quantity: { type: Number},
+			revenue_to_date: { type: Number},	
+			number_sold: { type: Number},
+			price:{ type: Number }
 });
 
 

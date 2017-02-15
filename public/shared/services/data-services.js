@@ -1,5 +1,16 @@
 var status = require('http-status');
 
+
+    exports.shopify_app =  function($resource){
+	  
+	  
+	   return $resource('/shopify_product_status_app',{ }, {
+    getData: {method:'GET', isArray: true}
+  });
+       
+
+  }
+  
 exports.AuthService = function($http) {
 
    var currentUser;

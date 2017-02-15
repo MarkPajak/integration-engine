@@ -1,4 +1,4 @@
-var shopify_transaction = function (valid_ticket_types){
+var shopify_transaction = function (keys,valid_ticket_types){
 var self = this
 
 
@@ -9,18 +9,16 @@ var eachAsync = require('each-async');
 var express = require('express');
 var router = express.Router();
 var shopifyAPI = require('shopify-node-api');
-var fs = require('fs');
-var keys=JSON.parse(fs.readFileSync('./secret/api_keys.JSON').toString());
 var request = require('request');
 var moment = require('moment');
 var _ = require('underscore');
-var url_base="https://"+keys.dev_shopify_api+":"+keys.dev_shopify_password+"@"+keys.dev_shopify_store+"/admin/"
+var url_base="https://"+keys.dev_shopify_api+":"+keys.dev_shopify_password+keys.shopify_store+"/admin/"
 
 var Shopify_transaction = require('../../models/Shopify_transaction.js');
 var Shopify_products = require('../../models/Shopify_product.js');
 var dbConfig = require('../../db');
 //var mongoose = require('mongoose');
-Shopify_transaction.find({}).remove().exec(function(err, data) {
+Shopify_transaction.find({"shop_id":keys.shopify_store}).remove().exec(function(err, data) {
  if(err) console.log('err' + err);
 })
 

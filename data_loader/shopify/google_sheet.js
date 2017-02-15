@@ -15,13 +15,10 @@ var dbConfig = require('../../db');
 //var mongoose = require('mongoose');
 // Connect to DB
 
- var save_data_to_google_sheet = require("../services/save_data_to_google_sheet.js");
 
 
-var save_data_to_google_sheetInstance = new save_data_to_google_sheet(options);  
 
-
-self.get_data = function(){
+self.get_data = function(cb){
 
 	 console.log('Shopify_product.find()')
 	 Shopify_product.find()
@@ -55,7 +52,6 @@ self.get_data = function(){
 							new_product.name=product.title
 							new_product.date_report_run=new Date()
 							new_product.sales_value=_product.count*new_product.price
-							
 							var order_status = ""
 							if(product.inventory_quantity<=_product.count){
 							order_status = "re-order"
@@ -63,11 +59,13 @@ self.get_data = function(){
 							new_product.order_status=order_status
 							matches++
 							result.push(new_product)
+	
 						}
 					})		
 				})
 				console.log(matches+ ' matches found')
-				save_data_to_google_sheetInstance.add_data_to_sheet(result)
+				cb(result)
+			
         }
     });
 	 

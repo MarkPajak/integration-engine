@@ -1,4 +1,17 @@
+<timeline-menu></timeline-menu>
+
 <style>
+.menudemoBasicUsage .md-menu-demo {
+  padding: 24px; }
+
+.menudemoBasicUsage .menu-demo-container {
+  min-height: 200px; }
+
+
+/*
+Copyright 2016 Google Inc. All Rights Reserved. 
+Use of this source code is governed by an MIT-style license that can be foundin the LICENSE file at http://material.angularjs.org/HEAD/license.
+*/
 body{
 overflow:off;
 }
@@ -387,17 +400,7 @@ top:5px;
 		</div>
 	</div>
 </span >
-<div  class="droppables iconbar ">
-	<div class="  panel-footer ">
-		
-		<label class=" switch checkbox checkbox-inline">
-		<div class="settings_locklabel" >stack</div>
-		<input checked type="checkbox" id="stack"  ng-model="stack" value="">
-		<div class="slider round"></div>
-		</label>
-		
-	</div>
-</div>
+
 <div  class="  iconbar   bg-color-green">
 	
 	<div  ng-show="unlock" class="  panel-footer ">
@@ -422,33 +425,7 @@ top:5px;
 	</div>
 </div>
 
-	<span  class="checkboxList iconbar panel-footer ">
-		<div class="panel-heading">Select items by group for timeline</div>
-		<div class="panel-body">
-		<table class="table">
-		
-		<tr ng-repeat="track in track_groups">
-		<td>
 
-		
-		<label class="switch">
-		<div class="settings_locklabel" >{{track.track}}</div>
-		
-			<input
-					type="checkbox"
-					name="selectedFruits[]"
-					value="{{track.track}}"
-					ng-model="track.selected"
-				  > 
-				   <div class="slider round"></div>
-			</label>
-			</td></tr>
-		</table>
-		  <button class="btn" ng-click="exportCSV()" class='gen_btn'>Generate File</button>
-		</div>
-		
-	
-	</span >
 
 
 	<span  ng-hide="'true'" class="checkboxList iconbar panel-footer ">

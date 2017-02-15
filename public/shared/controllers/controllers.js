@@ -1,4 +1,5 @@
-exports.ProductDetailsController = function($scope, $routeParams, $http) {
+exports.ProductDetailsController = function($location, $scope, $routeParams, $http) {
+
   var encoped = encodeURIComponent($routeParams.id);
   $http.
     get('/api/v1/product/id/' + encoded).

@@ -1,4 +1,4 @@
-var shopify_transaction = function (options){
+var shopify_transaction = function (keys,options){
 var self = this
 
 //var created_at_min =  moment(new Date()).add(-7, 'days').format()
@@ -8,18 +8,18 @@ var eachAsync = require('each-async');
 var express = require('express');
 var router = express.Router();
 var shopifyAPI = require('shopify-node-api');
-var fs = require('fs');
-var keys=JSON.parse(fs.readFileSync('./secret/api_keys.JSON').toString());
+var shop_id = keys.shopify_store
 var request = require('request');
 var moment = require('moment');
 var _ = require('underscore');
-var url_base="https://"+keys.shopify_api+":"+keys.shopify_password+"@bristol-museums-shop.myshopify.com/admin/"
+var url_base="https://"+keys.shopify_api+":"+keys.shopify_password+shop_id+"/admin/"
+
 
 var Shopify_transaction = require('../../models/Shopify_transaction.js');
 var Shopify_products = require('../../models/Shopify_product.js');
 var dbConfig = require('../../db');
 //var mongoose = require('mongoose');
-Shopify_transaction.find({}).remove().exec(function(err, data) {
+Shopify_transaction.find({shop_id:shop_id}).remove().exec(function(err, data) {
  if(err) console.log('err' + err);
 })
 
@@ -62,9 +62,12 @@ console.log('looking for '+product_id)
 						console.log('saving')
 						var shopify_transaction = new Shopify_transaction({
 							date: item.date,
+							shop_id:shop_id,
 							quantity:post.quantity,
 							product_type: post.product_type,
 							product_id: post.id,
+							sku: post.sku,
+							vendor:post.vendor,
 							title: post.title,
 							price:post.price,
 							line_id:line_item_id
@@ -178,12 +181,14 @@ getNextset()
 self.count_all_orders = function(cb){
 
 			total_order_count = 0
-console.log('querying created_at_min'+created_at_min)
+			console.log('querying created_at_min'+created_at_min)
 			url = url_base+"orders/count.json?created_at_min="+created_at_min+"&status=any"
 			request({
 				url: url,
 				json: true
 			}, function (error, response, body) {
+				if (error) console.log(error)
+				
 				if (!error && response.statusCode === 200) {
 					 orders(body.count,cb)
 				}

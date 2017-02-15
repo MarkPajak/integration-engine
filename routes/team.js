@@ -1,11 +1,21 @@
 var express = require('express');
 var router = express.Router();
 
+var isAuthenticated = function (req, res, next) {
+	console.log('if user is authenticated in the session, call the next() to call the next request handler ')
+	// Passport adds this method to request object. A middleware is allowed to add properties to
+	// request and response objects
+	if (req.isAuthenticated())
+		return next();
+
+	return false
+}
 
 var Team = require('../models/user.js');
 
+
 /* GET /todos listing. */
-router.get('/', function(req, res, next) {
+router.get('/',isAuthenticated, function(req, res, next) {
 
   Team.find()
 	   .populate('leave_taken')
@@ -16,7 +26,7 @@ router.get('/', function(req, res, next) {
 });
 
 /* POST /todos */
-router.post('/', function(req, res, next) {
+router.post('/', isAuthenticated, function(req, res, next) {
   Team.create(req.body, function (err, post) {
     if (err) return next(err);
     res.json(post);
@@ -24,7 +34,7 @@ router.post('/', function(req, res, next) {
 });
 
 /* GET /todos/id */
-router.get('/:id', function(req, res, next) {
+router.get('/:id', isAuthenticated, function(req, res, next) {
   Team.findById(req.params.id, function (err, post) {
     if (err) return next(err);
     res.json(post);
@@ -32,7 +42,7 @@ router.get('/:id', function(req, res, next) {
 });
 
 /* PUT /todos/:id */
-router.put('/:id', function(req, res, next) {
+router.put('/:id', isAuthenticated, function(req, res, next) {
   Team.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
     if (err) return next(err);
     res.json(post);
@@ -41,7 +51,7 @@ router.put('/:id', function(req, res, next) {
 
 
 /* DELETE /todos/:id */
-router.delete('/:id', function(req, res, next) {
+router.delete('/:id', isAuthenticated, function(req, res, next) {
   Team.findByIdAndRemove(req.params.id, req.body, function (err, post) {
     if (err) return next(err);
     res.json(post);

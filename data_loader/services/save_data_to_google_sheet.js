@@ -6,10 +6,8 @@ var self = this;
 var GoogleSpreadsheet = require('google-spreadsheet');
 var async = require('async');
 var _ = require('underscore');
-// spreadsheet key is the long id in the sheets URL
- //var doc = new GoogleSpreadsheet('16xVCAAGMeO8JpMG3xefqztrOMCFFVoLuv2jB1UGGQLY');
+  var doc = new GoogleSpreadsheet( options.google_sheet_id);
 
-var doc = new GoogleSpreadsheet('1UlDQNS6dTvQWlQs090HRrSoR49k0Th-ElxCaxTMleA0');
 var sheet;
 
 
@@ -20,6 +18,7 @@ async.series([
   function setAuth(step) {
     // see notes below for authentication instructions!
     var creds = require('../../secret/google_drive.json');
+  
     doc.useServiceAccountAuth(creds, step);
   },
   function getInfoAndWorksheets(step) {
@@ -58,6 +57,8 @@ console.log('addig headsers')
 		 headers.push("count")	
 		 headers.push("inventory_quantity")
 		 headers.push("order_status")
+		 headers.push("sku")
+		  headers.push("vendor")
 		 headers.push("date_report_run")
 		
 		sheet.setHeaderRow(headers, function(){setTimeout(function(){step() }, 2000)})

@@ -5,4 +5,11 @@
   }
 	}
 	
+		exports.timelineMenu = function() {
+  return {
+   controller: 'BasicDemoCtrl',
+    templateUrl: './components/timeline/menu.html'
+  }
+	}
+	
 

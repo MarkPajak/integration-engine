@@ -28,12 +28,15 @@ var team_controllers = require('../components/team/team-controller');
 var member_controllers = require('../components/member/member-controller');
 var form_controllers = require('../components/team/form-controller');
 var timeline_controllers = require('../components/timeline/timeline-controller');
+var shopify_controllers = require('../components/shopify/shopify-controller');
 var timeline_settings_controller = require('../components/timeline-settings/timeline-settings-controller');
-
+var users_controller = require('../components/user-admin/users-controller');
 
 var directives = require('../shared/directives/directives');
 var tech_support_directives = require('../components/tech-support/tech-support-directive');
+var users_directives = require('../components/user-admin/users-directive');
 var timeline_directives = require('../components/timeline/timeline-directive');
+var shopify_directives = require('../components/shopify/shopify-directive');
 
 var data_services = require('../shared/services/data-services');
 var app_services = require('../shared/services/app-services');
@@ -74,7 +77,8 @@ var feedback_services = require('../components/machine-monitor/feedback-services
 		'ngDragDrop',
 		'md.data.table',
 		'ui.router'	,	
-		'ui.grid', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit','ui.grid.resizeColumns'
+		'ui.grid', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit','ui.grid.resizeColumns',
+		 'ngMessages', 'material.svgAssetsCache'
 		])
 		
 		
@@ -127,6 +131,9 @@ _.each(team_controllers, function(controller, name) {
 _.each(member_controllers, function(controller, name) {
   app.controller(name, controller);
 });
+_.each(users_controller, function(controller, name) {
+  app.controller(name, controller);
+});
 
 
 _.each(form_controllers, function(controller, name) {
@@ -135,6 +142,14 @@ _.each(form_controllers, function(controller, name) {
 _.each(timeline_controllers, function(controller, name) {
   app.controller(name, controller);
 });
+
+_.each(shopify_controllers, function(controller, name) {
+  app.controller(name, controller);
+});
+
+
+
+
 _.each(timeline_settings_controller, function(controller, name) {
   app.controller(name, controller);
 });
@@ -152,11 +167,19 @@ _.each(timeline_settings_controller, function(controller, name) {
  _.each(tech_support_directives, function(directive, name) {
   app.directive(name, directive);
 });
+ _.each(users_directives, function(directive, name) {
+  app.directive(name, directive);
+});
+
+
 
  _.each(timeline_directives, function(directive, name) {
   app.directive(name, directive);
 });
 
+ _.each(shopify_directives, function(directive, name) {
+  app.directive(name, directive);
+});
 
 
 
@@ -236,6 +259,12 @@ app.config(function config(formlyConfigProvider) {
     templateUrl: '<button ng-click="options.templateOptions">{{options.label}}</button>'
   }
 ]);
+
+ app.config(function($mdIconProvider) {
+    $mdIconProvider
+      .iconSet("call", 'img/icons/sets/communication-icons.svg', 24)
+      .iconSet("social", 'img/icons/sets/social-icons.svg', 24);
+  })
 
   formlyConfigProvider.setType({
     name: 'input',

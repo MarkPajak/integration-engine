@@ -76,6 +76,10 @@
 		   .when('/tech-support', {
                template: '<tech-support></tech-support>'
            })
+		   
+		    .when('/users', {
+               template: '<user-admin></user-admin>'
+           })
 		      .when('/tech-support:token', {
               templateUrl: '../components/tech-support/tech-support-page.html',
               controller: 'tech_support_controller'
@@ -88,6 +92,10 @@
 			  data: {
 				//authorizedRoles: [USER_ROLES.admin, USER_ROLES.editor]
 				}
+           })
+		   
+		     .when('/shopify_app', {
+               template: '<shopify-status></shopify-status>'
            })
 		   
           

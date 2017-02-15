@@ -17,7 +17,7 @@ describe('techsupportDirective', function() {
 
 it('should have a data table', function () {
  var data_table = $('.ui-grid-icon-ok').length;
-  expect(data_table.text().length>0);
+  expect(data_table.length>0);
  });
 });
 
