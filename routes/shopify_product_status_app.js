@@ -8,7 +8,7 @@ var moment = require('moment');
 var fs = require('fs');
 var keys=JSON.parse(fs.readFileSync('./secret/api_keys.JSON').toString());
 
-var selected_set = 0
+var selected_set = 3
 
 var optionset = []
 	var options = []

@@ -80,10 +80,15 @@
 		    .when('/users', {
                template: '<user-admin></user-admin>'
            })
+		   
+		     .when('/shopify_app', {
+               template: '<shopify-status></shopify-status>'
+           })
 		      .when('/tech-support:token', {
               templateUrl: '../components/tech-support/tech-support-page.html',
               controller: 'tech_support_controller'
            })
+		  
 		  
 		  
 			.when('/me/:member', {
@@ -94,7 +99,7 @@
 				}
            })
 		   
-		     .otherwise({redirectTo : 'timeline'    })
+		    // .otherwise({redirectTo : 'timeline'    })
 		   
 		   
           

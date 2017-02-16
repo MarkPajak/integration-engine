@@ -66,16 +66,7 @@ exports.shopify_controller = function($scope, $http, $q, $routeParams, $location
 				_.each(team,function(row){
 					console.log(row)
 					$scope._rows.push(row)
-					/*
-					for (var key in teamx[0]) {
-						var dont_shows=[
-						"_id","__v","_id","$get","$save","$query","$remove","$delete","toJSON","$update"
-						]
-						if(dont_shows.indexOf(key)==-1){
-							$scope.column_headings.push(key)
-						}				
-					}
-					*/
+	
 					
 							
 				})
