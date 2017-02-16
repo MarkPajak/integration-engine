@@ -1,4 +1,8 @@
 <style>
+
+md-menu-item{
+height:60px;
+}
 .menudemoBasicUsage .md-menu-demo {
   padding: 24px; }
 .menudemoBasicUsage .menu-demo-container {
@@ -53,14 +57,14 @@ SVG Icons - svgicons.sparkk.fr
 		  
         </md-menu-item>
         <md-menu-item>
-          <md-button disabled="disabled" ng-click="ctrl.checkVoicemail()">
+          <md-button disabled="disabled" ng-click="">
             <md-icon md-svg-icon="call:voicemail"></md-icon>
            Settings
           </md-button>
         </md-menu-item>
         <md-menu-divider></md-menu-divider>
         <md-menu-item>
-          <md-button ng-click="ctrl.toggleNotifications()">
+          <md-button ng-click="">
             <md-icon md-svg-icon="social:notifications-{{ctrl.notificationsEnabled ? 'off' : 'on'}}"></md-icon>
         <label class=" switch checkbox checkbox-inline">
 		<div class="settings_locklabel" >stack</div>
@@ -70,7 +74,7 @@ SVG Icons - svgicons.sparkk.fr
           </md-button>
         </md-menu-item>
 		 <md-menu-item  ng-show="isloggedin">
-          <md-button ng-click="ctrl.toggleNotifications()">
+          <md-button ng-click="">
          <md-icon md-svg-icon="social:notifications-{{ctrl.notificationsEnabled ? 'off' : 'on'}}"></md-icon>
          <label class=" switch checkbox checkbox-inline">
 		<div class="settings_locklabel" >unlocked</div>
