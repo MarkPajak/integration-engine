@@ -2,24 +2,29 @@ exports.timeline_controller=     function($scope, $http, $q, $routeParams, $loca
          $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate
     ) {
 		
-	 $scope.isloggedin=false	
-  AuthService.isLoggedIn().then(function(user){
-	  $scope.isloggedin=true	
-  })
+$scope.locked=[]
+$scope.locked.add_item = false
+$scope.locked['true']={status:" locked",value:false}
+$scope.locked['false']={status:" unlocked",value:true}
+$scope.average_install_length = 0
+$scope.password=false
+$scope.lockstatus=false
+$scope.average_derig_length = 0
+$rootScope.addednames=[]
+$rootScope.track_groups=[]
+$rootScope.added_track_groups=[]
+$rootScope.datePicker=[];
+
+$rootScope.datePicker.date = {startDate:null, endDate: null};
+	  $scope.isloggedin=false	
+	  AuthService.isLoggedIn().then(function(user){
+			$scope.isloggedin=true	
+			//$scope.lockstatus=true
+			//$scope.unlock=true
+			//timeline_functions.unlock(true)
+	  })
 	
-	$scope.average_install_length = 0
-	$scope.locked=[]
-	$scope.unlock=false
-	$scope.password=false
-	$scope.lockstatus=true
-	$scope.locked['true']={status:" locked",value:false}
-	$scope.locked['false']={status:" unlocked",value:true}
-	$scope.average_derig_length = 0
-	$rootScope.addednames=[]
-	$rootScope.track_groups=[]
-	$rootScope.added_track_groups=[]
-	$rootScope.datePicker=[];
-	$rootScope.datePicker.date = {startDate:null, endDate: null};
+
 	
 	
 $scope.dateRangeOptions = {
@@ -45,7 +50,7 @@ $scope.dateRangeOptions = {
 			}}				
             }
         }
-    
+
 				$scope.$watch('selected_notes', function(selected_note) {
 
 					date=$rootScope.datePicker.date
@@ -336,7 +341,7 @@ $scope.dateRangeOptions = {
 													}
 													}
 													
-													
+													if(event.startDate){ //timeline errors if no start date
 													dates.add({
 																		group		:	group, 
 																		select_group :select_group,
@@ -351,6 +356,7 @@ $scope.dateRangeOptions = {
 																		className 	:	"green",
 																		event_type  :   "WHATS ON"
 																		})
+														}
 																		
 											//}
 											}
@@ -369,7 +375,6 @@ $scope.dateRangeOptions = {
 				
 
 		$scope.team_leave()
-	
 	
 
 	
@@ -396,24 +401,9 @@ $scope.dateRangeOptions = {
 	   })
 
 	
-		$scope.$watch('lockstatus', function (status) {
+
 		
-  timeline_functions.prettyPrompt('say the magic word', '',"", function(value) {
-	
-                            if (value!="" && md5(value)=="f1a81d782dea6a19bdca383bffe68452") {
-								$scope.unlock=true
-	timeline_functions.unlock(true)
-							}
-							else
-							{
-							//$scope.lockstatus=true	
-								$scope.unlock=false
-							timeline_functions.unlock(false)
-								
-							}
-  })
-		
-  }, true);
+
 	
 	$scope.$watch('track_groups|filter:{selected:true}', function (nv) {
     var selection = nv.map(function (track_groups) {
@@ -423,13 +413,15 @@ $scope.dateRangeOptions = {
 	//$( ".draggable,.iconbar" ).css({ 'top':'0px' });
   }, true);
 	
-		 $scope.$watch('groups|filter:{selected:true}', function (nv) {
+$scope.$watch('groups|filter:{selected:true}', function (nv) {
     var selection = nv.map(function (group) {
       return group.content;
     });
 	timeline_functions.changeGroups(selection)
 	$( ".draggable,.iconbar" ).css({ 'top':'0px' });
   }, true);
+  
+
 			
             })
 			
@@ -560,11 +552,8 @@ $scope.dateRangeOptions = {
 			
 			$scope.timeline_googlesheets_functions= function(data_settings){
 			
-					 var groups =$rootScope.groups
-					 $rootScope.timeline.setGroups(groups);
-					 
-				
-
+					var groups =$rootScope.groups
+					$rootScope.timeline.setGroups(groups);
 					timeline_googlesheets_functions.get_events(data_settings)
 				  		  
 			}
@@ -629,7 +618,12 @@ $scope.dateRangeOptions = {
 	
 	 
  
-exports.BasicDemoCtrl=   function ($mdDialog) {  
+exports.BasicDemoCtrl=   function ($mdDialog,$scope, $http, $q, $routeParams, $location
+
+    ) {
+	
+
+
  var originatorEv;
 
     this.openMenu = function($mdMenu, ev) {
@@ -661,3 +655,19 @@ exports.BasicDemoCtrl=   function ($mdDialog) {
     };
   }
 
+exports.add_timeline_items_controller=    function($scope, $http, $q, $routeParams, $location,
+         $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate
+    ) {
+	
+	$scope.unlocked=false
+	$scope.$watch('locked', function (locked) {
+		console.log(locked)
+		$scope.locked=locked
+  })
+  }
+  
+  exports.add_timeline_info_box=    function($scope, $http, $q, $routeParams, $location,
+         $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate
+    ) {
+
+  }

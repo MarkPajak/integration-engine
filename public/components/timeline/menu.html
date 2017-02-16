@@ -55,20 +55,33 @@ SVG Icons - svgicons.sparkk.fr
         <md-menu-item>
           <md-button disabled="disabled" ng-click="ctrl.checkVoicemail()">
             <md-icon md-svg-icon="call:voicemail"></md-icon>
-            Check voicemail
+           Settings
           </md-button>
         </md-menu-item>
         <md-menu-divider></md-menu-divider>
         <md-menu-item>
           <md-button ng-click="ctrl.toggleNotifications()">
             <md-icon md-svg-icon="social:notifications-{{ctrl.notificationsEnabled ? 'off' : 'on'}}"></md-icon>
-            		<label class=" switch checkbox checkbox-inline">
+        <label class=" switch checkbox checkbox-inline">
 		<div class="settings_locklabel" >stack</div>
 		<input checked type="checkbox" id="stack"  ng-model="stack" value="">
 		<div class="slider round"></div>
 		</label>
           </md-button>
         </md-menu-item>
+		 <md-menu-item  ng-show="isloggedin">
+          <md-button ng-click="ctrl.toggleNotifications()">
+         <md-icon md-svg-icon="social:notifications-{{ctrl.notificationsEnabled ? 'off' : 'on'}}"></md-icon>
+         <label class=" switch checkbox checkbox-inline">
+		<div class="settings_locklabel" >unlocked</div>
+		<input checked type="checkbox" id="unlocked"  ng-model="locked.add_item" value="">
+		<div class="slider round"></div>
+		</label>
+          </md-button>
+        </md-menu-item>
+		
+		
+
       </md-menu-content>
     </md-menu>
 </div>

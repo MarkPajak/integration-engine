@@ -6481,24 +6481,29 @@ exports.timeline_controller=     function($scope, $http, $q, $routeParams, $loca
          $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate
     ) {
 		
-	 $scope.isloggedin=false	
-  AuthService.isLoggedIn().then(function(user){
-	  $scope.isloggedin=true	
-  })
+$scope.locked=[]
+$scope.locked.add_item = false
+$scope.locked['true']={status:" locked",value:false}
+$scope.locked['false']={status:" unlocked",value:true}
+$scope.average_install_length = 0
+$scope.password=false
+$scope.lockstatus=false
+$scope.average_derig_length = 0
+$rootScope.addednames=[]
+$rootScope.track_groups=[]
+$rootScope.added_track_groups=[]
+$rootScope.datePicker=[];
+
+$rootScope.datePicker.date = {startDate:null, endDate: null};
+	  $scope.isloggedin=false	
+	  AuthService.isLoggedIn().then(function(user){
+			$scope.isloggedin=true	
+			//$scope.lockstatus=true
+			//$scope.unlock=true
+			//timeline_functions.unlock(true)
+	  })
 	
-	$scope.average_install_length = 0
-	$scope.locked=[]
-	$scope.unlock=false
-	$scope.password=false
-	$scope.lockstatus=true
-	$scope.locked['true']={status:" locked",value:false}
-	$scope.locked['false']={status:" unlocked",value:true}
-	$scope.average_derig_length = 0
-	$rootScope.addednames=[]
-	$rootScope.track_groups=[]
-	$rootScope.added_track_groups=[]
-	$rootScope.datePicker=[];
-	$rootScope.datePicker.date = {startDate:null, endDate: null};
+
 	
 	
 $scope.dateRangeOptions = {
@@ -6524,7 +6529,7 @@ $scope.dateRangeOptions = {
 			}}				
             }
         }
-    
+
 				$scope.$watch('selected_notes', function(selected_note) {
 
 					date=$rootScope.datePicker.date
@@ -6815,7 +6820,7 @@ $scope.dateRangeOptions = {
 													}
 													}
 													
-													
+													if(event.startDate){ //timeline errors if no start date
 													dates.add({
 																		group		:	group, 
 																		select_group :select_group,
@@ -6830,6 +6835,7 @@ $scope.dateRangeOptions = {
 																		className 	:	"green",
 																		event_type  :   "WHATS ON"
 																		})
+														}
 																		
 											//}
 											}
@@ -6848,7 +6854,6 @@ $scope.dateRangeOptions = {
 				
 
 		$scope.team_leave()
-	
 	
 
 	
@@ -6875,24 +6880,9 @@ $scope.dateRangeOptions = {
 	   })
 
 	
-		$scope.$watch('lockstatus', function (status) {
+
 		
-  timeline_functions.prettyPrompt('say the magic word', '',"", function(value) {
-	
-                            if (value!="" && md5(value)=="f1a81d782dea6a19bdca383bffe68452") {
-								$scope.unlock=true
-	timeline_functions.unlock(true)
-							}
-							else
-							{
-							//$scope.lockstatus=true	
-								$scope.unlock=false
-							timeline_functions.unlock(false)
-								
-							}
-  })
-		
-  }, true);
+
 	
 	$scope.$watch('track_groups|filter:{selected:true}', function (nv) {
     var selection = nv.map(function (track_groups) {
@@ -6902,13 +6892,15 @@ $scope.dateRangeOptions = {
 	//$( ".draggable,.iconbar" ).css({ 'top':'0px' });
   }, true);
 	
-		 $scope.$watch('groups|filter:{selected:true}', function (nv) {
+$scope.$watch('groups|filter:{selected:true}', function (nv) {
     var selection = nv.map(function (group) {
       return group.content;
     });
 	timeline_functions.changeGroups(selection)
 	$( ".draggable,.iconbar" ).css({ 'top':'0px' });
   }, true);
+  
+
 			
             })
 			
@@ -7039,11 +7031,8 @@ $scope.dateRangeOptions = {
 			
 			$scope.timeline_googlesheets_functions= function(data_settings){
 			
-					 var groups =$rootScope.groups
-					 $rootScope.timeline.setGroups(groups);
-					 
-				
-
+					var groups =$rootScope.groups
+					$rootScope.timeline.setGroups(groups);
 					timeline_googlesheets_functions.get_events(data_settings)
 				  		  
 			}
@@ -7108,7 +7097,12 @@ $scope.dateRangeOptions = {
 	
 	 
  
-exports.BasicDemoCtrl=   function ($mdDialog) {  
+exports.BasicDemoCtrl=   function ($mdDialog,$scope, $http, $q, $routeParams, $location
+
+    ) {
+	
+
+
  var originatorEv;
 
     this.openMenu = function($mdMenu, ev) {
@@ -7140,7 +7134,22 @@ exports.BasicDemoCtrl=   function ($mdDialog) {
     };
   }
 
+exports.add_timeline_items_controller=    function($scope, $http, $q, $routeParams, $location,
+         $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate
+    ) {
+	
+	$scope.unlocked=false
+	$scope.$watch('locked', function (locked) {
+		console.log(locked)
+		$scope.locked=locked
+  })
+  }
+  
+  exports.add_timeline_info_box=    function($scope, $http, $q, $routeParams, $location,
+         $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate
+    ) {
 
+  }
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-controller.js","/../components/timeline")
 },{"b55mWE":4,"buffer":3}],27:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
@@ -7157,6 +7166,22 @@ exports.BasicDemoCtrl=   function ($mdDialog) {
     templateUrl: './components/timeline/menu.html'
   }
 	}
+	
+			exports.addtimelineItems = function() {
+  return {
+   controller: 'add_timeline_items_controller',
+    templateUrl: './components/timeline/add-items-block.html'
+  }
+	}
+	
+		
+			exports.timelineInfobox = function() {
+  return {
+   controller: 'add_timeline_info_box',
+    templateUrl: './components/timeline/info-box.html'
+  }
+	}
+	
 	
 
 
@@ -8279,8 +8304,9 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 	  
 	  unlock: function(unlock){
 		
-                          
+                      if(timeline){    
 								timeline.setOptions({'editable':unlock});
+								}
 			
 							
 		  	
@@ -8400,9 +8426,11 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 			},
 				selected_data:	 function (event) {
 			 var self=this
-			 //newly selected - get ID to update
-					console.log('get ID to update')
+			 	console.log('get ID to update')
 					selected_timeline_id=event.items[0]
+			 if(selected_timeline_id){
+			 //newly selected - get ID to update
+				
 			//fetch the timeline dataSetitem 
 					selected_item =	timeline.itemsData.getDataSet().get(selected_timeline_id)
 			//update the data entry form
@@ -8416,9 +8444,10 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 			}
 			$rootScope.selected_id=selected_item._id
 			$rootScope.selected_notes=selected_item.notes
+			console.log('startDate'+new Date(selected_item.start))
 			$rootScope.datePicker.date={startDate:new Date(selected_item.start),endDate:new Date (selected_item.end)}
 			
-
+}
             },
    get_events: function() {
       return $http.get('http://museums.bristol.gov.uk/sync/data/events.JSON');  //1. this returns promise
@@ -9269,7 +9298,7 @@ app.config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
 }]);
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_25d47597.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_d11fe25.js","/")
 },{"../components/machine-monitor/dashboard-controller":8,"../components/machine-monitor/dead-controller":9,"../components/machine-monitor/downtime-controller":10,"../components/machine-monitor/downtime-services":11,"../components/machine-monitor/feedback-controller":12,"../components/machine-monitor/feedback-services":13,"../components/machine-monitor/satisfaction-controller":14,"../components/member/member-controller":15,"../components/shopify/shopify-controller":16,"../components/shopify/shopify-directive":17,"../components/team/app-controllers":18,"../components/team/form-controller":19,"../components/team/leave-controller":20,"../components/team/team-controller":21,"../components/tech-support/tech-support-controller":22,"../components/tech-support/tech-support-directive":23,"../components/tech-support/trello-services":24,"../components/timeline-settings/timeline-settings-controller":25,"../components/timeline/timeline-controller":26,"../components/timeline/timeline-directive":27,"../components/timeline/timeline-googlesheets-services":28,"../components/timeline/timeline-learning-bookings-services":29,"../components/timeline/timeline-leave-services":30,"../components/timeline/timeline-loans-services":31,"../components/timeline/timeline-services":32,"../components/timeline/timeline-shopify-services":33,"../components/user-admin/users-controller":34,"../components/user-admin/users-directive":35,"../shared/controllers/controllers":36,"../shared/controllers/navbar-controller":37,"../shared/directives/directives":38,"../shared/services/app-services":40,"../shared/services/data-services":41,"b55mWE":4,"buffer":3,"underscore":7}],40:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 

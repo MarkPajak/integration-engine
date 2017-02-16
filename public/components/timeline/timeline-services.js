@@ -188,8 +188,9 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 	  
 	  unlock: function(unlock){
 		
-                          
+                      if(timeline){    
 								timeline.setOptions({'editable':unlock});
+								}
 			
 							
 		  	
@@ -309,9 +310,11 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 			},
 				selected_data:	 function (event) {
 			 var self=this
-			 //newly selected - get ID to update
-					console.log('get ID to update')
+			 	console.log('get ID to update')
 					selected_timeline_id=event.items[0]
+			 if(selected_timeline_id){
+			 //newly selected - get ID to update
+				
 			//fetch the timeline dataSetitem 
 					selected_item =	timeline.itemsData.getDataSet().get(selected_timeline_id)
 			//update the data entry form
@@ -325,9 +328,10 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 			}
 			$rootScope.selected_id=selected_item._id
 			$rootScope.selected_notes=selected_item.notes
+			console.log('startDate'+new Date(selected_item.start))
 			$rootScope.datePicker.date={startDate:new Date(selected_item.start),endDate:new Date (selected_item.end)}
 			
-
+}
             },
    get_events: function() {
       return $http.get('http://museums.bristol.gov.uk/sync/data/events.JSON');  //1. this returns promise

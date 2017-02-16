@@ -1,0 +1,30 @@
+<span   ng-show="isloggedin" style="" class=" checkboxList droppables panel-footer data_box iconbar">
+<div class="  panel-footer ">
+<h5>Selected Event</h5>
+
+		
+			<h4>{{$root.selected_type}}{{$root.selected_days}}</h4>
+	
+
+		<div class="form-group"><label>Name:</label>
+			<input type="text"  ng-data="{{selected_id}}" ng-model="$root.selected_item"></input>
+		</div>
+		<div class="form-group"><label>Dates:</label>
+			<input  date-range-picker options="dateRangeOptions" class="form-control date-picker"   type="text" ng-model="$root.datePicker.date" />
+		</div>
+		<div class="form-group"><label>Notes:</label>
+			<textarea type="text" lines="5" ng-data="{{selected_id}}" ng-model="$root.selected_notes"></textarea>
+		</div>
+	</div>
+</span >
+
+
+<div  ng-show="isloggedin" class="  iconbar   bg-color-green">
+
+		
+		<h5>{{total_install_derig}} days spent on installs/derigs</h5>
+		<h5>Average install length: {{average_install_length}} days</h5>
+		<h5>Average drig length: {{average_derig_length}} days</h5>
+	</div>
+	</div>
+</div>
