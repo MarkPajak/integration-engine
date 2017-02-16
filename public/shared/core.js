@@ -283,6 +283,12 @@ app.config(function config(formlyConfigProvider) {
 });
 
 
+app.config(['$locationProvider', function($locationProvider) {
+  $locationProvider.hashPrefix('');
+  //$locationProvider.html5Mode(true).hashPrefix('!');
+}]);
+
+
 app.config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
 }]);

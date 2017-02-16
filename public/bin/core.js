@@ -9283,11 +9283,17 @@ app.config(function config(formlyConfigProvider) {
 });
 
 
+app.config(['$locationProvider', function($locationProvider) {
+  $locationProvider.hashPrefix('');
+  //$locationProvider.html5Mode(true).hashPrefix('!');
+}]);
+
+
 app.config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
 }]);
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_1302624e.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_43aad758.js","/")
 },{"../components/machine-monitor/dashboard-controller":8,"../components/machine-monitor/dead-controller":9,"../components/machine-monitor/downtime-controller":10,"../components/machine-monitor/downtime-services":11,"../components/machine-monitor/feedback-controller":12,"../components/machine-monitor/feedback-services":13,"../components/machine-monitor/satisfaction-controller":14,"../components/member/member-controller":15,"../components/shopify/shopify-controller":16,"../components/shopify/shopify-directive":17,"../components/team/app-controllers":18,"../components/team/form-controller":19,"../components/team/leave-controller":20,"../components/team/team-controller":21,"../components/tech-support/tech-support-controller":22,"../components/tech-support/tech-support-directive":23,"../components/tech-support/trello-services":24,"../components/timeline-settings/timeline-settings-controller":25,"../components/timeline/timeline-controller":26,"../components/timeline/timeline-directive":27,"../components/timeline/timeline-googlesheets-services":28,"../components/timeline/timeline-learning-bookings-services":29,"../components/timeline/timeline-leave-services":30,"../components/timeline/timeline-loans-services":31,"../components/timeline/timeline-services":32,"../components/timeline/timeline-shopify-services":33,"../components/user-admin/users-controller":34,"../components/user-admin/users-directive":35,"../shared/controllers/controllers":36,"../shared/controllers/navbar-controller":37,"../shared/directives/directives":38,"../shared/services/app-services":40,"../shared/services/data-services":41,"b55mWE":4,"buffer":3,"underscore":7}],40:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 

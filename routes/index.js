@@ -17,8 +17,15 @@ module.exports = function(passport){
            // res.redirect('/login');
 		    return next();
     }
+	
 
-
+    /* GET login page. */
+    router.get('/login', function(req, res) {
+		
+         console.log('Display the Login page with any flash message, if asny')
+		 
+        res.render('login', { message: req.flash('message') });
+    });
     /* GET login page. */
     router.get('/login!/', function(req, res) {
 		
@@ -34,7 +41,9 @@ module.exports = function(passport){
     if (!user) { return res.redirect('/login'); }
     req.logIn(user, function(err) {
       if (err) { return next(err); }
-      return res.redirect('/#!/' + req.body.redirect);
+	 
+	 
+      return res.redirect( "/"+req.body.redirect);
     });
   })(req, res, next);
 });

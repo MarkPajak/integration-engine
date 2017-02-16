@@ -1,5 +1,5 @@
 <div ng-show="user.firstName" ng-controller="NavController"  class="navbar" role="navigation">
-Logged in as {{user.firstName}} Team: {{user.team}} <a class="btn btn-primary pull-right" href='/signout'  > Sign Out</a><a ng-hide="user.firstName" id="logihash" href='/login!'  >Log in</a>
+Logged in as {{user.firstName}} <p ng-show="user.team">Team: {{user.team}} </p><a class="btn btn-primary pull-right" href='/signout'  > Sign Out</a><a ng-hide="user.firstName" id="logihash" href='/login!'  >Log in</a>
 </div>
 <div  ng-hide="user.firstName" ng-controller="NavController"  class="navbar" role="navigation">
 	<form action="/login" method="post" >
@@ -7,13 +7,13 @@ Logged in as {{user.firstName}} Team: {{user.team}} <a class="btn btn-primary pu
 		<input type="password" name="password" placeholder="password">
 		<input type="hidden" id="hashval" name="redirect" value="">
 		<button class="btn" type="submit" >login </button>
-			<a href="signup" class="pull-right btn btn-primary">
+	<a href="signup" class="pull-right btn btn-primary">
     Sign up
 </a>
 	</form>
 
 </div>
-
+		
 
 
 <script>

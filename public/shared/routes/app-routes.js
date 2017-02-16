@@ -94,9 +94,8 @@
 				}
            })
 		   
-		     .when('/shopify_app', {
-               template: '<shopify-status></shopify-status>'
-           })
+		     .otherwise({redirectTo : 'timeline'    })
+		   
 		   
           
         }])

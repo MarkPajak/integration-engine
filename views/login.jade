@@ -1,18 +1,16 @@
 extends layout
-
 block content
-  .container
-    h1 Login
-    br    
-    form(role='form', action="/login",method="post", style='max-width: 300px;')
-      .form-group
-          input.form-control( type='text', name="username", placeholder='Enter Username')
-          input.form-control(id="hashval" type='hidden', name="redirect")
-      .form-group
-        input.form-control(type='password', name="password", placeholder='Password')
-      button.btn.btn-default(type='submit') Submit
-      &nbsp;
-      a(href='/')
-        button.btn.btn-primary(type="button") Cancel
-      script.
-        document.getElementById("hashval").value =location.hash.slice(1)
+	div.container
+		div.row
+			div.col-sm-6.col-md-4.col-md-offset-4
+					img(src= "images/culture_logo.JPG", style='max-width: 300px;')
+					div.signup-wall
+						form(class='form-signin', action='/login', method='POST')
+							input.form-control( type='text', name="username", placeholder='Enter Username')
+							input.form-control(id="hashval" type='hidden', name="redirect")
+							input.form-control(type='password', name="password", placeholder='Password')
+							button(class='btn btn-lg btn-primary btn-block', type='submit') Submit
+							span.clearfix
+					script.
+						document.getElementById("hashval").value =location.hash.slice(1)
+		

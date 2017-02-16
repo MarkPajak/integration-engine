@@ -1,0 +1,48 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/home/ec2-user/.nvm/versions/node/v4.4.5/bin/node',
+1 verbose cli   '/home/ec2-user/.nvm/versions/node/v4.4.5/bin/npm',
+1 verbose cli   'run',
+1 verbose cli   'go' ]
+2 info using npm@4.1.1
+3 info using node@v4.4.5
+4 verbose run-script [ 'prego', 'go', 'postgo' ]
+5 info lifecycle integration-engine@1.0.0~prego: integration-engine@1.0.0
+6 silly lifecycle integration-engine@1.0.0~prego: no script for prego, continuing
+7 info lifecycle integration-engine@1.0.0~go: integration-engine@1.0.0
+8 verbose lifecycle integration-engine@1.0.0~go: unsafe-perm in lifecycle true
+9 verbose lifecycle integration-engine@1.0.0~go: PATH: /home/ec2-user/.nvm/versions/node/v4.4.5/lib/node_modules/npm/bin/node-gyp-bin:/home/ec2-user/integration-engine/node_modules/.bin:/home/ec2-user/.nvm/versions/node/v4.4.5/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/aws/bin:/home/ec2-user/.local/bin:/home/ec2-user/bin
+10 verbose lifecycle integration-engine@1.0.0~go: CWD: /home/ec2-user/integration-engine
+11 silly lifecycle integration-engine@1.0.0~go: Args: [ '-c', 'gulp go' ]
+12 silly lifecycle integration-engine@1.0.0~go: Returned: code: 1  signal: null
+13 info lifecycle integration-engine@1.0.0~go: Failed to exec go script
+14 verbose stack Error: integration-engine@1.0.0 go: `gulp go`
+14 verbose stack Exit status 1
+14 verbose stack     at EventEmitter.<anonymous> (/home/ec2-user/.nvm/versions/node/v4.4.5/lib/node_modules/npm/lib/utils/lifecycle.js:279:16)
+14 verbose stack     at emitTwo (events.js:87:13)
+14 verbose stack     at EventEmitter.emit (events.js:172:7)
+14 verbose stack     at ChildProcess.<anonymous> (/home/ec2-user/.nvm/versions/node/v4.4.5/lib/node_modules/npm/lib/utils/spawn.js:40:14)
+14 verbose stack     at emitTwo (events.js:87:13)
+14 verbose stack     at ChildProcess.emit (events.js:172:7)
+14 verbose stack     at maybeClose (internal/child_process.js:827:16)
+14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:211:5)
+15 verbose pkgid integration-engine@1.0.0
+16 verbose cwd /home/ec2-user/integration-engine
+17 error Linux 4.4.35-33.55.amzn1.x86_64
+18 error argv "/home/ec2-user/.nvm/versions/node/v4.4.5/bin/node" "/home/ec2-user/.nvm/versions/node/v4.4.5/bin/npm" "run" "go"
+19 error node v4.4.5
+20 error npm  v4.1.1
+21 error code ELIFECYCLE
+22 error integration-engine@1.0.0 go: `gulp go`
+22 error Exit status 1
+23 error Failed at the integration-engine@1.0.0 go script 'gulp go'.
+23 error Make sure you have the latest version of node.js and npm installed.
+23 error If you do, this is most likely a problem with the integration-engine package,
+23 error not with npm itself.
+23 error Tell the author that this fails on your system:
+23 error     gulp go
+23 error You can get information on how to open an issue for this project with:
+23 error     npm bugs integration-engine
+23 error Or if that isn't available, you can get their info via:
+23 error     npm owner ls integration-engine
+23 error There is likely additional logging output above.
+24 verbose exit [ 1, true ]
