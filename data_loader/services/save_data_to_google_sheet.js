@@ -1,15 +1,15 @@
 var save_data_to_google_sheet = function (options){
 var self = this;
  
- 
- 
+ var async = require('async');
+  var moment = require('moment');
 var GoogleSpreadsheet = require('google-spreadsheet');
 var async = require('async');
 var _ = require('underscore');
   var doc = new GoogleSpreadsheet( options.google_sheet_id);
 
 var sheet;
-
+var sheet_name = options.title+"_"+moment(new Date()).format('DD_MM_YYYY')
 
 
 self.add_data_to_sheet = function(google_data){
@@ -21,31 +21,69 @@ async.series([
   
     doc.useServiceAccountAuth(creds, step);
   },
+   function getInfoAndWorksheets(step) {
+    doc.getInfo(function(err, info) {
+      console.log('Loaded doc: '+info.title+' by '+info.author.email);
+      sheet = info.worksheets[0];
+	  _.each(info.worksheets,function(sheet) {
+		if(sheet.title==sheet_name)  sheet.del( step()); //async 
+	  })
+     step()
+     
+    });
+  },
+  
+  function managingSheets(step) {
+    doc.addWorksheet({
+      title: sheet_name
+    }, function(err, sheet) {
+  sheet = sheet
+  //sheet =info.worksheets[i];
+	console.log('adding to sheet 1: '+sheet.title+' '+sheet.rowCount+'x'+sheet.colCount);
+      // change a sheet's title 
+     // sheet.setTitle('new title'); //async 
+ 
+      //resize a sheet 
+      //sheet.resize({rowCount: 50, colCount: 20}); //async 
+ 
+     // sheet.setHeaderRow(['name', 'age', 'phone']); //async 
+ 
+      // removing a worksheet 
+     // sheet.del(); //async 
+ 
+      step();
+    });
+  },
+
   function getInfoAndWorksheets(step) {
     doc.getInfo(function(err, info) {
       console.log('Loaded doc: '+info.title+' by '+info.author.email);
       
 	  	  
 	  _.each(info.worksheets, function(sheetx,i) {
-		  if(sheetx.title == options.title){
+		  if(sheetx.title == sheet_name){
 				sheet =info.worksheets[i];
 				console.log('adding to sheet 1: '+sheet.title+' '+sheet.rowCount+'x'+sheet.colCount);
 		  }
+		  
+		
 	  })
 
        step()
     });
 	
   },
-  
+
    function clear_sheet(step) {
     console.log('clear_sheet ')
-   sheet.clear( function(){setTimeout(function(){step() }, 250)})
+  // sheet.clear( function(){setTimeout(function(){step() }, 250)})
+  step()
    
    },
      function resize_sheet(step) {
 	 console.log('resize sheet')
-    sheet.resize([1000,30], function(){setTimeout(function(){step() }, 2000)})
+   // sheet.resize([1000,30], function(){setTimeout(function(){step() }, 2000)})
+   step() 
    },
      function setHeaderRow(step) {
 console.log('addig headsers')

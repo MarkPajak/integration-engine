@@ -6,32 +6,11 @@ var fs = require('fs');
 var Process_shopify_recent_product_analytics = require("../data_loader/shopify/last_n_days.js");
 var moment = require('moment');
 var fs = require('fs');
-var keys=JSON.parse(fs.readFileSync('./secret/api_keys.JSON').toString());
+var allkeys=JSON.parse(fs.readFileSync('./secret/api_keys.JSON').toString());
 
-var selected_set = 3
 
-var optionset = []
-	var options = []
-	options.google_sheet_id='1UlDQNS6dTvQWlQs090HRrSoR49k0Th-ElxCaxTMleA0'
-	options.created_at_min =  moment(new Date()).add(-7, 'days').format()
-	options.title = "last_7_days"
-	console.log('options.created_at_min',options.created_at_min)
-optionset.push(options)
-	var options = []
-	options.google_sheet_id='1UlDQNS6dTvQWlQs090HRrSoR49k0Th-ElxCaxTMleA0'
-	options.created_at_min =  moment(new Date()).add(-14, 'days').format()
-	options.title = "last_14_days"
-optionset.push(options)
-	var options = []
-	options.google_sheet_id='1UlDQNS6dTvQWlQs090HRrSoR49k0Th-ElxCaxTMleA0'
-	options.created_at_min =  moment(new Date()).add(-1, 'month').format()
-	options.title = "last_month"
-optionset.push(options)
-	var options = []
-	options.google_sheet_id='1UlDQNS6dTvQWlQs090HRrSoR49k0Th-ElxCaxTMleA0'
-	options.created_at_min =  moment(new Date()).add(-1, 'year').format()
-	options.title = "last_year"
-optionset.push(options)
+
+
 
 
 
@@ -67,8 +46,13 @@ function orders(res){
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	
+	console.log(req.query)
+	var shop = req.query.shop
+	var keys = allkeys[shop]
+	console.log('keys',keys)
+	req.query.google_sheet_id=keys.google_sheet_id
 	
- var process_shopify_recent_product_analytics = new Process_shopify_recent_product_analytics(keys,optionset[selected_set])
+ var process_shopify_recent_product_analytics = new Process_shopify_recent_product_analytics(keys,req.query)
    
 process_shopify_recent_product_analytics.go(function(data) {
 

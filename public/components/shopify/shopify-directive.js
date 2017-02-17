@@ -5,4 +5,13 @@
   }
 	}
 	
+	
+		exports.shopifyButtons = function() {
+  return {
+   controller: 'shopify_buttons',
+    templateUrl: './components/shopify/shopify-buttons.html'
+  }
+	}
+	
+	
 

@@ -7,8 +7,9 @@
  
 }
 </style>
+<shopify-buttons></shopify-buttons>
   <strong>Data Length:</strong> {{ gridOptions.data.length | number }}
   <script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>
-<div>
+<div ng-show="selected_set>=0">
   <div  ui-grid-resize-columns ui-grid-move-columns ui-grid-cellNav ui-grid-edit ui-grid-row-edit ui-grid="gridOptions" ui-grid-selection ui-grid-exporter class="grid"></div>
 </div>

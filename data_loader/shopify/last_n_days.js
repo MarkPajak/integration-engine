@@ -31,7 +31,11 @@ load_shopify_productsInstance.count_all_products( function(donex) {
 
 		transactions_data_to_google_sheet.get_data(function(analytics_data) {
 		cb(analytics_data)
-		//save_data_to_google_sheetInstance.add_data_to_sheet(analytics_data)
+		console.log('options.save_to_sheets',options.save_to_sheets)
+		if(options.save_to_sheets=='true'){
+		console.log('oadd_data_to_sheet')
+			save_data_to_google_sheetInstance.add_data_to_sheet(analytics_data)
+		}
 
 		})
 	});
