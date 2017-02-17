@@ -38,8 +38,12 @@
 <div   ng-show="isloggedin" ng-cloak="" class="buttondemoBasicUsage" >
   <md-content>
 
-<h2> Generate shopify report</h2>
-    <section layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
+<section ng-hide="report_running" layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
+	<label>Report in progress - please wait</label>
+
+   </section>
+    <section ng-show="report_running" layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
+	<h2> Generate shopify report</h2>
      <md-button ng-click="runShopify(0,'BMAG')" class="md-raised">BMAG last 7 days</md-button>
      <md-button ng-click="runShopify(1,'BMAG')" class="md-raised">BMAG last 14 days</md-button>
        <md-button ng-click="runShopify(0,'MSHED')" class="md-raised">M SHED last 7 days</md-button>

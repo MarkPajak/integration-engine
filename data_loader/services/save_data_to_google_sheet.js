@@ -7,13 +7,13 @@ var GoogleSpreadsheet = require('google-spreadsheet');
 var async = require('async');
 var _ = require('underscore');
   var doc = new GoogleSpreadsheet( options.google_sheet_id);
+ var duplicate = false
 
-var sheet;
 var sheet_name = options.title+"_"+moment(new Date()).format('DD_MM_YYYY')
 
 
 self.add_data_to_sheet = function(google_data){
-
+var selected_sheet;
 async.series([
   function setAuth(step) {
     // see notes below for authentication instructions!
@@ -24,66 +24,54 @@ async.series([
    function getInfoAndWorksheets(step) {
     doc.getInfo(function(err, info) {
       console.log('Loaded doc: '+info.title+' by '+info.author.email);
-      sheet = info.worksheets[0];
+     
+	   
 	  _.each(info.worksheets,function(sheet) {
-		if(sheet.title==sheet_name)  sheet.del( step()); //async 
+		if(sheet.title==sheet_name)  {
+		console.log('sheet exists')
+		 duplicate = true
+		 selected_sheet=sheet
+		 step();
+		}		//async 
 	  })
-     step()
+   	if(duplicate==false){
+         doc.addWorksheet({
+      title: sheet_name
+    }, function(err, sheet) {
+	console.log('sheet addWorksheet')
+  selected_sheet = sheet
+  //sheet =info.worksheets[i];
+	console.log('adding to sheet 1: '+sheet.title+' '+sheet.rowCount+'x'+sheet.colCount);
+      step();
+    });
+	   }  
      
     });
   },
   
-  function managingSheets(step) {
-    doc.addWorksheet({
-      title: sheet_name
-    }, function(err, sheet) {
-  sheet = sheet
-  //sheet =info.worksheets[i];
-	console.log('adding to sheet 1: '+sheet.title+' '+sheet.rowCount+'x'+sheet.colCount);
-      // change a sheet's title 
-     // sheet.setTitle('new title'); //async 
- 
-      //resize a sheet 
-      //sheet.resize({rowCount: 50, colCount: 20}); //async 
- 
-     // sheet.setHeaderRow(['name', 'age', 'phone']); //async 
- 
-      // removing a worksheet 
-     // sheet.del(); //async 
- 
-      step();
-    });
-  },
 
-  function getInfoAndWorksheets(step) {
-    doc.getInfo(function(err, info) {
-      console.log('Loaded doc: '+info.title+' by '+info.author.email);
-      
-	  	  
-	  _.each(info.worksheets, function(sheetx,i) {
-		  if(sheetx.title == sheet_name){
-				sheet =info.worksheets[i];
-				console.log('adding to sheet 1: '+sheet.title+' '+sheet.rowCount+'x'+sheet.colCount);
-		  }
-		  
-		
-	  })
-
-       step()
-    });
-	
-  },
 
    function clear_sheet(step) {
-    console.log('clear_sheet ')
-  // sheet.clear( function(){setTimeout(function(){step() }, 250)})
-  step()
+   if(duplicate==true){
+			console.log('clear_sheet ')
+		 selected_sheet.clear( function(){setTimeout(function(){step() }, 2000)})
+	}
+	else
+	{
+		step() 
+	}
+
    
    },
      function resize_sheet(step) {
 	 console.log('resize sheet')
-   // sheet.resize([1000,30], function(){setTimeout(function(){step() }, 2000)})
-   step() 
+	  if(duplicate==true){
+			console.log('clear_sheet ')
+   selected_sheet.resize([1000,30], function(){setTimeout(function(){step() }, 2000)})
+		} else
+		 {
+	step() 
+	}
    },
      function setHeaderRow(step) {
 console.log('addig headsers')
@@ -99,7 +87,7 @@ console.log('addig headsers')
 		  headers.push("vendor")
 		 headers.push("date_report_run")
 		
-		sheet.setHeaderRow(headers, function(){setTimeout(function(){step() }, 2000)})
+		selected_sheet.setHeaderRow(headers, function(){setTimeout(function(){step() }, 2000)})
    },
  
   function workingWithRows(step) {
@@ -111,7 +99,7 @@ console.log('addig headsers')
 				
 				if(i<=google_data.length){
 					if(	google_data[i]){			
-						sheet.addRow(google_data[i])
+						selected_sheet.addRow(google_data[i])
 					setTimeout(function(){iterate() }, 1000);
 					i++
 					}

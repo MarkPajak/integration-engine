@@ -18,10 +18,10 @@ var dbConfig = require('../../db');
 
 
 
-self.get_data = function(cb){
+self.get_data = function(keys,cb){
 
 	 console.log('Shopify_product.find()')
-	 Shopify_product.find()
+	 Shopify_product.find({shop_id:keys.shopify_store})
 	     .sort({'count': 'desc'})
          .exec(function(err, product_list) { 
 			if(err) console.log(err)	

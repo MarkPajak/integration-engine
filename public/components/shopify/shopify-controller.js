@@ -6,8 +6,13 @@ exports.shopify_controller = function($scope, AuthService,$http, $q, $routeParam
 			//$scope.lockstatus=true
 			//$scope.unlock=true
 			//timeline_functions.unlock(true)
+			$scope.report_running=true
 	  })
 	console.log('controller go')
+	
+	
+	
+	
 		$scope.gridOptions=[]
 		$scope.gridOptions.data=[]
 		$scope.gridOptions.columnDefs = [   ]
@@ -92,13 +97,16 @@ $scope.save_to_sheets=true
 
 
 $scope.runShopify = function(selected_set,shop){
+
+$scope._rows=[]
+$scope.report_running=false
 $scope.selected_set=selected_set
 	optionset[selected_set].save_to_sheets=$scope.save_to_sheets
 	optionset[selected_set].shop=shop
 	console.log(optionset[selected_set])
 		 console.log('getData')	
 		 shopify_app.getData(optionset[selected_set],function(team){
-				$scope.rows=[]
+				
 				$scope._rows=[]
 				_.each(team,function(row){
 					console.log(row)
@@ -107,9 +115,10 @@ $scope.selected_set=selected_set
 					
 							
 				})
-			
-			$scope.gridOptions.data=$scope._rows;
+			$scope.rows=$scope._rows
+			$scope.gridOptions.data=$scope.rows;
 			$(window).resize()
+			$scope.report_running=true
 		})	
 }
 }				
@@ -118,7 +127,7 @@ $scope.selected_set=selected_set
 
 exports.shopify_buttons = function($scope, $http, $q, $routeParams, $location,$rootScope, shopify_app
     ) {
-
+$scope.report_running=true
   $scope.title1 = 'Button';
   $scope.title4 = 'Warn';
   $scope.isDisabled = true;

@@ -24,7 +24,6 @@ function product_type_from_id(res,product_id,order_date){
 function orders(res){
 	
 			var return_product_type = ""
-
 			url = url_base+"orders.json?&fields=created_at,id,name,total-price,line_items"
 			request({
 				url: url,

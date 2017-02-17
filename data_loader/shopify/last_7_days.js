@@ -26,7 +26,7 @@ load_shopify_productsInstance.count_all_products( function(donex) {
 	console.log('count_all_orders callback')
 		
 
-		transactions_data_to_google_sheet.get_data(function(analytics_data) {
+		transactions_data_to_google_sheet.get_data(keys,function(analytics_data) {
 		console.log('analytics_data callback')
 			save_data_to_google_sheetInstance.add_data_to_sheet(analytics_data)
 
