@@ -44,13 +44,17 @@
    </section>
     <section ng-show="report_running" layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
 	<h2> Generate shopify report</h2>
-     <md-button ng-click="runShopify(0,'BMAG')" class="md-raised">BMAG last 7 days</md-button>
-     <md-button ng-click="runShopify(1,'BMAG')" class="md-raised">BMAG last 14 days</md-button>
-       <md-button ng-click="runShopify(0,'MSHED')" class="md-raised">M SHED last 7 days</md-button>
-     <md-button ng-click="runShopify(1,'MSHED')" class="md-raised">M SHED last 14 days</md-button>
-     <label class=" switch checkbox checkbox-inline">
+     <md-button ng-click="runShopify(0,'BMAG')" class="md-raised">BMAG last {{data_number}} days</md-button>
+     <md-button ng-click="runShopify(0,'MSHED')" class="md-raised">M SHED last {{data_number}} days</md-button>
+     	<input checked type="number" id="number"  ng-model="data_number" value="7">
+	 <label class=" switch checkbox checkbox-inline">
 		<div class="settings_locklabel" >save to Google sheets</div>
 		<input checked type="checkbox" id="stack"  ng-model="save_to_sheets" value="">
+		<div class="slider round"></div>
+	</label>
+		 <label class=" switch checkbox checkbox-inline">
+		<div class="settings_locklabel" >update product types</div>
+		<input checked type="checkbox" id="update_product_types"  ng-model="update_product_types" value="">
 		<div class="slider round"></div>
 	</label>
    </section>

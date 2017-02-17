@@ -5000,9 +5000,9 @@ exports.shopify_controller = function($scope, AuthService,$http, $q, $routeParam
 	  })
 	console.log('controller go')
 	
+	$scope.data_number=7
 	
-	
-	
+	$scope.update_product_types=false
 		$scope.gridOptions=[]
 		$scope.gridOptions.data=[]
 		$scope.gridOptions.columnDefs = [   ]
@@ -5061,41 +5061,38 @@ exports.shopify_controller = function($scope, AuthService,$http, $q, $routeParam
 			}
 		};
 	
-		var optionset = []
+var options = []
+$scope.optionset = []
+	options.google_sheet_id='1UlDQNS6dTvQWlQs090HRrSoR49k0Th-ElxCaxTMleA0'
+	options.created_at_min =  moment(new Date()).add(-$scope.data_number, 'days').format()
+	options.title = "last_"+$scope.data_number+"_days"
+$scope.optionset.push(options)	
+
+	
+$scope.save_to_sheets=false
+
+$scope.$watch('data_number', function(data_number) {
+	
+$scope.optionset = []
 	var options = []
 	options.google_sheet_id='1UlDQNS6dTvQWlQs090HRrSoR49k0Th-ElxCaxTMleA0'
-	options.created_at_min =  moment(new Date()).add(-7, 'days').format()
-	options.title = "last_7_days"
+	options.created_at_min =  moment(new Date()).add(-data_number, 'days').format()
+	options.title = "last_"+data_number+"_days"
 	console.log('options.created_at_min',options.created_at_min)
-optionset.push(options)
-	var options = []
-	options.google_sheet_id='1UlDQNS6dTvQWlQs090HRrSoR49k0Th-ElxCaxTMleA0'
-	options.created_at_min =  moment(new Date()).add(-14, 'days').format()
-	options.title = "last_14_days"
-optionset.push(options)
-	var options = []
-	options.google_sheet_id='1UlDQNS6dTvQWlQs090HRrSoR49k0Th-ElxCaxTMleA0'
-	options.created_at_min =  moment(new Date()).add(-1, 'month').format()
-	options.title = "last_month"
-optionset.push(options)
-	var options = []
-	options.google_sheet_id='1UlDQNS6dTvQWlQs090HRrSoR49k0Th-ElxCaxTMleA0'
-	options.created_at_min =  moment(new Date()).add(-1, 'year').format()
-	options.title = "last_year"
-optionset.push(options)
-$scope.save_to_sheets=true
+$scope.optionset.push(options)
 
-
+})
 $scope.runShopify = function(selected_set,shop){
 
 $scope._rows=[]
 $scope.report_running=false
 $scope.selected_set=selected_set
-	optionset[selected_set].save_to_sheets=$scope.save_to_sheets
-	optionset[selected_set].shop=shop
-	console.log(optionset[selected_set])
-		 console.log('getData')	
-		 shopify_app.getData(optionset[selected_set],function(team){
+$scope.optionset[selected_set].save_to_sheets=$scope.save_to_sheets
+$scope.optionset[selected_set].update_product_types=$scope.update_product_types
+$scope.optionset[selected_set].shop=shop
+console.log($scope.optionset[selected_set])
+		
+		 shopify_app.getData($scope.optionset[selected_set],function(team){
 				
 				$scope._rows=[]
 				_.each(team,function(row){
@@ -6555,6 +6552,8 @@ $rootScope.addednames=[]
 $rootScope.track_groups=[]
 $rootScope.added_track_groups=[]
 $rootScope.datePicker=[];
+
+
 
 $rootScope.datePicker.date = {startDate:null, endDate: null};
 	  $scope.isloggedin=false	
@@ -9355,7 +9354,7 @@ app.config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
 }]);
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_1185887b.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_f6aa2c4d.js","/")
 },{"../components/machine-monitor/dashboard-controller":8,"../components/machine-monitor/dead-controller":9,"../components/machine-monitor/downtime-controller":10,"../components/machine-monitor/downtime-services":11,"../components/machine-monitor/feedback-controller":12,"../components/machine-monitor/feedback-services":13,"../components/machine-monitor/satisfaction-controller":14,"../components/member/member-controller":15,"../components/shopify/shopify-controller":16,"../components/shopify/shopify-directive":17,"../components/team/app-controllers":18,"../components/team/form-controller":19,"../components/team/leave-controller":20,"../components/team/team-controller":21,"../components/tech-support/tech-support-controller":22,"../components/tech-support/tech-support-directive":23,"../components/tech-support/trello-services":24,"../components/timeline-settings/timeline-settings-controller":25,"../components/timeline/timeline-controller":26,"../components/timeline/timeline-directive":27,"../components/timeline/timeline-googlesheets-services":28,"../components/timeline/timeline-learning-bookings-services":29,"../components/timeline/timeline-leave-services":30,"../components/timeline/timeline-loans-services":31,"../components/timeline/timeline-services":32,"../components/timeline/timeline-shopify-services":33,"../components/user-admin/users-controller":34,"../components/user-admin/users-directive":35,"../shared/controllers/controllers":36,"../shared/controllers/navbar-controller":37,"../shared/directives/directives":38,"../shared/services/app-services":40,"../shared/services/data-services":41,"b55mWE":4,"buffer":3,"underscore":7}],40:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 

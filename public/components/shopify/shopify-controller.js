@@ -10,9 +10,9 @@ exports.shopify_controller = function($scope, AuthService,$http, $q, $routeParam
 	  })
 	console.log('controller go')
 	
+	$scope.data_number=7
 	
-	
-	
+	$scope.update_product_types=false
 		$scope.gridOptions=[]
 		$scope.gridOptions.data=[]
 		$scope.gridOptions.columnDefs = [   ]
@@ -71,41 +71,38 @@ exports.shopify_controller = function($scope, AuthService,$http, $q, $routeParam
 			}
 		};
 	
-		var optionset = []
+var options = []
+$scope.optionset = []
+	options.google_sheet_id='1UlDQNS6dTvQWlQs090HRrSoR49k0Th-ElxCaxTMleA0'
+	options.created_at_min =  moment(new Date()).add(-$scope.data_number, 'days').format()
+	options.title = "last_"+$scope.data_number+"_days"
+$scope.optionset.push(options)	
+
+	
+$scope.save_to_sheets=false
+
+$scope.$watch('data_number', function(data_number) {
+	
+$scope.optionset = []
 	var options = []
 	options.google_sheet_id='1UlDQNS6dTvQWlQs090HRrSoR49k0Th-ElxCaxTMleA0'
-	options.created_at_min =  moment(new Date()).add(-7, 'days').format()
-	options.title = "last_7_days"
+	options.created_at_min =  moment(new Date()).add(-data_number, 'days').format()
+	options.title = "last_"+data_number+"_days"
 	console.log('options.created_at_min',options.created_at_min)
-optionset.push(options)
-	var options = []
-	options.google_sheet_id='1UlDQNS6dTvQWlQs090HRrSoR49k0Th-ElxCaxTMleA0'
-	options.created_at_min =  moment(new Date()).add(-14, 'days').format()
-	options.title = "last_14_days"
-optionset.push(options)
-	var options = []
-	options.google_sheet_id='1UlDQNS6dTvQWlQs090HRrSoR49k0Th-ElxCaxTMleA0'
-	options.created_at_min =  moment(new Date()).add(-1, 'month').format()
-	options.title = "last_month"
-optionset.push(options)
-	var options = []
-	options.google_sheet_id='1UlDQNS6dTvQWlQs090HRrSoR49k0Th-ElxCaxTMleA0'
-	options.created_at_min =  moment(new Date()).add(-1, 'year').format()
-	options.title = "last_year"
-optionset.push(options)
-$scope.save_to_sheets=true
+$scope.optionset.push(options)
 
-
+})
 $scope.runShopify = function(selected_set,shop){
 
 $scope._rows=[]
 $scope.report_running=false
 $scope.selected_set=selected_set
-	optionset[selected_set].save_to_sheets=$scope.save_to_sheets
-	optionset[selected_set].shop=shop
-	console.log(optionset[selected_set])
-		 console.log('getData')	
-		 shopify_app.getData(optionset[selected_set],function(team){
+$scope.optionset[selected_set].save_to_sheets=$scope.save_to_sheets
+$scope.optionset[selected_set].update_product_types=$scope.update_product_types
+$scope.optionset[selected_set].shop=shop
+console.log($scope.optionset[selected_set])
+		
+		 shopify_app.getData($scope.optionset[selected_set],function(team){
 				
 				$scope._rows=[]
 				_.each(team,function(row){

@@ -9,6 +9,8 @@ var Shopify_transaction = new mongoose.Schema({
 		vendor:{ type: String },	
 		sku:{ type: String },	
 		quantity:{ type: Number },
+		barcode: { type: String},
+		metafield: { type: Object},
 		product_id: { type: String, required: true },	
 		title: { type: String, required: true },		 		  
 		price:{ type: Number }

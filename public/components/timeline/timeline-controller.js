@@ -15,6 +15,8 @@ $rootScope.track_groups=[]
 $rootScope.added_track_groups=[]
 $rootScope.datePicker=[];
 
+
+
 $rootScope.datePicker.date = {startDate:null, endDate: null};
 	  $scope.isloggedin=false	
 	  AuthService.isLoggedIn().then(function(user){

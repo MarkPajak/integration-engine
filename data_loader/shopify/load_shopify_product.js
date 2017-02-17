@@ -1,5 +1,5 @@
 //gets list of all products from shopify and adds them to database
-var load_shopify_product = function (keys){
+var load_shopify_product = function (keys,options){
 // NB variant=post.variants[0] assumption that multipekl variants not importent
 var async = require('async')
 var express = require('express');
@@ -79,14 +79,16 @@ function products(total_orders,cb){
 						variant=post.variants[0]
 						//console.log(' \n post.title.. '+ post.title)	
 						if(	post.product_type=="")post.product_type="unassigned"
-						//console.log(post.vendor)
+						
 						var shopify_products = new Shopify_products({
 							  _id: post.id,							 
 							  product_type:  post.product_type ,	
 							  title:  post.title,
 							  sku: variant.sku,
+							  barcode: variant.barcode,
+							  metafield:post.metafield,
 							  vendor:post.vendor,
-							    shop_id:shop_id,
+							  shop_id:shop_id,
 							  inventory_quantity:  variant.inventory_quantity,
 							  price:  variant.price
 						});	
@@ -119,6 +121,12 @@ getNextset()
 
 self.count_all_products = function(cb2){
 
+if(options.update_product_types=='false'){
+console.log('count_all_products',options.update_product_types)
+cb2()
+}
+else
+{
 
 			total_order_count = 0
 
@@ -134,7 +142,7 @@ self.count_all_products = function(cb2){
 
 }
 
-
+}
 
 }
 

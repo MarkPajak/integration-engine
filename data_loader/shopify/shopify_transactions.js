@@ -39,6 +39,10 @@ var shopifyorders = []
 
 function products(total_orders,cb){
 
+
+
+
+
 	console.log('loading orders and product info')
 
 	var orders_in_total = total_orders.length
@@ -67,6 +71,8 @@ console.log('looking for '+product_id)
 							product_type: post.product_type,
 							product_id: post.id,
 							sku: post.sku,
+							metafield:post.metafield,
+							barcode: post.barcode,
 							vendor:post.vendor,
 							title: post.title,
 							price:post.price,
@@ -180,6 +186,15 @@ getNextset()
 
 self.count_all_orders = function(cb){
 
+
+if(options.update_product_types==true){
+console.log('not aupdating products')
+cb()
+}
+else
+{
+console.log('updating products')
+
 			total_order_count = 0
 			console.log('querying created_at_min'+created_at_min)
 			url = url_base+"orders/count.json?created_at_min="+created_at_min+"&status=any"
@@ -193,7 +208,7 @@ self.count_all_orders = function(cb){
 					 orders(body.count,cb)
 				}
 			})	
-
+}
 }
 
 

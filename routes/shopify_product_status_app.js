@@ -8,13 +8,6 @@ var moment = require('moment');
 var fs = require('fs');
 var allkeys=JSON.parse(fs.readFileSync('./secret/api_keys.JSON').toString());
 
-
-
-
-
-
-
- 
  
 function product_type_from_id(res,product_id,order_date){
 	
@@ -32,9 +25,11 @@ function orders(res){
 				if (!error && response.statusCode === 200) {		
 					_.each(body.orders, function(order) {
 						var order_date = order.created_at
+						/*
 						_.each(order.line_items, function(item) {
 							product_type_from_id(res,item.product_id,order_date)
 						});
+						*/
 					});
 					return return_product_type
 				}

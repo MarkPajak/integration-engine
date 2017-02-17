@@ -14,7 +14,7 @@ var save_data_to_google_sheet = require("../services/save_data_to_google_sheet.j
 
 
 
-var load_shopify_productsInstance = new load_shopify_products(keys)
+var load_shopify_productsInstance = new load_shopify_products(keys,options)
 var shopify_transactionInstance = new shopify_transaction(keys,options)
 var transactions_data_to_google_sheet = new transactions_data_to_google_sheet(options)
 var save_data_to_google_sheetInstance = new save_data_to_google_sheet(options);  

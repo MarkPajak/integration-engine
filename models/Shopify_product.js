@@ -7,6 +7,8 @@ var Shopify_product = new mongoose.Schema({
 			shop_id: { type: String, required: true},				  
 			product_type: { type: String },	
 			sku: { type: String},
+			barcode: { type: String},
+			metafield:{ type: Object},
 			vendor: { type: String, required: true},
 			title: { type: String, required: true },	
 			inventory_quantity: { type: Number},
