@@ -2,6 +2,9 @@ doctype html
 html(ng-app='app')
 	head
 		title=title
+		link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css')
+		script(src='//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js')
+		script(src='//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js')
 		link(rel='stylesheet', href='/stylesheets/style.css')
 		link(rel='stylesheet', href='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
 		link(rel='stylesheet', href='/css/login.css')
@@ -70,5 +73,27 @@ html(ng-app='app')
 		
 		script(src='scripts/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js')
 		script(src='bin/core.js')
-	body
-		block content
+		body
+			.navbar.navbar-inverse.navbar-static-top(role='navigation')
+				.container
+					.navbar-header
+						button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+							span.sr-only Toggle navigation
+							span.icon-bar
+							span.icon-bar
+							span.icon-bar
+						
+						img(src= "images/culture_logo.JPG", style='max-height: 50px;')
+					.collapse.navbar-collapse
+							user-menu
+			.container
+				if messages.error
+					.alert.alert-danger
+						div= messages.error
+					if messages.info
+					.alert.alert-info
+						div= messages.info
+					if messages.success
+					.alert.alert-success
+						div= messages.success
+			block content

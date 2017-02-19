@@ -3,7 +3,7 @@ block content
 	div.container
 		div.row
 			div.col-sm-6.col-md-4.col-md-offset-4
-					img(src= "images/culture_logo.JPG", style='max-width: 300px;')
+					
 					div.signup-wall
 						form(class='form-signin', action='/login', method='POST')
 							input.form-control( type='text', name="username", placeholder='Enter Username')
@@ -11,6 +11,7 @@ block content
 							input.form-control(type='password', name="password", placeholder='Password')
 							button(class='btn btn-lg btn-primary btn-block', type='submit') Submit
 							span.clearfix
+								a.btn.btn-link(href='/forgot') Forgot Password?
 					script.
 						document.getElementById("hashval").value =location.hash.slice(1)
 		

@@ -4,9 +4,13 @@ var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var flash = require('express-flash');
 var dbConfig = require('./db');
 var mongoose = require('mongoose');
+var nodemailer = require('nodemailer');
+var bcrypt = require('bcrypt-nodejs');
+var async = require('async');
+
 // Connect to DB
 mongoose.connect(dbConfig.url);
 
@@ -48,7 +52,8 @@ app.use(passport.session());
 
  // Using the flash middleware provided by connect-flash to store messages in session
  // and displaying in templates
-var flash = require('connect-flash');
+//var flash = require('connect-flash');
+var flash = require('express-flash');
 app.use(flash());
 
 // Initialize Passport

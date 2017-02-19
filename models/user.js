@@ -3,23 +3,29 @@ var mongoose = require('mongoose');
 var moment = require('moment');
 var Schema = mongoose.Schema;
 
+var views = {"timeline":true}
+
  var user = new Schema({
-	id: String,
-	username: String,
-	password: String,
-	email: String,
-	firstName: String,
-	lastName: String,
-	 team: String,
-  job: String,
-  trello_doing_id:String,
-  score:Number,
-  bonus:Number,
-  penalty:Number,
-  leave_start:Date,
-  number_days_leave:Number,
-  number_days_leave_remaining:Number,
-  leave_taken : [{ type: Schema.Types.ObjectId, ref: 'Leave' }],
+		id: String,
+		username: String,
+		password: String,
+		email: String,
+		firstName: String,
+		lastName: String,
+		group:  { type: String, default: 'DEFAULT'} ,
+		team: String,
+		permissions:{ type: Object, default: views},
+		job: String,
+		trello_doing_id:String,
+		score:Number,
+		bonus:Number,
+		penalty:Number,
+		leave_start:Date,
+		number_days_leave:Number,
+		number_days_leave_remaining:Number,
+		leave_taken : [{ type: Schema.Types.ObjectId, ref: 'Leave' }],
+		resetPasswordToken: { type: String, default: 'cheese'} ,
+		resetPasswordExpires:{ type:  Date }
 });
 
 

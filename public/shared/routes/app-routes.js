@@ -84,6 +84,10 @@
 		     .when('/shopify_app', {
                template: '<shopify-status></shopify-status>'
            })
+		   
+		      .when('/doom', {
+               template: '<i-frame></i-frame>'
+           })
 		      .when('/tech-support:token', {
               templateUrl: '../components/tech-support/tech-support-page.html',
               controller: 'tech_support_controller'

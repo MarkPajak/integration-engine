@@ -1,26 +1,37 @@
-exports.users_controller = function($scope, $http, $q, $routeParams, $location,$rootScope, Team
+exports.users_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Team
     ) {
+		
+		
+		
+		
 	console.log('controller go')
+	console.log($route.routes)
 		$scope.gridOptions=[]
 		$scope.gridOptions.data=[]
-		$scope.gridOptions.columnDefs = [   ]
-		$scope.gridOptions = {
-			columnDefs: [
+		var columnDefs= []
+		
+
+	
+
+
+		 columnDefs.push(
 			{ field: 'username' ,resizable: true},
 			{ field: 'password' ,resizable: true},
 			{ field: 'email' ,resizable: true},
 			{ field: 'firstName' ,resizable: true},
 			{ field: 'lastName' ,resizable: true},
 			{ field: 'team' ,resizable: true},
+			{ field: 'group' ,resizable: true},
 			{ field: 'trello_doing_id' ,resizable: true},
 			{ field: 'score' ,resizable: true},
 			{ field: 'bonus' ,resizable: true},
 			{ field: 'leave_start' ,resizable: true},
 			{ field: 'leave_taken' ,resizable: true},
 			{ field: 'number_days_leave' ,resizable: true}
-			],
+			)
 			
-  
+			$scope.gridOptions = {
+			columnDefs:columnDefs,
 			enableGridMenu: true,
 			enableSelectAll: true,
 			enableCellSelection: true,
@@ -55,30 +66,27 @@ exports.users_controller = function($scope, $http, $q, $routeParams, $location,$
 			exporterPdfPageSize: 'LETTER',
 			exporterPdfMaxGridWidth: 500,
 			exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location")),
-			onRegisterApi: function(gridApi){
-			$scope.gridApi = gridApi;
-			gridApi.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
+	    onRegisterApi: function(gridApi){
+      $scope.gridApi = gridApi;
+	    gridApi.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
+    //Do your REST call here via $http.get or $http.post
 
-
-var key = colDef.field;
-var obj = {};
-obj[key] = newValue;
-
-
-
-var query = {'id':rowEntity._id};
-
-		
-			
+			var myArray = []
+			var key = colDef.field;
+			var obj = {};
+			obj[key] = newValue;
+			myArray.push(obj);
 				var query = {'id':rowEntity._id};
-			Team.update(query, 
-			obj
-					, function(err, affected, resp) {
-					console.log(resp)
-			})
-			
-			});
-			}
+						Team.update(query, 	obj
+								
+								, function(err, affected, resp) {
+
+
+								
+								
+						})
+			  });
+				},
 		};
 
 		 console.log('getData')	

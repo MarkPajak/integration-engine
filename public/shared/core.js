@@ -31,12 +31,15 @@ var timeline_controllers = require('../components/timeline/timeline-controller')
 var shopify_controllers = require('../components/shopify/shopify-controller');
 var timeline_settings_controller = require('../components/timeline-settings/timeline-settings-controller');
 var users_controller = require('../components/user-admin/users-controller');
+var iframe_controller = require('../components/iframe/iframe-controller');
+
 
 var directives = require('../shared/directives/directives');
 var tech_support_directives = require('../components/tech-support/tech-support-directive');
 var users_directives = require('../components/user-admin/users-directive');
 var timeline_directives = require('../components/timeline/timeline-directive');
 var shopify_directives = require('../components/shopify/shopify-directive');
+var iframe_directives = require('../components/iframe/iframe-directive');
 
 var data_services = require('../shared/services/data-services');
 var app_services = require('../shared/services/app-services');
@@ -135,6 +138,10 @@ _.each(users_controller, function(controller, name) {
   app.controller(name, controller);
 });
 
+_.each(iframe_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
 
 _.each(form_controllers, function(controller, name) {
   app.controller(name, controller);
@@ -178,6 +185,10 @@ _.each(timeline_settings_controller, function(controller, name) {
 });
 
  _.each(shopify_directives, function(directive, name) {
+  app.directive(name, directive);
+});
+
+ _.each(iframe_directives, function(directive, name) {
   app.directive(name, directive);
 });
 

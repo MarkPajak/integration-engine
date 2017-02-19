@@ -1,21 +1,13 @@
-<div ng-show="user.firstName" ng-controller="NavController"  class="navbar" role="navigation">
-Logged in as {{user.firstName}} <p ng-show="user.team">Team: {{user.team}} </p><a class="btn btn-primary pull-right" href='/signout'  > Sign Out</a><a ng-hide="user.firstName" id="logihash" href='/login!'  >Log in</a>
-</div>
-<div  ng-hide="user.firstName" ng-controller="NavController"  class="navbar" role="navigation">
-	<form action="/login" method="post" >
-		<input type="text" name="username" placeholder="enter username">
-		<input type="password" name="password" placeholder="password">
-		<input type="hidden" id="hashval" name="redirect" value="">
-		<button class="btn" type="submit" >login </button>
-	<a href="signup" class="pull-right btn btn-primary">
-    Sign up
-</a>
-	</form>
 
-</div>
-		
-
-
+<ul class="nav navbar-nav">
+	<li ng-show="user.firstName" ng-controller="NavController"   role="navigation">
+	Logged in as {{user.firstName}} <p ng-show="user.team">Team: {{user.team}} </p></li>
+	 <li><a ng-hide="user.firstName" id="logihash" href='/login!'  >Log in</a></li>	
+	<input type="hidden" id="hashval" name="redirect" value="">
+  	<li   ng-repeat="view in user.views"  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+	<li  ng-hide="user.firstName"><a href="/signup">Signup</a></li>
+    <li ng-show="user.firstName" class="pull-right" ><a  href='/signout'  > Sign Out</a></li>
+</ul>
 <script>
         document.getElementById("hashval").value =location.hash.slice(0).replace("#!/","")
 </script>

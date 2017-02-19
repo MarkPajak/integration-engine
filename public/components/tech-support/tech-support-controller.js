@@ -117,13 +117,14 @@ exports.tech_support_controller = function($scope, $http, $q, $routeParams, $loc
 	    gridApi.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
     //Do your REST call here via $http.get or $http.post
 
-	var myArray = []
-var key = "happyCount";
-var obj = {};
-obj[key] = newValue;
-myArray.push(obj);
+		var myArray = []
+			var key = colDef.field;
+			var obj = {};
+			obj[key] = newValue;
+			myArray.push(obj);
+				var query = {'id':rowEntity._id};
 	var query = {'id':rowEntity._id};
-			Tech_support.update(query, 	myArray
+			Tech_support.update(query, 	obj
 					
 					, function(err, affected, resp) {
 
