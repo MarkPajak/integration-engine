@@ -188,9 +188,9 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 	  
 	  unlock: function(unlock){
 		
-                      if(timeline){    
+                        
 								timeline.setOptions({'editable':unlock});
-								}
+								
 			
 							
 		  	

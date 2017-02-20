@@ -11035,7 +11035,7 @@ $rootScope.datePicker.date = {startDate:null, endDate: null};
 	  })
 	
 
-	
+
 	
 $scope.dateRangeOptions = {
         locale : {
@@ -12824,9 +12824,9 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 	  
 	  unlock: function(unlock){
 		
-                      if(timeline){    
+                        
 								timeline.setOptions({'editable':unlock});
-								}
+								
 			
 							
 		  	
@@ -13912,7 +13912,7 @@ app.config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
 }]);
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_821d30d7.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_23f924ff.js","/")
 },{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/shopify/shopify-controller":18,"../components/shopify/shopify-directive":19,"../components/team/app-controllers":20,"../components/team/form-controller":21,"../components/team/leave-controller":22,"../components/team/team-controller":23,"../components/tech-support/tech-support-controller":24,"../components/tech-support/tech-support-directive":25,"../components/tech-support/trello-services":26,"../components/timeline-settings/timeline-settings-controller":27,"../components/timeline/timeline-controller":28,"../components/timeline/timeline-directive":29,"../components/timeline/timeline-googlesheets-services":30,"../components/timeline/timeline-learning-bookings-services":31,"../components/timeline/timeline-leave-services":32,"../components/timeline/timeline-loans-services":33,"../components/timeline/timeline-services":34,"../components/timeline/timeline-shopify-services":35,"../components/user-admin/users-controller":36,"../components/user-admin/users-directive":37,"../shared/controllers/controllers":38,"../shared/controllers/navbar-controller":39,"../shared/directives/directives":40,"../shared/services/app-services":42,"../shared/services/data-services":43,"b55mWE":4,"buffer":3,"underscore":7}],42:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 

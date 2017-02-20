@@ -1,3 +1,4 @@
+
 <style>
 
 md-menu-item{
@@ -78,7 +79,7 @@ SVG Icons - svgicons.sparkk.fr
          <md-icon md-svg-icon="social:notifications-{{ctrl.notificationsEnabled ? 'off' : 'on'}}"></md-icon>
          <label class=" switch checkbox checkbox-inline">
 		<div class="settings_locklabel" >unlocked</div>
-		<input checked type="checkbox" id="unlocked"  ng-model="locked.add_item" value="">
+		<input checked type="checkbox" id="unlocked"  onclick="timeline.setOptions({'editable':true});" ng-model="locked.add_item" value="">
 		<div class="slider round"></div>
 		</label>
           </md-button>

@@ -27,7 +27,7 @@ $rootScope.datePicker.date = {startDate:null, endDate: null};
 	  })
 	
 
-	
+
 	
 $scope.dateRangeOptions = {
         locale : {
