@@ -1,4 +1,4 @@
-exports.shopify_controller = function($scope, AuthService,$http, $q, $routeParams, $location,$rootScope, shopify_app
+exports.shopify_controller = function(log_messages,$scope, AuthService,$http, $q, $routeParams, $location,$rootScope, shopify_app
     ) {
 	
 		  AuthService.isLoggedIn().then(function(user){
@@ -101,6 +101,8 @@ $scope.optionset[selected_set].save_to_sheets=$scope.save_to_sheets
 $scope.optionset[selected_set].update_product_types=$scope.update_product_types
 $scope.optionset[selected_set].shop=shop
 console.log($scope.optionset[selected_set])
+
+
 		
 		 shopify_app.getData($scope.optionset[selected_set],function(team){
 				
@@ -122,7 +124,7 @@ console.log($scope.optionset[selected_set])
 
 
 
-exports.shopify_buttons = function($scope, $http, $q, $routeParams, $location,$rootScope, shopify_app
+exports.shopify_buttons = function(log_messages,$scope, $http, $q, $routeParams, $location,$rootScope, shopify_app
     ) {
 $scope.report_running=true
   $scope.title1 = 'Button';
@@ -130,6 +132,37 @@ $scope.report_running=true
   $scope.isDisabled = true;
 
   $scope.googleUrl = 'http://google.com';
+  $scope.messages=[]
+  
+  
+
+
+	log_messages.query({}, function(messages) {
+	
+	setInterval(function(){
+		log_messages.query({}, function(team) {
+				_.each(team, function(row,index) {
+					  log_messages.remove({
+                id: row._id
+            }, function() {
+              
+            });
+						
+				})
+			})	
+			$scope.messages[0]='logs clear'
+				 }, 1 * 60 * 1000)
+	
+	setInterval(function(){
+			$scope.messages[0]='checking logs'
+			log_messages.query({}, function(team) {
+				_.each(team, function(row,index) {
+						$scope.messages[0]=	row.username+" "+row.date+" "+row.message
+		
+				})
+			})	
+		 }, 3000);
+	})
 
 }
 

@@ -8,6 +8,7 @@
     "watch": "gulp watch",
     "build": "gulp build",
     "test": "mocha test/controllertest.js",
+	"doom": "node data_loader/turnstiles/turnstile-controller.js",
     "karma": "./node_modules/karma/bin/karma start ./test/karma.local.conf.js"
   },
   "browserify-shim": {

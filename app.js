@@ -22,6 +22,8 @@ var shopify_transactions = require('./routes/shopify_transaction')
 var shopify_product = require('./routes/shopify_product')
 var shopify_product_status_app = require('./routes/shopify_product_status_app')
 var shopify_aggregate = require('./routes/shopify_aggregate')
+var logging_messages = require('./routes/logging_messages')
+
 
 var shopify = require('./routes/shopify')
 var team = require('./routes/team')
@@ -74,7 +76,7 @@ app.use('/user_data', user_data);
 app.use('/shopify_transactions', shopify_transactions);
 app.use('/shopify_product', shopify_product);
 app.use('/shopify_product_status_app', shopify_product_status_app);
-
+app.use('/logging_messages', logging_messages);
 app.use('/shopify_aggregate', shopify_aggregate);
 
 

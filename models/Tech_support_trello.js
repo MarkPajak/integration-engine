@@ -14,7 +14,6 @@ var Tech_support_Schema = new mongoose.Schema({
 		  type:{ type: String },
 		  job_no:{ type: String },
 		  difficulty:{ type: String },
-		  aknowledged:{ type: Date },
 		   aknowledged:{ type: Date },
 		  resolution:{ type: String },
 		  list:{ type: String },

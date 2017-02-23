@@ -13,7 +13,7 @@ var request = require('request');
 var moment = require('moment');
 var _ = require('underscore');
 var url_base="https://"+keys.shopify_api+":"+keys.shopify_password+shop_id+"/admin/"
-
+var logger = require('../../models/logging.js');
 
 var Shopify_transaction = require('../../models/Shopify_transaction.js');
 var Shopify_products = require('../../models/Shopify_product.js');
@@ -88,6 +88,12 @@ console.log('looking for '+product_id)
 			
 					product_count++				
 					if(product_count< orders_in_total){
+						 		var log = new logger({								
+								date: new Date(),
+								username:keys.user,
+								message: 'get next set' + product_count + 'of' + orders_in_total
+						});	
+						log.save(function (err) {})
 							console.log('get next set' + product_count + 'of' + orders_in_total)
 							getNextitemset(total_orders[product_count])
 					}
@@ -104,6 +110,7 @@ console.log('looking for '+product_id)
 				else
 				{
 						//none found - try again
+						product_count++			
 					if(product_count< orders_in_total){
 							console.log('get next set' + product_count + 'of' + orders_in_total)
 							getNextitemset(total_orders[product_count])

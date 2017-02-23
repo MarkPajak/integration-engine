@@ -115,7 +115,7 @@ console.log('cats')
 				}
 				else{
 				
-				console.log(response.statusCode)
+				console.log(error)
 				}
 			})	
 

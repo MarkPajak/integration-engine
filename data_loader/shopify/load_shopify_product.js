@@ -75,6 +75,12 @@ function products(total_orders,cb){
 			if (error ) console.log(error)
 				if (!error && response.statusCode === 200) {
 				console.log(' \n products found... '+body.products.length+ 'of '+pages_in_total)
+				 		var log = new logger({								
+								date: new Date(),
+								username:$scope.user,
+								message: ' \n products found... '+body.products.length+ 'of '+pages_in_total			
+						});	
+						log.save(function (err) {})
 				async.forEach(body.products, function(post, cbb) { 
 						variant=post.variants[0]
 						//console.log(' \n post.title.. '+ post.title)	

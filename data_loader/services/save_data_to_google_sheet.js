@@ -1,14 +1,14 @@
-var save_data_to_google_sheet = function (options){
+var save_data_to_google_sheet = function (keys,options){
 var self = this;
  
- var async = require('async');
-  var moment = require('moment');
+var async = require('async');
+var moment = require('moment');
 var GoogleSpreadsheet = require('google-spreadsheet');
 var async = require('async');
 var _ = require('underscore');
-  var doc = new GoogleSpreadsheet( options.google_sheet_id);
- var duplicate = false
-
+var doc = new GoogleSpreadsheet( options.google_sheet_id);
+var duplicate = false
+var logger = require('../../models/logging.js');
 var sheet_name = options.title+"_"+moment(new Date()).format('DD_MM_YYYY')
 
 
@@ -24,7 +24,12 @@ async.series([
    function getInfoAndWorksheets(step) {
     doc.getInfo(function(err, info) {
       console.log('Loaded doc: '+info.title+' by '+info.author.email);
-     
+     		var log = new logger({								
+								date: new Date(),
+								username:keys.user,
+								message: 'Loaded doc: '+info.title+' by '+info.author.email					
+						});	
+						log.save(function (err) {})
 	   
 	  _.each(info.worksheets,function(sheet) {
 		if(sheet.title==sheet_name)  {

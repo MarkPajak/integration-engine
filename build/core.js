@@ -9457,7 +9457,7 @@ team.leave_taken = sortByKey(team.leave_taken, 'leave_start');
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/member/member-controller.js","/../components/member")
 },{"b55mWE":4,"buffer":3}],18:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-exports.shopify_controller = function($scope, AuthService,$http, $q, $routeParams, $location,$rootScope, shopify_app
+exports.shopify_controller = function(log_messages,$scope, AuthService,$http, $q, $routeParams, $location,$rootScope, shopify_app
     ) {
 	
 		  AuthService.isLoggedIn().then(function(user){
@@ -9560,6 +9560,8 @@ $scope.optionset[selected_set].save_to_sheets=$scope.save_to_sheets
 $scope.optionset[selected_set].update_product_types=$scope.update_product_types
 $scope.optionset[selected_set].shop=shop
 console.log($scope.optionset[selected_set])
+
+
 		
 		 shopify_app.getData($scope.optionset[selected_set],function(team){
 				
@@ -9581,7 +9583,7 @@ console.log($scope.optionset[selected_set])
 
 
 
-exports.shopify_buttons = function($scope, $http, $q, $routeParams, $location,$rootScope, shopify_app
+exports.shopify_buttons = function(log_messages,$scope, $http, $q, $routeParams, $location,$rootScope, shopify_app
     ) {
 $scope.report_running=true
   $scope.title1 = 'Button';
@@ -9589,6 +9591,41 @@ $scope.report_running=true
   $scope.isDisabled = true;
 
   $scope.googleUrl = 'http://google.com';
+  $scope.messages=[]
+  
+  
+
+
+	log_messages.query({}, function(messages) {
+	
+	setInterval(function(){
+		log_messages.query({}, function(team) {
+				_.each(team, function(row,index) {
+					  log_messages.remove({
+                id: row._id
+            }, function() {
+              
+            });
+						
+				})
+			})	
+			$scope.messages[0]='logs clear'
+				 }, 1 * 60 * 1000)
+	
+	setInterval(function(){
+			$scope.messages[0]='checking logs'
+			log_messages.query({}, function(team) {
+				_.each(team, function(row,index) {
+						$scope.messages[0]=	row.username+" "+row.date+" "+row.message
+								  log_messages.remove({
+                id: row._id
+            }, function() {
+              
+            });
+				})
+			})	
+		 }, 3000);
+	})
 
 }
 
@@ -13912,7 +13949,7 @@ app.config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
 }]);
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_23f924ff.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_bc650211.js","/")
 },{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/shopify/shopify-controller":18,"../components/shopify/shopify-directive":19,"../components/team/app-controllers":20,"../components/team/form-controller":21,"../components/team/leave-controller":22,"../components/team/team-controller":23,"../components/tech-support/tech-support-controller":24,"../components/tech-support/tech-support-directive":25,"../components/tech-support/trello-services":26,"../components/timeline-settings/timeline-settings-controller":27,"../components/timeline/timeline-controller":28,"../components/timeline/timeline-directive":29,"../components/timeline/timeline-googlesheets-services":30,"../components/timeline/timeline-learning-bookings-services":31,"../components/timeline/timeline-leave-services":32,"../components/timeline/timeline-loans-services":33,"../components/timeline/timeline-services":34,"../components/timeline/timeline-shopify-services":35,"../components/user-admin/users-controller":36,"../components/user-admin/users-directive":37,"../shared/controllers/controllers":38,"../shared/controllers/navbar-controller":39,"../shared/directives/directives":40,"../shared/services/app-services":42,"../shared/services/data-services":43,"b55mWE":4,"buffer":3,"underscore":7}],42:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
@@ -14363,6 +14400,20 @@ exports.Tallys = function($resource){
 	  
 		 
           return $resource('/tech_support/:id', null,
+		  { 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray:true}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+
+  }
+  
+    exports.log_messages =  function($resource){
+	  
+		 
+          return $resource('/logging_messages/:id', null,
 		  { 'get':    {method:'GET'},  // get individual record
 			  'save':   {method:'POST'}, // create record
 			  'query':  {method:'GET', isArray:true}, // get list all records

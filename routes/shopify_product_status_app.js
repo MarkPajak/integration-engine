@@ -43,13 +43,14 @@ router.get('/', function(req, res, next) {
 	console.log(req.query)
 	var shop = req.query.shop
 	var keys = allkeys[shop]
+	keys.user=req.user.username
 	console.log('keys',keys)
 	req.query.google_sheet_id=keys.google_sheet_id
 	
  var process_shopify_recent_product_analytics = new Process_shopify_recent_product_analytics(keys,req.query)
   
 process_shopify_recent_product_analytics.go(function(data) {
-req.flash('message', 'User Not found.');
+
    res.json(data);
    
    })
