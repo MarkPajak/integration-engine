@@ -27,7 +27,7 @@ load_shopify_productsInstance.count_all_products( function(donex) {
 						console.log('count_all_products')
 						var log = new logger({
 								username:keys.user,
-								date: new Date(),
+								date:  moment(new Date()).format(),
 								message: 'saving'					
 						});	
 						log.save(function (err) {})
@@ -37,7 +37,7 @@ load_shopify_productsInstance.count_all_products( function(donex) {
 
 						console.log('saving')
 						var log = new logger({								
-								date: new Date(),
+								date:  moment(new Date()).format(),
 								username:keys.user,
 								message: 'saving'					
 						});	
@@ -49,10 +49,28 @@ load_shopify_productsInstance.count_all_products( function(donex) {
 		transactions_data_to_google_sheet.get_data(keys,function(analytics_data) {
 		cb(analytics_data)
 		
+		
 		console.log('options.save_to_sheets',options.save_to_sheets)
 		if(options.save_to_sheets=='true'){
-		console.log('oadd_data_to_sheet')
+						console.log('saving to google sheets')
+						var log = new logger({								
+								date:  moment(new Date()).format(),
+								username:keys.user,
+								message: 'saving to google sheets'					
+						});	
+		
 			save_data_to_google_sheetInstance.add_data_to_sheet(analytics_data)
+		}else{
+			console.log('not saving')
+						var log = new logger({								
+								date:  moment(new Date()).format(),
+								username:keys.user,
+								message: 'not saving'					
+						});	
+						log.save(function (err) {})
+			
+			
+			
 		}
 
 		})

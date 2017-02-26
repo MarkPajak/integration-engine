@@ -9599,29 +9599,15 @@ $scope.report_running=true
 	log_messages.query({}, function(messages) {
 	
 	setInterval(function(){
-		log_messages.query({}, function(team) {
-				_.each(team, function(row,index) {
-					  log_messages.remove({
-                id: row._id
-            }, function() {
-              
-            });
-						
-				})
-			})	
-			$scope.messages[0]='logs clear'
+	$scope.messages[0]='checking logs'
 				 }, 1 * 60 * 1000)
 	
 	setInterval(function(){
-			$scope.messages[0]='checking logs'
+			
 			log_messages.query({}, function(team) {
 				_.each(team, function(row,index) {
 						$scope.messages[0]=	row.username+" "+row.date+" "+row.message
-								  log_messages.remove({
-                id: row._id
-            }, function() {
-              
-            });
+		
 				})
 			})	
 		 }, 3000);
@@ -10546,32 +10532,23 @@ exports.tech_support_controller = function($scope, $http, $q, $routeParams, $loc
 	//http://ui-grid.info/docs/#/tutorial/201_editable
 	Tech_support.query({}, function(team) {
 
-					for (var key in team[0]) {
-						var dont_shows=[
-						"_id","__v","_id","$get","$save","$query","$remove","$delete","toJSON","$update"
-						]
-						if(dont_shows.indexOf(key)==-1){
-							$scope.column_headings.push(key)
-						}				
-					}
 
 	
-					async.forEach(team, function(row, callback) { //The second argument, `callback`, is the "task callback" for a specific `messageId`
+					async.forEach(team, function(row, callback2) { //The second argument, `callback`, is the "task callback" for a specific `messageId`
 					
-					
-					get_list(row.id,row.list_id, function() {						console.log('got list')
+						//get_list(row.id,row.list_id, function() {						console.log('got list')
 							row.editable = true
-							$scope.rows.push(row)
+							$scope._rows.push(row)
 							$scope.counter++;
 							callback()							
-					})	
+					//})	
 					
 					}, function(err) {
 						if (err) return next(err);
-						$scope.gridOptions.data=$scope.rows;
+						$scope.gridOptions.data=$scope._rows;
 						})
 						
-						})
+					})	
 		var lists = []
 		var list = []
 		list.id="5710a18fc2c7adc11a382e94"
@@ -10680,18 +10657,26 @@ var comment_text = [colDef.field] + ": " + newValue
   
  
 		
-	get_list = function (id,list_id,cb) {
+	get_list = function (row,cb) {
 	
 		//card might have been moved to done!
-		var query = {'id':id};
-		Trello.get("cards/"+id+"?fields=idList,dateLastActivity", function(card) {
+		var query = {'id':row.id};
+		Trello.get("cards/"+row.id+"?fields=idList,dateLastActivity", function(card) {
+		console.log('got card')
 		Trello.get("lists/"+card.idList+"?fields=name", function(list) {
-			console.log(list.name+card.dateLastActivity)
+		console.log('got list')
+		
+							row.editable = true
+							//if(row.name!="Done"){
+							$scope.rows.push(row)
+							$scope.counter++;
+		
 			Tech_support.update(query, {
 					list:list.name,
 					last_updated:card.dateLastActivity
 					},cb())	
 		 })
+		 
 		 })
 		 
 	 
@@ -10704,9 +10689,9 @@ var comment_text = [colDef.field] + ": " + newValue
 		
 	tech_get_trello_board.get_data(lists, function() {
 
-				console.log('updated latest lists from trello')
+				console.log('updated latest lists from trello',lists)
 				Tech_support.query({}, function(team) {
-
+console.log(team)
 					for (var key in team[0]) {
 						var dont_shows=[
 						"_id","__v","_id","$get","$save","$query","$remove","$delete","toJSON","$update"
@@ -10720,12 +10705,12 @@ var comment_text = [colDef.field] + ": " + newValue
 					async.forEach(team, function(row, callback) { //The second argument, `callback`, is the "task callback" for a specific `messageId`
 					
 					
-					get_list(row.id,row.list_id, function() {						console.log('got list')
+					//get_list(row.id,row.list_id, function() {						console.log('got list')
 							row.editable = true
 							$scope._rows.push(row)
 							$scope.counter++;
 							callback()							
-					})	
+					//})	
 					
 					}, function(err) {
 						if (err) return next(err);
@@ -13388,6 +13373,196 @@ console.log('shopEvent',shopEvent)
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-shopify-services.js","/../components/timeline")
 },{"b55mWE":4,"buffer":3}],36:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+exports.turnstiles_controller = function(log_messages,$scope, AuthService,$http, $q, $routeParams, $location,$rootScope, shopify_app
+    ) {
+	
+		  AuthService.isLoggedIn().then(function(user){
+			$scope.isloggedin=true	
+			//$scope.lockstatus=true
+			//$scope.unlock=true
+			//timeline_functions.unlock(true)
+			$scope.report_running=true
+	  })
+	console.log('controller go')
+	
+	$scope.data_number=7
+	
+	$scope.update_product_types=false
+		$scope.gridOptions=[]
+		$scope.gridOptions.data=[]
+		$scope.gridOptions.columnDefs = [   ]
+		$scope.gridOptions = {
+			columnDefs: [
+			{ field: 'product_type' ,resizable: true},
+			{ field: 'price' ,resizable: true},
+			{ field: 'sales_value' ,resizable: true},
+			{ field: 'name' ,resizable: true},
+			{ field: 'count' ,resizable: true},
+			{ field: 'inventory_quantity' ,resizable: true},
+			{ field: 'order_status' ,resizable: true},
+			{ field: 'sku' ,resizable: true},
+			{ field: 'vendor' ,resizable: true},
+			{ field: 'date_report_run' ,resizable: true}
+			],
+			enableGridMenu: true,
+			enableSelectAll: true,
+			enableCellSelection: true,
+			enableCellEditOnFocus: true,
+			exporterCsvFilename: 'myFile.csv',
+			exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location")),
+			onRegisterApi: function(gridApi){
+			vm.gridApi = gridApi;
+			},
+			pagingOptions: { // no more in v3.0.+, use paginationPageSizes, paginationPageSize
+			// pageSizes: list of available page sizes.
+			pageSizes: [250, 500, 1000], 
+			//pageSize: currently selected page size. 
+			pageSize: 250,
+			//totalServerItems: Total items are on the server. 
+			totalServerItems: 0,
+			//currentPage: the uhm... current page.
+			currentPage: 1
+			},
+			exporterPdfDefaultStyle: {fontSize: 9},
+			exporterPdfTableStyle: {margin: [30, 30, 30, 30]},
+			exporterPdfTableHeaderStyle: {fontSize: 10, bold: true, italics: true, color: 'red'},
+			exporterPdfHeader: { text: "My Header", style: 'headerStyle' },
+			exporterPdfFooter: function ( currentPage, pageCount ) {
+			return { text: currentPage.toString() + ' of ' + pageCount.toString(), style: 'footerStyle' };
+			},
+			exporterPdfCustomFormatter: function ( docDefinition ) {
+			docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
+			docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
+			return docDefinition;
+			},exporterPdfOrientation: 'portrait',
+			exporterPdfPageSize: 'LETTER',
+			exporterPdfMaxGridWidth: 500,
+			exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location")),
+			onRegisterApi: function(gridApi){
+			$scope.gridApi = gridApi;
+			gridApi.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
+
+			});
+			}
+		};
+	
+var options = []
+$scope.optionset = []
+	options.google_sheet_id='1UlDQNS6dTvQWlQs090HRrSoR49k0Th-ElxCaxTMleA0'
+	options.created_at_min =  moment(new Date()).add(-$scope.data_number, 'days').format()
+	options.title = "last_"+$scope.data_number+"_days"
+$scope.optionset.push(options)	
+
+	
+$scope.save_to_sheets=false
+
+$scope.$watch('data_number', function(data_number) {
+	
+$scope.optionset = []
+	var options = []
+	options.google_sheet_id='1UlDQNS6dTvQWlQs090HRrSoR49k0Th-ElxCaxTMleA0'
+	options.created_at_min =  moment(new Date()).add(-data_number, 'days').format()
+	options.title = "last_"+data_number+"_days"
+	console.log('options.created_at_min',options.created_at_min)
+$scope.optionset.push(options)
+
+})
+$scope.runShopify = function(selected_set,shop){
+
+$scope._rows=[]
+$scope.report_running=false
+$scope.selected_set=selected_set
+$scope.optionset[selected_set].save_to_sheets=$scope.save_to_sheets
+$scope.optionset[selected_set].update_product_types=$scope.update_product_types
+$scope.optionset[selected_set].shop=shop
+console.log($scope.optionset[selected_set])
+
+
+		
+		 shopify_app.getData($scope.optionset[selected_set],function(team){
+				
+				$scope._rows=[]
+				_.each(team,function(row){
+					console.log(row)
+					$scope._rows.push(row)
+	
+					
+							
+				})
+			$scope.rows=$scope._rows
+			$scope.gridOptions.data=$scope.rows;
+			$(window).resize()
+			$scope.report_running=true
+		})	
+}
+}				
+
+
+
+exports.shopify_buttons = function(log_messages,$scope, $http, $q, $routeParams, $location,$rootScope, shopify_app
+    ) {
+$scope.report_running=true
+  $scope.title1 = 'Button';
+  $scope.title4 = 'Warn';
+  $scope.isDisabled = true;
+
+  $scope.googleUrl = 'http://google.com';
+  $scope.messages=[]
+  
+  
+
+
+	log_messages.query({}, function(messages) {
+	
+	setInterval(function(){
+	$scope.messages[0]='checking logs'
+				 }, 1 * 60 * 1000)
+	
+	setInterval(function(){
+			
+			log_messages.query({}, function(team) {
+				_.each(team, function(row,index) {
+						$scope.messages[0]=	row.username+" "+row.date+" "+row.message
+		
+				})
+			})	
+		 }, 3000);
+	})
+
+}
+
+
+/**
+Copyright 2016 Google Inc. All Rights Reserved. 
+Use of this source code is governed by an MIT-style license that can be foundin the LICENSE file at http://material.angularjs.org/HEAD/license.
+**/
+
+
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/turnstiles/turnstiles-controller.js","/../components/turnstiles")
+},{"b55mWE":4,"buffer":3}],37:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+	exports.turnstilesController = function() {
+  return {
+   controller: 'turnstiles_controller',
+    templateUrl: './components/turnstiles/turnstiles-page.html'
+  }
+	}
+	
+	
+		exports.turnstilesButtons = function() {
+  return {
+   controller: 'sturnstiles_buttons',
+    templateUrl: './components/turnstiles/turnstiles-buttons.html'
+  }
+	}
+	
+	
+
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/turnstiles/turnstiles-directive.js","/../components/turnstiles")
+},{"b55mWE":4,"buffer":3}],38:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.users_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Team
     ) {
 		
@@ -13512,7 +13687,7 @@ exports.users_controller = function($route,$scope, $http, $q, $routeParams, $loc
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/user-admin/users-controller.js","/../components/user-admin")
-},{"b55mWE":4,"buffer":3}],37:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],39:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	exports.userAdmin = function() {
   return {
@@ -13524,7 +13699,7 @@ exports.users_controller = function($route,$scope, $http, $q, $routeParams, $loc
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/user-admin/users-directive.js","/../components/user-admin")
-},{"b55mWE":4,"buffer":3}],38:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],40:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.ProductDetailsController = function($location, $scope, $routeParams, $http) {
 
@@ -13545,7 +13720,7 @@ exports.ProductDetailsController = function($location, $scope, $routeParams, $ht
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/controllers/controllers.js","/controllers")
-},{"b55mWE":4,"buffer":3}],39:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],41:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	
 exports.NavController = function($location,AuthService,$scope,$http) {
@@ -13629,7 +13804,7 @@ $scope.user_groups['RETAIL'].views.push(shopify)
 };
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/controllers/navbar-controller.js","/controllers")
-},{"b55mWE":4,"buffer":3}],40:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],42:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 	exports.userMenu = function() {
@@ -13641,7 +13816,7 @@ $scope.user_groups['RETAIL'].views.push(shopify)
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/directives/directives.js","/directives")
-},{"b55mWE":4,"buffer":3}],41:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],43:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 /* app */
@@ -13677,6 +13852,7 @@ var shopify_controllers = require('../components/shopify/shopify-controller');
 var timeline_settings_controller = require('../components/timeline-settings/timeline-settings-controller');
 var users_controller = require('../components/user-admin/users-controller');
 var iframe_controller = require('../components/iframe/iframe-controller');
+var turnstiles_controller = require('../components/turnstiles/turnstiles-controller');
 
 
 var directives = require('../shared/directives/directives');
@@ -13685,6 +13861,7 @@ var users_directives = require('../components/user-admin/users-directive');
 var timeline_directives = require('../components/timeline/timeline-directive');
 var shopify_directives = require('../components/shopify/shopify-directive');
 var iframe_directives = require('../components/iframe/iframe-directive');
+var turnstiles_directives = require('../components/turnstiles/turnstiles-directive');
 
 var data_services = require('../shared/services/data-services');
 var app_services = require('../shared/services/app-services');
@@ -13788,6 +13965,11 @@ _.each(iframe_controller, function(controller, name) {
 });
 
 
+_.each(turnstiles_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+
 _.each(form_controllers, function(controller, name) {
   app.controller(name, controller);
 });
@@ -13834,6 +14016,9 @@ _.each(timeline_settings_controller, function(controller, name) {
 });
 
  _.each(iframe_directives, function(directive, name) {
+  app.directive(name, directive);
+});
+ _.each(turnstiles_directives, function(directive, name) {
   app.directive(name, directive);
 });
 
@@ -13949,8 +14134,8 @@ app.config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
 }]);
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_bc650211.js","/")
-},{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/shopify/shopify-controller":18,"../components/shopify/shopify-directive":19,"../components/team/app-controllers":20,"../components/team/form-controller":21,"../components/team/leave-controller":22,"../components/team/team-controller":23,"../components/tech-support/tech-support-controller":24,"../components/tech-support/tech-support-directive":25,"../components/tech-support/trello-services":26,"../components/timeline-settings/timeline-settings-controller":27,"../components/timeline/timeline-controller":28,"../components/timeline/timeline-directive":29,"../components/timeline/timeline-googlesheets-services":30,"../components/timeline/timeline-learning-bookings-services":31,"../components/timeline/timeline-leave-services":32,"../components/timeline/timeline-loans-services":33,"../components/timeline/timeline-services":34,"../components/timeline/timeline-shopify-services":35,"../components/user-admin/users-controller":36,"../components/user-admin/users-directive":37,"../shared/controllers/controllers":38,"../shared/controllers/navbar-controller":39,"../shared/directives/directives":40,"../shared/services/app-services":42,"../shared/services/data-services":43,"b55mWE":4,"buffer":3,"underscore":7}],42:[function(require,module,exports){
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_fe6373ef.js","/")
+},{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/shopify/shopify-controller":18,"../components/shopify/shopify-directive":19,"../components/team/app-controllers":20,"../components/team/form-controller":21,"../components/team/leave-controller":22,"../components/team/team-controller":23,"../components/tech-support/tech-support-controller":24,"../components/tech-support/tech-support-directive":25,"../components/tech-support/trello-services":26,"../components/timeline-settings/timeline-settings-controller":27,"../components/timeline/timeline-controller":28,"../components/timeline/timeline-directive":29,"../components/timeline/timeline-googlesheets-services":30,"../components/timeline/timeline-learning-bookings-services":31,"../components/timeline/timeline-leave-services":32,"../components/timeline/timeline-loans-services":33,"../components/timeline/timeline-services":34,"../components/timeline/timeline-shopify-services":35,"../components/turnstiles/turnstiles-controller":36,"../components/turnstiles/turnstiles-directive":37,"../components/user-admin/users-controller":38,"../components/user-admin/users-directive":39,"../shared/controllers/controllers":40,"../shared/controllers/navbar-controller":41,"../shared/directives/directives":42,"../shared/services/app-services":44,"../shared/services/data-services":45,"b55mWE":4,"buffer":3,"underscore":7}],44:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.date_calc = function($http) {	
@@ -14291,7 +14476,7 @@ exports.screen_saver_loop=function($rootScope,$location,$interval,Team) {
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/services/app-services.js","/services")
-},{"b55mWE":4,"buffer":3}],43:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],45:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var status = require('http-status');
 
@@ -14499,4 +14684,4 @@ exports.Tallys = function($resource){
 		
 	
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/services/data-services.js","/services")
-},{"b55mWE":4,"buffer":3,"http-status":5}]},{},[41])
+},{"b55mWE":4,"buffer":3,"http-status":5}]},{},[43])

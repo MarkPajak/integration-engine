@@ -8,7 +8,7 @@ var logging = {"timeline":true}
  var logging = new Schema({
 		id: String,
 		username: String,
-		date: String,
+		date: Date,
 		message: String
 });
 

@@ -8,32 +8,23 @@ exports.tech_support_controller = function($scope, $http, $q, $routeParams, $loc
 	//http://ui-grid.info/docs/#/tutorial/201_editable
 	Tech_support.query({}, function(team) {
 
-					for (var key in team[0]) {
-						var dont_shows=[
-						"_id","__v","_id","$get","$save","$query","$remove","$delete","toJSON","$update"
-						]
-						if(dont_shows.indexOf(key)==-1){
-							$scope.column_headings.push(key)
-						}				
-					}
 
 	
-					async.forEach(team, function(row, callback) { //The second argument, `callback`, is the "task callback" for a specific `messageId`
+					async.forEach(team, function(row, callback2) { //The second argument, `callback`, is the "task callback" for a specific `messageId`
 					
-					
-					get_list(row.id,row.list_id, function() {						console.log('got list')
+						//get_list(row.id,row.list_id, function() {						console.log('got list')
 							row.editable = true
-							$scope.rows.push(row)
+							$scope._rows.push(row)
 							$scope.counter++;
 							callback()							
-					})	
+					//})	
 					
 					}, function(err) {
 						if (err) return next(err);
-						$scope.gridOptions.data=$scope.rows;
+						$scope.gridOptions.data=$scope._rows;
 						})
 						
-						})
+					})	
 		var lists = []
 		var list = []
 		list.id="5710a18fc2c7adc11a382e94"
@@ -142,18 +133,26 @@ var comment_text = [colDef.field] + ": " + newValue
   
  
 		
-	get_list = function (id,list_id,cb) {
+	get_list = function (row,cb) {
 	
 		//card might have been moved to done!
-		var query = {'id':id};
-		Trello.get("cards/"+id+"?fields=idList,dateLastActivity", function(card) {
+		var query = {'id':row.id};
+		Trello.get("cards/"+row.id+"?fields=idList,dateLastActivity", function(card) {
+		console.log('got card')
 		Trello.get("lists/"+card.idList+"?fields=name", function(list) {
-			console.log(list.name+card.dateLastActivity)
+		console.log('got list')
+		
+							row.editable = true
+							//if(row.name!="Done"){
+							$scope.rows.push(row)
+							$scope.counter++;
+		
 			Tech_support.update(query, {
 					list:list.name,
 					last_updated:card.dateLastActivity
 					},cb())	
 		 })
+		 
 		 })
 		 
 	 
@@ -166,9 +165,9 @@ var comment_text = [colDef.field] + ": " + newValue
 		
 	tech_get_trello_board.get_data(lists, function() {
 
-				console.log('updated latest lists from trello')
+				console.log('updated latest lists from trello',lists)
 				Tech_support.query({}, function(team) {
-
+console.log(team)
 					for (var key in team[0]) {
 						var dont_shows=[
 						"_id","__v","_id","$get","$save","$query","$remove","$delete","toJSON","$update"
@@ -182,12 +181,12 @@ var comment_text = [colDef.field] + ": " + newValue
 					async.forEach(team, function(row, callback) { //The second argument, `callback`, is the "task callback" for a specific `messageId`
 					
 					
-					get_list(row.id,row.list_id, function() {						console.log('got list')
+					//get_list(row.id,row.list_id, function() {						console.log('got list')
 							row.editable = true
 							$scope._rows.push(row)
 							$scope.counter++;
 							callback()							
-					})	
+					//})	
 					
 					}, function(err) {
 						if (err) return next(err);

@@ -16,11 +16,9 @@ var Tech_support_Schema = new mongoose.Schema({
 		  difficulty:{ type: String },
 		   aknowledged:{ type: Date },
 		  resolution:{ type: String },
-		  list:{ type: String },
-		  
+		  list:{ type: String }, 		  
 		  list_id:{ type: String }
-		  
-		 		 
+		  		 		 
 });
 /*
 need to be able to count days where date is between 2 dates

@@ -17,7 +17,7 @@ var dbConfig = require('../../db');
 // Connect to DB
 //mongoose.connect(dbConfig.url);
  var self=this
-
+var logger = require('../../models/logging.js');
 function product_type_from_id(item,order){
 	
 /*	
@@ -76,9 +76,9 @@ function products(total_orders,cb){
 				if (!error && response.statusCode === 200) {
 				console.log(' \n products found... '+body.products.length+ 'of '+pages_in_total)
 				 		var log = new logger({								
-								date: new Date(),
-								username:$scope.user,
-								message: ' \n products found... '+body.products.length+ 'of '+pages_in_total			
+								date:  moment(new Date()).format(),
+								username:keys.user,
+								message: 'looking at page '+current_page +' of '+pages_in_total
 						});	
 						log.save(function (err) {})
 				async.forEach(body.products, function(post, cbb) { 

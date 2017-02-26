@@ -25,7 +25,7 @@ async.series([
     doc.getInfo(function(err, info) {
       console.log('Loaded doc: '+info.title+' by '+info.author.email);
      		var log = new logger({								
-								date: new Date(),
+								date:  moment(new Date()).format(),
 								username:keys.user,
 								message: 'Loaded doc: '+info.title+' by '+info.author.email					
 						});	

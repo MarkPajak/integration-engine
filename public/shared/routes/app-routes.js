@@ -88,6 +88,9 @@
 		      .when('/doom', {
                template: '<i-frame></i-frame>'
            })
+		      .when('/turnstiles', {
+               template: '<turnstiles-controller></turnstiles-controller>'
+           })
 		      .when('/tech-support:token', {
               templateUrl: '../components/tech-support/tech-support-page.html',
               controller: 'tech_support_controller'
