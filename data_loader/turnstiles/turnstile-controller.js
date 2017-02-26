@@ -28,48 +28,53 @@ log errors to google docs for remote monitoring
 */
 
 var self = this
-self.connect = function() {
-
 var Open_serialport = require('./serialport-terminal.js');
-
-
 var valid_tickets_from_file=require('./csv-ticket-codes.js');
 var shopify_checkorder=require('../shopify/shopify_checkorder.js');
-
 var database = require('./database.js');
-database= new database()
 
 
-database.connect(function(scanned_tickets){
+self.connect = function() {
 
-valid_tickets_from_file= new valid_tickets_from_file()
-
-valid_tickets_from_file.load_tickets(function (csv_tickets){
 	
-	
-console.log('   ||   ||')
-console.log('   \\()//')
-console.log('  //(__)\\')
-console.log('  ||    ||')
+		database= new database()
 
 
-	var valid_ticket_types = []
-	valid_ticket_types.product_id = 8593353416
-	valid_ticket_types.product_type = "Exhibition ticket"
-	valid_ticket_types.csvTickets = csv_tickets
-	valid_ticket_types.scanned_tickets = scanned_tickets
+		database.connect(function(scanned_tickets){
 
-	open_serialport=new Open_serialport(valid_ticket_types)
-	shopify_transaction=new shopify_checkorder(valid_ticket_types)
+		valid_tickets_from_file= new valid_tickets_from_file()
+
+		valid_tickets_from_file.load_tickets(function (csv_tickets){
+			
+			
+		console.log('    ||   ||')
+		console.log('    \\()//')
+		console.log('   //(__)\\')
+		console.log('   ||    ||')
 
 
-	open_serialport.listen_data(shopify_transaction)
+			var valid_ticket_types = []
+			valid_ticket_types.product_id = 8593353416
+			valid_ticket_types.product_type = "Exhibition ticket"
+			valid_ticket_types.csvTickets = csv_tickets
+			valid_ticket_types.scanned_tickets = scanned_tickets
 
-})
+			open_serialport=new Open_serialport(valid_ticket_types)
+			shopify_transaction=new shopify_checkorder(valid_ticket_types)
 
-})
+			open_serialport.listen_data(shopify_transaction)
+
+		})
+
+		})
 
 }
+self.test_ticket = function(data) {
+	
+	open_serialport.simulate(shopify_transaction,data.ticket)
+}
+
+
 self.simulate = function() {
 
 setTimeout(function (){

@@ -1,3 +1,11 @@
+/*
+TODO
+- pass result of serial port listening to angular app
+- prelimirary tests to check shopify
+- speed testing
+ 
+*/
+
 var express = require('express');
 var router = express.Router();
 var shopifyAPI = require('shopify-node-api');
@@ -8,7 +16,9 @@ var moment = require('moment');
 
 var allkeys=JSON.parse(fs.readFileSync('./secret/api_keys.JSON').toString());
 var Turnstiles = new Turnstiles_web_controller()
+
 Turnstiles.connect()
+
  
 function product_type_from_id(res,product_id,order_date){
 	
@@ -24,10 +34,11 @@ function orders(res){
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	
-	
-open_serialport.openPort().then(function(result){
-	res.json('backatcha')
-})
+	console.log(req.query)
+		
+	Turnstiles.test_ticket(req.query).then(function(result){
+		res.json('backatcha')
+	})
 
 })
 

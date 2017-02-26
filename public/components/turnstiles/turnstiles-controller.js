@@ -3,12 +3,16 @@ exports.turnstiles_controller = function(log_messages,$scope, AuthService,$http,
     ) {
 	
 
-	console.log('controller go')
-	$scope.operation_in_progress=false
+$scope.operation_in_progress=false
 $scope.settings=[]
+$scope.test_ticket=""
+ $scope.venue =$routeParams.venue
+$scope.settings.venue=$routeParams.venue
+
 
 $scope.open_turnstile = function(){
-
+$scope.settings.ticket=$scope.test_ticket
+$scope.settings.venue=$scope.venue
 			$scope.operation_in_progress=true
 			turnstile_app.openGates($scope.settings,function(team){
 			$scope.operation_in_progress=false

@@ -1,5 +1,4 @@
 <style>
-
 .checkbox-inline{
     
 	}
@@ -33,22 +32,17 @@
 	overflow-y:auto;
 	}
 </style>
-  <div class="alert alert-danger" value="{{message}}" > {{ messages }} </div>
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
 <div   ng-cloak="" class="buttondemoBasicUsage" >
-  
-
-<section  ng-show="operation_in_progress" layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
-	<label>Operation in progress - please wait</label>
-</section>
-    <section  layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
-	<h2> Open Gates</h2>
-     <md-button ng-click="open_turnstile(0,'BMAG')" class="md-raised">Open</md-button>
-     <input checked type="number" id="number"  ng-model="data_number" value="7">
-</section>
-
-  
-  
+	<section  ng-show="operation_in_progress" layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
+		<label>Operation in progress - please wait</label>
+	</section>
+	<section  layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
+		<h2> Turnstile Control</h2>
+		<md-button ng-click="open_turnstile(0,'BMAG')" class="md-raised">Open</md-button>
+		<input checked type="text" id="number"  ng-model="test_ticket" value="7" placeholder="test a ticket code">
+		<div ng-init="venue=venue"></div>
+		<input ng-model="venue"   type="radio"  value="MSHED">M SHED<br>
+		<input ng-model="venue"   type="radio"   value="BMAG">BMAG<br>
+	</section>
 </div>
-
+<div class="alert alert-danger" value="{{message}}" > {{ messages }} </div>
