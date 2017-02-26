@@ -115,6 +115,7 @@
     "passport-local-mongoose": "~4.0.0",
     "pdfmake": "^0.1.25",
     "pinch-zoom": "*",
+	"refresh-token": "*",
     "request": "^2.79.0",
     "serialport": "^4.0.7",
     "serve-favicon": "^2.2.0",
