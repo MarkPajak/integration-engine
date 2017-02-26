@@ -1,3 +1,4 @@
+
 var express = require('express');
 var path = require('path');
 var favicon = require('static-favicon');
@@ -23,6 +24,8 @@ var shopify_product = require('./routes/shopify_product')
 var shopify_product_status_app = require('./routes/shopify_product_status_app')
 var shopify_aggregate = require('./routes/shopify_aggregate')
 var logging_messages = require('./routes/logging_messages')
+
+//var turnstiles_web_app = require('./routes/open_turnstile')
 
 
 var shopify = require('./routes/shopify')
@@ -79,6 +82,8 @@ app.use('/shopify_product_status_app', shopify_product_status_app);
 app.use('/logging_messages', logging_messages);
 app.use('/shopify_aggregate', shopify_aggregate);
 
+//app.use('/turnstile_app', turnstiles_web_app);
+
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -98,5 +103,7 @@ if (app.get('env') === 'development') {
         });
     });
 }
-
 module.exports = app;
+
+
+

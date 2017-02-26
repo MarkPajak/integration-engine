@@ -13373,133 +13373,29 @@ console.log('shopEvent',shopEvent)
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-shopify-services.js","/../components/timeline")
 },{"b55mWE":4,"buffer":3}],36:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-exports.turnstiles_controller = function(log_messages,$scope, AuthService,$http, $q, $routeParams, $location,$rootScope, shopify_app
+
+exports.turnstiles_controller = function(log_messages,$scope, AuthService,$http, $q, $routeParams, $location,$rootScope, turnstile_app
     ) {
 	
-		  AuthService.isLoggedIn().then(function(user){
-			$scope.isloggedin=true	
-			//$scope.lockstatus=true
-			//$scope.unlock=true
-			//timeline_functions.unlock(true)
-			$scope.report_running=true
-	  })
+
 	console.log('controller go')
-	
-	$scope.data_number=7
-	
-	$scope.update_product_types=false
-		$scope.gridOptions=[]
-		$scope.gridOptions.data=[]
-		$scope.gridOptions.columnDefs = [   ]
-		$scope.gridOptions = {
-			columnDefs: [
-			{ field: 'product_type' ,resizable: true},
-			{ field: 'price' ,resizable: true},
-			{ field: 'sales_value' ,resizable: true},
-			{ field: 'name' ,resizable: true},
-			{ field: 'count' ,resizable: true},
-			{ field: 'inventory_quantity' ,resizable: true},
-			{ field: 'order_status' ,resizable: true},
-			{ field: 'sku' ,resizable: true},
-			{ field: 'vendor' ,resizable: true},
-			{ field: 'date_report_run' ,resizable: true}
-			],
-			enableGridMenu: true,
-			enableSelectAll: true,
-			enableCellSelection: true,
-			enableCellEditOnFocus: true,
-			exporterCsvFilename: 'myFile.csv',
-			exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location")),
-			onRegisterApi: function(gridApi){
-			vm.gridApi = gridApi;
-			},
-			pagingOptions: { // no more in v3.0.+, use paginationPageSizes, paginationPageSize
-			// pageSizes: list of available page sizes.
-			pageSizes: [250, 500, 1000], 
-			//pageSize: currently selected page size. 
-			pageSize: 250,
-			//totalServerItems: Total items are on the server. 
-			totalServerItems: 0,
-			//currentPage: the uhm... current page.
-			currentPage: 1
-			},
-			exporterPdfDefaultStyle: {fontSize: 9},
-			exporterPdfTableStyle: {margin: [30, 30, 30, 30]},
-			exporterPdfTableHeaderStyle: {fontSize: 10, bold: true, italics: true, color: 'red'},
-			exporterPdfHeader: { text: "My Header", style: 'headerStyle' },
-			exporterPdfFooter: function ( currentPage, pageCount ) {
-			return { text: currentPage.toString() + ' of ' + pageCount.toString(), style: 'footerStyle' };
-			},
-			exporterPdfCustomFormatter: function ( docDefinition ) {
-			docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
-			docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
-			return docDefinition;
-			},exporterPdfOrientation: 'portrait',
-			exporterPdfPageSize: 'LETTER',
-			exporterPdfMaxGridWidth: 500,
-			exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location")),
-			onRegisterApi: function(gridApi){
-			$scope.gridApi = gridApi;
-			gridApi.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
+	$scope.operation_in_progress=false
+$scope.settings=[]
 
-			});
-			}
-		};
-	
-var options = []
-$scope.optionset = []
-	options.google_sheet_id='1UlDQNS6dTvQWlQs090HRrSoR49k0Th-ElxCaxTMleA0'
-	options.created_at_min =  moment(new Date()).add(-$scope.data_number, 'days').format()
-	options.title = "last_"+$scope.data_number+"_days"
-$scope.optionset.push(options)	
+$scope.open_turnstile = function(){
 
-	
-$scope.save_to_sheets=false
-
-$scope.$watch('data_number', function(data_number) {
-	
-$scope.optionset = []
-	var options = []
-	options.google_sheet_id='1UlDQNS6dTvQWlQs090HRrSoR49k0Th-ElxCaxTMleA0'
-	options.created_at_min =  moment(new Date()).add(-data_number, 'days').format()
-	options.title = "last_"+data_number+"_days"
-	console.log('options.created_at_min',options.created_at_min)
-$scope.optionset.push(options)
-
-})
-$scope.runShopify = function(selected_set,shop){
-
-$scope._rows=[]
-$scope.report_running=false
-$scope.selected_set=selected_set
-$scope.optionset[selected_set].save_to_sheets=$scope.save_to_sheets
-$scope.optionset[selected_set].update_product_types=$scope.update_product_types
-$scope.optionset[selected_set].shop=shop
-console.log($scope.optionset[selected_set])
-
-
-		
-		 shopify_app.getData($scope.optionset[selected_set],function(team){
-				
-				$scope._rows=[]
-				_.each(team,function(row){
-					console.log(row)
-					$scope._rows.push(row)
-	
-					
-							
-				})
-			$scope.rows=$scope._rows
-			$scope.gridOptions.data=$scope.rows;
-			$(window).resize()
-			$scope.report_running=true
-		})	
+			$scope.operation_in_progress=true
+			turnstile_app.openGates($scope.settings,function(team){
+			$scope.operation_in_progress=false
+		})
 }
-}				
 
 
+				
+	}
 
-exports.shopify_buttons = function(log_messages,$scope, $http, $q, $routeParams, $location,$rootScope, shopify_app
+
+exports.turnstiles_buttons = function(log_messages,$scope, $http, $q, $routeParams, $location,$rootScope, shopify_app
     ) {
 $scope.report_running=true
   $scope.title1 = 'Button';
@@ -13513,7 +13409,7 @@ $scope.report_running=true
 
 
 	log_messages.query({}, function(messages) {
-	
+	/*
 	setInterval(function(){
 	$scope.messages[0]='checking logs'
 				 }, 1 * 60 * 1000)
@@ -13528,14 +13424,11 @@ $scope.report_running=true
 			})	
 		 }, 3000);
 	})
+*/
+})
 
 }
 
-
-/**
-Copyright 2016 Google Inc. All Rights Reserved. 
-Use of this source code is governed by an MIT-style license that can be foundin the LICENSE file at http://material.angularjs.org/HEAD/license.
-**/
 
 
 
@@ -13552,7 +13445,7 @@ Use of this source code is governed by an MIT-style license that can be foundin 
 	
 		exports.turnstilesButtons = function() {
   return {
-   controller: 'sturnstiles_buttons',
+   controller: 'turnstiles_buttons',
     templateUrl: './components/turnstiles/turnstiles-buttons.html'
   }
 	}
@@ -13822,6 +13715,8 @@ $scope.user_groups['RETAIL'].views.push(shopify)
 /* app */
 var underscore = angular.module('underscore', []);
 var _ = require('underscore');
+
+
 
 underscore.factory('_', ['$window', function($window) {
   return $window._; // assumes underscore has already been loaded on the page
@@ -14134,7 +14029,7 @@ app.config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
 }]);
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_fe6373ef.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_b32aee28.js","/")
 },{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/shopify/shopify-controller":18,"../components/shopify/shopify-directive":19,"../components/team/app-controllers":20,"../components/team/form-controller":21,"../components/team/leave-controller":22,"../components/team/team-controller":23,"../components/tech-support/tech-support-controller":24,"../components/tech-support/tech-support-directive":25,"../components/tech-support/trello-services":26,"../components/timeline-settings/timeline-settings-controller":27,"../components/timeline/timeline-controller":28,"../components/timeline/timeline-directive":29,"../components/timeline/timeline-googlesheets-services":30,"../components/timeline/timeline-learning-bookings-services":31,"../components/timeline/timeline-leave-services":32,"../components/timeline/timeline-loans-services":33,"../components/timeline/timeline-services":34,"../components/timeline/timeline-shopify-services":35,"../components/turnstiles/turnstiles-controller":36,"../components/turnstiles/turnstiles-directive":37,"../components/user-admin/users-controller":38,"../components/user-admin/users-directive":39,"../shared/controllers/controllers":40,"../shared/controllers/navbar-controller":41,"../shared/directives/directives":42,"../shared/services/app-services":44,"../shared/services/data-services":45,"b55mWE":4,"buffer":3,"underscore":7}],44:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
@@ -14481,7 +14376,23 @@ exports.screen_saver_loop=function($rootScope,$location,$interval,Team) {
 var status = require('http-status');
 
 
-    exports.shopify_app =  function($resource){
+   
+
+    exports.turnstile_app =  function($resource){
+	  
+	  
+	   return $resource('/turnstile_app',{ }, {
+		openGates: {method:'GET', isArray: true}
+  });
+       
+
+  }
+   
+   
+
+
+
+   exports.shopify_app =  function($resource){
 	  
 	  
 	   return $resource('/shopify_product_status_app',{ }, {

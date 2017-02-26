@@ -8,7 +8,7 @@
 	
 		exports.turnstilesButtons = function() {
   return {
-   controller: 'sturnstiles_buttons',
+   controller: 'turnstiles_buttons',
     templateUrl: './components/turnstiles/turnstiles-buttons.html'
   }
 	}

@@ -36,35 +36,19 @@
   <div class="alert alert-danger" value="{{message}}" > {{ messages }} </div>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
-<div   ng-show="isloggedin" ng-cloak="" class="buttondemoBasicUsage" >
-  <md-content>
+<div   ng-cloak="" class="buttondemoBasicUsage" >
+  
 
-<section ng-hide="report_running" layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
-	<label>Report in progress - please wait</label>
-
-   </section>
-    <section ng-show="report_running" layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
-	<h2> Generate shopify report</h2>
-     <md-button ng-click="runShopify(0,'BMAG')" class="md-raised">BMAG last {{data_number}} days</md-button>
-     <md-button ng-click="runShopify(0,'MSHED')" class="md-raised">M SHED last {{data_number}} days</md-button>
-     	<input checked type="number" id="number"  ng-model="data_number" value="7">
-	 <label class=" switch checkbox checkbox-inline">
-		<div class="settings_locklabel" >save to Google sheets</div>
-		<input checked type="checkbox" id="stack"  ng-model="save_to_sheets" value="">
-		<div class="slider round"></div>
-	</label>
-		 <label class=" switch checkbox checkbox-inline">
-		<div class="settings_locklabel" >update product types</div>
-		<input checked type="checkbox" id="update_product_types"  ng-model="update_product_types" value="">
-		<div class="slider round"></div>
-	</label>
-   </section>
+<section  ng-show="operation_in_progress" layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
+	<label>Operation in progress - please wait</label>
+</section>
+    <section  layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
+	<h2> Open Gates</h2>
+     <md-button ng-click="open_turnstile(0,'BMAG')" class="md-raised">Open</md-button>
+     <input checked type="number" id="number"  ng-model="data_number" value="7">
+</section>
 
   
-  </md-content>
+  
 </div>
 
-<!--
-Copyright 2016 Google Inc. All Rights Reserved. 
-Use of this source code is governed by an MIT-style license that can be foundin the LICENSE file at http://material.angularjs.org/HEAD/license.
--->

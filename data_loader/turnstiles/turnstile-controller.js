@@ -1,3 +1,5 @@
+turnstiles_web_controller = function(){
+	
 //setup instructions
 /*
 register a new private app for the store
@@ -25,9 +27,15 @@ log errors to google docs for remote monitoring
 
 */
 
+var self = this
+self.connect = function() {
+
+var Open_serialport = require('./serialport-terminal.js');
+
+
 var valid_tickets_from_file=require('./csv-ticket-codes.js');
 var shopify_checkorder=require('../shopify/shopify_checkorder.js');
-var Open_serialport = require('./serialport-terminal.js');
+
 var database = require('./database.js');
 database= new database()
 
@@ -61,6 +69,8 @@ console.log('  ||    ||')
 
 })
 
+}
+self.simulate = function() {
 
 setTimeout(function (){
 	
@@ -83,3 +93,10 @@ setTimeout(function (){
 	i++ }, 5000);
 	
 }, 5000);
+
+
+}
+
+}
+
+module.exports = turnstiles_web_controller;

@@ -1,7 +1,23 @@
 var status = require('http-status');
 
 
-    exports.shopify_app =  function($resource){
+   
+
+    exports.turnstile_app =  function($resource){
+	  
+	  
+	   return $resource('/turnstile_app',{ }, {
+		openGates: {method:'GET', isArray: true}
+  });
+       
+
+  }
+   
+   
+
+
+
+   exports.shopify_app =  function($resource){
 	  
 	  
 	   return $resource('/shopify_product_status_app',{ }, {

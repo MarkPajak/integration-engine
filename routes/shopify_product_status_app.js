@@ -54,9 +54,6 @@ process_shopify_recent_product_analytics.go(function(data) {
    res.json(data);
    
    })
- 
-	
-
 
 })
 
