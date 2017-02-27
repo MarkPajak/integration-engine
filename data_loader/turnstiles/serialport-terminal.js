@@ -57,7 +57,7 @@ const port = new SerialPort("/dev/ttyS0", openOptions);
 
   const parsers = SerialPort.parsers;
   
-return "success"
+return port
   }
   catch(err)
   
@@ -91,7 +91,7 @@ return true;
   
 self.listen_data = function(shopify_transaction) {
 	
-  self.open_port()
+			var port=self.open_port()
 			port.on('data', (data) => {
 			self.simulate(shopify_transaction,data)
 			})
