@@ -2,7 +2,7 @@ var isWin = /^win/.test(process.platform);
 /* eslint-disable require-path-exists/exists */
 'use strict';
 open_turnstile = function (valid_ticket_types){
-
+const port
 var self=this
 this.open_port   = function (){
 
@@ -50,8 +50,8 @@ args
   };
   
   try{
-//const port = new SerialPort("/dev/ttyS0", openOptions);
-const port = new SerialPort("COM1", openOptions);
+const port = new SerialPort("/dev/ttyS0", openOptions);
+//const port = new SerialPort("COM1", openOptions);
 
   const parsers = SerialPort.parsers;
   
