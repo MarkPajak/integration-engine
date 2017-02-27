@@ -1,5 +1,4 @@
-var isWin = /^win/.test(process.platform);
-/* eslint-disable require-path-exists/exists */
+
 'use strict';
 
 
@@ -86,13 +85,13 @@ return true;
 
 
 
-  this.open_port()
+
   
   
   
 self.listen_data = function(shopify_transaction) {
 	
-
+  self.open_port()
 			port.on('data', (data) => {
 			self.simulate(shopify_transaction,data)
 			})
