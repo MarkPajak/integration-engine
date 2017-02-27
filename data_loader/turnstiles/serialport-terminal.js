@@ -45,9 +45,17 @@ args
     parity: args.parity,
     stopBits: args.stopbits
   };
-  const port = new SerialPort("/dev/ttyS0", openOptions);
- // const port = new SerialPort("COM1", openOptions);
+  
+  try{
+const port = new SerialPort("/dev/ttyS0", openOptions);
+ //const port = new SerialPort("COM1", openOptions);
   const parsers = SerialPort.parsers;
+  }
+  catch(err)
+  
+  {
+  return err
+  }
   
   
  function validate_Ticket(ticket_qr){
@@ -64,6 +72,7 @@ return true;
 
 
 }
+
 
   
 self.listen_data = function(shopify_transaction) {
