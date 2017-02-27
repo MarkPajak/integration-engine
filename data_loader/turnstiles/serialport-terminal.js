@@ -87,7 +87,8 @@ self.use_ticket = function(ticket) {
 		// connect to database server
 		dbref2.open(function(err, dbref2) {
 			// now a connection is established
-		
+		if(err) {console.log(err)}
+		else{
 		// retrieve a collection reference
 		dbref2.collection('myCollectionName', function(err, collectionref) { 
 		// this is an asynchroneous operation
@@ -106,7 +107,7 @@ self.use_ticket = function(ticket) {
 		// close a database connection
 		dbref2.close();
 		});
-
+}
 }
 	
 	

@@ -144,10 +144,10 @@ $scope.test_results = []
 			test_result = {test:'connect to ticket file',result:'FAIL'}
 			check_ticket_file.query({}, function(result) {
 			
-				if(result.count>0){
+				//if(result.count>0){
 				test_result={test:'connect to ticket file',result:'OK',notes:result.count +" tickets found"}
 					$scope.test_results.push(test_result)
-				}
+				//}
 			}, function( error ){
 					test_result = {test:'connect to ticket file',result:'FAIL',notes:error}
 					$scope.test_results.push(test_result)

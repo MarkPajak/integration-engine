@@ -139,7 +139,10 @@ self.check_ticket_history = function(data,cb) {
 		dbref.open(function(err, dbref) {
 			// now a connection is established
 		result.push('connection is established')
-		if(err) result.push(err)
+		if(err)
+{		result.push(err)}
+else{
+		
 		// retrieve a collection reference
 		dbref.collection('myCollectionName', function(err, collectionref) { 
 		
@@ -165,7 +168,7 @@ self.check_ticket_history = function(data,cb) {
 		
 	
 		});
-
+}
 }
 
 
