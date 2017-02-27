@@ -135,7 +135,10 @@ $scope.test_results = []
 				if(result.count>0){
 					$scope.test_results.push(test_result	)
 				}
-			})
+			}, function( error ){
+					test_result = {test:'connect to '+option.shop+' shopify',result:'FAIL',notes:error}
+					$scope.test_results.push(test_result)
+					})
 			})
 			
 			test_result = {test:'connect to ticket file',result:'FAIL'}
@@ -145,7 +148,10 @@ $scope.test_results = []
 				test_result={test:'connect to ticket file',result:'OK',notes:result.count +" tickets found"}
 					$scope.test_results.push(test_result)
 				}
-			})
+			}, function( error ){
+					test_result = {test:'connect to ticket file',result:'FAIL',notes:error}
+					$scope.test_results.push(test_result)
+					})
 			
 			test_result = {test:'connect to ticket database',result:'FAIL'}
 			check_ticket_database.query({},function(result) {
@@ -154,7 +160,12 @@ $scope.test_results = []
 				test_result={test:'connect to ticket database',result:'OK',notes:result}
 				$scope.test_results.push(test_result)
 				
-			})
+			},
+				  //error
+				  function( error ){
+					test_result = {test:'connect to ticket database',result:'FAIL',notes:error}
+					$scope.test_results.push(test_result)
+					})
 			
 			
 			check_com_port.query({},
@@ -164,7 +175,7 @@ $scope.test_results = []
 					},
 				  //error
 				  function( error ){
-					test_result = {test:'can open COM port',result:'FAIL'}
+					test_result = {test:'can open COM port',result:'FAIL',notes:error}
 					$scope.test_results.push(test_result)
 					}
 				  
