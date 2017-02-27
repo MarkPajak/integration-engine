@@ -2,7 +2,7 @@ var isWin = /^win/.test(process.platform);
 /* eslint-disable require-path-exists/exists */
 'use strict';
 open_turnstile = function (valid_ticket_types){
-const port
+
 var self=this
 this.open_port   = function (){
 
