@@ -6,15 +6,68 @@ var status = require('http-status');
     exports.turnstile_app =  function($resource){
 	  
 	  
-	   return $resource('/turnstile_app',{ }, {
+	return $resource('/turnstile_app',{ }, {
 		openGates: {method:'GET', isArray: true}
   });
        
 
   }
-   
-   
+  
+      exports.check_com_port =  function($resource){
+	  
+		 
+          return $resource('/check_com_port/test', null,
+		  { 'get':    {method:'GET', isArray: true} , // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray: true} ,// get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
 
+  }
+   
+      exports.check_ticket_database =  function($resource){
+	  
+		 
+          return $resource('/check_ticket_database/test', null,
+		  { 'get':    {method:'GET', isArray: true} , // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray: true} ,// get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+
+  }
+   exports.check_ticket_file =  function($resource){
+	  
+		 
+          return $resource('/check_ticket_file/test', null,
+		  { 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET'}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+
+  }
+ 
+  
+ exports.shopify_app_test =  function($resource){
+	  
+		 
+          return $resource('/shopify_product_status_app/test', null,
+		  { 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET'}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+
+  }
 
 
    exports.shopify_app =  function($resource){

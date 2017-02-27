@@ -12,7 +12,7 @@ var shopifyAPI = require('shopify-node-api');
 var request = require('request');
 var moment = require('moment');
 var _ = require('underscore');
-var url_base="https://"+keys.dev_shopify_api+":"+keys.dev_shopify_password+keys.shopify_store+"/admin/"
+var url_base="https://"+keys.shopify_api+":"+keys.shopify_password+keys.shopify_store+"/admin/"
 
 var Shopify_transaction = require('../../models/Shopify_transaction.js');
 var Shopify_products = require('../../models/Shopify_product.js');
@@ -99,7 +99,25 @@ getNextset()
 
 }			
 
+self.can_query_orders = function(cb){
 
+			total_order_count = 0
+
+			url = url_base+"orders/count.json"
+			request({
+				url: url,
+				json: true
+			}, function (error, response, body) {
+				if (!error && response.statusCode === 200) {
+						return cb(body)
+				}
+				else{
+				return(error)
+				
+				}
+			})	
+
+}
 
 self.count_all_orders = function(qr_id,cb){
 

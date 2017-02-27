@@ -1,9 +1,8 @@
 
 /* eslint-disable require-path-exists/exists */
 'use strict';
-var open_turnstile = function (valid_ticket_types){
+var ticket_database = function (valid_ticket_types){
 
-var SerialPort = require('serialport');
 
 
 var mongo = require('mongodb'),
@@ -11,7 +10,6 @@ var mongo = require('mongodb'),
   Db = mongo.Db;
 
 var server = new Server('localhost', 27017);
-
 
 
 const args = require('commander');
@@ -26,28 +24,7 @@ var open_turnstile_command= "OPEN THE GATES!!!"
 
 
 var self=this
-args
-   .usage('-p <port> [options]')
-  .description('A basic terminal interface for communicating over a serial port. Pressing ctrl+c exits.')
-  .option('-l --list', 'List available ports then exit')
-  // TODO make the port not a flag as it's always required
-  .option('-p, --port <port>', 'Path or Name of serial port',"COM1")
-  .option('-b, --baud <baudrate>', 'Baud rate default: 9600', makeNumber, 9600)
-  .option('--databits <databits>', 'Data bits default: 8', makeNumber, 8)
-  .option('--parity <parity>', 'Parity default: none', 'none')
-  .option('--stopbits <bits>', 'Stop bits default: 1', makeNumber, 1)
-  // TODO make this on by default
-  .option('--echo --localecho', 'Print characters as you type them.')
-  .parse(process.argv);
-  const openOptions = {
-    baudRate: args.baud,
-    dataBits: args.databits,
-    parity: args.parity,
-    stopBits: args.stopbits
-  };
-  const port = new SerialPort("/dev/ttyS0", openOptions);
- // const port = new SerialPort("COM1", openOptions);
-  const parsers = SerialPort.parsers;
+
   
   
  function validate_Ticket(ticket_qr){
@@ -69,9 +46,9 @@ return true;
 self.listen_data = function(shopify_transaction) {
 	
 
-			port.on('data', (data) => {
-			self.simulate(shopify_transaction,data)
-			})
+			//port.on('data', (data) => {
+			//self.simulate(shopify_transaction,data)
+			//})
 }
 
 self.use_ticket = function(ticket) {
@@ -125,8 +102,7 @@ self.simulate = function(shopify_transaction,data) {
 	
 	self.check_ticket_history(data, function(test) {
 
-		if(!test){	
-				
+		
 				if(validate_Ticket(data)){
 					console.log('ticket is valid')
 					open_serialport.openPort()
@@ -142,20 +118,19 @@ self.simulate = function(shopify_transaction,data) {
 				}	
 				})
 				}
-		}
-		else{
-			
-			//ticket already validated
-		}
+		
+	
 	})
 
 }
 
 
-self.check_ticket_history = function(data,cb,dontsave) {
+self.check_ticket_history = function(data,cb) {
+		
 	
-
-		console.log('checking ticket history');
+			var result=[]
+		  result.push('checking ticket history for '+data )
+	
 	if(!server) var server = new Server('localhost', 27017);
 		// retrieve a database reference
 		var dbref = new mongo.Db('tickets', server);
@@ -163,46 +138,32 @@ self.check_ticket_history = function(data,cb,dontsave) {
 		// connect to database server
 		dbref.open(function(err, dbref) {
 			// now a connection is established
-		
+		result.push('connection is established')
+		if(err) result.push(err)
 		// retrieve a collection reference
 		dbref.collection('myCollectionName', function(err, collectionref) { 
-			// this is an asynchroneous operation
 		
-		
-		// find exactly one item in a collection which has foo:"bar"
 		collectionref.findOne({_id:data}, function(err, doc) {
-			// no cursor object is needed
-			if(err) console.log(err)
-			
+			if(err) return cb(err)
 			if(doc) {
-					console.log('ticket found - '+doc.scan_attempts +' attpemted scans' )
-					console.log('ticket already redeemed - cancel operation')
-					console.log('				                                  FAIL');
-					// replace the foo field on all objects where foo:"bar"
-					if(doc.scan_attempts){
-					var u = doc.scan_attempts+1
-					}
-					else{
-					var u = 1	
-					}
-					if(!dontsave){
-					collectionref.update(doc, {scan_attempts:u,date_last_attempt: new Date()},function (err) {
-						console.log('ticket details updated')
-						if(err) console.log(err)
-					});
-					}
-			
+				result.push(doc)
+			}
+			else
+			{
+				result.push(  data +'not found in database')
 			}
 			
-			cb(doc)
 		// close a database connection
 		dbref.close();
+	
+		 return cb(result)
 		});
 				
+		//cb(message)
 		
 		});
 		
-		
+	
 		});
 
 }
@@ -241,5 +202,5 @@ self.openPort = function() {
 }
 }
 
-module.exports= open_turnstile
+module.exports= ticket_database
 

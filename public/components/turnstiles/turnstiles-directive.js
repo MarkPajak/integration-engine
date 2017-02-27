@@ -13,5 +13,12 @@
   }
 	}
 	
+			exports.turnstilesTest = function() {
+  return {
+   controller: 'turnstiles_test',
+    templateUrl: './components/turnstiles/turnstiles-test.html'
+  }
+	}
+	
 	
 

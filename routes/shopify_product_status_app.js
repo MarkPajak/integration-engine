@@ -4,6 +4,11 @@ var shopifyAPI = require('shopify-node-api');
 var fs = require('fs');
 
 var Process_shopify_recent_product_analytics = require("../data_loader/shopify/last_n_days.js");
+var Check_shopify = require("../data_loader/shopify/shopify_checkorder.js");
+
+
+
+
 var moment = require('moment');
 var fs = require('fs');
 var allkeys=JSON.parse(fs.readFileSync('./secret/api_keys.JSON').toString());
@@ -56,6 +61,31 @@ process_shopify_recent_product_analytics.go(function(data) {
    })
 
 })
+
+
+router.get('/test', function(req, res, next) {
+	
+	console.log(req.query)
+	var shop = req.query.shop 
+	var keys = allkeys[shop]
+	console.log('keys',keys)
+
+	
+				var valid_ticket_types = []
+			valid_ticket_types.product_id = 8593353416
+			valid_ticket_types.product_type = "Exhibition ticket"
+			valid_ticket_types.csvTickets = []
+			valid_ticket_types.scanned_tickets = []
+			
+			
+		check_shopify= new Check_shopify(keys,valid_ticket_types)
+		check_shopify.can_query_orders(function(result) {
+		
+			return res.json(result);
+		})
+
+})
+
 
 
 

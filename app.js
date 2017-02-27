@@ -24,8 +24,9 @@ var shopify_product = require('./routes/shopify_product')
 var shopify_product_status_app = require('./routes/shopify_product_status_app')
 var shopify_aggregate = require('./routes/shopify_aggregate')
 var logging_messages = require('./routes/logging_messages')
-
-
+var check_ticket_file = require('./routes/check_csv_ticket_file')
+var check_ticket_database = require('./routes/check_ticket_database')
+var check_com_port = require('./routes/check_com_port')
 
 
 var shopify = require('./routes/shopify')
@@ -81,10 +82,12 @@ app.use('/shopify_product', shopify_product);
 app.use('/shopify_product_status_app', shopify_product_status_app);
 app.use('/logging_messages', logging_messages);
 app.use('/shopify_aggregate', shopify_aggregate);
+app.use('/check_ticket_file', check_ticket_file);
+app.use('/check_ticket_database', check_ticket_database);
+app.use('/check_com_port', check_com_port);
 
 
-
-/// catch 404 and forward to error handler
+// catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;

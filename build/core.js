@@ -13434,7 +13434,120 @@ $scope.report_running=true
 }
 
 
+exports.turnstiles_test = function(check_com_port,check_ticket_database,check_ticket_file,shopify_app_test,log_messages,$scope, $http, $q, $routeParams, $location,$rootScope, shopify_app
+    ) {
+	
+$scope.test_results = []
 
+
+
+
+
+	
+		$scope.gridOptions=[]
+		
+		$scope.gridOptions.columnDefs = [   ]
+		$scope.gridOptions = {
+			columnDefs: [
+			{ field: 'test' },
+			{ field: 'result',type:'text' },
+			{ field: 'notes',type:'text'}
+			],
+			enableGridMenu: true,
+			enableSelectAll: true,
+			enableCellSelection: true,
+			enableCellEditOnFocus: true,
+			exporterCsvFilename: 'myFile.csv',
+			exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location")),
+			onRegisterApi: function(gridApi){
+			vm.gridApi = gridApi;
+			},
+			pagingOptions: { // no more in v3.0.+, use paginationPageSizes, paginationPageSize
+			// pageSizes: list of available page sizes.
+			pageSizes: [250, 500, 1000], 
+			//pageSize: currently selected page size. 
+			pageSize: 250,
+			//totalServerItems: Total items are on the server. 
+			totalServerItems: 0,
+			//currentPage: the uhm... current page.
+			currentPage: 1
+			},
+			exporterPdfDefaultStyle: {fontSize: 9},
+			exporterPdfTableStyle: {margin: [30, 30, 30, 30]},
+			exporterPdfTableHeaderStyle: {fontSize: 10, bold: true, italics: true, color: 'red'},
+			exporterPdfHeader: { text: "My Header", style: 'headerStyle' },
+			exporterPdfFooter: function ( currentPage, pageCount ) {
+			return { text: currentPage.toString() + ' of ' + pageCount.toString(), style: 'footerStyle' };
+			},
+			data:$scope.test_results,
+			exporterPdfCustomFormatter: function ( docDefinition ) {
+			docDefinition.styles.headerStyle = { fontSize: 22, bold: true };
+			docDefinition.styles.footerStyle = { fontSize: 10, bold: true };
+			return docDefinition;
+			},exporterPdfOrientation: 'portrait',
+			exporterPdfPageSize: 'LETTER',
+			exporterPdfMaxGridWidth: 500,
+			exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location")),
+			onRegisterApi: function(gridApi){
+			$scope.gridApi = gridApi;
+			gridApi.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
+
+			});
+			}
+		};
+		
+			//TEST SHOPIFY CONNECTION
+			var options = []
+			options[0]=[]
+			options[0].shop="MSHED"
+			options[1]=[]
+			options[1].shop="BMAG"
+		
+			_.each(options, function(option) {
+			test_result = {test:'connect to '+option.shop+' shopify',result:'FAIL'}
+			shopify_app_test.query(option, function(result) {
+				test_result={test:'connect to '+option.shop+' shopify',result:'OK',notes:result.count +" orders found"}	
+				if(result.count>0){
+					$scope.test_results.push(test_result	)
+				}
+			})
+			})
+			
+			test_result = {test:'connect to ticket file',result:'FAIL'}
+			check_ticket_file.query({}, function(result) {
+			
+				if(result.count>0){
+				test_result={test:'connect to ticket file',result:'OK',notes:result.count +" tickets found"}
+					$scope.test_results.push(test_result)
+				}
+			})
+			
+			test_result = {test:'connect to ticket database',result:'FAIL'}
+			check_ticket_database.query({},function(result) {
+			
+				
+				test_result={test:'connect to ticket database',result:'OK',notes:result}
+				$scope.test_results.push(test_result)
+				
+			})
+			
+			
+			check_com_port.query({},
+				  function( value ){	
+					test_result = {test:'can open COM port',result:'OK'}
+					$scope.test_results.push(test_result)
+					},
+				  //error
+				  function( error ){
+					test_result = {test:'can open COM port',result:'FAIL'}
+					$scope.test_results.push(test_result)
+					}
+				  
+			   )
+					
+	
+
+}
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/turnstiles/turnstiles-controller.js","/../components/turnstiles")
 },{"b55mWE":4,"buffer":3}],37:[function(require,module,exports){
@@ -13451,6 +13564,13 @@ $scope.report_running=true
   return {
    controller: 'turnstiles_buttons',
     templateUrl: './components/turnstiles/turnstiles-buttons.html'
+  }
+	}
+	
+			exports.turnstilesTest = function() {
+  return {
+   controller: 'turnstiles_test',
+    templateUrl: './components/turnstiles/turnstiles-test.html'
   }
 	}
 	
@@ -14033,7 +14153,7 @@ app.config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
 }]);
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_a3a79983.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_f6d0eb2e.js","/")
 },{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/shopify/shopify-controller":18,"../components/shopify/shopify-directive":19,"../components/team/app-controllers":20,"../components/team/form-controller":21,"../components/team/leave-controller":22,"../components/team/team-controller":23,"../components/tech-support/tech-support-controller":24,"../components/tech-support/tech-support-directive":25,"../components/tech-support/trello-services":26,"../components/timeline-settings/timeline-settings-controller":27,"../components/timeline/timeline-controller":28,"../components/timeline/timeline-directive":29,"../components/timeline/timeline-googlesheets-services":30,"../components/timeline/timeline-learning-bookings-services":31,"../components/timeline/timeline-leave-services":32,"../components/timeline/timeline-loans-services":33,"../components/timeline/timeline-services":34,"../components/timeline/timeline-shopify-services":35,"../components/turnstiles/turnstiles-controller":36,"../components/turnstiles/turnstiles-directive":37,"../components/user-admin/users-controller":38,"../components/user-admin/users-directive":39,"../shared/controllers/controllers":40,"../shared/controllers/navbar-controller":41,"../shared/directives/directives":42,"../shared/services/app-services":44,"../shared/services/data-services":45,"b55mWE":4,"buffer":3,"underscore":7}],44:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
@@ -14385,15 +14505,68 @@ var status = require('http-status');
     exports.turnstile_app =  function($resource){
 	  
 	  
-	   return $resource('/turnstile_app',{ }, {
+	return $resource('/turnstile_app',{ }, {
 		openGates: {method:'GET', isArray: true}
   });
        
 
   }
-   
-   
+  
+      exports.check_com_port =  function($resource){
+	  
+		 
+          return $resource('/check_com_port/test', null,
+		  { 'get':    {method:'GET', isArray: true} , // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray: true} ,// get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
 
+  }
+   
+      exports.check_ticket_database =  function($resource){
+	  
+		 
+          return $resource('/check_ticket_database/test', null,
+		  { 'get':    {method:'GET', isArray: true} , // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray: true} ,// get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+
+  }
+   exports.check_ticket_file =  function($resource){
+	  
+		 
+          return $resource('/check_ticket_file/test', null,
+		  { 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET'}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+
+  }
+ 
+  
+ exports.shopify_app_test =  function($resource){
+	  
+		 
+          return $resource('/shopify_product_status_app/test', null,
+		  { 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET'}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+
+  }
 
 
    exports.shopify_app =  function($resource){
