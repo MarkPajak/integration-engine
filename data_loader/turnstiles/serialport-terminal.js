@@ -1,6 +1,9 @@
 var isWin = /^win/.test(process.platform);
 /* eslint-disable require-path-exists/exists */
 'use strict';
+
+
+
 open_turnstile = function (valid_ticket_types){
 
 var self=this
@@ -80,6 +83,12 @@ return true;
 }
 
 }
+
+
+
+  this.open_port()
+  
+  
   
 self.listen_data = function(shopify_transaction) {
 	
