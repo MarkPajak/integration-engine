@@ -16,6 +16,9 @@ port.open(function (err) {
   }
   // write errors will be emitted on the port since there is no callback to write
   port.write('main screen turn on');
+  port.close(res.json('ok'))
+   
+  
 });
 	
 	
