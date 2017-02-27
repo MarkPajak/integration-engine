@@ -55,7 +55,7 @@ const port = new SerialPort("COM1", openOptions);
 
   const parsers = SerialPort.parsers;
   
-
+return port
   }
   catch(err)
   
