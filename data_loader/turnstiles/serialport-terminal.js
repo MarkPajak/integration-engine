@@ -4,7 +4,7 @@ var isWin = /^win/.test(process.platform);
 open_turnstile = function (valid_ticket_types){
 
 var self=this
-this.open_port   = function (valid_ticket_types){
+this.open_port   = function (){
 
 var SerialPort = require('serialport');
 

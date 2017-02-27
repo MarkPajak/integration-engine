@@ -29,6 +29,10 @@ log errors to google docs for remote monitoring
 
 var self = this
 var Open_serialport = require('./serialport-terminal.js');
+open_serialport=new Open_serialport()
+open_serialport.open_port()
+
+
 var valid_tickets_from_file=require('./csv-ticket-codes.js');
 var shopify_checkorder=require('../shopify/shopify_checkorder.js');
 var database = require('./database.js');
