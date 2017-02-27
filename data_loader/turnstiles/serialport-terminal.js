@@ -52,8 +52,8 @@ args
   };
   
   try{
-const port = new SerialPort("/dev/ttyS0", openOptions);
-//const port = new SerialPort("COM1", openOptions);
+//const port = new SerialPort("/dev/ttyS0", openOptions);
+const port = new SerialPort("COM1", openOptions);
 
   const parsers = SerialPort.parsers;
   
