@@ -59,7 +59,7 @@ $scope.report_running=true
 }
 
 
-exports.turnstiles_test = function(check_com_port,check_ticket_database,check_ticket_file,shopify_app_test,log_messages,$scope, $http, $q, $routeParams, $location,$rootScope, shopify_app
+exports.turnstiles_test = function(turnstile_app,check_com_port,check_ticket_database,check_ticket_file,shopify_app_test,log_messages,$scope, $http, $q, $routeParams, $location,$rootScope, shopify_app
     ) {
 	
 $scope.test_results = []
@@ -176,6 +176,19 @@ $scope.test_results = []
 				  //error
 				  function( error ){
 					test_result = {test:'can open COM port',result:'FAIL',notes:error}
+					$scope.test_results.push(test_result)
+					}
+				  
+			   )
+			   
+			  turnstile_app.openGates($scope.settings,
+				  function( value ){	
+					test_result = {test:'can send OPEN command',result:'OK'}
+					$scope.test_results.push(test_result)
+					},
+				  //error
+				  function( error ){
+					test_result = {test:'can send OPEN command',result:'FAIL',notes:error}
 					$scope.test_results.push(test_result)
 					}
 				  

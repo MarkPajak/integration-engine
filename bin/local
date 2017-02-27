@@ -4,11 +4,10 @@ var app = require('../app')
 
 
 //N.B. FAILS if no appropriate COM port name
-var turnstiles_web_app = require('../routes/open_turnstile')
 
 
 app.set('port', process.env.PORT || 3000)
-app.use('/turnstile_app', turnstiles_web_app);
+
 
 
 var server = app.listen(app.get('port'), function() {
