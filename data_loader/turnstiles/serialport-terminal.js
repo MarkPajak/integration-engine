@@ -106,8 +106,9 @@ self.use_ticket = function(ticket) {
 		
 		// close a database connection
 		dbref2.close();
+		}
 		});
-}
+
 }
 	
 	
