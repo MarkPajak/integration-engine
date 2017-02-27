@@ -15,7 +15,7 @@ router.get('/test', function(req, res, next) {
 		results.start=('checking database connection')	
 	
 		port_checker= new Port_checker("COM1")
-		port_checker.open_turnstile([])
+		port_checker.open_port([])
 	
 
 })

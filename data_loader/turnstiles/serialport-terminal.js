@@ -1,7 +1,10 @@
 var isWin = /^win/.test(process.platform);
 /* eslint-disable require-path-exists/exists */
 'use strict';
-var open_turnstile = function (valid_ticket_types){
+open_turnstile = function (valid_ticket_types){
+
+
+this.open_port   = function (valid_ticket_types){
 
 var SerialPort = require('serialport');
 
@@ -79,7 +82,7 @@ return true;
 
 }
 
-
+}
   
 self.listen_data = function(shopify_transaction) {
 	
