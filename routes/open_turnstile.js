@@ -15,9 +15,7 @@ var Turnstiles_web_controller= require('../data_loader/turnstiles/turnstile-cont
 var moment = require('moment');
 
 var allkeys=JSON.parse(fs.readFileSync('./secret/api_keys.JSON').toString());
-var Turnstiles = new Turnstiles_web_controller()
 
-Turnstiles.connect()
 
  
 function product_type_from_id(res,product_id,order_date){
@@ -35,7 +33,8 @@ function orders(res){
 router.get('/', function(req, res, next) {
 	
 	console.log(req.query)
-		
+	var Turnstiles = new Turnstiles_web_controller()
+	Turnstiles.connect()	
 	Turnstiles.test_ticket(req.query).then(function(result){
 		res.json('backatcha')
 	})
