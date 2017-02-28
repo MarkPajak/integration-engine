@@ -256,7 +256,7 @@ self.openPort = function() {
 		if (err) {
 		  return console.log('Error on write: ', err.message);
 		}
-		console.log('command sent                                SUCCESS');
+		return console.log('command sent                                SUCCESS');
 		//log id to database
 	  });
 
