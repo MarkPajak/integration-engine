@@ -260,7 +260,7 @@ self.openPort = function(cb) {
 		   cb( err)
 		}
 		 console.log('command sent                                SUCCESS');
-		cb(true)
+		cb("OPEN")
 	  });
 
 }
