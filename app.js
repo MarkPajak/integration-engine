@@ -96,14 +96,18 @@ if(process.env.machine=="turnstile"){
 	port_control=new Port_control()
 	var port = port_control.open_port()
 	port.on('open', function() {
-	  port.write('main screen turn on', function(err) {
+	 
+	var check_com_port = require('./routes/check_com_port')
+	//var open_turnstile = require('./routes/open_turnstile')
+	app.use('/check_com_port', check_com_port);
+
+
+	 port.write('main screen turn on', function(err) {
 		if (err) {
 		  return console.log('Error on write: ', err.message);
 		}
 		console.log('port open');
-	var check_com_port = require('./routes/check_com_port')
-	//var open_turnstile = require('./routes/open_turnstile')
-	app.use('/check_com_port', check_com_port);
+	
 	//app.use('/open_turnstile', open_turnstile);
 	  });
 	});
