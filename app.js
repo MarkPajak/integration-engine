@@ -95,7 +95,16 @@ if(process.env.machine=="turnstile"){
 	var Port_control= require('./data_loader/turnstiles/serialport-terminal')
 	port_control=new Port_control()
 	var port = port_control.open_port()
-	 port.write('main screen turn on');
+	port.open(function (err) {
+	  if (err) {
+		 return res.json(err.messag); 
+	  }
+	  // write errors will be emitted on the port since there is no callback to write
+	  port.write('main screen turn on');
+	  port.close(res.json('ok'))
+   
+  
+});
 	//var check_com_port = require('./routes/check_com_port')(port)
 	//var open_turnstile = require('./routes/open_turnstile')
 	//app.use('/check_com_port', check_com_port);

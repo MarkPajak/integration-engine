@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 
+var Turnstiles=  require('../data_loader/turnstiles/turnstile-controller')
+turnstiles= new Turnstiles()
 
 
 router.get('/test', function(req, res, next) {
