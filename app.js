@@ -96,15 +96,18 @@ if(process.env.machine=="turnstile"){
 	port_control=new Port_control()
 	var port = port_control.open_port()
 	port.on('open', function() {
-	  if (err) {
-		 return res.json(err.messag); 
-	  }
-	  // write errors will be emitted on the port since there is no callback to write
-	  port.write('main screen turn on');
-	  port.close(res.json('ok'))
-   
-  
-});
+	  port.write('main screen turn on', function(err) {
+		if (err) {
+		  return console.log('Error on write: ', err.message);
+		}
+		console.log('message written');
+	  });
+	});
+
+	// open errors will be emitted as an error event
+	port.on('error', function(err) {
+	  console.log('Error: ', err.message);
+	})
 	//var check_com_port = require('./routes/check_com_port')(port)
 	//var open_turnstile = require('./routes/open_turnstile')
 	//app.use('/check_com_port', check_com_port);
