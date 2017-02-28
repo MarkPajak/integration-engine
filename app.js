@@ -95,7 +95,7 @@ if(process.env.machine=="turnstile"){
 	var Port_control= require('./data_loader/turnstiles/serialport-terminal')
 	port_control=new Port_control()
 	var port = port_control.open_port()
-	port.open(function (err) {
+	port.on('open', function() {
 	  if (err) {
 		 return res.json(err.messag); 
 	  }

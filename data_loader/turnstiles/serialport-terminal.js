@@ -51,16 +51,14 @@ args
     stopBits: args.stopbits
   };
   
-  try{
-//const port = new SerialPort("/dev/ttyS0", openOptions);
-const port = new SerialPort("COM1", openOptions);
-
-  const parsers = SerialPort.parsers;
-  
-return port
+  try
+  {
+	//const port = new SerialPort("/dev/ttyS0", openOptions);
+	const port = new SerialPort("COM1", openOptions);
+    const parsers = SerialPort.parsers;
+	return port
   }
   catch(err)
-  
   {
   return err
   }
