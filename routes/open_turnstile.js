@@ -13,7 +13,10 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
 	
 	global.port_controller.openPort(function(result){
-		return res.json('backatcha')
+		var result = {count:0}
+		result.result=result
+		
+		return res.json(result)
 	})
 
 })
