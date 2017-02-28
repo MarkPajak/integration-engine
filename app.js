@@ -100,7 +100,11 @@ if(process.env.machine=="turnstile"){
 		if (err) {
 		  return console.log('Error on write: ', err.message);
 		}
-		console.log('message written');
+		console.log('port open');
+	var check_com_port = require('./routes/check_com_port')(port)
+	var open_turnstile = require('./routes/open_turnstile')
+	app.use('/check_com_port', check_com_port);
+	app.use('/open_turnstile', open_turnstile);
 	  });
 	});
 
@@ -108,10 +112,7 @@ if(process.env.machine=="turnstile"){
 	port.on('error', function(err) {
 	  console.log('Error: ', err.message);
 	})
-	//var check_com_port = require('./routes/check_com_port')(port)
-	//var open_turnstile = require('./routes/open_turnstile')
-	//app.use('/check_com_port', check_com_port);
-	//app.use('/open_turnstile', open_turnstile);
+	
 }
 
 // catch 404 and forward to error handler
