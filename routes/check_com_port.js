@@ -1,3 +1,5 @@
+exports.router = function(port){
+
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
@@ -29,11 +31,4 @@ port.on('open', function() {
 
 
 
-module.exports = function(port){
-
-    // do as you wish
-    // this runs in background, not on each
-    // request
-
-    return router;
 }
