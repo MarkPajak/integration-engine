@@ -6,7 +6,7 @@ var fs = require('fs');
 
 router.get('/test', function(req, res, next) {
 		
-var port =  req.app.get('port');
+
 
 console.log(port)
 port.on('open', function() {
@@ -29,4 +29,11 @@ port.on('open', function() {
 
 
 
-module.exports = router;
+module.exports = function(port){
+
+    // do as you wish
+    // this runs in background, not on each
+    // request
+
+    return router;
+}
