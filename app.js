@@ -1,3 +1,7 @@
+require('dotenv').load();
+
+
+
 
 var express = require('express');
 var path = require('path');
@@ -26,7 +30,7 @@ var shopify_aggregate = require('./routes/shopify_aggregate')
 var logging_messages = require('./routes/logging_messages')
 var check_ticket_file = require('./routes/check_csv_ticket_file')
 var check_ticket_database = require('./routes/check_ticket_database')
-var check_com_port = require('./routes/check_com_port')
+
 
 
 var shopify = require('./routes/shopify')
@@ -85,8 +89,13 @@ app.use('/logging_messages', logging_messages);
 app.use('/shopify_aggregate', shopify_aggregate);
 app.use('/check_ticket_file', check_ticket_file);
 app.use('/check_ticket_database', check_ticket_database);
-app.use('/check_com_port', check_com_port);
 
+
+if(process.env.machine=="turnstile"){
+console.log('loading turnstile files')
+	var check_com_port = require('./routes/check_com_port')
+	app.use('/check_com_port', check_com_port);
+}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

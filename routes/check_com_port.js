@@ -2,13 +2,14 @@ var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 
+var Turnstiles=  require('../data_loader/turnstiles/turnstile-controller')
+turnstiles= new Turnstiles()
 
-
-
+turnstiles.connect()
 router.get('/test', function(req, res, next) {
 		
 var SerialPort = require('serialport');
-var port = new SerialPort('COM2', { autoOpen: false });
+var port = new SerialPort('COM1', { autoOpen: false });
 
 port.open(function (err) {
   if (err) {
