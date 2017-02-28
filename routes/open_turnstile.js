@@ -13,10 +13,10 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
 	
 	global.port_controller.openPort(function(result){
-		var result = {count:0}
-		result.result=result
+		var _result = {count:0}
+		_result.result=result
 		
-		return res.json(result)
+		return res.json(_result)
 	})
 
 })
