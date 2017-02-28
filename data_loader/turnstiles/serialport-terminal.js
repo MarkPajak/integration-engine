@@ -255,10 +255,12 @@ self.openPort = function() {
 	  
 	  port.write(global.open_turnstile_command, function(err) {
 		if (err) {
+		
 		   console.log('Error on write: ', err.message);
+		   return err
 		}
 		 console.log('command sent                                SUCCESS');
-
+	return true
 	  });
 
 }
