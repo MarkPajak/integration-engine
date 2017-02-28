@@ -93,8 +93,16 @@ if(process.env.machine=="turnstile"){
 	console.log('loading turnstile files')
 	
 	var Port_control= require('./data_loader/turnstiles/serialport-terminal')
-	port_control=new Port_control()
-	var port = port_control.open_port()
+		port_control=new Port_control()
+		var port = port_control.open_port()
+	
+	var Turnstile_control= require('./data_loader/turnstiles/turnstile-controller')
+	turnstile_control = new Turnstile_control()
+	turnstile_control.connect(port)
+	
+
+	
+	//from web app
 	var check_com_port = require('./routes/check_com_port')
 	var open_turnstile = require('./routes/open_turnstile')
 	

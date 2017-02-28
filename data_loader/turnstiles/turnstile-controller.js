@@ -28,8 +28,7 @@ log errors to google docs for remote monitoring
 */
 
 var self = this
-var Open_serialport = require('./serialport-terminal.js');
-open_serialport=new Open_serialport()
+
 //
 
 
@@ -38,7 +37,7 @@ var shopify_checkorder=require('../shopify/shopify_checkorder.js');
 var database = require('./database.js');
 
 
-self.connect = function() {
+self.connect = function(port) {
 
 	
 		database= new database()
@@ -63,12 +62,12 @@ self.connect = function() {
 			valid_ticket_types.csvTickets = csv_tickets
 			valid_ticket_types.scanned_tickets = scanned_tickets
 
-			open_serialport=new Open_serialport(valid_ticket_types)
+			//open_serialport=new Open_serialport(valid_ticket_types)
 			shopify_transaction=new shopify_checkorder(valid_ticket_types)
 
-			var port = open_serialport.listen_data(shopify_transaction)
+			//vopen_serialport.listen_data(shopify_transaction)
 			
-			return port
+			
 
 		})
 
