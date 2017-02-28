@@ -12,7 +12,7 @@ console.log(port)
 port.on('open', function() {
   port.write('main screen turn on', function(err) {
     if (err) {
-      return  return res.json(err.messag); 
+      return   res.json(err.messag); 
     }
     console.log('message written');
 	return res.json('message written'); 
