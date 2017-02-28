@@ -13,7 +13,7 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
 	
 	global.port_controller.openPort(function(result){
-	
+	var returned = []
 returned.date = new Date()
 returned.result=result 		
 		return res.json(returned)
