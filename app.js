@@ -103,7 +103,7 @@ if(process.env.machine=="turnstile"){
 		console.log('port open');
 	var check_com_port = require('./routes/check_com_port')
 	//var open_turnstile = require('./routes/open_turnstile')
-	//app.use('/check_com_port', check_com_port);
+	app.use('/check_com_port', check_com_port);
 	//app.use('/open_turnstile', open_turnstile);
 	  });
 	});
