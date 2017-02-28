@@ -92,9 +92,15 @@ app.use('/check_ticket_database', check_ticket_database);
 
 
 if(process.env.machine=="turnstile"){
-console.log('loading turnstile files')
-	var check_com_port = require('./routes/check_com_port')
-	app.use('/check_com_port', check_com_port);
+	console.log('loading turnstile files')
+	
+	var Port_control= require('./data_loader/turnstiles/serialport-terminal')
+	port_control=new Port_control()
+	port_control.open_port()
+	//var check_com_port = require('./routes/check_com_port')
+	//var open_turnstile = require('./routes/open_turnstile')
+	//app.use('/check_com_port', check_com_port);
+	//app.use('/open_turnstile', open_turnstile);
 }
 
 // catch 404 and forward to error handler
