@@ -16,7 +16,7 @@ router.get('/', function(req, res, next) {
 	
 
 		
-		return res.json(result)
+		return res.json(result+new date())
 	})
 
 })
