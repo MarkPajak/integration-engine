@@ -5,11 +5,11 @@ var fs = require('fs');
 var Turnstiles=  require('../data_loader/turnstiles/turnstile-controller')
 turnstiles= new Turnstiles()
 
-const port = turnstiles.connect()
+
 router.get('/test', function(req, res, next) {
 		
 
-
+var port = turnstiles.connect()
 port.open(function (err) {
   if (err) {
      return res.json(err.messag); 
