@@ -250,17 +250,17 @@ function listPorts() {
 
 
 
-self.openPort = function() {
+self.openPort = function(cb) {
  console.log('open seriall port using command: '+open_turnstile_command)
 	  
 	  port.write(global.open_turnstile_command, function(err) {
 		if (err) {
 		
 		   console.log('Error on write: ', err.message);
-		   return err
+		   cb( err)
 		}
 		 console.log('command sent                                SUCCESS');
-	return true
+		cb(true)
 	  });
 
 }
