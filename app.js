@@ -38,8 +38,6 @@ var team = require('./routes/team')
 var leave = require('./routes/leave')
 var timeline_data_settings = require('./routes/timeline_data_settings')
 var user_data = require('./routes/user_data')
-var turnstiles_web_app = require('./routes/open_turnstile')
-app.use('/turnstile_app', turnstiles_web_app);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
