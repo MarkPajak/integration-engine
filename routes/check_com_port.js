@@ -1,17 +1,16 @@
-module.exports = function(port){
-
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
 
-
+var Turnstiles=  require('../data_loader/turnstiles/turnstile-controller')
+turnstiles= new Turnstiles()
 
 
 router.get('/test', function(req, res, next) {
 		
 
 
-port.open(function (err) {
+GLOBAL.port.open(function (err) {
   if (err) {
      return res.json(err.messag); 
   }
@@ -25,7 +24,7 @@ port.open(function (err) {
 	
 })
 
-}
 
 
 
+module.exports = router;
