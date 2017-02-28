@@ -13,7 +13,7 @@ router.get('/test', function(req, res, next) {
  // port.write('main screen turn on');
  // port.close(res.json('ok'))
    
-  res.json('ok'
+  res.json('ok')
 });
 	
 	
