@@ -98,7 +98,7 @@ if(process.env.machine=="turnstile"){
 	
 	var Turnstile_control= require('./data_loader/turnstiles/turnstile-controller')
 	turnstile_control = new Turnstile_control()
-	turnstile_control.connect(port)
+	turnstile_control.connect()
 	
 
 	
