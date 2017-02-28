@@ -9,7 +9,7 @@ turnstiles= new Turnstiles()
 router.get('/test', function(req, res, next) {
 		
 
-var port = turnstiles.connect()
+
 port.open(function (err) {
   if (err) {
      return res.json(err.messag); 
