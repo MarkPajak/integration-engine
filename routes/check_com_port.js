@@ -5,11 +5,10 @@ var fs = require('fs');
 var Turnstiles=  require('../data_loader/turnstiles/turnstile-controller')
 turnstiles= new Turnstiles()
 
-turnstiles.connect()
+const port = turnstiles.connect()
 router.get('/test', function(req, res, next) {
 		
-var SerialPort = require('serialport');
-var port = new SerialPort('COM1', { autoOpen: false });
+
 
 port.open(function (err) {
   if (err) {

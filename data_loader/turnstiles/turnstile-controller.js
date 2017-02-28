@@ -52,7 +52,7 @@ self.connect = function() {
 			
 			
 		console.log('    ||   ||')
-		console.log('    \\()//')
+		console.log('     \\()//')
 		console.log('   //(__)\\')
 		console.log('   ||    ||')
 
@@ -66,7 +66,9 @@ self.connect = function() {
 			open_serialport=new Open_serialport(valid_ticket_types)
 			shopify_transaction=new shopify_checkorder(valid_ticket_types)
 
-			open_serialport.listen_data(shopify_transaction)
+			var port = open_serialport.listen_data(shopify_transaction)
+			
+			return port
 
 		})
 

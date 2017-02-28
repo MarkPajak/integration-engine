@@ -95,6 +95,7 @@ self.listen_data = function(shopify_transaction) {
 			port.on('data', (data) => {
 			self.simulate(shopify_transaction,data)
 			})
+			return port
 }
 
 self.use_ticket = function(ticket) {
