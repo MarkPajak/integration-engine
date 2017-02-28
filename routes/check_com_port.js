@@ -14,8 +14,7 @@ router.get('/test', function(req, res, next) {
  // port.close(res.json('ok'))
    
   res.json('ok')
-});
-	
+
 	
 })
 
