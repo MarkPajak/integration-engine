@@ -8,21 +8,11 @@ TODO
 
 var express = require('express');
 var router = express.Router();
-var shopifyAPI = require('shopify-node-api');
-var fs = require('fs');
-
-var moment = require('moment');
-
-var allkeys=JSON.parse(fs.readFileSync('./secret/api_keys.JSON').toString());
-
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	
-	console.log(req.query)
-	//var Turnstiles = new Turnstiles_web_controller()
-	Turnstiles.connect()	
-	Turnstiles.test_ticket(req.query).then(function(result){
+	global.port_controller.openPort().then(function(result){
 		res.json('backatcha')
 	})
 

@@ -108,6 +108,9 @@ if(process.env.machine=="turnstile"){
 	
 	// open errors will be emitted as an error event
 	global.port=port
+	global.port_controller = port_control
+	
+	
 	app.use('/check_com_port', check_com_port)
 	app.use('/open_turnstile', open_turnstile);
 	port.on('open', function() {
