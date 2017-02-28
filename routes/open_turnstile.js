@@ -12,7 +12,7 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	
-	global.port_controller.openPort().then(function(result){
+	global.port_controller.openPort(function(result){
 		res.json('backatcha')
 	})
 
