@@ -254,13 +254,11 @@ self.openPort = function() {
  console.log('open seriall port using command: '+open_turnstile_command)
 	  port.write(global.open_turnstile_command, function(err) {
 		if (err) {
-		  return console.log('Error on write: ', err.message);
+		   console.log('Error on write: ', err.message);
 		}
-		return console.log('command sent                                SUCCESS');
+		 console.log('command sent                                SUCCESS');
 		//log id to database
 	  });
-
-
 
 }
 }
