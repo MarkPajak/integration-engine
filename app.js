@@ -95,9 +95,9 @@ if(process.env.machine=="turnstile"){
 	var Port_control= require('./data_loader/turnstiles/serialport-terminal')
 	port_control=new Port_control()
 	var port = port_control.open_port()
-	var check_com_port = require('./routes/check_com_port')(port)
+	//var check_com_port = require('./routes/check_com_port')(port)
 	//var open_turnstile = require('./routes/open_turnstile')
-	app.use('/check_com_port', check_com_port);
+	//app.use('/check_com_port', check_com_port);
 	//app.use('/open_turnstile', open_turnstile);
 }
 
