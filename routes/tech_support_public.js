@@ -68,7 +68,7 @@ async.waterfall([
    .sort({'date_created': 'desc'})
      .exec(function(err, todos) {
   
-     if (err) return next(err);
+     if (err) return (err);
   //  res.json(todos);
 	// res.send(json2csv({ data: todos, fields: fields }))
   });
