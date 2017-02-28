@@ -183,7 +183,7 @@ $scope.test_results = []
 			   
 			  turnstile_app.openGates($scope.settings,
 				  function( value ){	
-					test_result = {test:'can send OPEN command',result:'OK'}
+					test_result = {test:'can send OPEN command',result:'OK',notes:value}
 					$scope.test_results.push(test_result)
 					},
 				  //error

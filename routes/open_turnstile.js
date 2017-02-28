@@ -14,11 +14,9 @@ router.get('/', function(req, res, next) {
 	
 	global.port_controller.openPort(function(result){
 	
-	console.log(result)
-		var _result = {count:0}
-		_result.result=result
+
 		
-		return res.json(_result)
+		return res.json(result)
 	})
 
 })
