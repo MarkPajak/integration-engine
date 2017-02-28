@@ -26,7 +26,7 @@ function makeNumber(input) {
 
 
 
-var open_turnstile_command= "OPEN THE GATES!!!"
+global.open_turnstile_command= "OPEN THE GATES!!!"
 
 
 
@@ -252,7 +252,7 @@ function listPorts() {
 
 self.openPort = function() {
  console.log('open seriall port using command: '+open_turnstile_command)
-	  port.write(open_turnstile_command, function(err) {
+	  port.write(global.open_turnstile_command, function(err) {
 		if (err) {
 		  return console.log('Error on write: ', err.message);
 		}
