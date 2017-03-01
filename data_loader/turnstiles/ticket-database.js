@@ -137,6 +137,7 @@ self.check_ticket_history = function(data,cb) {
 
 		// connect to database server
 		dbref.open(function(err, dbref) {
+			if(err) return cb(err)
 			// now a connection is established
 		result.push('connection is established')
 		if(err)	{		result.push(err)
