@@ -74,7 +74,7 @@ self.connect = function(port) {
 	// open errors will be emitted as an error event
 	global.port=port
 	global.port_controller = port_control
-	port_control.listen_data(valid_tickets)
+	port_control.listen_data(valid_ticket_types)
 	
 	
 	app.use('/check_com_port', check_com_port)
