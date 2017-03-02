@@ -97,10 +97,18 @@ if(process.env.machine=="turnstile"){
 		var port = port_control.open_port()
 	
 	var Turnstile_control= require('./data_loader/turnstiles/turnstile-controller')
-	turnstile_control = new Turnstile_control()
-	turnstile_control.connect()
+		turnstile_control = new Turnstile_control()
+		var valid_tickets = turnstile_control.connect()
 	
-
+	//open_serialport=new Open_serialport(valid_ticket_types)
+	//shopify_transaction=new shopify_checkorder(valid_ticket_types)
+	
+	
+	 port_control.listen_data(valid_tickets)
+	
+	
+	
+	
 	
 	//from web app
 	var check_com_port = require('./routes/check_com_port')
