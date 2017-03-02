@@ -39,7 +39,13 @@
 	<section  layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
 		<h2> Turnstile Control</h2>
 		<md-button ng-click="open_turnstile(0,'BMAG')" class="md-raised">Open</md-button>
-		<input checked type="text" id="number"  ng-model="test_ticket" value="7" placeholder="test a ticket code">
+		
+		<select id="command"  ng-model="command" >
+			<option selected value="G2:01">G2:01</option>
+			<option  value="1"></option>
+		</select>
+	
+		<input  type="text" id="number"  ng-model="test_ticket" value="7" placeholder="test a ticket code">
 		<div ng-init="venue=venue"></div>
 		<input ng-model="venue"   type="radio"  value="MSHED">M SHED<br>
 		<input ng-model="venue"   type="radio"   value="BMAG">BMAG<br>
