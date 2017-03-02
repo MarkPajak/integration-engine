@@ -6,7 +6,7 @@ var ticket_database = function (valid_ticket_types){
 
 
 var mongo = require('mongodb'),
-  Server = mongo.Server,
+ var Server = mongo.Server,
   Db = mongo.Db;
 
 var server = new Server('localhost', 27017);
