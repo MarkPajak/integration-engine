@@ -15,6 +15,7 @@ router.get('/', function(req, res, next) {
 
 
 if(req.query.ticket!=""){
+console.log('ticket data received for testing')
 	global.port_controller.test_ticket(req.query,function(result){
 	var returned = []
 	returned.date = new Date()
