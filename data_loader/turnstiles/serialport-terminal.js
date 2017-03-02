@@ -14,7 +14,7 @@ var fs = require('fs');
 var keys=JSON.parse(fs.readFileSync('./secret/api_keys.JSON').toString());
 var shopify_transaction=new Shopify_checkorder(keys,valid_ticket_types)
 var mongo = require('mongodb'),
- Server = mongo.Server,
+ global.Server = mongo.Server,
   Db = mongo.Db;
 
 var server = new Server('localhost', 27017);
@@ -104,7 +104,7 @@ self.use_ticket = function(ticket) {
 	
 		var doc = {_id:ticket, date_scanned:new Date(),scan_attempts:1};
 		console.log('adding ticket to database');
-		var server = new Server('localhost', 27017);
+		var server = new  global.Server('localhost', 27017);
 		// retrieve a database reference
 		var dbref2 = new mongo.Db('tickets', server);
 
@@ -182,7 +182,7 @@ self.check_ticket_history = function(data,cb,dontsave) {
 	
 
 		console.log('checking ticket history');
-	var server = new Server('localhost', 27017);
+	var server = new  global.Server('localhost', 27017);
 		// retrieve a database reference
 		var dbref = new mongo.Db('tickets', server);
 
