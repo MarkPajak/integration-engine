@@ -9,8 +9,8 @@ var self=this
 this.open_port   = function (){
 
 var SerialPort = require('serialport');
-
-
+var Shopify_checkorder  = require('./data_loader/shopify/shopify_checkorder');
+shopify_transaction=new shopify_transaction(valid_ticket_types)
 var mongo = require('mongodb'),
   Server = mongo.Server,
   Db = mongo.Db;
@@ -91,7 +91,7 @@ self.listen_data = function(shopify_transaction) {
 	
 			
 			global.port.on('data', (data) => {
-			self.simulate(shopify_transaction,data)
+			self.simulate(data)
 			})
 			return port
 }
@@ -142,7 +142,7 @@ self.use_ticket = function(ticket) {
 
 
   
-self.simulate = function(shopify_transaction,data) {
+self.simulate = function(data) {
 	
 	console.log('---------------------------------------------------------------------------------------');
 	console.log('Received: \t', data);
@@ -258,9 +258,8 @@ self.openPort = function(settings,cb) {
 //4. visitor scanns ticket					 >> open gates
 if(settings.ticket!=""){
 console.log('test ticket from web app')
-var shopify_checkorder=require('../shopify/shopify_checkorder.js');
-	shopify_transaction=new shopify_checkorder(valid_ticket_types)
-	self.simulate(shopify_transaction,settings.ticket)
+
+	self.simulate(settings.ticket)
 }
 else
 {

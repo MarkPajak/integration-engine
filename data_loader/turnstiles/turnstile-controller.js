@@ -76,7 +76,7 @@ self.connect = function(port) {
 }
 self.test_ticket = function(data) {
 	
-	open_serialport.simulate(shopify_transaction,data.ticket)
+	open_serialport.simulate(data.ticket)
 }
 
 
@@ -98,7 +98,7 @@ setTimeout(function (){
 	
 	setInterval(function(){
 		if(i>=test_tickets.length) i=0
-	open_serialport.simulate(shopify_transaction,test_tickets[i])
+	open_serialport.simulate(test_tickets[i])
 	
 	i++ }, 5000);
 	
