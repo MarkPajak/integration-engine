@@ -27,7 +27,13 @@ var parser = parse({delimiter: ','}, function (err, data) {
   
   cb( self.valid_tickets)
 })
+try{
 fs.createReadStream(inputFile).pipe(parser);
+}
+catch(err)
+{
+console.log(err)
+}
 
 }
 
