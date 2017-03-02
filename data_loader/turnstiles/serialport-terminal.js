@@ -6,6 +6,13 @@
 var open_turnstile = function (valid_ticket_types){
 
 var self=this
+var mongo = require('mongodb'),
+  Server = mongo.Server,
+  Db = mongo.Db;
+
+var server = new Server('localhost', 27017);
+
+
 this.open_port   = function (){
 
 var SerialPort = require('serialport');
@@ -13,11 +20,7 @@ var Shopify_checkorder  = require('../shopify/shopify_checkorder');
 var fs = require('fs');
 var keys=JSON.parse(fs.readFileSync('./secret/api_keys.JSON').toString());
 var shopify_transaction=new Shopify_checkorder(keys,valid_ticket_types)
-var mongo = require('mongodb'),
-  Server = mongo.Server,
-  Db = mongo.Db;
 
-var server = new Server('localhost', 27017);
 
 
 
