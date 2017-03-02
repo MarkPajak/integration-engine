@@ -169,6 +169,7 @@ $scope.settings=[]
 				  
 			   )
 			  $scope.settings.command="test"
+			   $scope.settings.ticket=""
 			  turnstile_app.openGates($scope.settings,
 				  function( value ){	
 					test_result = {test:'can send OPEN command',result:'OK',notes:value}
