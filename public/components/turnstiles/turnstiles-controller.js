@@ -50,7 +50,7 @@ exports.turnstiles_test = function(turnstile_app,check_com_port,check_ticket_dat
     ) {
 	
 $scope.test_results = []
-
+$scope.settings=[]
 
 
 
