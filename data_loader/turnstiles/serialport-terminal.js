@@ -89,8 +89,8 @@ return true;
   
 self.listen_data = function(shopify_transaction) {
 	
-			var port=self.open_port()
-			port.on('data', (data) => {
+			
+			global.port.on('data', (data) => {
 			self.simulate(shopify_transaction,data)
 			})
 			return port
