@@ -9,7 +9,7 @@ var self=this
 this.open_port   = function (){
 
 var SerialPort = require('serialport');
-var Shopify_checkorder  = require('./data_loader/shopify/shopify_checkorder');
+var Shopify_checkorder  = require('../data_loader/shopify/shopify_checkorder');
 shopify_transaction=new shopify_transaction(valid_ticket_types)
 var mongo = require('mongodb'),
   Server = mongo.Server,
