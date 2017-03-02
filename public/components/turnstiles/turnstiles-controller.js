@@ -11,16 +11,6 @@ $scope.settings.venue=$routeParams.venue
 $scope.command="G2:01"
 
 
-$scope.test_ticket = function(){
-$scope.settings.ticket=$scope.test_ticket
-$scope.settings.venue=$scope.venue
-$scope.settings.command=$scope.command
-$scope.settings.test=true
-			$scope.operation_in_progress=true
-			turnstile_app.openGates($scope.settings,function(team){
-			$scope.operation_in_progress=false
-		})
-}
 $scope.open_turnstile = function(){
 $scope.settings.ticket=$scope.test_ticket
 $scope.settings.venue=$scope.venue
