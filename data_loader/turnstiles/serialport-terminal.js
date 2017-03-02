@@ -14,7 +14,7 @@ var fs = require('fs');
 var keys=JSON.parse(fs.readFileSync('./secret/api_keys.JSON').toString());
 var shopify_transaction=new Shopify_checkorder(keys,valid_ticket_types)
 var mongo = require('mongodb'),
-var Server = mongo.Server,
+ Server = mongo.Server,
   Db = mongo.Db;
 
 var global.server = new Server('localhost', 27017);
