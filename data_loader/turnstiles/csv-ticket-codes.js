@@ -4,7 +4,7 @@ var self = this
 var fs = require('fs');
 var parse = require('csv-parse');
 var async = require('async');
-var inputFile='./data_loader/turnstiles/tickets/tickets.csv';
+var inputFile='./ticket_files/tickets.csv';
 
 
 self.valid_tickets=[]
@@ -27,14 +27,10 @@ var parser = parse({delimiter: ','}, function (err, data) {
   
   cb( self.valid_tickets)
 })
-try{
 fs.createReadStream(inputFile).pipe(parser);
-}
-catch(err)
-{
-console.log(err)
-}
-
+fs.createReadStream(inputFile).on('error', function(err) {
+  console.log(err)
+});
 }
 
 }
