@@ -182,7 +182,7 @@ self.check_ticket_history = function(data,cb,dontsave) {
 	
 
 		console.log('checking ticket history');
-	if(!server) var server = new Server('localhost', 27017);
+	var server = new Server('localhost', 27017);
 		// retrieve a database reference
 		var dbref = new mongo.Db('tickets', server);
 
