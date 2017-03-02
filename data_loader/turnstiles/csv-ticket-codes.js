@@ -5,10 +5,11 @@ var fs = require('fs');
 var parse = require('csv-parse');
 var async = require('async');
 var inputFile='./ticket_files/tickets.csv';
- var nofile=false
-fs.createReadStream(inputFile).on('error', function(err) {
-   nofile=true
-});
+var nofile=false
+
+var stream =fs.createReadStream(inputFile)
+
+
 
 self.valid_tickets=[]
 
@@ -30,14 +31,11 @@ var parser = parse({delimiter: ','}, function (err, data) {
   
   cb( self.valid_tickets)
 })
-if(nofile==false){
-fs.createReadStream(inputFile).pipe(parser);
-}
-else
-{
-console.log('no ticket file')
-return ('no ticket file')
-}
+
+
+stream.on('error', function (error) {console.log("Caught", error);});
+stream.on('readable', function () {stream.pipe(parser);});
+
 
 }
 
