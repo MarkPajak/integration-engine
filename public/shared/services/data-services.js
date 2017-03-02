@@ -3,11 +3,13 @@ var status = require('http-status');
 
    
 
-    exports.turnstile_app =  function($resource){
+  
+      exports.turnstile_app =  function($resource){
 	  
 	  
 	return $resource('/open_turnstile',{ }, {
 		openGates: {method:'GET', isArray: true}
+			
   });
        
 

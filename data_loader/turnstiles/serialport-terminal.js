@@ -155,7 +155,7 @@ self.simulate = function(data) {
 				
 				if(validate_Ticket(data)){
 					console.log('ticket is valid')
-					open_serialport.openPort()
+					self.openPort()
 					self.use_ticket(data)
 				}
 				else
@@ -163,7 +163,7 @@ self.simulate = function(data) {
 				shopify_transaction.count_all_orders(data, function(cb) {
 				if(cb==1){
 					console.log('ticket validated against shopify')
-					open_serialport.openPort()
+					self.openPort()
 					self.use_ticket(data)
 				}	
 				})
@@ -248,23 +248,20 @@ function listPorts() {
   });
 };
 
-
+self.test_ticket = function(settings,cb) {
+//3. user sends open command with ticket data from web app	 >> test ticket and open gates
+self.simulate(settings.ticket)
+}
 
 
 
 self.openPort = function(settings,cb) {
-//4 scenarios here
+//43 scenarios here
 //1. open command when web app load up		 >>dont open gates
 //2. user sends open command from web app	 >> open gates
-//3. user sends open command with ticket data from web app	 >> test ticket and open gates
-//4. visitor scanns ticket					 >> open gates
-if(settings.ticket!=""){
-console.log('test ticket from web app')
 
-	self.simulate(settings.ticket)
-}
-else
-{
+//3. visitor scanns ticket					 >> open gates
+
 console.log(settings)
  console.log('open serial port using command: '+settings.command)
 	  
@@ -277,7 +274,7 @@ console.log(settings)
 		 console.log('command sent                                SUCCESS');
 		cb("OPEN")
 	  });
-}
+
 }
 }
 
