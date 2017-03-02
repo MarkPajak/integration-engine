@@ -100,7 +100,7 @@ if(process.env.machine=="turnstile"){
 		turnstile_control = new Turnstile_control()
 	
 		var port = port_control.open_port()
-		 turnstile_control.connect(port) 
+		 turnstile_control.connect(port,app) 
 
 	
 }
