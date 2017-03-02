@@ -8,7 +8,7 @@ $scope.settings=[]
 $scope.test_ticket=""
  $scope.venue =$routeParams.venue
 $scope.settings.venue=$routeParams.venue
-$scope.command="G2:01"
+$scope.command="test"
 
 $scope.open_turnstile = function(){
 $scope.settings.ticket=$scope.test_ticket

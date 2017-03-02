@@ -26,7 +26,7 @@ function makeNumber(input) {
 
 
 
-global.open_turnstile_command= "OPEN THE GATES!!!"
+global.open_turnstile_command= "G2:01"
 
 
 
@@ -251,10 +251,14 @@ function listPorts() {
 
 
 self.openPort = function(settings,cb) {
+//3 scenarios here
+//1. open command when web app load up		 >>dont open gates
+//2. user sends open command from web app	 >> open gates
+//3. visitor scanns ticket					 >> open gates
 console.log(settings)
- console.log('open seriall port using command: '+open_turnstile_command)
+ console.log('open serial port using command: '+settings.command)
 	  
-	  port.write(global.open_turnstile_command, function(err) {
+	  port.write(settings.command, function(err) {
 		if (err) {
 		
 		   console.log('Error on write: ', err.message);
