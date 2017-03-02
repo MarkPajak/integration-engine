@@ -10,6 +10,7 @@ this.open_port   = function (){
 
 var SerialPort = require('serialport');
 var Shopify_checkorder  = require('../shopify/shopify_checkorder');
+var fs = require('fs');
 var keys=JSON.parse(fs.readFileSync('./secret/api_keys.JSON').toString());
 shopify_transaction=new Shopify_checkorder(keys,valid_ticket_types)
 var mongo = require('mongodb'),
