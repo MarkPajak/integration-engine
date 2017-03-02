@@ -17,7 +17,7 @@ var mongo = require('mongodb'),
  Server = mongo.Server,
   Db = mongo.Db;
 
-var global.server = new Server('localhost', 27017);
+ global.server = new Server('localhost', 27017);
 
 
 
