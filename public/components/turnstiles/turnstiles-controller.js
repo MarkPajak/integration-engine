@@ -8,7 +8,7 @@ $scope.settings=[]
 $scope.test_ticket=""
  $scope.venue =$routeParams.venue
 $scope.settings.venue=$routeParams.venue
-$scope.command="test"
+$scope.command="G2:01"
 
 $scope.open_turnstile = function(){
 $scope.settings.ticket=$scope.test_ticket
@@ -167,7 +167,7 @@ $scope.test_results = []
 					}
 				  
 			   )
-			   
+			  $scope.settings.command="test"
 			  turnstile_app.openGates($scope.settings,
 				  function( value ){	
 					test_result = {test:'can send OPEN command',result:'OK',notes:value}
