@@ -98,45 +98,19 @@ if(process.env.machine=="turnstile"){
 	
 	var Turnstile_control= require('./data_loader/turnstiles/turnstile-controller')
 		turnstile_control = new Turnstile_control()
-		var valid_tickets = turnstile_control.connect( function( valid_tickets ){
+		var valid_tickets = turnstile_control.connect() 
 		var port = port_control.open_port(valid_tickets)
 		
 
-	//from web app
-	var check_com_port = require('./routes/check_com_port')
-	var open_turnstile = require('./routes/open_turnstile')
 	
-	// open errors will be emitted as an error event
-	global.port=port
-	global.port_controller = port_control
-	port_control.listen_data(valid_tickets)
-	
-	
-	app.use('/check_com_port', check_com_port)
-	app.use('/open_turnstile', open_turnstile);
-	port.on('open', function() {
-    port.write('main screen turn on', function(err) {
-    
-	if (err) {
-      return console.log('Error on write: ', err.message);
-    }
-    console.log('message written');
-  });
-});
-
-// open errors will be emitted as an error event
-port.on('error', function(err) {
-  console.log('Error: ', err.message);
-})
-	
-})
+}
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
-}
+
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {

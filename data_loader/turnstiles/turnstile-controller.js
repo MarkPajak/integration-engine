@@ -52,8 +52,8 @@ self.connect = function(cb) {
 					
 				console.log('    ||   ||')
 				console.log('     \\()//')
-				console.log('   //(__)\\')
-				console.log('   ||    ||')
+				console.log('    //(__)\\')
+				console.log('   ||     ||')
 
 
 					var valid_ticket_types = []
@@ -66,7 +66,35 @@ self.connect = function(cb) {
 					//shopify_transaction=new shopify_checkorder(valid_ticket_types)
 
 					//vopen_serialport.listen_data(shopify_transaction)
-					 return cb(valid_ticket_types)
+					
+	//from web app
+	var check_com_port = require('./routes/check_com_port')
+	var open_turnstile = require('./routes/open_turnstile')
+	
+	// open errors will be emitted as an error event
+	global.port=port
+	global.port_controller = port_control
+	port_control.listen_data(valid_tickets)
+	
+	
+	app.use('/check_com_port', check_com_port)
+	app.use('/open_turnstile', open_turnstile);
+	port.on('open', function() {
+    port.write('main screen turn on', function(err) {
+    
+	if (err) {
+      return console.log('Error on write: ', err.message);
+    }
+    console.log('message written');
+  });
+});
+
+
+
+// open errors will be emitted as an error event
+port.on('error', function(err) {
+  console.log('Error: ', err.message);
+})
 					
 
 				})
