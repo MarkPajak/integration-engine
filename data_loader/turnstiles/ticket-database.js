@@ -103,7 +103,7 @@ self.simulate = function(shopify_transaction,data) {
 	self.check_ticket_history(data, function(test) {
 
 		
-				if(validate_Ticket(data)){
+				if(self.validate_Ticket(data)){
 					console.log('ticket is valid')
 					open_serialport.openPort()
 					self.use_ticket(data)

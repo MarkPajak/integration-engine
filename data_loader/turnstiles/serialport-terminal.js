@@ -69,7 +69,7 @@ args
   }
   
   
- function validate_Ticket(ticket_qr){
+self.validate_Ticket=function(ticket_qr){
 	
 
 			if(valid_ticket_types.csvTickets.indexOf(ticket_qr.toString())!=-1){									
@@ -156,7 +156,7 @@ self.simulate = function(data) {
 
 		if(!test){	
 				
-				if(validate_Ticket(data)){
+				if(self.validate_Ticket(data)){
 					console.log('ticket is valid')
 					self.openPort()
 					self.use_ticket(data)
