@@ -68,8 +68,8 @@ self.connect = function(cb) {
 					//vopen_serialport.listen_data(shopify_transaction)
 					
 	//from web app
-	var check_com_port = require('./routes/check_com_port')
-	var open_turnstile = require('./routes/open_turnstile')
+	var check_com_port = require('../../routes/check_com_port')
+	var open_turnstile = require('../../routes/open_turnstile')
 	
 	// open errors will be emitted as an error event
 	global.port=port
