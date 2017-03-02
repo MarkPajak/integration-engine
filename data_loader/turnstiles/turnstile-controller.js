@@ -45,31 +45,31 @@ self.connect = function(cb) {
 
 		database.connect(function(scanned_tickets){
 
-		valid_tickets_from_file= new valid_tickets_from_file()
+				valid_tickets_from_file= new valid_tickets_from_file()
 
-		valid_tickets_from_file.load_tickets(function (csv_tickets){
-			
-			
-		console.log('    ||   ||')
-		console.log('     \\()//')
-		console.log('   //(__)\\')
-		console.log('   ||    ||')
+				valid_tickets_from_file.load_tickets(function (csv_tickets){
+					
+					
+				console.log('    ||   ||')
+				console.log('     \\()//')
+				console.log('   //(__)\\')
+				console.log('   ||    ||')
 
 
-			var valid_ticket_types = []
-			valid_ticket_types.product_id = 8593353416
-			valid_ticket_types.product_type = "Exhibition ticket"
-			valid_ticket_types.csvTickets = csv_tickets
-			valid_ticket_types.scanned_tickets = scanned_tickets
+					var valid_ticket_types = []
+					valid_ticket_types.product_id = 8593353416
+					valid_ticket_types.product_type = "Exhibition ticket"
+					valid_ticket_types.csvTickets = csv_tickets
+					valid_ticket_types.scanned_tickets = scanned_tickets
 
-			//open_serialport=new Open_serialport(valid_ticket_types)
-			//shopify_transaction=new shopify_checkorder(valid_ticket_types)
+					//open_serialport=new Open_serialport(valid_ticket_types)
+					//shopify_transaction=new shopify_checkorder(valid_ticket_types)
 
-			//vopen_serialport.listen_data(shopify_transaction)
-			cb(valid_ticket_types)
-			
+					//vopen_serialport.listen_data(shopify_transaction)
+					 return cb(valid_ticket_types)
+					
 
-		})
+				})
 
 		})
 
