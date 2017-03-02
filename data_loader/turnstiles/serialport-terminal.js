@@ -17,7 +17,7 @@ var mongo = require('mongodb'),
  global.Server = mongo.Server,
   Db = mongo.Db;
 
-var server = new Server('localhost', 27017);
+global.server = new Server('localhost', 27017);
 
 
 
@@ -104,9 +104,9 @@ self.use_ticket = function(ticket) {
 	
 		var doc = {_id:ticket, date_scanned:new Date(),scan_attempts:1};
 		console.log('adding ticket to database');
-		var server = new  global.Server('localhost', 27017);
+	
 		// retrieve a database reference
-		var dbref2 = new mongo.Db('tickets', server);
+		var dbref2 = new mongo.Db('tickets', , global.server);
 
 		// connect to database server
 		dbref2.open(function(err, dbref2) {
@@ -182,9 +182,9 @@ self.check_ticket_history = function(data,cb,dontsave) {
 	
 
 		console.log('checking ticket history');
-	var server = new  global.Server('localhost', 27017);
+
 		// retrieve a database reference
-		var dbref = new mongo.Db('tickets', server);
+		var dbref = new mongo.Db('tickets', global.server);
 
 		// connect to database server
 		dbref.open(function(err, dbref) {
