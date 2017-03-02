@@ -10,7 +10,8 @@ this.open_port   = function (){
 
 var SerialPort = require('serialport');
 var Shopify_checkorder  = require('../shopify/shopify_checkorder');
-shopify_transaction=new Shopify_checkorder(valid_ticket_types)
+var keys=JSON.parse(fs.readFileSync('./secret/api_keys.JSON').toString());
+shopify_transaction=new Shopify_checkorder(keys,valid_ticket_types)
 var mongo = require('mongodb'),
   Server = mongo.Server,
   Db = mongo.Db;
@@ -87,7 +88,7 @@ return true;
   
   
   
-self.listen_data = function(shopify_transaction) {
+self.listen_data = function() {
 	
 			
 			global.port.on('data', (data) => {
