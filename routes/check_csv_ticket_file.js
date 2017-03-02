@@ -4,7 +4,7 @@ var fs = require('fs');
 try{
 var valid_tickets_from_file=require('../data_loader/turnstiles/csv-ticket-codes.js');
 valid_tickets_from_file= new valid_tickets_from_file()
-{
+}
 catch(err)
 {
 console.log('cant find ticket file')
