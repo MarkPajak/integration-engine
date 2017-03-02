@@ -9,7 +9,7 @@ var self=this
 this.open_port   = function (){
 
 var SerialPort = require('serialport');
-var shopify_checkorder=require('../shopify/shopify_checkorder.js');
+
 
 var mongo = require('mongodb'),
   Server = mongo.Server,
@@ -258,6 +258,7 @@ self.openPort = function(settings,cb) {
 //4. visitor scanns ticket					 >> open gates
 if(settings.ticket!=""){
 console.log('test ticket from web app')
+var shopify_checkorder=require('../shopify/shopify_checkorder.js');
 	shopify_transaction=new shopify_checkorder(valid_ticket_types)
 	self.simulate(shopify_transaction,settings.ticket)
 }
