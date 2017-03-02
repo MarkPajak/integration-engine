@@ -104,8 +104,7 @@ if(process.env.machine=="turnstile"){
 	//shopify_transaction=new shopify_checkorder(valid_ticket_types)
 	
 	
-	 port_control.listen_data(valid_tickets)
-	
+
 	
 	
 	
@@ -117,6 +116,7 @@ if(process.env.machine=="turnstile"){
 	// open errors will be emitted as an error event
 	global.port=port
 	global.port_controller = port_control
+	port_control.listen_data(valid_tickets)
 	
 	
 	app.use('/check_com_port', check_com_port)
