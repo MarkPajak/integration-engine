@@ -6,7 +6,7 @@ var parse = require('csv-parse');
 var async = require('async');
 var inputFile='./ticket_files/tickets.csv';
 fs.createReadStream(inputFile).on('error', function(err) {
-  console.log(err)
+  var nofile=true
 });
 
 self.valid_tickets=[]
@@ -29,7 +29,14 @@ var parser = parse({delimiter: ','}, function (err, data) {
   
   cb( self.valid_tickets)
 })
+if(!nofile){
 fs.createReadStream(inputFile).pipe(parser);
+}
+else
+{
+console.log('no ticket file')
+return ('no ticket file')
+}
 
 }
 
