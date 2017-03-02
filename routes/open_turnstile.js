@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
 	
 	global.port_controller.openPort(req.query,function(result){
 	var returned = []
-returned.date = new Date()
+	returned.date = new Date()
 returned.result=result 		
 		return res.json(returned)
 	})

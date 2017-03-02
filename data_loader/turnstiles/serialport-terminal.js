@@ -9,7 +9,7 @@ var self=this
 this.open_port   = function (){
 
 var SerialPort = require('serialport');
-
+var shopify_checkorder=require('../shopify/shopify_checkorder.js');
 
 var mongo = require('mongodb'),
   Server = mongo.Server,
@@ -251,10 +251,18 @@ function listPorts() {
 
 
 self.openPort = function(settings,cb) {
-//3 scenarios here
+//4 scenarios here
 //1. open command when web app load up		 >>dont open gates
 //2. user sends open command from web app	 >> open gates
-//3. visitor scanns ticket					 >> open gates
+//3. user sends open command with ticket data from web app	 >> test ticket and open gates
+//4. visitor scanns ticket					 >> open gates
+if(settings.ticket!=""){
+console.log('test ticket from web app')
+	shopify_transaction=new shopify_checkorder(valid_ticket_types)
+	self.simulate(shopify_transaction,settings.ticket)
+}
+else
+{
 console.log(settings)
  console.log('open serial port using command: '+settings.command)
 	  
@@ -267,7 +275,7 @@ console.log(settings)
 		 console.log('command sent                                SUCCESS');
 		cb("OPEN")
 	  });
-
+}
 }
 }
 
