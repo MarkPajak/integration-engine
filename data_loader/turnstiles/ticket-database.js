@@ -6,7 +6,7 @@ var ticket_database = function (valid_ticket_types){
 
 
 var mongo = require('mongodb'),
- var Server = mongo.Server,
+ Server = mongo.Server,
   Db = mongo.Db;
 
 var server = new Server('localhost', 27017);
@@ -57,7 +57,7 @@ self.use_ticket = function(ticket) {
 	
 		var doc = {_id:ticket, date_scanned:new Date(),scan_attempts:1};
 		console.log('adding ticket to database');
-		if(!server) var server = new Server('localhost', 27017);
+		var server = new Server('localhost', 27017);
 		// retrieve a database reference
 		var dbref2 = new mongo.Db('tickets', server);
 
