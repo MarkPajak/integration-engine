@@ -106,7 +106,7 @@ self.use_ticket = function(ticket) {
 		console.log('adding ticket to database');
 	
 		// retrieve a database reference
-		var dbref2 = new mongo.Db('tickets', , global.server);
+		var dbref2 = new mongo.Db('tickets' , global.server);
 
 		// connect to database server
 		dbref2.open(function(err, dbref2) {
