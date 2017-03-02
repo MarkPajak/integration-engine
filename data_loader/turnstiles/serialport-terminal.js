@@ -69,6 +69,11 @@ args
   }
   
   
+
+
+}
+
+
 self.validate_Ticket=function(ticket_qr){
 	
 
@@ -83,11 +88,6 @@ return true;
 
 
 }
-
-}
-
-
-
 
   
   
