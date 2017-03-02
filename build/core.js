@@ -13490,55 +13490,56 @@ $scope.settings=[]
 			options[0].shop="MSHED"
 			options[1]=[]
 			options[1].shop="BMAG"
-		
+		var i=0
 			_.each(options, function(option) {
-			test_result = {test:'connect to '+option.shop+' shopify',result:'FAIL'}
+			i++
+			test_result = {test:i+'/6: connect to '+option.shop+' shopify',result:'FAIL'}
 			shopify_app_test.query(option, function(result) {
-				test_result={test:'connect to '+option.shop+' shopify',result:'OK',notes:result.count +" orders found"}	
+				test_result={test:i+'6: connect to '+option.shop+' shopify',result:'OK',notes:result.count +" orders found"}	
 				if(result.count>0){
 					$scope.test_results.push(test_result	)
 				}
 			}, function( error ){
-					test_result = {test:'connect to '+option.shop+' shopify',result:'FAIL',notes:error}
+					test_result = {test:i+'/6: connect to '+option.shop+' shopify',result:'FAIL',notes:error}
 					$scope.test_results.push(test_result)
 					})
 			})
 			
-			test_result = {test:'connect to ticket file',result:'FAIL'}
+			test_result = {test:'3/6: connect to ticket file',result:'FAIL'}
 			check_ticket_file.query({}, function(result) {
 			
 				//if(result.count>0){
-				test_result={test:'connect to ticket file',result:'OK',notes:result.count +" tickets found"}
+				test_result={test:'3/6:connect to ticket file',result:'OK',notes:result.count +" tickets found"}
 					$scope.test_results.push(test_result)
 				//}
 			}, function( error ){
-					test_result = {test:'connect to ticket file',result:'FAIL',notes:error}
+					test_result = {test:'2/6:connect to ticket file',result:'FAIL',notes:error}
 					$scope.test_results.push(test_result)
 					})
 			
-			test_result = {test:'connect to ticket database',result:'FAIL'}
+			test_result = {test:'3/6:connect to ticket database',result:'FAIL'}
 			check_ticket_database.query({},function(result) {
 			
 				
-				test_result={test:'connect to ticket database',result:'OK',notes:result}
+				test_result={test:'4/6: connect to ticket database',result:'OK',notes:result}
 				$scope.test_results.push(test_result)
 				
 			},
 				  //error
 				  function( error ){
-					test_result = {test:'connect to ticket database',result:'FAIL',notes:error}
+					test_result = {test:'4/6: connect to ticket database',result:'FAIL',notes:error}
 					$scope.test_results.push(test_result)
 					})
 			
 			
 			check_com_port.query({},
 				  function( value ){	
-					test_result = {test:'can open COM port',result:'OK'}
+					test_result = {test:'5/6: can open COM port',result:'OK'}
 					$scope.test_results.push(test_result)
 					},
 				  //error
 				  function( error ){
-					test_result = {test:'can open COM port',result:'FAIL',notes:error}
+					test_result = {test:'5/6: can open COM port',result:'FAIL',notes:error}
 					$scope.test_results.push(test_result)
 					}
 				  
@@ -13547,13 +13548,13 @@ $scope.settings=[]
 			   $scope.settings.ticket=""
 			  turnstile_app.openGates($scope.settings,
 				  function( value ){	
-					test_result = {test:'can send OPEN command',result:'OK',notes:value}
+					test_result = {test:'6/6: can send OPEN command',result:'OK',notes:value}
 					$scope.settings.command="G2:01"
 					$scope.test_results.push(test_result)
 					},
 				  //error
 				  function( error ){
-					test_result = {test:'can send OPEN command',result:'FAIL',notes:error}
+					test_result = {test:'6/6: can send OPEN command',result:'FAIL',notes:error}
 					$scope.test_results.push(test_result)
 					}
 				  
@@ -14167,7 +14168,7 @@ app.config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
 }]);
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_b3a1e2d6.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_a85c5dc6.js","/")
 },{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/shopify/shopify-controller":18,"../components/shopify/shopify-directive":19,"../components/team/app-controllers":20,"../components/team/form-controller":21,"../components/team/leave-controller":22,"../components/team/team-controller":23,"../components/tech-support/tech-support-controller":24,"../components/tech-support/tech-support-directive":25,"../components/tech-support/trello-services":26,"../components/timeline-settings/timeline-settings-controller":27,"../components/timeline/timeline-controller":28,"../components/timeline/timeline-directive":29,"../components/timeline/timeline-googlesheets-services":30,"../components/timeline/timeline-learning-bookings-services":31,"../components/timeline/timeline-leave-services":32,"../components/timeline/timeline-loans-services":33,"../components/timeline/timeline-services":34,"../components/timeline/timeline-shopify-services":35,"../components/turnstiles/turnstiles-controller":36,"../components/turnstiles/turnstiles-directive":37,"../components/user-admin/users-controller":38,"../components/user-admin/users-directive":39,"../shared/controllers/controllers":40,"../shared/controllers/navbar-controller":41,"../shared/directives/directives":42,"../shared/services/app-services":44,"../shared/services/data-services":45,"b55mWE":4,"buffer":3,"underscore":7}],44:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 

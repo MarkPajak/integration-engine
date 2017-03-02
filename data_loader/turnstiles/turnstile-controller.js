@@ -37,7 +37,7 @@ var shopify_checkorder=require('../shopify/shopify_checkorder.js');
 var database = require('./database.js');
 
 
-self.connect = function(port) {
+self.connect = function(port,cb) {
 
 	
 		database= new database()
@@ -66,7 +66,7 @@ self.connect = function(port) {
 			//shopify_transaction=new shopify_checkorder(valid_ticket_types)
 
 			//vopen_serialport.listen_data(shopify_transaction)
-			return valid_ticket_types
+			cb(valid_ticket_types)
 			
 
 		})

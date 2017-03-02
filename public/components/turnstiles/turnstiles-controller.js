@@ -115,55 +115,56 @@ $scope.settings=[]
 			options[0].shop="MSHED"
 			options[1]=[]
 			options[1].shop="BMAG"
-		
+		var i=0
 			_.each(options, function(option) {
-			test_result = {test:'connect to '+option.shop+' shopify',result:'FAIL'}
+			i++
+			test_result = {test:i+'/6: connect to '+option.shop+' shopify',result:'FAIL'}
 			shopify_app_test.query(option, function(result) {
-				test_result={test:'connect to '+option.shop+' shopify',result:'OK',notes:result.count +" orders found"}	
+				test_result={test:i+'6: connect to '+option.shop+' shopify',result:'OK',notes:result.count +" orders found"}	
 				if(result.count>0){
 					$scope.test_results.push(test_result	)
 				}
 			}, function( error ){
-					test_result = {test:'connect to '+option.shop+' shopify',result:'FAIL',notes:error}
+					test_result = {test:i+'/6: connect to '+option.shop+' shopify',result:'FAIL',notes:error}
 					$scope.test_results.push(test_result)
 					})
 			})
 			
-			test_result = {test:'connect to ticket file',result:'FAIL'}
+			test_result = {test:'3/6: connect to ticket file',result:'FAIL'}
 			check_ticket_file.query({}, function(result) {
 			
 				//if(result.count>0){
-				test_result={test:'connect to ticket file',result:'OK',notes:result.count +" tickets found"}
+				test_result={test:'3/6:connect to ticket file',result:'OK',notes:result.count +" tickets found"}
 					$scope.test_results.push(test_result)
 				//}
 			}, function( error ){
-					test_result = {test:'connect to ticket file',result:'FAIL',notes:error}
+					test_result = {test:'2/6:connect to ticket file',result:'FAIL',notes:error}
 					$scope.test_results.push(test_result)
 					})
 			
-			test_result = {test:'connect to ticket database',result:'FAIL'}
+			test_result = {test:'3/6:connect to ticket database',result:'FAIL'}
 			check_ticket_database.query({},function(result) {
 			
 				
-				test_result={test:'connect to ticket database',result:'OK',notes:result}
+				test_result={test:'4/6: connect to ticket database',result:'OK',notes:result}
 				$scope.test_results.push(test_result)
 				
 			},
 				  //error
 				  function( error ){
-					test_result = {test:'connect to ticket database',result:'FAIL',notes:error}
+					test_result = {test:'4/6: connect to ticket database',result:'FAIL',notes:error}
 					$scope.test_results.push(test_result)
 					})
 			
 			
 			check_com_port.query({},
 				  function( value ){	
-					test_result = {test:'can open COM port',result:'OK'}
+					test_result = {test:'5/6: can open COM port',result:'OK'}
 					$scope.test_results.push(test_result)
 					},
 				  //error
 				  function( error ){
-					test_result = {test:'can open COM port',result:'FAIL',notes:error}
+					test_result = {test:'5/6: can open COM port',result:'FAIL',notes:error}
 					$scope.test_results.push(test_result)
 					}
 				  
@@ -172,13 +173,13 @@ $scope.settings=[]
 			   $scope.settings.ticket=""
 			  turnstile_app.openGates($scope.settings,
 				  function( value ){	
-					test_result = {test:'can send OPEN command',result:'OK',notes:value}
+					test_result = {test:'6/6: can send OPEN command',result:'OK',notes:value}
 					$scope.settings.command="G2:01"
 					$scope.test_results.push(test_result)
 					},
 				  //error
 				  function( error ){
-					test_result = {test:'can send OPEN command',result:'FAIL',notes:error}
+					test_result = {test:'6/6: can send OPEN command',result:'FAIL',notes:error}
 					$scope.test_results.push(test_result)
 					}
 				  
