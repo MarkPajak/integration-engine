@@ -37,7 +37,7 @@ var shopify_checkorder=require('../shopify/shopify_checkorder.js');
 var database = require('./database.js');
 
 
-self.connect = function(port,cb) {
+self.connect = function(cb) {
 
 	
 		database= new database()
