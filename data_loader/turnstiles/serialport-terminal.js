@@ -256,18 +256,17 @@ self.simulate(settings.ticket)
 
 
 self.openPort = function(settings,cb) {
-//43 scenarios here
-//1. open command when web app load up		 >>dont open gates
-//2. user sends open command from web app	 >> open gates
 
-//3. visitor scanns ticket					 >> open gates
+	//3 scenarios here
+	//1. open command when web app load up		 >> dont open gates
+	//2. user sends open command from web app	 >> open gates
+	//3. visitor scanns ticket					 >> open gates
 
-console.log(settings)
- console.log('open serial port using command: '+settings.command)
+	  console.log(settings)
+	  console.log('open serial port using command: '+settings.command)
 	  
 	  port.write(settings.command, function(err) {
 		if (err) {
-		
 		   console.log('Error on write: ', err.message);
 		   cb( err)
 		}
