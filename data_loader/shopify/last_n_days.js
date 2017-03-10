@@ -10,7 +10,7 @@ var load_shopify_products = require("./load_shopify_product.js");
 var shopify_transaction = require("./shopify_transactions.js");
 var transactions_data_to_google_sheet = require("./google_sheet.js");
 var save_data_to_google_sheet = require("../services/save_data_to_google_sheet.js");
-var Order_form_to_google_sheet = require("../shopify/order_form.js");
+var Order_form_to_google_sheet = require("../shopify/order_form_controller.js");
 
 
 
@@ -64,7 +64,7 @@ load_shopify_productsInstance.count_all_products( function(donex) {
 								message: 'saving to google sheets'					
 						});	
 		
-			save_data_to_google_sheetInstance.add_data_to_sheet(analytics_data)
+		save_data_to_google_sheetInstance.add_data_to_sheet(analytics_data)
 		}else{
 			console.log('not saving')
 						var log = new logger({								
@@ -87,7 +87,7 @@ load_shopify_productsInstance.count_all_products( function(donex) {
 								message: 'saving to google sheets'					
 						});	
 		
-			order_form_to_google_sheet.add_data_to_sheet(analytics_data)
+			order_form_to_google_sheet.go(analytics_data)
 		}else{
 			console.log('not saving')
 						var log = new logger({								

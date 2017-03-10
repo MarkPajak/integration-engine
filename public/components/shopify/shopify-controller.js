@@ -12,7 +12,8 @@ exports.shopify_controller = function(log_messages,$scope, AuthService,$http, $q
 	  $scope.logging=true
 	$scope.data_number=7
 	
-	$scope.update_product_types=false
+	$scope.generate_order_forms=false
+	$scope.update_product_types=true
 		$scope.gridOptions=[]
 		$scope.gridOptions.data=[]
 		$scope.gridOptions.columnDefs = [   ]
@@ -99,6 +100,9 @@ $scope.report_running=false
 $scope.selected_set=selected_set
 $scope.optionset[selected_set].save_to_sheets=$scope.save_to_sheets
 $scope.optionset[selected_set].update_product_types=$scope.update_product_types
+$scope.optionset[selected_set].generate_order_forms=$scope.generate_order_forms
+
+
 $scope.optionset[selected_set].shop=shop
 console.log($scope.optionset[selected_set])
 

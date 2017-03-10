@@ -19,6 +19,7 @@ var Shopify_order = new mongoose.Schema({
 			order_status: { type: String},
 			vendor: { type: String},
 			name: { type: String},
+			report_id: { type: String},
 			price:{ type: Number },
 			date_report_run:{ type: Date }
 			

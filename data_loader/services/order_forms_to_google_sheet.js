@@ -1,5 +1,6 @@
-var order_forms_to_google_sheet = function (keys,options){
+var order_forms_to_google_sheet = function (options){
 var self = this;
+ 
  
 var async = require('async');
 var moment = require('moment');
@@ -9,10 +10,29 @@ var _ = require('underscore');
 var doc = new GoogleSpreadsheet( options.google_sheet_id);
 var duplicate = false
 var logger = require('../../models/logging.js');
-var sheet_name = options.title+"_"+moment(new Date()).format('DD_MM_YYYY')
 
 
-self.add_data_to_sheet = function(google_data){
+self.add_data_to_sheet = function(keys,all_google_data,alldone){
+
+var i=0
+
+function done (){
+
+if(i<=all_google_data.length){
+i++
+do_one(all_google_data[i])
+
+}
+else{
+alldone()
+}
+}
+done()
+
+
+function do_one(google_data){
+var sheet_name = "order_form_"+google_data._id+"_"+moment(new Date()).format('DD_MM_YYYY')
+
 var selected_sheet;
 async.series([
   function setAuth(step) {
@@ -71,7 +91,7 @@ async.series([
      function resize_sheet(step) {
 	 console.log('resize sheet')
 	  if(duplicate==true){
-			console.log('clear_sheet ')
+			console.log('clear_sheet')
    selected_sheet.resize([1000,30], function(){setTimeout(function(){step() }, 2000)})
 		} else
 		 {
@@ -79,46 +99,52 @@ async.series([
 	}
    },
      function setHeaderRow(step) {
-console.log('addig headsers')
+		console.log('headers')
 		 var headers = []
-		 headers.push("product_type")
-		 headers.push("price")
-		 headers.push("sales_value")
-		 headers.push("name")
-		 headers.push("count")	
-		 headers.push("inventory_quantity")
 		 headers.push("order_status")
-		 headers.push("barcode")
+		 headers.push("name")
+		 headers.push("count")
 		 headers.push("sku")
-		 headers.push("vendor")
-		 headers.push("date_report_run")
+		 headers.push("barcode")
+		 headers.push("box_quantity")
+		 headers.push("quantity")	
 		
 		selected_sheet.setHeaderRow(headers, function(){setTimeout(function(){step() }, 2000)})
    },
  
-  function workingWithRows(step) {
-   console.log('workingWithRows')
-	
+  function workingWithRows(step3) {
+  
+	products=google_data.products
+	 console.log('workingWithRows',products)
 			var i=0
 			iterate()
 			function iterate(){
 				
-				if(i<=google_data.length){
-					if(	google_data[i]){			
-						selected_sheet.addRow(google_data[i])
+				if(i<=products.length){
+					if(	products[i]){			
+						selected_sheet.addRow(products[i])
 					setTimeout(function(){iterate() }, 1000);
 					i++
 					}
+					else{				
+						step3()
+						}
 				}
-				else{
-				
+				else{				
+				step3()
 				}
 			}
 			
 			
   }
 
-]);
+
+],
+
+ done
+);
+
+}
 
 }
 

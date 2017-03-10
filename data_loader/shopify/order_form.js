@@ -1,7 +1,7 @@
 
-var order_form_to_google_sheet = function (options){
+var order_form_data = function (options){
 var self = this
-
+var mongoose = require('mongoose');
 var async = require('async');
 var _ = require('underscore');
 var express = require('express');
@@ -9,8 +9,12 @@ var router = express.Router();
 var _ = require('underscore');
 var Shopify_product = require('../../models/Shopify_product.js');
 var Shopify_order = require('../../models/Shopify_order.js');
+var async = require('async');
 
-var Shopify_aggregate = require('../../models/Shopify_transaction.js');
+
+var Order_data_to_google = require("../services/order_forms_to_google_sheet.js");
+var order_data_to_google = new Order_data_to_google(options); 
+
 
 
 var dbConfig = require('../../db');
@@ -18,77 +22,43 @@ var dbConfig = require('../../db');
 // Connect to DB
 
 
+self.get_vendor_ids= function(keys,cb){
 
-
-self.get_data = function(keys,cb){
-
-	 console.log('Shopify_product.find()')
-	 Shopify_product.find({shop_id:keys.shopify_store})
-	     .sort({'count': 'desc'})
-         .exec(function(err, product_list) { 
-			if(err) console.log(err)	
-			console.log('products found',product_list.length)	 
-			 Shopify_aggregate.aggregate([
+console.log(keys.shopify_store)
+	 Shopify_order.aggregate([
+				
+				{$match:
+					  {   shop_id:keys.shopify_store,order_status:'re-order'	  }
+				},
+				
+				
 				{
 					$group: {
-						_id: '$product_id' ,  
+						_id: '$vendor' ,  
+						 "products" : { "$addToSet" : { "order_status" : "$order_status","name" : "$title","sku" : "$sku", "barcode" : "$barcode",  "count" : "$count" } },
 						 count: {$sum: 1}
 					},
 					
-				}, {$sort : {count: -1 } }
+				}, {$sort : {count: -1 } }, 
+				{ $project : { "products" : 1}}
 				
-    ], function (err, product_analytics) {
+    ], function (err, vendors) {
         if (err) {
 			console.log(err)
             next(err);
         } else {
 				var result = []
-				console.log(product_list.length+ ' products found')
 				var matches = 0
-				_.each(product_analytics, function(_product) {	
-					_.each(product_list, function(product) {				
-						if(product._id==_product._id){
-							new_product=[]
-							new_product=product.toJSON()
-							new_product.count=_product.count
-							new_product.name=product.title
-							new_product.date_report_run=new Date()
-							new_product.sales_value=_product.count*new_product.price
-							var order_status = ""
-							if(product.inventory_quantity<=_product.count){
-							order_status = "re-order"
-							}
-							new_product.order_status=order_status
-							matches++
+				
 							
-							
-						var shopify_order = new Shopify_order(new_product);	
-						shopify_order.save();
-							
-							
-							
-							result.push(new_product)
-	
-						}
-					})		
-				})
-				console.log(matches+ ' matches found')
-				cb(result)
 			
-        }
-    });
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-   // res.json(todos);
-  });
-	
+				order_data_to_google.add_data_to_sheet(keys,vendors ,function () {
+				console.log('all done')
+				})
 }
 
-}
+})
 
-module.exports = order_form_to_google_sheet;
+}
+}
+module.exports = order_form_data;

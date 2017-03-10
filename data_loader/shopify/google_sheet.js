@@ -3,6 +3,7 @@ var transactions_data_to_google_sheet = function (options){
 var self = this
 
 var async = require('async');
+var moment = require('moment');
 var _ = require('underscore');
 var express = require('express');
 var router = express.Router();
@@ -53,6 +54,8 @@ self.get_data = function(keys,cb){
 							new_product=product.toJSON()
 							new_product.count=_product.count
 							new_product.name=product.title
+							new_product.barcode=product.barcode
+							new_product.report_id=options.title+"_"+moment(new Date()).format('DD_MM_YYYY')
 							new_product.date_report_run=report_date 
 							new_product.sales_value=_product.count*new_product.price
 							var order_status = ""

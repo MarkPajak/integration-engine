@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-
-var Shopify_order = require('../models/Shopify_order.js');
+var _ =require('underscore');
+var shopify_order = require('../models/Shopify_order.js');
 
 var isAuthenticated = function (req, res, next) {
 	
@@ -11,20 +11,10 @@ var isAuthenticated = function (req, res, next) {
 	return res.json();
 }
 
-/* GET /todos listing. */
-router.get('/',isAuthenticated, function(req, res, next) {
-  Shopify_order.find()
-   .sort({'date': 'desc'})
-     .exec(function(err, todos) {
-  
-     if (err) return next(err);
-    res.json(todos);
-  });
-});
 
 /* POST /todos */
 router.post('/', function(req, res, next) {
-  Shopify_order.create(req.body, function (err, post) {
+  shopify_order.create(req.body, function (err, post) {
     if (err) return next(err);
     res.json(post);
   });
@@ -34,18 +24,25 @@ router.post('/', function(req, res, next) {
 
 router.get('/vendor/:vendor_id', function(req, res, next) {
 
-console.log(req.param('vendor_id'))
-  Shopify_order.find({vendor_id:req.param.vendor_id}, function (err, post) {
-    if (err) return next(err);
-    res.json(post);
-  });
-});
+console.log(req.params['vendor_id'])
+var vendor_id=req.params['vendor_id']
+
+			shopify_order.find()
+            .exec(function (err, athletes) {
+				  if (err) return handleError(err);
+				  var filtered = _.filter(athletes, function(element){
+					return  element['vendor_id'] == vendor_id;
+				});
 
 
+				  res.json(filtered)
+				})
+
+})
 
 /* GET /todos/id */
 router.get('/:id', function(req, res, next) {
-  Shopify_order.findById(req.params.id, function (err, post) {
+  shopify_order.findById(req.params.id, function (err, post) {
     if (err) return next(err);
     res.json(post);
   });
@@ -53,7 +50,7 @@ router.get('/:id', function(req, res, next) {
 
 /* PUT /todos/:id */
 router.put('/:id', function(req, res, next) {
-  Shopify_order.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
+  shopify_order.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
     if (err) return next(err);
     res.json(post);
   });
@@ -61,7 +58,7 @@ router.put('/:id', function(req, res, next) {
 
 /* DELETE /todos/:id */
 router.delete('/:id', function(req, res, next) {
-  Shopify_order.findByIdAndRemove(req.params.id, req.body, function (err, post) {
+  shopify_order.findByIdAndRemove(req.params.id, req.body, function (err, post) {
     if (err) return next(err);
     res.json(post);
   });
