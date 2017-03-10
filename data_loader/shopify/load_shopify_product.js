@@ -20,37 +20,7 @@ var dbConfig = require('../../db');
 var logger = require('../../models/logging.js');
 function product_type_from_id(item,order){
 	
-/*	
-	var product_id = item.product_id
-	var line_item_id = item.id
-			var return_product_type = []
 
-			url = url_base+"products.json?ids="+product_id+"&fields=product_type,variants,vendor"
-
-			request({
-				url: url,
-				json: true
-			}, function (error, response, body) {
-			if (error) console.log(error)
-				if (!error && response.statusCode === 200) {		
-					_.each(body.products, function(post) {			
-						var shopify_transaction = new Shopify_transaction({
-						date: new Date(order.created_at),
-						product_type: post.product_type,
-						shop_id:shop_id,
-						sku: post.variants[0].sku,
-						vendor:post.vendor,
-						price:post.variants[0].price,
-						line_id:line_item_id
-						});				
-						shopify_transaction.update(function (err) {  if (err )console.log('saving error'+err) });
-	
-					});
-					
-				}
-			})		
-			
-			*/
 }
 
 function products(total_orders,cb){
@@ -63,7 +33,7 @@ function products(total_orders,cb){
 	console.log('pages_in_total '+pages_in_total)
 	
 	 function getNextset() {
-	console.log('looking at page '+current_page +'of '+pages_in_total)	
+	//console.log('looking at page '+current_page +'of '+pages_in_total)	
 			
 			var return_product_type = ""
 			url = url_base+"products.json?&limit="+limit+"&page="+current_page+ "&fields=id,title,product_type,variants,vendor"
@@ -74,7 +44,7 @@ function products(total_orders,cb){
 			}, function (error, response, body) {
 			if (error ) console.log(error)
 				if (!error && response.statusCode === 200) {
-				console.log(' \n products found... '+body.products.length+ 'of '+pages_in_total)
+				//console.log(' \n products found... '+body.products.length+ 'of '+pages_in_total)
 				 		var log = new logger({								
 								date:  moment(new Date()).format(),
 								username:keys.user,

@@ -63,7 +63,7 @@ console.log('looking for '+product_id)
 				 if(!err && post){
 		
 			
-						console.log('saving')
+						//console.log('saving')
 						var shopify_transaction = new Shopify_transaction({
 							date: item.date,
 							shop_id:shop_id,
@@ -78,11 +78,11 @@ console.log('looking for '+product_id)
 							price:post.price,
 							line_id:line_item_id
 						});	
-						console.log('saving' +shopify_transaction.title)
+						//console.log('saving' +shopify_transaction.title)
 					
 						shopify_transaction.save(function (err) {
 						  if(err) console.log(err)
-						  console.log('saved')
+						 // console.log('saved')
 						 
 														
 			
@@ -94,7 +94,7 @@ console.log('looking for '+product_id)
 								message: 'get next set' + product_count + 'of' + orders_in_total
 						});	
 						log.save(function (err) {})
-							console.log('get next set' + product_count + 'of' + orders_in_total)
+							//console.log('get next set' + product_count + 'of' + orders_in_total)
 							getNextitemset(total_orders[product_count])
 					}
 					else

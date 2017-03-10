@@ -9,7 +9,7 @@ exports.shopify_controller = function(log_messages,$scope, AuthService,$http, $q
 			$scope.report_running=true
 	  })
 	console.log('controller go')
-	
+	  $scope.logging=true
 	$scope.data_number=7
 	
 	$scope.update_product_types=false
@@ -114,6 +114,7 @@ console.log($scope.optionset[selected_set])
 					
 							
 				})
+				$scope.logging=false
 			$scope.rows=$scope._rows
 			$scope.gridOptions.data=$scope.rows;
 			$(window).resize()
@@ -139,19 +140,13 @@ $scope.report_running=true
 
 	log_messages.query({}, function(messages) {
 	
-	setInterval(function(){
-	$scope.messages[0]='checking logs'
-				 }, 1 * 60 * 1000)
-	
-	setInterval(function(){
-			
 			log_messages.query({}, function(team) {
 				_.each(team, function(row,index) {
 						$scope.messages[0]=	row.username+" "+row.date+" "+row.message
 		
 				})
 			})	
-		 }, 3000);
+			
 	})
 
 }

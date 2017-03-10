@@ -1,4 +1,4 @@
-var save_data_to_google_sheet = function (keys,options){
+var order_forms_to_google_sheet = function (keys,options){
 var self = this;
  
 var async = require('async');
@@ -124,4 +124,4 @@ console.log('addig headsers')
 
 }
 
-module.exports = save_data_to_google_sheet;
+module.exports = order_forms_to_google_sheet;

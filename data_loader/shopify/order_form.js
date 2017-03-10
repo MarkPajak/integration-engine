@@ -1,5 +1,5 @@
 
-var transactions_data_to_google_sheet = function (options){
+var order_form_to_google_sheet = function (options){
 var self = this
 
 var async = require('async');
@@ -45,7 +45,6 @@ self.get_data = function(keys,cb){
 				var result = []
 				console.log(product_list.length+ ' products found')
 				var matches = 0
-				var report_date = new Date()
 				_.each(product_analytics, function(_product) {	
 					_.each(product_list, function(product) {				
 						if(product._id==_product._id){
@@ -53,7 +52,7 @@ self.get_data = function(keys,cb){
 							new_product=product.toJSON()
 							new_product.count=_product.count
 							new_product.name=product.title
-							new_product.date_report_run=report_date 
+							new_product.date_report_run=new Date()
 							new_product.sales_value=_product.count*new_product.price
 							var order_status = ""
 							if(product.inventory_quantity<=_product.count){
@@ -62,7 +61,7 @@ self.get_data = function(keys,cb){
 							new_product.order_status=order_status
 							matches++
 							
-						//n.b. does async mean soem get lost?	
+							
 						var shopify_order = new Shopify_order(new_product);	
 						shopify_order.save();
 							
@@ -92,4 +91,4 @@ self.get_data = function(keys,cb){
 
 }
 
-module.exports = transactions_data_to_google_sheet;
+module.exports = order_form_to_google_sheet;
