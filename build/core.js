@@ -9486,6 +9486,7 @@ exports.shopify_controller = function(log_messages,$scope, AuthService,$http, $q
 			{ field: 'inventory_quantity' ,resizable: true},
 			{ field: 'order_status' ,resizable: true},
 			{ field: 'sku' ,resizable: true},
+			{ field: 'barcode' ,resizable: true},
 			{ field: 'vendor' ,resizable: true},
 			{ field: 'date_report_run' ,resizable: true}
 			],
@@ -9600,7 +9601,7 @@ $scope.report_running=true
   
   
 
-
+/*
 	log_messages.query({}, function(messages) {
 	
 			log_messages.query({}, function(team) {
@@ -9611,6 +9612,7 @@ $scope.report_running=true
 			})	
 			
 	})
+	*/
 
 }
 
@@ -14167,7 +14169,7 @@ app.config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
 }]);
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_bba4ed4f.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_94545c1f.js","/")
 },{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/shopify/shopify-controller":18,"../components/shopify/shopify-directive":19,"../components/team/app-controllers":20,"../components/team/form-controller":21,"../components/team/leave-controller":22,"../components/team/team-controller":23,"../components/tech-support/tech-support-controller":24,"../components/tech-support/tech-support-directive":25,"../components/tech-support/trello-services":26,"../components/timeline-settings/timeline-settings-controller":27,"../components/timeline/timeline-controller":28,"../components/timeline/timeline-directive":29,"../components/timeline/timeline-googlesheets-services":30,"../components/timeline/timeline-learning-bookings-services":31,"../components/timeline/timeline-leave-services":32,"../components/timeline/timeline-loans-services":33,"../components/timeline/timeline-services":34,"../components/timeline/timeline-shopify-services":35,"../components/turnstiles/turnstiles-controller":36,"../components/turnstiles/turnstiles-directive":37,"../components/user-admin/users-controller":38,"../components/user-admin/users-directive":39,"../shared/controllers/controllers":40,"../shared/controllers/navbar-controller":41,"../shared/directives/directives":42,"../shared/services/app-services":44,"../shared/services/data-services":45,"b55mWE":4,"buffer":3,"underscore":7}],44:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 

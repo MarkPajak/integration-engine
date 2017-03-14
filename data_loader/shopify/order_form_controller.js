@@ -16,7 +16,7 @@ var order_data = new Order_data(keys);
 
 
 self.go=function(){
-
+console.log('get_vendor_ids')
 order_data.get_vendor_ids(keys,function(done){
 console.log(done)
 });

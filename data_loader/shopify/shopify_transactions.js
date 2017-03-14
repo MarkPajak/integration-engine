@@ -50,14 +50,13 @@ function products(total_orders,cb){
 	console.log('orders_in_total '+orders_in_total)
 
 	 function getNextitemset(item) {
+		 
 //console.log(item)
 	var product_id = item.product_id
 	var line_item_id = item.id
 	var return_product_type = []
-console.log('looking for '+product_id)
 
-		//UserModel.findById(id, function (err, user) { ... } );	
-		//findOne({'fb.gender': 'male'}
+		
 		Shopify_products.findById(product_id,function(err, post) {
 				 if(err) console.log(err)
 				 if(!err && post){
@@ -78,30 +77,22 @@ console.log('looking for '+product_id)
 							price:post.price,
 							line_id:line_item_id
 						});	
-						//console.log('saving' +shopify_transaction.title)
+					
 					
 						shopify_transaction.save(function (err) {
 						  if(err) console.log(err)
 						 // console.log('saved')
 						 
 														
-			
-					product_count++				
-					if(product_count< orders_in_total){
-						 		var log = new logger({								
-								date: new Date(),
-								username:keys.user,
-								message: 'get next set' + product_count + 'of' + orders_in_total
-						});	
-						log.save(function (err) {})
-							//console.log('get next set' + product_count + 'of' + orders_in_total)
-							getNextitemset(total_orders[product_count])
+								product_count++	
+					if(total_orders[product_count]&&product_count< orders_in_total){
+						
+						getNextitemset(total_orders[product_count])
 					}
 					else
 					{
 						console.log('max reached ' + shopifyorders.length + ' orders found')
-						//mongoose.disconnect();
-						//done
+						
 						cb()	
 					}
 					
@@ -109,19 +100,8 @@ console.log('looking for '+product_id)
 				}
 				else
 				{
-						//none found - try again
-						product_count++			
-					if(product_count< orders_in_total){
-							console.log('get next set' + product_count + 'of' + orders_in_total)
-							getNextitemset(total_orders[product_count])
-					}
-					else
-					{
-						console.log('max reached ' + shopifyorders.length + ' orders found')
-						//mongoose.disconnect();
-						//done
-						cb()	
-					}
+				console.log('error was' + err)
+				//cb()	
 				}
 	
 			})	//end of async

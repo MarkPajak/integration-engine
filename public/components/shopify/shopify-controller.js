@@ -27,6 +27,7 @@ exports.shopify_controller = function(log_messages,$scope, AuthService,$http, $q
 			{ field: 'inventory_quantity' ,resizable: true},
 			{ field: 'order_status' ,resizable: true},
 			{ field: 'sku' ,resizable: true},
+			{ field: 'barcode' ,resizable: true},
 			{ field: 'vendor' ,resizable: true},
 			{ field: 'date_report_run' ,resizable: true}
 			],
@@ -141,7 +142,7 @@ $scope.report_running=true
   
   
 
-
+/*
 	log_messages.query({}, function(messages) {
 	
 			log_messages.query({}, function(team) {
@@ -152,6 +153,7 @@ $scope.report_running=true
 			})	
 			
 	})
+	*/
 
 }
 

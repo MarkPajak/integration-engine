@@ -87,7 +87,7 @@ load_shopify_productsInstance.count_all_products( function(donex) {
 								message: 'saving to google sheets'					
 						});	
 		
-			order_form_to_google_sheet.go(analytics_data)
+			order_form_to_google_sheet.(analytics_data)
 		}else{
 			console.log('not saving')
 						var log = new logger({								

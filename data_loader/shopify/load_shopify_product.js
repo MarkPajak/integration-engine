@@ -33,7 +33,7 @@ function products(total_orders,cb){
 	console.log('pages_in_total '+pages_in_total)
 	
 	 function getNextset() {
-	//console.log('looking at page '+current_page +'of '+pages_in_total)	
+	console.log('looking at page '+current_page +'of '+pages_in_total)	
 			
 			var return_product_type = ""
 			url = url_base+"products.json?&limit="+limit+"&page="+current_page+ "&fields=id,title,product_type,variants,vendor"

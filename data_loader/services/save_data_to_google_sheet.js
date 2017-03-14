@@ -12,7 +12,16 @@ var logger = require('../../models/logging.js');
 var sheet_name = options.title+"_"+moment(new Date()).format('DD_MM_YYYY')
 
 
-self.add_data_to_sheet = function(google_data){
+self.add_data_to_sheet = function(google_data,alldone){
+var i=0	
+function done(){
+alldone()
+}
+
+done()
+
+	
+	console.log(google_data.length + " rows to add")
 var selected_sheet;
 async.series([
   function setAuth(step) {
@@ -118,8 +127,10 @@ console.log('addig headsers')
 			
   }
 
-]);
+],
 
+ done
+);
 }
 
 }

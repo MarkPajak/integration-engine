@@ -1,5 +1,5 @@
 
-var transactions_data_to_google_sheet = function (options){
+var transactions_data_to_google_sheet = function (keys,options){
 var self = this
 
 var async = require('async');
@@ -21,7 +21,7 @@ var dbConfig = require('../../db');
 
 
 
-self.get_data = function(keys,cb){
+self.get_data = function(cb){
 
 	 console.log('Shopify_product.find()')
 	 Shopify_product.find({shop_id:keys.shopify_store})
@@ -38,7 +38,7 @@ self.get_data = function(keys,cb){
 					
 				}, {$sort : {count: -1 } }
 				
-    ], function (err, product_analytics) {
+    ], function (err, transaction_analytics) {
         if (err) {
 			console.log(err)
             next(err);
@@ -47,7 +47,11 @@ self.get_data = function(keys,cb){
 				console.log(product_list.length+ ' products found')
 				var matches = 0
 				var report_date = new Date()
-				_.each(product_analytics, function(_product) {	
+				//possible mem leak
+				product_list
+				
+				
+				_.each(transaction_analytics, function(_product) {	
 					_.each(product_list, function(product) {				
 						if(product._id==_product._id){
 							new_product=[]
@@ -64,7 +68,7 @@ self.get_data = function(keys,cb){
 							}
 							new_product.order_status=order_status
 							matches++
-							
+						console.log(matches+ ' product-orders added')	
 						//n.b. does async mean soem get lost?	
 						var shopify_order = new Shopify_order(new_product);	
 						shopify_order.save();
