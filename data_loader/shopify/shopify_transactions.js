@@ -101,8 +101,15 @@ cb()
 							}
 							else  //no error
 							{
-								console.log('error was' + err)
-							//cb()	
+								product_count++	
+										if(total_orders[product_count]&&product_count< orders_in_total){
+											getNextitemset(total_orders[product_count])
+										}
+										else
+										{
+											console.log('max reached ' + shopifyorders.length + ' orders found - end of function chain')
+											innerCallback()	
+										}	
 							}
 				
 						})	//end of async
