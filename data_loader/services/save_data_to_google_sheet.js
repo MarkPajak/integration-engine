@@ -12,13 +12,8 @@ var logger = require('../../models/logging.js');
 var sheet_name = options.title+"_"+moment(new Date()).format('DD_MM_YYYY')
 
 
-self.add_data_to_sheet = function(google_data,alldone){
+self.add_data_to_sheet = function(google_data,done){
 var i=0	
-function done(){
-alldone()
-}
-
-done()
 
 	
 	console.log(google_data.length + " rows to add")
@@ -91,7 +86,10 @@ async.series([
 console.log('addig headsers')
 		 var headers = []
 		 headers.push("product_type")
+		 headers.push("variant_id")
 		 headers.push("price")
+		 headers.push("cost_of_goods")
+		 headers.push("order_cost")
 		 headers.push("sales_value")
 		 headers.push("name")
 		 headers.push("count")	
@@ -103,11 +101,51 @@ console.log('addig headsers')
 		 headers.push("date_report_run")
 		
 		selected_sheet.setHeaderRow(headers, function(){setTimeout(function(){step() }, 2000)})
+		step();
    },
+   /*
+    function workingWithCells(step) {
+	
+	
+    selected_sheet.getCells({
+      'min-row': 1,
+      'max-row': 5,
+      'return-empty': true
+    }, function(err, cells) {
+		  var row = 1
+		  var cell_no=20
+		  _.each(google_data, function (line,i) {
+					//each line of data
+					var col=0
+					 for (var field in line) {
+							
+						  if (line.hasOwnProperty('product_type')) {
+								cell_no+=col
+								if(cells[cell_no]){
+									cells[cell_no].value=line['product_type']
+									cells[cell_no].col=col+1
+									cells[cell_no].row=i+1
+									console.log(cells[cell_no])
+								}
+						  }
+						  col++
+				}
+				cell_no+=20
+		  })
+
+		  selected_sheet.bulkUpdateCells(cells, function () {
+			step();
+		   });
+    });
+  }
+  */
  
   function workingWithRows(step) {
    console.log('workingWithRows')
 	
+		 selected_sheet.bulkUpdateCells(google_data); //async	
+			
+			
 			var i=0
 			iterate()
 			function iterate(){
@@ -123,6 +161,8 @@ console.log('addig headsers')
 				
 				}
 			}
+			
+			
 			
 			
   }

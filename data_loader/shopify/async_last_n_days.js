@@ -1,4 +1,4 @@
-var shopify_product_status_app = function (keys,options,cb){
+var shopify_product_status_app = function (keys,options){
 
 
 
@@ -11,6 +11,8 @@ var shopify_transaction = require("./shopify_transactions.js");
 var transactions_data_to_google_sheet = require("./google_sheet.js");
 var save_data_to_google_sheet = require("../services/save_data_to_google_sheet.js");
 var Order_form_to_google_sheet = require("../shopify/order_form_controller.js");
+var Load_cost_of_goods = require("../shopify/load_cost_of_goods.js");
+var Monthlytotals = require("../shopify/monthly_totals.js");
 
 var logger = require('../../models/logging.js');
 
@@ -20,7 +22,8 @@ var shopify_transactionInstance = new shopify_transaction(keys,options)
 var transactions_data_to_google_sheet = new transactions_data_to_google_sheet(keys,options)
 var save_data_to_google_sheetInstance = new save_data_to_google_sheet(keys,options);  
 var order_form_sheet = new Order_form_to_google_sheet(keys,options);  
-
+var load_cost_of_goods = new Load_cost_of_goods(keys,options);  
+var monthlytotals = new Monthlytotals(keys,options); 
 
 var async = require('async');
 
@@ -28,7 +31,7 @@ var async = require('async');
 
 
 
-this.go = function(cb){
+this.go = function(){
 	
 	var shopifydata
 	
@@ -42,7 +45,15 @@ this.go = function(cb){
 				console.log('count_all_products callback')
 				callback(null,donex)	
 			})
-		}  
+		} 
+
+		function cost_of_goods(callback) {
+			console.log('>>>>>>>>>>>cost_of_goods')
+			load_cost_of_goods.add_price_to_products( function(donex) {
+				console.log('cost_of_goods callback')
+				callback(null,donex)	
+			})
+		} 		
 
 		function count_all_orders(callback) {
 			console.log('>>>>>>>>>>>count_all_orders')
@@ -58,11 +69,12 @@ this.go = function(cb){
 				console.log('get_data callback')
 				shopifydata=analytics_data
 				callback(null,analytics_data)
-				cb(analytics_data)				
+				//cb(analytics_data)				
 			})
 		}  
 
 		function add_data_to_sheet(callback) {
+		
 			console.log('>>>>>>>>>>>add_data_to_sheet')
 			save_data_to_google_sheetInstance.add_data_to_sheet(shopifydata,function(analytics_data) {
 				console.log('add_data_to_sheet callback')
@@ -71,27 +83,46 @@ this.go = function(cb){
 		}  
 
 		function order_form_to_google_sheet(callback) {
+		
 			console.log('>>>>>>>>>>>order_form_to_google_sheet')
-			
-			order_form_sheet.go(function(analytics_data) {
-				console.log('order_form_to_google_sheet callback')
-				callback(null,analytics_data)	
-			})
+			if(options.generate_order_forms==true){
+				order_form_sheet.go(function(analytics_data) {
+					console.log('order_form_to_google_sheet callback')
+					callback(null,analytics_data)	
+				})
+			}
+			else
+			{
+			callback(null,null)	
+			}
+		}
+
+		function monthly_totals(callback) {
+					
+		console.log('>>>>>>>>>>>monthly_totals')
+		monthlytotals.get_vendor_ids(keys,function(vendor_ids){
+
+					console.log(vendor_ids)
+					callback(null,analytics_data)	
+
+					})
 		}  
+		
 
 		async.series([
 			count_all_products,
+			cost_of_goods,
 			count_all_orders,
 			get_data,
 			add_data_to_sheet,
+			monthly_totals,
 			order_form_to_google_sheet
+			
 		], function (err, results) {
 			
 			if(err) console.log(err)
 			// Here, results is an array of the value from each function
-			
-		console.log('cheese')
-		});
+			});
 
 
 

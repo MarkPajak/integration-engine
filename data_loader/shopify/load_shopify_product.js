@@ -53,6 +53,7 @@ function products(total_orders,cb){
 						log.save(function (err) {})
 				async.forEach(body.products, function(post, cbb) { 
 						variant=post.variants[0]
+						//n.b. different variants not included in analysis>>>>RISK
 						//console.log(' \n post.title.. '+ post.title)	
 						if(	post.product_type=="")post.product_type="unassigned"
 						
@@ -61,6 +62,7 @@ function products(total_orders,cb){
 							  product_type:  post.product_type ,	
 							  title:  post.title,
 							  sku: variant.sku,
+							  variant_id: variant.id,
 							  barcode: variant.barcode,
 							  metafield:post.metafield,
 							  vendor:post.vendor,

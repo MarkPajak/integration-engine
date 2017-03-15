@@ -1,38 +1,22 @@
-var order_forms_to_google_sheet = function (options){
+var save_data_to_google_sheet = function (keys,options){
 var self = this;
- 
  
 var async = require('async');
 var moment = require('moment');
 var GoogleSpreadsheet = require('google-spreadsheet');
 var async = require('async');
 var _ = require('underscore');
-var doc = new GoogleSpreadsheet( options.google_sheet_id);
+var doc = new GoogleSpreadsheet(options.google_sheet_id);
 var duplicate = false
 var logger = require('../../models/logging.js');
+var sheet_name = "vendor_order_cost_estimate_"+moment(new Date()).format('DD_MM_YYYY')
 
 
-self.add_data_to_sheet = function(keys,all_google_data,alldone){
+self.add_data_to_sheet = function(google_data,done){
+var i=0	
 
-var i=0
-
-function done (){
-
-if(i<=all_google_data.length){
-i++
-do_one(all_google_data[i])
-
-}
-else{
-alldone()
-}
-}
-done()
-
-
-function do_one(google_data){
-var sheet_name = "order_form_"+google_data._id//+"_"+moment(new Date()).format('DD_MM_YYYY')
-
+	
+	console.log(google_data.length + " rows to add")
 var selected_sheet;
 async.series([
   function setAuth(step) {
@@ -63,15 +47,19 @@ async.series([
          doc.addWorksheet({
       title: sheet_name
     }, function(err, sheet) {
-	console.log('sheet addWorksheet')
-	 if(sheet){
-  selected_sheet = sheet
-  //sheet =info.worksheets[i];
- 
-	console.log('adding to sheet 1: '+sheet.title+' '+sheet.rowCount+'x'+sheet.colCount);
+	
+	
+	if(err) console.log(err)
+	if(sheet){
+			console.log('sheet addWorksheet')
+		  selected_sheet = sheet
+		  //sheet =info.worksheets[i];
+			console.log('adding to sheet 1: '+sheet.title+' '+sheet.rowCount+'x'+sheet.colCount);
       step();
 	  }
     });
+	
+	
 	   }  
      
     });
@@ -94,7 +82,7 @@ async.series([
      function resize_sheet(step) {
 	 console.log('resize sheet')
 	  if(duplicate==true){
-			console.log('clear_sheet')
+			console.log('clear_sheet ')
    selected_sheet.resize([1000,30], function(){setTimeout(function(){step() }, 2000)})
 		} else
 		 {
@@ -102,55 +90,44 @@ async.series([
 	}
    },
      function setHeaderRow(step) {
-		console.log('headers')
+console.log('addig headsers')
 		 var headers = []
-		 headers.push("order_status")
-		 headers.push("name")
-		 headers.push("count")
-		 headers.push("sku")
-		 headers.push("barcode")
-		 headers.push("box_quantity")
-		 headers.push("quantity")	
+	
+		 headers.push("vendor")
+		 headers.push("order_estimate")
+		 headers.push("date_report_run")
 		
 		selected_sheet.setHeaderRow(headers, function(){setTimeout(function(){step() }, 2000)})
    },
  
-  function workingWithRows(step3) {
-  
-	products=google_data.products
-	 console.log('workingWithRows',products)
+  function workingWithRows(step) {
+   console.log('workingWithRows')
+	
 			var i=0
 			iterate()
 			function iterate(){
 				
-				if(i<=products.length){
-					if(	products[i]){			
-						selected_sheet.addRow(products[i])
+				if(i<=google_data.length){
+					if(	google_data[i]){			
+						selected_sheet.addRow(google_data[i])
 					setTimeout(function(){iterate() }, 1000);
 					i++
 					}
-					else{				
-						step3()
-						}
 				}
-				else{				
-				step3()
+				else{
+				
 				}
 			}
 			
 			
   }
 
-
 ],
 
  done
 );
-
 }
 
 }
 
-}
-
-module.exports = order_forms_to_google_sheet;
+module.exports = save_data_to_google_sheet;

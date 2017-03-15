@@ -9,6 +9,7 @@ var Shopify_order = new mongoose.Schema({
 			sku: { type: String},
 			barcode: { type: String},
 			metafield:{ type: Object},
+			variant_id:{ type: String},
 			vendor: { type: String, required: true},
 			title: { type: String, required: true },	
 			inventory_quantity: { type: Number},
@@ -17,6 +18,7 @@ var Shopify_order = new mongoose.Schema({
 			sales_value: { type: Number},
 			count: { type: Number},
 			order_status: { type: String},
+			cost_price: { type: Number},	
 			vendor: { type: String},
 			name: { type: String},
 			report_id: { type: String},
@@ -33,6 +35,12 @@ Shopify_order.virtual('vendor_id').get(function() {
 
 });
 
+Shopify_order.virtual('order_cost').get(function() {
+ 
+				
+				return this.cost_price*this.number_sold
+
+});
 
 Shopify_order.virtual('date_day').get(function() {
  

@@ -30,6 +30,9 @@ function product_type_from_id(item,order){
 	
 	
 	var product_id = item.product_id
+	var variant_id = item.variant_id
+	console.log('variant_id',variant_id)
+	
 	var line_item_id = item.id
 			var return_product_type = []
 

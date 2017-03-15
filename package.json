@@ -90,6 +90,7 @@
     "ejs": "~2.5.5",
     "express": "^4.14.1",
     "express-flash": "0.0.2",
+    "express-json-csv": "0.0.3",
     "express-messages": "^1.0.1",
     "express-session": "^1.14.2",
     "fotorama": "*",

@@ -14,7 +14,11 @@ var moment = require('moment');
 var _ = require('underscore');
 var url_base="https://"+keys.shopify_api+":"+keys.shopify_password+shop_id+"/admin/"
 var logger = require('../../models/logging.js');
-
+var mongoose = require('mongoose');
+var dbConfig = require('../../db');
+mongoose.connect(dbConfig.url, function(err) {
+    if (err) throw err;
+});
 var Shopify_transaction = require('../../models/Shopify_transaction.js');
 var Shopify_products = require('../../models/Shopify_product.js');
 var dbConfig = require('../../db');
@@ -39,7 +43,10 @@ var shopifyorders = []
 
 function products(total_orders,cb){
 
+innerCallback = function(){
 
+cb()
+}
 
 
 
@@ -50,61 +57,55 @@ function products(total_orders,cb){
 	console.log('orders_in_total '+orders_in_total)
 
 	 function getNextitemset(item) {
-		 
-//console.log(item)
-	var product_id = item.product_id
-	var line_item_id = item.id
-	var return_product_type = []
-
-		
-		Shopify_products.findById(product_id,function(err, post) {
-				 if(err) console.log(err)
-				 if(!err && post){
-		
-			
-						//console.log('saving')
-						var shopify_transaction = new Shopify_transaction({
-							date: item.date,
-							shop_id:shop_id,
-							quantity:post.quantity,
-							product_type: post.product_type,
-							product_id: post.id,
-							sku: post.sku,
-							metafield:post.metafield,
-							barcode: post.barcode,
-							vendor:post.vendor,
-							title: post.title,
-							price:post.price,
-							line_id:line_item_id
-						});	
-					
-					
-						shopify_transaction.save(function (err) {
-						  if(err) console.log(err)
-						 // console.log('saved')
-						 
-														
-								product_count++	
-					if(total_orders[product_count]&&product_count< orders_in_total){
-						
-						getNextitemset(total_orders[product_count])
-					}
-					else
-					{
-						console.log('max reached ' + shopifyorders.length + ' orders found')
-						
-						cb()	
-					}
-					
-					 });
-				}
-				else
-				{
-				console.log('error was' + err)
-				//cb()	
-				}
 	
-			})	//end of async
+				var product_id = item.product_id
+				var line_item_id = item.id
+				var return_product_type = []
+				console.log('findById ',product_id)
+					
+					Shopify_products.findById(product_id,function(err, post) {
+							
+							 if(err) console.log(err)
+							 if(!err && post){
+									
+									var shopify_transaction = new Shopify_transaction({
+										date: item.date,
+										shop_id:shop_id,
+										quantity:post.quantity,
+										product_type: post.product_type,
+										product_id: post.id,
+										cost_of_goods: post.cost_of_goods,
+										variant_id: item.variant_id,
+										sku: post.sku,
+										metafield:post.metafield,
+										barcode: post.barcode,
+										vendor:post.vendor,
+										title: post.title,
+										price:post.price,
+										line_id:line_item_id
+									});	
+								
+								
+									shopify_transaction.save(function (err) {
+										if(err) console.log(err)
+										product_count++	
+										if(total_orders[product_count]&&product_count< orders_in_total){
+											getNextitemset(total_orders[product_count])
+										}
+										else
+										{
+											console.log('max reached ' + shopifyorders.length + ' orders found - end of function chain')
+											innerCallback()	
+										}
+								 });
+							}
+							else  //no error
+							{
+								console.log('error was' + err)
+							//cb()	
+							}
+				
+						})	//end of async
 		}
 		
 getNextitemset(total_orders[0])		
@@ -130,6 +131,7 @@ function orders(total_orders,cb){
 				url: url,
 				json: true
 			}, function (error, response, body) {
+			if (error) console.log(error)
 				if (!error && response.statusCode === 200) {
 						console.log('orders found... '+body.orders.length)
 						_.each(body.orders, function(order) {
@@ -155,7 +157,7 @@ function orders(total_orders,cb){
 						
 					}
 					else{
-					console.log('max reached ' + shopifyorders.length + ' orders found')
+					console.log('max reached ' + shopifyorders.length + ' orders found.. ..now loadibng products')
 					//mongoose.disconnect();
 					products(shopifyorders,cb)
 
@@ -174,8 +176,8 @@ getNextset()
 self.count_all_orders = function(cb){
 
 
-if(options.update_product_types==true){
-console.log('not aupdating products')
+if(options.update_product_types==false){
+console.log('not apdating products')
 cb()
 }
 else

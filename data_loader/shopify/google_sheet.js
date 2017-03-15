@@ -59,6 +59,9 @@ self.get_data = function(cb){
 							new_product.count=_product.count
 							new_product.name=product.title
 							new_product.barcode=product.barcode
+							new_product.cost_of_goods=product.cost_price
+												
+							new_product.variant_id=product.variant_id
 							new_product.report_id=options.title+"_"+moment(new Date()).format('DD_MM_YYYY')
 							new_product.date_report_run=report_date 
 							new_product.sales_value=_product.count*new_product.price
@@ -66,6 +69,7 @@ self.get_data = function(cb){
 							if(product.inventory_quantity<=_product.count){
 							order_status = "re-order"
 							}
+							new_product.order_cost=product.cost_price*_product.count		
 							new_product.order_status=order_status
 							matches++
 						console.log(matches+ ' product-orders added')	
