@@ -101,7 +101,7 @@ console.log('addig headsers')
 		 headers.push("date_report_run")
 		
 		selected_sheet.setHeaderRow(headers, function(){setTimeout(function(){step() }, 2000)})
-		step();
+		//step();
    },
    /*
     function workingWithCells(step) {
@@ -143,7 +143,7 @@ console.log('addig headsers')
   function workingWithRows(step) {
    console.log('workingWithRows')
 	
-		 selected_sheet.bulkUpdateCells(google_data); //async	
+		// selected_sheet.bulkUpdateCells(google_data); //async	
 			
 			
 			var i=0
@@ -156,9 +156,14 @@ console.log('addig headsers')
 					setTimeout(function(){iterate() }, 1000);
 					i++
 					}
-				}
-				else{
 				
+				
+					else{				
+						step()
+						}
+				}
+				else{				
+				done
 				}
 			}
 			
@@ -167,9 +172,7 @@ console.log('addig headsers')
 			
   }
 
-],
-
- done
+]
 );
 }
 

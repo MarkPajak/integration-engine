@@ -130,11 +130,11 @@ async.series([
 					i++
 					}
 					else{				
-						step3()
+						step()
 						}
 				}
 				else{				
-				step3()
+				done
 				}
 			}
 			
@@ -142,9 +142,9 @@ async.series([
   }
 
 
-],
+]
 
- done
+ 
 );
 
 }
