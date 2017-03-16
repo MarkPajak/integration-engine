@@ -14,7 +14,7 @@ var allkeys=JSON.parse(fs.readFileSync('./secret/api_keys.JSON').toString());
  var mongoose = require('mongoose');
 var config = []
 
-var data_number=1
+var data_number=30
 shops=[]
 shops.push("MSHED")
 shops.push("BMAG")
