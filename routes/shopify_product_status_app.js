@@ -25,7 +25,7 @@ router.get('/', function(req, res, next) {
  var process_shopify_recent_product_analytics = new Process_shopify_recent_product_analytics(keys,req.query)
   
 process_shopify_recent_product_analytics.go(function(data) {
-
+console.log('return data')
    res.json(data);
    
    })
