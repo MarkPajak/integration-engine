@@ -1,6 +1,6 @@
 var save_data_to_google_sheet = function (keys,options){
+
 var self = this;
- 
 var async = require('async');
 var moment = require('moment');
 var GoogleSpreadsheet = require('google-spreadsheet');
@@ -10,8 +10,9 @@ var doc = new GoogleSpreadsheet( options.google_sheet_id);
 var duplicate = false
 var logger = require('../../models/logging.js');
 var sheet_name = options.title//+"_"+moment(new Date()).format('DD_MM_YYYY')
+console.log('options.manual',options.manual)
 if(options.manual==true){
-	sheet_name+=+"_"+moment(new Date()).format('DD_MM_YYYY')
+	sheet_name+="_"+moment(new Date()).format('DD_MM_YYYY')
 }
 
 self.add_data_to_sheet = function(google_data,done){
