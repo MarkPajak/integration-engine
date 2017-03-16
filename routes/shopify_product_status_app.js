@@ -10,7 +10,7 @@ var Check_shopify = require("../data_loader/shopify/shopify_checkorder.js");
 var moment = require('moment');
 var fs = require('fs');
 var allkeys=JSON.parse(fs.readFileSync('./secret/api_keys.JSON').toString());
-
+var running = false
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -23,14 +23,18 @@ router.get('/', function(req, res, next) {
 	req.query.google_sheet_id=keys.google_sheet_id
 	
  var process_shopify_recent_product_analytics = new Process_shopify_recent_product_analytics(keys,req.query)
-  
+  if(running==false){
+  running=true
 process_shopify_recent_product_analytics.go(function(data) {
-console.log('return data')
+console.log('return data'+data.length)
+running=false
+
    res.json(data);
    if(mongoose.connection.readyState==1){
 		mongoose.connection.close()
 	}
    })
+   }
 
 })
 
