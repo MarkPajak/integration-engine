@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var shopifyAPI = require('shopify-node-api');
 var fs = require('fs');
-
+var mongoose = require('mongoose');
 var Process_shopify_recent_product_analytics = require("../data_loader/shopify/async_last_n_days.js");
 var Check_shopify = require("../data_loader/shopify/shopify_checkorder.js");
 
