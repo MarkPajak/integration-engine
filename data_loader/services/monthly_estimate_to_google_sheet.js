@@ -11,7 +11,7 @@ var duplicate = false
 var logger = require('../../models/logging.js');
 var sheet_name = "vendor_order_cost_estimate"//+moment(new Date()).format('DD_MM_YYYY')
 if(options.manual==true){
-	sheet_name+=+"_"+moment(new Date()).format('DD_MM_YYYY')
+	sheet_name+="_MANUAL_"+moment(new Date()).format('DD_MM_YYYY')
 }
 
 self.add_data_to_sheet = function(google_data,done){
