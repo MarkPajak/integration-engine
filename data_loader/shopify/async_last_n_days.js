@@ -31,7 +31,7 @@ var async = require('async');
 
 
 
-this.go = function(done){
+this.go = function(done,cb){
 
 
 
@@ -71,7 +71,7 @@ this.go = function(done){
 				console.log('get_data callback')
 				shopifydata=analytics_data
 				callback(null,analytics_data)
-				//cb(analytics_data)				
+				cb(shopifydata)				
 			})
 		}  
 
