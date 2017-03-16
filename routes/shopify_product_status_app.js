@@ -26,12 +26,13 @@ router.get('/', function(req, res, next) {
   if(running==false){
 		running=true
 		process_shopify_recent_product_analytics.go(function(data) {
-		console.log('return data'+data.length)
-		running=false
-		return res.json(data);
-	   if(mongoose.connection.readyState==1){
-			mongoose.connection.close()
-		}
+			console.log('return data'+data.length)
+			running=false
+			return res.json(data);
+			
+		   if(mongoose.connection.readyState==1){
+				mongoose.connection.close()
+			}
    })
    }
 

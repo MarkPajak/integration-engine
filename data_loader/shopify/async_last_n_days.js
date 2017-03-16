@@ -34,9 +34,6 @@ var async = require('async');
 this.go = function(done){
 
 
-innercallback=function(data){
-	
-}
 
 	var shopifydata
 	
