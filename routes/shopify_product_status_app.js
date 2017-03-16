@@ -24,15 +24,14 @@ router.get('/', function(req, res, next) {
 	
  var process_shopify_recent_product_analytics = new Process_shopify_recent_product_analytics(keys,req.query)
   if(running==false){
-  running=true
-process_shopify_recent_product_analytics.go(function(data) {
-console.log('return data'+data.length)
-running=false
-
-   res.json(data);
-   if(mongoose.connection.readyState==1){
-		mongoose.connection.close()
-	}
+		running=true
+		process_shopify_recent_product_analytics.go(function(data) {
+		console.log('return data'+data.length)
+		running=false
+		return res.json(data);
+	   if(mongoose.connection.readyState==1){
+			//mongoose.connection.close()
+		}
    })
    }
 
