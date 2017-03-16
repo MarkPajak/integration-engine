@@ -30,7 +30,7 @@ router.get('/', function(req, res, next) {
 		running=false
 		return res.json(data);
 	   if(mongoose.connection.readyState==1){
-			//mongoose.connection.close()
+			mongoose.connection.close()
 		}
    })
    }
