@@ -16,9 +16,12 @@ var url_base="https://"+keys.shopify_api+":"+keys.shopify_password+shop_id+"/adm
 var logger = require('../../models/logging.js');
 var mongoose = require('mongoose');
 var dbConfig = require('../../db');
-mongoose.connect(dbConfig.url, function(err) {
-    if (err) throw err;
-});
+if(mongoose.connection.readyState==0){
+	mongoose.connect(dbConfig.url, function(err) {
+		if (err) throw err;
+	});
+}
+
 var Shopify_transaction = require('../../models/Shopify_transaction.js');
 var Shopify_products = require('../../models/Shopify_product.js');
 var dbConfig = require('../../db');

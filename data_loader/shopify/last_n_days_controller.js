@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 var shopifyAPI = require('shopify-node-api');
 var fs = require('fs');
-
+var self = this
+var async = require('async');
 var Process_shopify_recent_product_analytics = require("./async_last_n_days.js");
 var Check_shopify = require("./shopify_checkorder.js");
 
@@ -14,33 +15,70 @@ var allkeys=JSON.parse(fs.readFileSync('./secret/api_keys.JSON').toString());
 var config = []
 
 var data_number=1
-config.created_at_min=moment(new Date()).add(-data_number, 'days').format()
-config.generate_order_forms=false
-config.save_to_sheets=true
-config.shop="BMAG"
-config.title = "last_"+data_number+"_days"
-config.update_product_types=true
-
-/* GET home page. */
+shops=[]
+shops.push("MSHED")
+shops.push("BMAG")
 
 
-	console.log('process_shopify_recent_product_analytics')
+process_shop_data = function(shop,cb){
+
+
+
+	config.created_at_min=moment(new Date()).add(-data_number, 'days').format()
+	config.generate_order_forms=false
+	config.save_to_sheets=true
+	config.shop="BMAG"
+	config.title = "last_"+data_number+"_days"
+	config.update_product_types=true
+
 	var shop =config.shop
 	var keys = allkeys[shop]
 	config.google_sheet_id=keys.google_sheet_id
 	
- var process_shopify_recent_product_analytics = new Process_shopify_recent_product_analytics(keys,config)
+var process_shopify_recent_product_analytics = new Process_shopify_recent_product_analytics(keys,config)
   
 process_shopify_recent_product_analytics.go(function(data) {
 
 	console.log('all done')
-	mongoose.connection.close()
-	   
+	
+	  cb() 
 })
 
+}
 
+	function callbackhandler(err, results) {
+			console.log('It came back with this ' + results);
+		} 
+		
+		
+		function process_mshed(callback) {
+			console.log('>>>>>>>>>>>count_all_products')
+			process_shop_data("MSHED",function() {
+		
+				callback()	
+			})
+		} 
 
+			function process_BMAG(callback) {
+			console.log('>>>>>>>>>>>count_all_products')
+			process_shop_data("BMAG", function() {
+					mongoose.connection.close()	
+				callback()	
+			})
+		} 
 
+	
+		async.series([
+			process_mshed,
+			process_BMAG
+		], function (err, results) {
+		
+			
+			if(err) console.log(err)
+			});	
+		
+		
+		
 router.get('/test', function(req, res, next) {
 	
 	
