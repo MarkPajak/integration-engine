@@ -37,12 +37,12 @@ process_shop_data = function(shop,cb){
 	
 var process_shopify_recent_product_analytics = new Process_shopify_recent_product_analytics(keys,config)
   
-process_shopify_recent_product_analytics.go(null,function(data) {
+process_shopify_recent_product_analytics.go(function(data) {
 
 	console.log('all done')
 	
 	  cb() 
-})
+},null)
 
 }
 

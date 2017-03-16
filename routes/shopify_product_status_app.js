@@ -25,7 +25,7 @@ router.get('/', function(req, res, next) {
  var process_shopify_recent_product_analytics = new Process_shopify_recent_product_analytics(keys,req.query)
   if(running==false){
 		running=true
-		process_shopify_recent_product_analytics.go(function(data) {
+		process_shopify_recent_product_analytics.go(null,function(data) {
 			console.log(data.length)
 			running=false
 			return res.json(data);
