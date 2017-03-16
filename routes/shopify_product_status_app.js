@@ -7,7 +7,7 @@ var Process_shopify_recent_product_analytics = require("../data_loader/shopify/a
 var Check_shopify = require("../data_loader/shopify/shopify_checkorder.js");
 
 
-var moment = require('moment');
+
 var fs = require('fs');
 var allkeys=JSON.parse(fs.readFileSync('./secret/api_keys.JSON').toString());
 var running = false
@@ -26,7 +26,7 @@ router.get('/', function(req, res, next) {
   if(running==false){
 		running=true
 		process_shopify_recent_product_analytics.go(function(data) {
-			console.log('return data'+data.length)
+			console.log(data.length)
 			running=false
 			return res.json(data);
 			
