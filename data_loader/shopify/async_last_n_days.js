@@ -34,9 +34,9 @@ var async = require('async');
 this.go = function(done){
 
 
-innercallback=function(){
+innercallback=function(data){
 	console.log('done')
-	done()
+	done(data)
 }
 
 	var shopifydata
@@ -126,7 +126,7 @@ innercallback=function(){
 			
 		], function (err, results) {
 		
-			done()
+			done(shopifydata)
 			if(err) console.log(err)
 			});
 

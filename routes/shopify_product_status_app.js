@@ -27,7 +27,9 @@ router.get('/', function(req, res, next) {
 process_shopify_recent_product_analytics.go(function(data) {
 console.log('return data')
    res.json(data);
-   
+   if(mongoose.connection.readyState==1){
+		mongoose.connection.close()
+	}
    })
 
 })
