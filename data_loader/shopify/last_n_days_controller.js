@@ -42,7 +42,7 @@ process_shopify_recent_product_analytics.go(function(data) {
 	console.log('all done')
 	
 	  cb() 
-},null)
+},function done() {})
 
 }
 
