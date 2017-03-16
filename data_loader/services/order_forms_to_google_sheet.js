@@ -32,7 +32,9 @@ done()
 
 function do_one(google_data){
 var sheet_name = "order_form_"+google_data._id//+"_"+moment(new Date()).format('DD_MM_YYYY')
-
+if(options.manual==true){
+	sheet_name+=+"_"+moment(new Date()).format('DD_MM_YYYY')
+}
 var selected_sheet;
 async.series([
   function setAuth(step) {

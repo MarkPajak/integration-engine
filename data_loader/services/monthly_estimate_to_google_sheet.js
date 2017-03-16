@@ -9,8 +9,10 @@ var _ = require('underscore');
 var doc = new GoogleSpreadsheet(options.google_sheet_id);
 var duplicate = false
 var logger = require('../../models/logging.js');
-var sheet_name = "vendor_order_cost_estimate_"+moment(new Date()).format('DD_MM_YYYY')
-
+var sheet_name = "vendor_order_cost_estimate"//+moment(new Date()).format('DD_MM_YYYY')
+if(options.manual==true){
+	sheet_name+=+"_"+moment(new Date()).format('DD_MM_YYYY')
+}
 
 self.add_data_to_sheet = function(google_data,done){
 var i=0	
@@ -112,10 +114,12 @@ console.log('addig headsers')
 						selected_sheet.addRow(google_data[i])
 					setTimeout(function(){iterate() }, 1000);
 					i++
-					}
+						}else{				
+						step()
+						}
 				}
-				else{
-				
+				else{				
+				step()
 				}
 			}
 			
@@ -123,8 +127,8 @@ console.log('addig headsers')
   }
 
 ],
-
- done
+done
+ 
 );
 }
 

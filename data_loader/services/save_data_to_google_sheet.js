@@ -10,7 +10,9 @@ var doc = new GoogleSpreadsheet( options.google_sheet_id);
 var duplicate = false
 var logger = require('../../models/logging.js');
 var sheet_name = options.title//+"_"+moment(new Date()).format('DD_MM_YYYY')
-
+if(options.manual==true){
+	sheet_name+=+"_"+moment(new Date()).format('DD_MM_YYYY')
+}
 
 self.add_data_to_sheet = function(google_data,done){
 var i=0	

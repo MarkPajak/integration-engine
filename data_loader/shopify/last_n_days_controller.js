@@ -10,10 +10,10 @@ var Check_shopify = require("./shopify_checkorder.js");
 var moment = require('moment');
 var fs = require('fs');
 var allkeys=JSON.parse(fs.readFileSync('./secret/api_keys.JSON').toString());
-
+ var mongoose = require('mongoose');
 var config = []
 
-var data_number=30
+var data_number=1
 config.created_at_min=moment(new Date()).add(-data_number, 'days').format()
 config.generate_order_forms=false
 config.save_to_sheets=true
@@ -33,9 +33,10 @@ config.update_product_types=true
   
 process_shopify_recent_product_analytics.go(function(data) {
 
-  // res.json(data);
-   
-   })
+	console.log('all done')
+	mongoose.connection.close()
+	   
+})
 
 
 

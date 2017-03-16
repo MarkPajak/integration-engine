@@ -31,8 +31,14 @@ var async = require('async');
 
 
 
-this.go = function(){
-	
+this.go = function(done){
+
+
+innercallback=function(){
+	console.log('done')
+	done()
+}
+
 	var shopifydata
 	
 		function callbackhandler(err, results) {
@@ -84,8 +90,9 @@ this.go = function(){
 
 		function order_form_to_google_sheet(callback) {
 		
-			console.log('>>>>>>>>>>>order_form_to_google_sheet')
+			
 			if(options.generate_order_forms==true){
+			console.log('>>>>>>>>>>>order_form_to_google_sheet')
 				order_form_sheet.go(function(analytics_data) {
 					console.log('order_form_to_google_sheet callback')
 					callback(null,analytics_data)	
@@ -100,10 +107,9 @@ this.go = function(){
 		function monthly_totals(callback) {
 					
 		console.log('>>>>>>>>>>>monthly_totals')
-		monthlytotals.get_vendor_ids(keys,function(vendor_ids){
-
-					console.log(vendor_ids)
-					callback(null,analytics_data)	
+		monthlytotals.get_vendor_ids(keys,function(){
+			console.log('ssmonthly_totals callback')
+					callback(null)	
 
 					})
 		}  
@@ -115,16 +121,14 @@ this.go = function(){
 			count_all_orders,
 			get_data,
 			add_data_to_sheet,
-			monthly_totals,
-			order_form_to_google_sheet
+			monthly_totals
+			//order_form_to_google_sheet
 			
 		], function (err, results) {
-			
+		
+			done()
 			if(err) console.log(err)
-			// Here, results is an array of the value from each function
 			});
-
-
 
 }
 

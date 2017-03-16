@@ -19,7 +19,7 @@ router.get('/', function(req, res, next) {
 	var shop = req.query.shop
 	var keys = allkeys[shop]
 	keys.user=req.user.username
-	
+	req.manual=true
 	req.query.google_sheet_id=keys.google_sheet_id
 	
  var process_shopify_recent_product_analytics = new Process_shopify_recent_product_analytics(keys,req.query)
