@@ -35,8 +35,7 @@ this.go = function(done){
 
 
 innercallback=function(data){
-	console.log('done')
-	done(data)
+	
 }
 
 	var shopifydata
