@@ -2,3 +2,4 @@ node_modules/
 secret/
 npm-debug.log
 .env
+db.js
