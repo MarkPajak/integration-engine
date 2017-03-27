@@ -1,5 +1,5 @@
 open_turnstile = function (valid_ticket_types){
-
+var request = require("request");
 var self=this
 var mongo = require('mongodb'),
   Server = mongo.Server,
@@ -69,7 +69,26 @@ args
 
 
 }
+self.log_access_attempt =  function(data){
+	  
+		 console.log("remote_ticket_log",keys[process.env.venue].remote_ticket_log)
+		 
+		 
+          return request({
+				  uri: "http://"+keys[process.env.venue].remote_ticket_log+"/turnstiles_logging",
+				  method: "POST",
+				  form: data
+				}, function(error, response, body) {
+				  if (error){
+					 // console.log("ERROR" + error)
+				  }
+					  else{
+							//console.log(response);
+					  }
+				});
+						  
 
+}
 
 self.validate_Ticket=function(ticket_qr){
 	
@@ -124,15 +143,31 @@ self.listen_data = function() {
 			*/
 }
 
+self.log_ticket = function (ticket,action){
+	
+	console.log('logging ticket to remote');
+	 var doc ={ date:new Date(),
+					exhibition:"SKELETONS",
+					type: ticket,
+					result: action
+				  }
+
+		var scan = new self.log_access_attempt(doc)
+}
+
 self.use_ticket = function(ticket) {
 	
-	
-	
-		var doc = {_id:ticket, date_scanned:new Date(),scan_attempts:1};
 		console.log('adding ticket to database');
-		if(!server) var server = new Server('localhost', 27017);
+	
+		//var doc = {_id:ticket, date_scanned:new Date(),scan_attempts:1};
+		 
+		
+		
+		
+		
+		//if(!server) var server = new Server('localhost', 27017);
 		// retrieve a database reference
-		var dbref2 = new mongo.Db('tickets', server);
+		//var dbref2 = new mongo.Db('tickets', server);
 /*
 		// connect to database server
 		dbref2.open(function(err, dbref2) {
@@ -181,11 +216,15 @@ self.simulate = function(data) {
 				
 				if(self.validate_Ticket(data)){
 					console.log('ticket is valid')
-					self.openPort("", function(err) {self.use_ticket(data)})
+					self.openPort("", function(err) {
+						self.use_ticket(data,"open")
+						self.log_ticket(data,"open")
+						})
 					
 				}
 				else
 				{
+				self.log_ticket(data,"invalid ticket")
 				console.log('not looking at shopify here')
 				global.buffer=""
 				/*

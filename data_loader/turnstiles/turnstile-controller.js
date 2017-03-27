@@ -16,13 +16,13 @@ WORKING
 QR code   = order id
 when an order id is scanned, the app will check the order in shopify ans see if there is a validticket type against the order
 once validated, a command is sent to the COM port
+upload qr code data from pre printed tickets to also validate against
+user interface to view valdation data
+load listener on pc reboot
 
 TODO
 list of validated orders need to be logged to allow one time entry (logged aftter x minutes)
-upload qr code data from pre printed tickets to also validate against
 investigate event espresso api for ticket QR codes also
-user interface to view valdation data
-load listener on pc reboot
 log errors to google docs for remote monitoring
 
 */
@@ -49,11 +49,11 @@ self.connect = function(port,cb) {
 
 		valid_tickets_from_file.load_tickets(function (csv_tickets){
 			
-			
-		console.log('    ||   ||')
-		console.log('     \\()//')
-		console.log('   //(__)\\')
-		console.log('   ||    ||')
+				
+			console.log('    ||   ||')
+			console.log('     \\()//')
+			console.log('   //(__)\\')
+			console.log('   ||    ||')
 
 
 			var valid_ticket_types = []
@@ -62,10 +62,6 @@ self.connect = function(port,cb) {
 			valid_ticket_types.csvTickets = csv_tickets
 			valid_ticket_types.scanned_tickets = scanned_tickets
 
-			//open_serialport=new Open_serialport(valid_ticket_types)
-			//shopify_transaction=new shopify_checkorder(valid_ticket_types)
-
-			//vopen_serialport.listen_data(shopify_transaction)
 			global.valid_ticket_types=valid_ticket_types
 			
 
@@ -98,9 +94,9 @@ setTimeout(function (){
 	
 	setInterval(function(){
 		if(i>=test_tickets.length) i=0
-	open_serialport.simulate(test_tickets[i])
-	
-	i++ }, 5000);
+		open_serialport.simulate(test_tickets[i])
+		i++ 
+		}, 5000);
 	
 }, 5000);
 
