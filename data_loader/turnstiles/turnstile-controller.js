@@ -66,7 +66,7 @@ self.connect = function(port,cb) {
 			//shopify_transaction=new shopify_checkorder(valid_ticket_types)
 
 			//vopen_serialport.listen_data(shopify_transaction)
-			return valid_ticket_types
+			global.valid_ticket_types=valid_ticket_types
 			
 
 		})

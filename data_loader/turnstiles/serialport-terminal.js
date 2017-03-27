@@ -1,25 +1,22 @@
-
-'use strict';
-
-
-
-var open_turnstile = function (valid_ticket_types){
+open_turnstile = function (valid_ticket_types){
 
 var self=this
 var mongo = require('mongodb'),
   Server = mongo.Server,
   Db = mongo.Db;
-
+var fs = require('fs');
+var keys=JSON.parse(fs.readFileSync('./secret/api_keys.JSON').toString());
 var server = new Server('localhost', 27017);
+var Shopify_checkorder  = require('../shopify/shopify_checkorder');
+var shopify_transaction=new Shopify_checkorder(keys,valid_ticket_types)
 
 
 this.open_port   = function (){
 
 var SerialPort = require('serialport');
-var Shopify_checkorder  = require('../shopify/shopify_checkorder');
-var fs = require('fs');
-var keys=JSON.parse(fs.readFileSync('./secret/api_keys.JSON').toString());
-var shopify_transaction=new Shopify_checkorder(keys,valid_ticket_types)
+
+
+
 
 
 
@@ -77,13 +74,14 @@ args
 self.validate_Ticket=function(ticket_qr){
 	
 
-			if(valid_ticket_types.csvTickets.indexOf(ticket_qr.toString())!=-1){									
+			if(global.valid_ticket_types.csvTickets.indexOf(ticket_qr.toString())!=-1){									
 				console.log('ticket validated against file')
+				global.buffer=""
 return true;				
 			}	
 			else{
 				console.log('not found in csv tickets')
-				
+				global.buffer=""
 			}
 
 
@@ -94,11 +92,36 @@ return true;
   
 self.listen_data = function() {
 	
+		
+			global.buffer = '';
+    global.port.on('data', function(chunk) {
+	if(	chunk.indexOf("R2:")>=0) global.buffer = '';
+		//console.log('got a chunk' + chunk)
+        global.buffer += chunk;
+        var answers = global.buffer.split('\n'); // Split data by new line character or smth-else
+        global.buffer = answers.pop(); // Store unfinished data
+
+        if (global.buffer!=chunk) {
+			
+			result=global.buffer.replace("R2:","").trim();
+			console.log('data packets joined into ' + result)
+			self.simulate(result)
+		    global.buffer = ''
+		}		 
+		
+    });
+			
+			
+			/*
 			
 			global.port.on('data', (data) => {
-			self.simulate(data)
+
+				console.log('port received data' + data)
+			//self.simulate(data)
 			})
 			return port
+			
+			*/
 }
 
 self.use_ticket = function(ticket) {
@@ -110,7 +133,7 @@ self.use_ticket = function(ticket) {
 		if(!server) var server = new Server('localhost', 27017);
 		// retrieve a database reference
 		var dbref2 = new mongo.Db('tickets', server);
-
+/*
 		// connect to database server
 		dbref2.open(function(err, dbref2) {
 			// now a connection is established
@@ -135,7 +158,7 @@ self.use_ticket = function(ticket) {
 		dbref2.close();
 		}
 		});
-
+*/
 }
 	
 	
@@ -158,18 +181,22 @@ self.simulate = function(data) {
 				
 				if(self.validate_Ticket(data)){
 					console.log('ticket is valid')
-					self.openPort()
-					self.use_ticket(data)
+					self.openPort("", function(err) {self.use_ticket(data)})
+					
 				}
 				else
 				{
+				console.log('not looking at shopify here')
+				global.buffer=""
+				/*
 				shopify_transaction.count_all_orders(data, function(cb) {
 				if(cb==1){
 					console.log('ticket validated against shopify')
-					self.openPort()
+					self.openPort("", function(err) {})
 					self.use_ticket(data)
 				}	
 				})
+				*/
 				}
 		}
 		else{
@@ -183,7 +210,8 @@ self.simulate = function(data) {
 
 self.check_ticket_history = function(data,cb,dontsave) {
 	
-
+cb()
+/*
 		console.log('checking ticket history');
 	if(!server) var server = new Server('localhost', 27017);
 		// retrieve a database reference
@@ -223,7 +251,7 @@ self.check_ticket_history = function(data,cb,dontsave) {
 			
 			}
 			
-			cb(doc)
+			 //cb(doc) return info if ticket is use once olny
 		// close a database connection
 		dbref.close();
 		});
@@ -233,7 +261,7 @@ self.check_ticket_history = function(data,cb,dontsave) {
 		
 		
 		});
-
+*/
 }
 
 
@@ -265,10 +293,10 @@ self.openPort = function(settings,cb) {
 	//2. user sends open command from web app	 >> open gates
 	//3. visitor scanns ticket					 >> open gates
 
-	  console.log(settings)
-	  console.log('open serial port using command: '+settings.command)
+	  console.log(global.open_turnstile_command)
+	  console.log('open serial port using command: '+global.open_turnstile_command)
 	  
-	  port.write(settings.command, function(err) {
+	  port.write(global.open_turnstile_command, function(err) {
 		if (err) {
 		   console.log('Error on write: ', err.message);
 		   cb( err)
