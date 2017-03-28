@@ -31,7 +31,7 @@ var shopify_aggregate = require('./routes/shopify_aggregate')
 var logging_messages = require('./routes/logging_messages')
 var check_ticket_file = require('./routes/check_csv_ticket_file')
 var check_ticket_database = require('./routes/check_ticket_database')
-
+var turnstiles_logging = require('./routes/remote/turnstiles_logging')
 
 
 var shopify = require('./routes/shopify')
@@ -75,6 +75,7 @@ app.use('/', routes);
 app.use('/timeline', timeline);
 app.use('/tech_support', tech_support);
 app.use('/tech_support_public', tech_support_public);
+app.use('/turnstiles_logging', turnstiles_logging);
 
 app.use('/shopify', shopify);
 app.use('/team', team);
@@ -117,6 +118,7 @@ if(process.env.machine=="turnstile"){
 	
 	app.use('/check_com_port', check_com_port)
 	app.use('/open_turnstile', open_turnstile);
+	/*
 	port.on('open', function() {
     port.write('main screen turn on', function(err) {
     
@@ -131,7 +133,7 @@ if(process.env.machine=="turnstile"){
 port.on('error', function(err) {
   console.log('Error: ', err.message);
 })
-	
+	*/
 }
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

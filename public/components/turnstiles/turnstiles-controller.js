@@ -120,7 +120,8 @@ $scope.settings=[]
 			i++
 			test_result = {test:i+'/6: connect to '+option.shop+' shopify',result:'FAIL'}
 			shopify_app_test.query(option, function(result) {
-				test_result={test:i+'6: connect to '+option.shop+' shopify',result:'OK',notes:result.count +" orders found"}	
+				test_result={test:i+'/6: connect to '+option.shop+' shopify',result:'OK',notes:result.count +" orders found"}	
+				i++
 				if(result.count>0){
 					$scope.test_results.push(test_result	)
 				}
