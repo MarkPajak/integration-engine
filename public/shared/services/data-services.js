@@ -15,6 +15,21 @@ var status = require('http-status');
 
   }
   
+    
+      exports.Kpis =  function($resource){
+	  
+		 
+          return $resource('/kpi', null,
+		  { 'get':    {method:'GET', isArray: true} , // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray: true} ,// get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+
+  }
+  
       exports.check_com_port =  function($resource){
 	  
 		 

@@ -32,7 +32,9 @@ var logging_messages = require('./routes/logging_messages')
 var check_ticket_file = require('./routes/check_csv_ticket_file')
 var check_ticket_database = require('./routes/check_ticket_database')
 var turnstiles_logging = require('./routes/remote/turnstiles_logging')
-
+var kpi_aggregate = require('./routes/kpi_aggregate')		
+	
+var kpi = require('./routes/kpi')
 
 var shopify = require('./routes/shopify')
 var team = require('./routes/team')
@@ -91,6 +93,8 @@ app.use('/logging_messages', logging_messages);
 app.use('/shopify_aggregate', shopify_aggregate);
 app.use('/check_ticket_file', check_ticket_file);
 app.use('/check_ticket_database', check_ticket_database);
+app.use('/kpi_aggregate', kpi_aggregate);
+app.use('/kpi', kpi);
 
 
 if(process.env.machine=="turnstile"){

@@ -31,6 +31,11 @@ var member_controllers = require('../components/member/member-controller');
 var form_controllers = require('../components/team/form-controller');
 var timeline_controllers = require('../components/timeline/timeline-controller');
 var shopify_controllers = require('../components/shopify/shopify-controller');
+var performance_controller = require('../components/performance/performance-controller');
+var performance_form = require('../components/performance/performance-form-controller');
+
+
+
 var timeline_settings_controller = require('../components/timeline-settings/timeline-settings-controller');
 var users_controller = require('../components/user-admin/users-controller');
 var iframe_controller = require('../components/iframe/iframe-controller');
@@ -42,6 +47,7 @@ var tech_support_directives = require('../components/tech-support/tech-support-d
 var users_directives = require('../components/user-admin/users-directive');
 var timeline_directives = require('../components/timeline/timeline-directive');
 var shopify_directives = require('../components/shopify/shopify-directive');
+var performance_directives = require('../components/performance/performance-directive');
 var iframe_directives = require('../components/iframe/iframe-directive');
 var turnstiles_directives = require('../components/turnstiles/turnstiles-directive');
 
@@ -163,6 +169,13 @@ _.each(shopify_controllers, function(controller, name) {
   app.controller(name, controller);
 });
 
+_.each(performance_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+_.each(performance_form, function(controller, name) {
+  app.controller(name, controller);
+});
+
 
 
 
@@ -196,6 +209,11 @@ _.each(timeline_settings_controller, function(controller, name) {
  _.each(shopify_directives, function(directive, name) {
   app.directive(name, directive);
 });
+
+ _.each(performance_directives, function(directive, name) {
+  app.directive(name, directive);
+});
+
 
  _.each(iframe_directives, function(directive, name) {
   app.directive(name, directive);

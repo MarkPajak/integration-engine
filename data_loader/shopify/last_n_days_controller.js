@@ -27,7 +27,7 @@ process_shop_data = function(shop,cb){
 	config.created_at_min=moment(new Date()).add(-data_number, 'days').format()
 	config.generate_order_forms=false
 	config.save_to_sheets=true
-	config.shop="BMAG"
+	config.shop=shop
 	config.title = "last_"+data_number+"_days"
 	config.update_product_types=true
 

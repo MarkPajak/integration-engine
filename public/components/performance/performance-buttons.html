@@ -1,0 +1,75 @@
+<style>
+
+.checkbox-inline{
+    
+	}
+	.iconbar{
+	position:fixed;
+	width:25%;
+	float:right;
+	top:0px;
+	left:0px;
+	
+	display:block;
+		position:relative;
+		cursor: all-scroll;
+	    border: #585858;
+		border-style: solid;
+		border-width: 2px;
+		border-radius: 6PX;
+	    background-image: url('assets/img/drag.png');
+		color: black;
+		background-size: 10%;
+		background-repeat: no-repeat;
+		background-position: top right; 
+		background-position-y: 10px;
+		max-height:300px;
+		/*overflow-y:auto;*/
+	}
+	
+	.checkboxList{
+	max-height:1000px;
+	display:block;
+	overflow-y:auto;
+	}
+</style>
+  <div class="alert alert-danger" value="{{message}}" > {{ messages }} </div>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+<div   ng-show="isloggedin" ng-cloak="" class="buttondemoBasicUsage" >
+  <md-content>
+
+<section ng-hide="report_running" layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
+	<label>Report in progress - please wait</label>
+
+   </section>
+    <section ng-show="report_running" layout="row" layout-sm="column" layout-align="center center" layout-wrap="">
+	<h2> Generate shopify report</h2>
+     <md-button ng-click="runShopify(0,'BMAG')" class="md-raised">BMAG last {{data_number}} days</md-button>
+     <md-button ng-click="runShopify(0,'MSHED')" class="md-raised">M SHED last {{data_number}} days</md-button>
+     	<input checked type="number" id="number"  ng-model="data_number" value="7">
+	 <label class=" switch checkbox checkbox-inline">
+		<div class="settings_locklabel" >save to Google sheets</div>
+		<input checked type="checkbox" id="stack"  ng-model="save_to_sheets" value="">
+		<div class="slider round"></div>
+	</label>
+	<label class=" switch checkbox checkbox-inline">
+		<div class="settings_locklabel" >update product types</div>
+		<input checked type="checkbox" checked="true" id="update_product_types"  ng-model="update_product_types" value="">
+		<div class="slider round"></div>
+	</label>
+		<label class=" switch checkbox checkbox-inline">
+		<div class="settings_locklabel" >generate order forms</div>
+		<input checked type="checkbox" id="generate_order_forms"  ng-model="generate_order_forms" value="">
+		<div class="slider round"></div>
+	</label>
+   </section>
+
+  
+  </md-content>
+</div>
+
+<!--
+Copyright 2016 Google Inc. All Rights Reserved. 
+Use of this source code is governed by an MIT-style license that can be foundin the LICENSE file at http://material.angularjs.org/HEAD/license.
+-->
