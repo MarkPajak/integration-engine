@@ -91,9 +91,12 @@
 		      .when('/turnstiles', {
                template: '<turnstiles-controller></turnstiles-controller>'
            })
-		        .when('/performance', {
+		        .when('/record-visitor-numbers', {
                template: '<performance-panel></performance-panel>'
            })
+		   
+
+		   
 		      .when('/turnstiles/:venue', {
                template: '<turnstiles-controller></turnstiles-controller>'
            })

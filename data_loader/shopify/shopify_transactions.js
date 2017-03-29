@@ -53,7 +53,7 @@ cb()
 
 
 
-	console.log('loading orders and product info')
+	//console.log('loading orders and product info')
 
 	var orders_in_total = total_orders.length
 	var product_count = 0
@@ -64,7 +64,7 @@ cb()
 				var product_id = item.product_id
 				var line_item_id = item.id
 				var return_product_type = []
-				console.log('findById ',product_id)
+				//console.log('findById ',product_id)
 					
 					Shopify_products.findById(product_id,function(err, post) {
 							
@@ -97,7 +97,7 @@ cb()
 										}
 										else
 										{
-											console.log('max reached ' + shopifyorders.length + ' orders found - end of function chain')
+											//console.log('max reached ' + shopifyorders.length + ' orders found - end of function chain')
 											innerCallback()	
 										}
 								 });
@@ -110,7 +110,7 @@ cb()
 										}
 										else
 										{
-											console.log('max reached ' + shopifyorders.length + ' orders found - end of function chain')
+											//console.log('max reached ' + shopifyorders.length + ' orders found - end of function chain')
 											innerCallback()	
 										}	
 							}
@@ -129,10 +129,10 @@ function orders(total_orders,cb){
 	var limit = 200
 	var pages_in_total = total_orders/limit
 	var current_page = 0
-	console.log('pages_in_total '+pages_in_total)
+	//console.log('pages_in_total '+pages_in_total)
 	
 	 function getNextset() {
-	console.log('looking at page '+current_page +"of "+ pages_in_total)
+//console.log('looking at page '+current_page +"of "+ pages_in_total)
 			
 			var return_product_type = ""
 			url = url_base+"orders.json?created_at_min="+created_at_min+"&status=any&limit="+limit+"&page="+current_page+ "&fields=created_at,id,name,total-price,line_items"
@@ -143,7 +143,7 @@ function orders(total_orders,cb){
 			}, function (error, response, body) {
 			if (error) console.log(error)
 				if (!error && response.statusCode === 200) {
-						console.log('orders found... '+body.orders.length)
+						//console.log('orders found... '+body.orders.length)
 						_.each(body.orders, function(order) {
 							_.each(order.line_items, function(item) {
 							
@@ -167,7 +167,7 @@ function orders(total_orders,cb){
 						
 					}
 					else{
-					console.log('max reached ' + shopifyorders.length + ' orders found.. ..now loadibng products')
+					//console.log('max reached ' + shopifyorders.length + ' orders found.. ..now loadibng products')
 					//mongoose.disconnect();
 					products(shopifyorders,cb)
 
@@ -187,15 +187,15 @@ self.count_all_orders = function(cb){
 
 
 if(options.update_product_types==false){
-console.log('not apdating products')
+//console.log('not apdating products')
 cb()
 }
 else
 {
-console.log('updating products')
+//console.log('updating products')
 
 			total_order_count = 0
-			console.log('querying created_at_min'+created_at_min)
+			//console.log('querying created_at_min'+created_at_min)
 			url = url_base+"orders/count.json?created_at_min="+created_at_min+"&status=any"
 			request({
 				url: url,

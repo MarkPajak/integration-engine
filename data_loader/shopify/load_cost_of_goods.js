@@ -29,7 +29,7 @@ var inputFile='./data_loader/shopify/imports/'+keys.cost_of_goods;
 															if(product)console.log(product._id)
 															if(cost_price>0&& product.variant_id){
 																 product.cost_price=cost_price
-																 console.log(product)
+																// console.log(product)
 																product.save()
 															}	
 													});	
