@@ -1,0 +1,120 @@
+>>>>>>>>>>>count_all_products
+Mongoose: mpromise (mongoose's default promise library) is deprecated, plug in your own promise library instead: http://mongoosejs.com/docs/promises.html
+options.manual undefined
+keys { shopify_store: '@bristol-museums-shop.myshopify.com',
+  cost_of_goods: 'cost_of_goods._bmag.csv',
+  google_sheet_id: '16xVCAAGMeO8JpMG3xefqztrOMCFFVoLuv2jB1UGGQLY',
+  shopify_api: 'be9e352608c3dc5f844fb6d9f98e6889',
+  shopify_password: '27d1696adfa447b97b749c55f1dbf4b7',
+  facebookClientSecret: '105ab0ba8daae64f7d19841552a2a4c7',
+  stripeKey: 'sk_test_4c9tsa9Ad3l5r9NQMIy2WZes',
+  google: 'AIzaSyDi8arJr4JvnETpZVylXUVpxZDyBHNkQy',
+  openExchangeRatesKey: '1c372aec989840bba79b0df61d041f2f' }
+>>>>>>>>>>>count_all_products
+pages_in_total 4.29
+count_all_products callback
+>>>>>>>>>>>cost_of_goods
+load_tickets
+cost_of_goods callback
+>>>>>>>>>>>count_all_orders
+orders_in_total 194
+count_all_orders callback
+>>>>>>>>>>>get_data 
+Shopify_product.find()
+products found 858
+858 products found
+1 product-orders added
+2 product-orders added
+3 product-orders added
+4 product-orders added
+5 product-orders added
+6 product-orders added
+7 product-orders added
+8 product-orders added
+9 product-orders added
+10 product-orders added
+11 product-orders added
+12 product-orders added
+13 product-orders added
+14 product-orders added
+15 product-orders added
+16 product-orders added
+17 product-orders added
+18 product-orders added
+19 product-orders added
+20 product-orders added
+21 product-orders added
+22 product-orders added
+23 product-orders added
+24 product-orders added
+25 product-orders added
+26 product-orders added
+27 product-orders added
+28 product-orders added
+29 product-orders added
+30 product-orders added
+31 product-orders added
+32 product-orders added
+33 product-orders added
+34 product-orders added
+35 product-orders added
+36 product-orders added
+37 product-orders added
+38 product-orders added
+39 product-orders added
+40 product-orders added
+41 product-orders added
+42 product-orders added
+43 product-orders added
+44 product-orders added
+45 product-orders added
+46 product-orders added
+47 product-orders added
+48 product-orders added
+49 product-orders added
+50 product-orders added
+51 product-orders added
+52 product-orders added
+53 product-orders added
+54 product-orders added
+55 product-orders added
+56 product-orders added
+57 product-orders added
+57 matches found
+get_data callback
+>>>>>>>>>>>add_data_to_sheet
+57 rows to add
+Loaded doc: Shopify data_dev by markpajak.spider@gmail.com
+sheet exists
+clear_sheet 
+resize sheet
+clear_sheet 
+addig headsers
+workingWithRows
+add_data_to_sheet callback
+>>>>>>>>>>>monthly_totals
+13 rows to add
+Loaded doc: Shopify data_dev by markpajak.spider@gmail.com
+sheet exists
+clear_sheet 
+events.js:141
+      throw er; // Unhandled 'error' event
+      ^
+
+TypeError: Cannot read property 'setValue' of undefined
+    at /home/ec2-user/integration-engine/node_modules/google-spreadsheet/index.js:397:17
+    at /home/ec2-user/integration-engine/node_modules/google-spreadsheet/index.js:343:7
+    at /home/ec2-user/integration-engine/node_modules/google-spreadsheet/index.js:166:15
+    at Parser.<anonymous> (/home/ec2-user/integration-engine/node_modules/xml2js/lib/xml2js.js:489:18)
+    at emitOne (events.js:77:13)
+    at Parser.emit (events.js:169:7)
+    at Object.onclosetag (/home/ec2-user/integration-engine/node_modules/xml2js/lib/xml2js.js:447:26)
+    at emit (/home/ec2-user/integration-engine/node_modules/sax/lib/sax.js:640:35)
+    at emitNode (/home/ec2-user/integration-engine/node_modules/sax/lib/sax.js:645:5)
+    at closeTag (/home/ec2-user/integration-engine/node_modules/sax/lib/sax.js:905:7)
+    at Object.write (/home/ec2-user/integration-engine/node_modules/sax/lib/sax.js:1452:13)
+    at Parser.exports.Parser.Parser.parseString (/home/ec2-user/integration-engine/node_modules/xml2js/lib/xml2js.js:508:31)
+    at Parser.parseString (/home/ec2-user/integration-engine/node_modules/xml2js/lib/xml2js.js:7:59)
+    at Request._callback (/home/ec2-user/integration-engine/node_modules/google-spreadsheet/index.js:164:24)
+    at Request.self.callback (/home/ec2-user/integration-engine/node_modules/request/request.js:186:22)
+    at emitTwo (events.js:87:13)

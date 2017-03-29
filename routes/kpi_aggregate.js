@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var Kpi_aggregate = require('../models/Kpi_log.js');
+//var Kpi_data_loader = require('../data_loader/kpi/kpi_aggregate.js');
 var moment = require('moment');
 
 
@@ -15,22 +16,10 @@ var isAuthenticated = function (req, res, next) {
 
 /* GET /todos listing. */
 router.get('/all', function(req, res, next) {
-Kpi_aggregate.aggregate([
-        {
-            $group: {
-                _id: { venue:'$museum_id'   
-						
-					 },  
-               visits: {$sum:'$value' }
-            }
-        }
-    ], function (err, result) {
-        if (err) {
-            next(err);
-        } else {
-            res.json(result);
-        }
-    });
+
+//Kpi_data_loader= new Kpi_data_loader()
+
+
 });
 
 router.get('/year_month/:year/:month', function(req, res, next) {

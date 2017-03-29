@@ -3,6 +3,7 @@ var moment = require('moment');
 var Kpi_log = new mongoose.Schema({
 		  
 		
+			id: String,
 			museum_id: { type: String, required: true},				  
 			kpi_type: { type: String },	
 			value: { type: Number, required: true},

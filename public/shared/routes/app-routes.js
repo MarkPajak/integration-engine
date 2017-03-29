@@ -61,6 +61,9 @@
               templateUrl: '../components/timeline-settings/timeline-settings-page.html',
               controller: 'timeline_settings_controller'
            })
+		   
+		   
+		   
 		   .when('/timeline/:track', {
               template: '<time-line></time-line>'
            })
@@ -94,9 +97,15 @@
 		        .when('/record-visitor-numbers', {
                template: '<performance-panel></performance-panel>'
            })
+		         .when('/raw-visits', {
+               template: '<raw-visits></raw-visits>'
+           })
 		   
+		          .when('/monthly-visits', {
+               template: '<monthly-visits></monthly-visits>'
+           })
 
-		   
+
 		      .when('/turnstiles/:venue', {
                template: '<turnstiles-controller></turnstiles-controller>'
            })

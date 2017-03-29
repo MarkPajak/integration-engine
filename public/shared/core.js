@@ -22,6 +22,8 @@ var satisfaction_controllers = require('../components/machine-monitor/satisfacti
 
 
 var downtime_controllers = require('../components/machine-monitor/downtime-controller');
+var raw_visitor_numbers_controller = require('../components/visitor-numbers/raw-visitor-numbers-controller');
+var monthly_visitor_numbers_controller = require('../components/visitor-numbers/monthly-visitor-numbers-controller');
 
 
 var app_controllers = require('../components/team/app-controllers');
@@ -50,6 +52,8 @@ var shopify_directives = require('../components/shopify/shopify-directive');
 var performance_directives = require('../components/performance/performance-directive');
 var iframe_directives = require('../components/iframe/iframe-directive');
 var turnstiles_directives = require('../components/turnstiles/turnstiles-directive');
+var visitor_numbers__directives = require('../components/visitor-numbers/visitor-numbers-directive');
+
 
 var data_services = require('../shared/services/data-services');
 var app_services = require('../shared/services/app-services');
@@ -124,6 +128,14 @@ _.each(tech_support_controller, function(controller, name) {
 
 
 _.each(downtime_controllers, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(raw_visitor_numbers_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(monthly_visitor_numbers_controller, function(controller, name) {
   app.controller(name, controller);
 });
 
@@ -222,6 +234,9 @@ _.each(timeline_settings_controller, function(controller, name) {
   app.directive(name, directive);
 });
 
+ _.each(visitor_numbers__directives, function(directive, name) {
+  app.directive(name, directive);
+});
 
 
 

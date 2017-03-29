@@ -1,7 +1,16 @@
 var status = require('http-status');
 
 
-   
+        exports.Monthly_visits =  function($resource){
+	  
+	  
+	return $resource('/kpi_aggregate/all',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+       
+
+  } 
 
   
       exports.turnstile_app =  function($resource){
@@ -15,20 +24,20 @@ var status = require('http-status');
 
   }
   
-    
-      exports.Kpis =  function($resource){
-	  
+ exports.Raw_visits =  function($resource){
+	 
 		 
-          return $resource('/kpi', null,
-		  { 'get':    {method:'GET', isArray: true} , // get individual record
+            return $resource('/raw_visits/:id', null,
+			{ 'get':    {method:'GET'},  // get individual record
 			  'save':   {method:'POST'}, // create record
-			  'query':  {method:'GET', isArray: true} ,// get list all records
+			  'query':  {method:'GET', isArray:true}, // get list all records
 			  'remove': {method:'DELETE'}, // remove record
 			    'update': { method:'PUT' },
 			  'delete': {method:'DELETE'} // same, remove record
           });
+ }
+  
 
-  }
   
       exports.check_com_port =  function($resource){
 	  

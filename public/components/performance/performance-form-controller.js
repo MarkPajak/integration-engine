@@ -1,5 +1,5 @@
 exports.performance_form =  function($scope, $http, $q, $routeParams, $location,
-          $rootScope,Kpis
+          $rootScope,Raw_visits
     ) {
 
 
@@ -7,9 +7,9 @@ exports.performance_form =  function($scope, $http, $q, $routeParams, $location,
     // function definition
  $scope.onSubmit=function() {
 		
-		alert('submitted')
+
 		
-		    var kpis = new Kpis({
+		    var kpis = new Raw_visits({
             museum_id:museum.value,				  
 			kpi_type: "visits",	
 			value: no_visits.value,
@@ -22,7 +22,8 @@ exports.performance_form =  function($scope, $http, $q, $routeParams, $location,
             kpis.$save(function(err, user) {
 		if(err) console.log(err)
 			 console.log(user)
-                     alert('saved');
+                     alert('data saved successfully');
+					visit_form.reset()
             })
 		
 
