@@ -15,17 +15,28 @@ exports.monthly_visitor_numbers_controller = function($route,$scope, $http, $q, 
 
 
 		 columnDefs.push(
-			{ field: '_id' ,value: "Museum",resizable: true},
-			{ field: 'visits' ,resizable: true}
+			{ field: 'museum' ,name: "Museum",width: "250"},
+			{ field: 'Apr 2017',name: "Apr 17",width: "100"},
+			{ field: 'May 2017',name: "May 17",width: "100"},
+			{ field: 'Jun 2017',name: "Jun 17",width: "100"},
+			{ field: 'Jul 2017' ,name: "Jul 17",width: "100"},
+			{ field: 'Aug 2017',name: "Aug 17",width: "100"},
+			{ field: 'Sep 2017' ,name: "Sep 17",width: "100"},
+			{ field: 'Oct 2017' ,name: "Oct 17",width: "100"},
+			{ field: 'Nov 2017' ,name: "Nov 17",width: "100"},
+			{ field: 'Dec 2017' ,name: "Dec 17",width: "100"},
+			{ field: 'Jan 2018',name: "Jan 18",width: "100"},
+			{ field: 'Feb 2018' ,name: "Feb 18",width: "100"},
+			{ field: 'Mar 2018' ,name: "Mar 18",width: "100"}
 			
 			)
 			
 			$scope.gridOptions = {
 			columnDefs:columnDefs,
-			enableGridMenu: true,
+			enableGridMenu: false,
 			enableSelectAll: true,
-			enableCellSelection: true,
-			enableCellEditOnFocus: true,
+			enableCellSelection: false,
+			enableCellEditOnFocus: false,
 			exporterCsvFilename: 'myFile.csv',
 			exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location")),
 			onRegisterApi: function(gridApi){

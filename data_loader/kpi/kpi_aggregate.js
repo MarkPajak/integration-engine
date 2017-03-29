@@ -70,13 +70,21 @@ get_kpis( function ( result) {
 	_.each(venues,function(venue){
 		var returned_row=[]
 		returned_row.museum=venue
-		_.each(moment.monthsShort(),function(month){
-			returned_row[month]=0
-			_.each(result,function(row){
-				if(month==moment.monthsShort(row._id.month-1) &&venue==row._id.venue){
-					returned_row[month]=row.visits
-				}
+
+			var years = [2016,2017,2018]
+			_.each(years,function(year){
+			_.each(moment.monthsShort(),function(month){
+			
+			returned_row[month+" "+year]=0
+				_.each(result,function(row){
+					if(month==moment.monthsShort(row._id.month-1) &&venue==row._id.venue &&row._id.year==year){
+						returned_row[month+" "+year]=row.visits
+					}
+				})
 			})
+			
+			
+			
 		})
 		returned_data.push(returned_row)
 	})

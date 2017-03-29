@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+var _ = require('underscore');
 var Kpi_aggregate = require('../models/Kpi_log.js');
 //var Kpi_data_loader = require('../data_loader/kpi/kpi_aggregate.js');
 var moment = require('moment');
@@ -17,7 +17,77 @@ var isAuthenticated = function (req, res, next) {
 /* GET /todos listing. */
 router.get('/all', function(req, res, next) {
 
-//Kpi_data_loader= new Kpi_data_loader()
+function get_kpis(cb){
+
+Kpi_aggregate.aggregate([
+ 
+		 { $group: {
+                _id: { year : { $year : "$date_value" },        
+					   month : { $month : "$date_value" },        
+					   venue:'$museum_id'
+					 },  
+               visits: {$sum: '$value' }
+            }
+		 }			
+
+    ], function (err, result) {
+        if (err) {
+            console.log(err);
+        } else {
+
+		cb(result)
+		   	//mongoose.connection.close()	
+        }
+		
+    });
+}
+
+get_kpis( function ( result) {
+	
+
+	
+	
+	
+
+	
+	//load venues
+	var venues=[]
+	_.each(result,function(row){
+		if(venues.indexOf(row._id.venue)==-1){
+			console.log('adding venue ',row._id.venue)
+			venues.push(row._id.venue)
+		}
+	})
+	
+	
+	var returned_data=[]
+
+	_.each(venues,function(venue){
+		var returned_row={}
+		returned_row.museum=venue
+				var years = [2016,2017,2018]
+			_.each(years,function(year){
+			_.each(moment.monthsShort(),function(month){
+			
+			returned_row[month+" "+year]=""
+				_.each(result,function(row){
+					if(month==moment.monthsShort(row._id.month-1) &&venue==row._id.venue &&row._id.year==year){
+						returned_row[month+" "+year]=row.visits
+					}
+				})
+			})
+			
+			
+			
+		})
+	returned_data.push(	returned_row)
+	})
+
+
+res.json(returned_data)
+	
+})
+
 
 
 });
