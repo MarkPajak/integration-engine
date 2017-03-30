@@ -14138,9 +14138,9 @@ exports.raw_visitor_numbers_controller = function($route,$scope, $http, $q, $rou
 			{ field: 'museum_id' ,value: "Museum",resizable: true},
 			{ field: 'kpi_type' ,value: "kpi",resizable: true},
 			{ field: 'value' ,resizable: true},
-			{ field: 'date_value' ,value: "Date",resizable: true},
+			{ field: 'date_value' ,value: "Date",resizable: true ,type: 'date', cellFilter: 'date:\'yyyy-MM-dd\''},
 			{ field: 'logger_user_name' ,value: "Logged by",resizable: true},
-			{ field: 'date_logged', value: "Date logged",resizable: true}	
+			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'yyyy-MM-dd HH:MM\''}
 			)
 			
 			$scope.gridOptions = {
@@ -14755,7 +14755,7 @@ app.config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
 }]);
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_478e5d86.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_71957dcd.js","/")
 },{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/performance/performance-controller":18,"../components/performance/performance-directive":19,"../components/performance/performance-form-controller":20,"../components/shopify/shopify-controller":21,"../components/shopify/shopify-directive":22,"../components/team/app-controllers":23,"../components/team/form-controller":24,"../components/team/leave-controller":25,"../components/team/team-controller":26,"../components/tech-support/tech-support-controller":27,"../components/tech-support/tech-support-directive":28,"../components/tech-support/trello-services":29,"../components/timeline-settings/timeline-settings-controller":30,"../components/timeline/timeline-controller":31,"../components/timeline/timeline-directive":32,"../components/timeline/timeline-googlesheets-services":33,"../components/timeline/timeline-learning-bookings-services":34,"../components/timeline/timeline-leave-services":35,"../components/timeline/timeline-loans-services":36,"../components/timeline/timeline-services":37,"../components/timeline/timeline-shopify-services":38,"../components/turnstiles/turnstiles-controller":39,"../components/turnstiles/turnstiles-directive":40,"../components/user-admin/users-controller":41,"../components/user-admin/users-directive":42,"../components/visitor-numbers/monthly-visitor-numbers-controller":43,"../components/visitor-numbers/raw-visitor-numbers-controller":44,"../components/visitor-numbers/visitor-numbers-directive":45,"../shared/controllers/controllers":46,"../shared/controllers/navbar-controller":47,"../shared/directives/directives":48,"../shared/services/app-services":50,"../shared/services/data-services":51,"b55mWE":4,"buffer":3,"underscore":7}],50:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 

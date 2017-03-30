@@ -18,9 +18,9 @@ exports.raw_visitor_numbers_controller = function($route,$scope, $http, $q, $rou
 			{ field: 'museum_id' ,value: "Museum",resizable: true},
 			{ field: 'kpi_type' ,value: "kpi",resizable: true},
 			{ field: 'value' ,resizable: true},
-			{ field: 'date_value' ,value: "Date",resizable: true},
+			{ field: 'date_value' ,value: "Date",resizable: true ,type: 'date', cellFilter: 'date:\'yyyy-MM-dd\''},
 			{ field: 'logger_user_name' ,value: "Logged by",resizable: true},
-			{ field: 'date_logged', value: "Date logged",resizable: true}	
+			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'yyyy-MM-dd HH:mm\''}
 			)
 			
 			$scope.gridOptions = {
