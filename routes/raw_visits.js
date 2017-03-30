@@ -25,6 +25,15 @@ router.get('/',isAuthenticated, function(req, res, next) {
     res.json(todos);
   })
 });
+/* GET /todos listing. */
+router.get('/:museum_id/:date_value',isAuthenticated, function(req, res, next) {
+var query = {'museum_id':req.params.museum_id,'date_value':req.params.date_value}
+  Team.find(query)
+	   .exec (  function (err, todos) {
+    if (err) return next(err);
+    res.json(todos);
+  })
+});
 
 /* POST /todos */
 router.post('/', isAuthenticated, function(req, res, next) {

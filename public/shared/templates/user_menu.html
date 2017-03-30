@@ -5,7 +5,7 @@
 	 <li><a ng-hide="user.firstName" id="logihash" href='/login!'  >Log in</a></li>	
 	<input type="hidden" id="hashval" name="redirect" value="">
   	<li   ng-repeat="view in user.views"  ><a href="/#{{view.link}}">{{view.value}}</a></li>
-	<li  ng-hide="user.firstName"><a href="/signup">Signup</a></li>
+	<li  ng-hide="user.firstName"><a href="/signup">Register</a></li>
     <li ng-show="user.firstName" class="pull-right" ><a  href='/signout'  > Sign Out</a></li>
 </ul>
 <script>

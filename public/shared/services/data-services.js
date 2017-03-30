@@ -27,7 +27,7 @@ var status = require('http-status');
  exports.Raw_visits =  function($resource){
 	 
 		 
-            return $resource('/raw_visits/:id', null,
+            return $resource('/raw_visits/:id/:museum_id/:date_value', null,
 			{ 'get':    {method:'GET'},  // get individual record
 			  'save':   {method:'POST'}, // create record
 			  'query':  {method:'GET', isArray:true}, // get list all records

@@ -18,14 +18,53 @@ exports.performance_form =  function($scope, $http, $q, $routeParams, $location,
 			comments:comments.value,			
 			logger_user_name: $scope.user.username
             });
-
-            kpis.$save(function(err, user) {
-		if(err) console.log(err)
-			 console.log(user)
-                     alert('data saved successfully');
-					visit_form.reset()
-            })
+			
+			var query = {'museum_id':museum.value,"date_value":date_value.value};
+			
+			Raw_visits.query(query, function(visits) {
+				console.log('Raw_visits',visits.length)
+			if(visits.length>0) {
+			
+			
+			if (confirm("we already have a figure of " + visits[0].value + " for that date - are you sure you wnt to overwrite it ?")) {
+			
+				_.each(	visits	, function(visit) {
+				
+				  Raw_visits.remove({
+						id: visit._id
+					}, function() {
+					  console.log('removed old data')
+					});
+					})
+						save(no_visits.value,museum.value)
+				// Save it!
+			} else {
+				// Do nothing!
+			}
+			
+			
+			}
+			else
+			{			
+						save(no_visits.value,museum.value)
+			}
+			})	
+			
+            
 		
+	function save(no_visits,museum){
+
+	kpis.$save(function(err, user) {
+		
+						if(err) console.log(err)
+						 var  message = "data saved successfully";
+							  message+= "\n ";
+							  message+= " "+ no_visits + " added to " + museum;
+							  alert(message);
+							  visit_form.reset()
+						})
+
+}	
 
     }
 	

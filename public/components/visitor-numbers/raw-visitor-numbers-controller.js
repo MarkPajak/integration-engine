@@ -24,15 +24,15 @@ exports.raw_visitor_numbers_controller = function($route,$scope, $http, $q, $rou
 			)
 			
 			$scope.gridOptions = {
-			columnDefs:columnDefs,
-			enableGridMenu: true,
-			enableSelectAll: true,
-			enableCellSelection: true,
-			enableCellEditOnFocus: true,
-			exporterCsvFilename: 'myFile.csv',
-			exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location")),
-			onRegisterApi: function(gridApi){
-			vm.gridApi = gridApi;
+				columnDefs:columnDefs,
+				enableGridMenu: true,
+				enableSelectAll: true,
+				enableCellSelection: true,
+				enableCellEditOnFocus: true,
+				exporterCsvFilename: 'myFile.csv',
+				exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location")),
+				onRegisterApi: function(gridApi){
+				vm.gridApi = gridApi;
 			},
 			pagingOptions: { // no more in v3.0.+, use paginationPageSizes, paginationPageSize
 			// pageSizes: list of available page sizes.
