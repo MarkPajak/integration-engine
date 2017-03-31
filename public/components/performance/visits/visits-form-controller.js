@@ -1,22 +1,26 @@
-exports.performance_form =  function($scope, $http, $q, $routeParams, $location,
-          $rootScope,Raw_visits
+exports.visits_form =  function($scope, $http, $q, $routeParams, $location,
+          $rootScope,Raw_visits,data_table_reload
     ) {
 
-
+//$scope.setDate = data_table_reload.setDate;
 
     // function definition
  $scope.onSubmit=function() {
 		
 
+			
 		
 		    var kpis = new Raw_visits({
-            museum_id:museum.value,				  
-			kpi_type: "visits",	
-			value: no_visits.value,
-			date_logged:new Date(),	
-			date_value:date_value.value,
-			comments:comments.value,			
-			logger_user_name: $scope.user.username
+					museum_id:museum.value,				  
+					kpi_type: "visits",	
+					
+					//DEPARTMENTAL VARIABLES	
+					value: no_visits.value,
+					
+					date_logged:new Date(),	
+					date_value:date_value.value,
+					comments:comments.value,			
+					logger_user_name: $scope.user.username
             });
 			
 			var query = {'museum_id':museum.value,"date_value":date_value.value};
@@ -36,7 +40,7 @@ exports.performance_form =  function($scope, $http, $q, $routeParams, $location,
 					  console.log('removed old data')
 					});
 					})
-						save(no_visits.value,museum.value)
+						save(kpis)
 				// Save it!
 			} else {
 				// Do nothing!
@@ -46,23 +50,27 @@ exports.performance_form =  function($scope, $http, $q, $routeParams, $location,
 			}
 			else
 			{			
-						save(no_visits.value,museum.value)
+						save(kpis)
 			}
 			})	
 			
             
 		
-	function save(no_visits,museum){
+	function save(kpis){
 
 	kpis.$save(function(err, user) {
 		
 						if(err) console.log(err)
 						 var  message = "data saved successfully";
 							  message+= "\n ";
-							  message+= " "+ no_visits + " added to " + museum;
+							  //message+= " "+ data + " added to " + museum;
 							  alert(message);
 							  visit_form.reset()
+							 
+							   data_table_reload.setDate(kpis.date_value);
+
 						})
+						
 
 }	
 

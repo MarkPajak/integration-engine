@@ -24,8 +24,8 @@ var satisfaction_controllers = require('../components/machine-monitor/satisfacti
 var downtime_controllers = require('../components/machine-monitor/downtime-controller');
 
 
-var raw_visitor_numbers_controller = require('../components/visitor-numbers/raw-visitor-numbers-controller');
-var monthly_visitor_numbers_controller = require('../components/visitor-numbers/monthly-visitor-numbers-controller');
+var raw_visitor_numbers_controller = require('../components/performance/visits/raw-visits-controller');
+var monthly_visitor_numbers_controller = require('../components/performance/visits/monthly-visits-controller');
 
 
 var monthly_retail_sales_controller = require('../components/performance/retail/monthly-retail-sales-controller');
@@ -43,7 +43,7 @@ var form_controllers = require('../components/team/form-controller');
 var timeline_controllers = require('../components/timeline/timeline-controller');
 var shopify_controllers = require('../components/shopify/shopify-controller');
 var performance_controller = require('../components/performance/performance-controller');
-var performance_form = require('../components/performance/performance-form-controller');
+var performance_form = require('../components/performance/visits/visits-form-controller');
 var retail_performance_form = require('../components/performance/retail/performance-form-controller');
 
 
@@ -61,7 +61,6 @@ var shopify_directives = require('../components/shopify/shopify-directive');
 var performance_directives = require('../components/performance/performance-directive');
 var iframe_directives = require('../components/iframe/iframe-directive');
 var turnstiles_directives = require('../components/turnstiles/turnstiles-directive');
-var visitor_numbers__directives = require('../components/visitor-numbers/visitor-numbers-directive');
 
 
 
@@ -257,9 +256,6 @@ _.each(timeline_settings_controller, function(controller, name) {
   app.directive(name, directive);
 });
 
- _.each(visitor_numbers__directives, function(directive, name) {
-  app.directive(name, directive);
-});
 
 
 

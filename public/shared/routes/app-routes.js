@@ -94,11 +94,11 @@
 		      .when('/turnstiles', {
                template: '<turnstiles-controller></turnstiles-controller>'
            })
-		   
+	//PERFORMANCE		   
 		   .when('/record-visitor-numbers', {
-               template: '<performance-panel></performance-panel>'
+                template: '<visits-formdata></visits-formdata>'
            })
-//PERFORMANCE		   
+	   
 		     .when('/record-visitor-numbers/:kpi', {
                template: '<performance-panel></performance-panel>'
            })
@@ -110,11 +110,9 @@
 		   .when('/monthly-retail-sales', {
                template: '<monthly-retailsales></monthly-retailsales>'
            })
-		   
 		   .when('/raw-retail-sales', {
                template: '<raw-retailsales></raw-retailsales>'
            })
-		   
 
 		   .when('/raw-visits', {
                template: '<raw-visits></raw-visits>'

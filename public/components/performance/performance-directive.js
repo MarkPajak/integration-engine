@@ -1,23 +1,43 @@
+	exports.rawVisits = function() {
+  return {
+   controller: 'raw_visitor_numbers_controller',
+     templateUrl: './shared/templates/data_table.html'
+  }
+	}
+	
+		exports.monthlyVisits = function() {
+  return {
+   controller: 'monthly_visitor_numbers_controller',
+   templateUrl: './shared/templates/data_table.html'
+  }
+	}
+	
+
+	
+	
 exports.kpiForm = function() {
   return {
-   controller: 'performance_form',
-    templateUrl: './components/performance/kpi-form.html'
+   controller: 'visits_form',
+    templateUrl: './components/performance/visits/kpi-form.html'
+  }
+}
+
+
+
+exports.visitsFormdata = function() {
+  return {
+
+   templateUrl: './components/performance/visits/kpi-form-and-data.html'
   }
 }
 
 exports.retailFormdata = function() {
   return {
-  // controller: 'retail_performance_form_and_data',
+  
     templateUrl: './components/performance/retail/kpi-form-and-data.html'
   }
 }
 
-exports.retailFormdata = function() {
-  return {
-//   controller: 'retail_performance_form_and_data',
-    templateUrl: './components/performance/retail/kpi-form-and-data.html'
-  }
-}
 
 exports.retailKpiform = function() {
   return {
@@ -26,24 +46,6 @@ exports.retailKpiform = function() {
   }
 }
 
-
-	exports.performancePanel = function() {
-  return {
-   controller: 'performance_controller',
-    templateUrl: './components/performance/performance-page.html'
-  }
-	}
-	
-	
-		exports.performanceButtons = function() {
-  return {
-   controller: 'shopify_buttons',
-    templateUrl: './components/performance/performance-buttons.html'
-  }
-	}
-	
-	
-	
 	
 
 	exports.rawRetailsales = function() {

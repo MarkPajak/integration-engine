@@ -1,4 +1,4 @@
-exports.raw_retail_sales_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Retail_sales,data_table_reload
+exports.raw_visitor_numbers_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Raw_visits,data_table_reload
     ) {
 		
 		//$scope.setDate = data_table_reload.setDate;
@@ -20,16 +20,13 @@ exports.raw_retail_sales_controller = function($route,$scope, $http, $q, $routeP
 		*/			
 
 
-		 columnDefs.push(
-			{ field: 'museum_id' ,name: "Museum",resizable: true,width:"150"},
-			{ field: 'date_value' ,name: "Date",resizable: true ,type: 'date', cellFilter: 'date:\'dd/MM/yy\''},
-			{ field: 'total_sales' ,resizable: true},
-			{ field: 'non_vat_sales' ,resizable: true},
-			{ field: 'net_sales' ,resizable: true},
-			{ field: 'no_transactions' ,resizable: true},
-			{ field: 'average_transaction' ,resizable: true},
+	 columnDefs.push(
+			{ field: 'museum_id' ,value: "Museum",resizable: true},
+			{ field: 'kpi_type' ,value: "kpi",resizable: true},
+			{ field: 'value' ,resizable: true},
+			{ field: 'date_value' ,value: "Date",resizable: true ,type: 'date', cellFilter: 'date:\'yyyy-MM-dd\''},
 			{ field: 'logger_user_name' ,value: "Logged by",resizable: true},
-			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\''}
+			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'yyyy-MM-dd HH:mm\''}
 			)
 			
 			$scope.gridOptions = {
@@ -95,7 +92,7 @@ exports.raw_retail_sales_controller = function($route,$scope, $http, $q, $routeP
 			setupArray = _.extend(setupArray, obj3);
 			
 				var query = {'id':rowEntity._id};
-						Retail_sales.update(query, 	setupArray
+						Raw_visits.update(query, 	setupArray
 								
 								, function(err, affected, resp) {
 
@@ -111,7 +108,7 @@ if(filterdate){
 		filterdate=moment(filterdate)._d
 }
 		
-			Retail_sales.query({}, function(team) {
+			Raw_visits.query({}, function(team) {
 				$scope.rows=[]
 				$scope._rows=[]
 				_.each(team,function(row){
