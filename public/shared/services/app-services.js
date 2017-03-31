@@ -20,7 +20,22 @@ var firstDate = new Date(firstDate);
 
 }
 
+exports.data_table_reload = function() {	
 
+  var number = 1;
+  function getNumber() {
+    return number;
+  }
+  function setNumber(newNumber) {
+    number = newNumber;
+  }
+  return {
+    getNumber: getNumber,
+    setNumber: setNumber,
+  }
+		
+
+}
     
 exports.trello = function($http) {	
 

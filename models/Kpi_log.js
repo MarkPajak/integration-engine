@@ -8,7 +8,8 @@ var Kpi_log = new mongoose.Schema({
 			kpi_type: { type: String },	
 			value: { type: Number, required: true},
 			date_logged: { type: Date, required: true},
-			date_value: { type: Date},	
+			date_value: { type: Date},
+			comments: { type: String},			
 			logger_user_name: { type: String}
 			
 			

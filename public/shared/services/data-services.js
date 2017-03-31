@@ -1,10 +1,21 @@
 var status = require('http-status');
 
 
-        exports.Monthly_visits =  function($resource){
+exports.Monthly_visits =  function($resource){
 	  
 	  
 	return $resource('/kpi_aggregate/all',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+       
+
+  } 
+  
+  exports.Monthly_retail_sales =  function($resource){
+	  
+	  
+	return $resource('/retail_sales/all',{ }, {
 		openGates: {method:'GET', isArray: true}
 			
   });
@@ -24,6 +35,7 @@ var status = require('http-status');
 
   }
   
+ //PERFORMACE 
  exports.Raw_visits =  function($resource){
 	 
 		 
@@ -37,7 +49,18 @@ var status = require('http-status');
           });
  }
   
-
+ exports.Retail_sales =  function($resource){
+	 
+		 
+            return $resource('/retail_sales/:id/:museum_id/:date_value', null,
+			{ 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray:true}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+ }
   
       exports.check_com_port =  function($resource){
 	  

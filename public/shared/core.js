@@ -22,8 +22,17 @@ var satisfaction_controllers = require('../components/machine-monitor/satisfacti
 
 
 var downtime_controllers = require('../components/machine-monitor/downtime-controller');
+
+
 var raw_visitor_numbers_controller = require('../components/visitor-numbers/raw-visitor-numbers-controller');
 var monthly_visitor_numbers_controller = require('../components/visitor-numbers/monthly-visitor-numbers-controller');
+
+
+var monthly_retail_sales_controller = require('../components/performance/retail/monthly-retail-sales-controller');
+var raw_retail_sales_controller = require('../components/performance/retail/raw-retail-sales-controller');
+
+
+
 
 
 var app_controllers = require('../components/team/app-controllers');
@@ -35,7 +44,7 @@ var timeline_controllers = require('../components/timeline/timeline-controller')
 var shopify_controllers = require('../components/shopify/shopify-controller');
 var performance_controller = require('../components/performance/performance-controller');
 var performance_form = require('../components/performance/performance-form-controller');
-
+var retail_performance_form = require('../components/performance/retail/performance-form-controller');
 
 
 var timeline_settings_controller = require('../components/timeline-settings/timeline-settings-controller');
@@ -53,6 +62,10 @@ var performance_directives = require('../components/performance/performance-dire
 var iframe_directives = require('../components/iframe/iframe-directive');
 var turnstiles_directives = require('../components/turnstiles/turnstiles-directive');
 var visitor_numbers__directives = require('../components/visitor-numbers/visitor-numbers-directive');
+
+
+
+
 
 
 var data_services = require('../shared/services/data-services');
@@ -138,6 +151,12 @@ _.each(raw_visitor_numbers_controller, function(controller, name) {
 _.each(monthly_visitor_numbers_controller, function(controller, name) {
   app.controller(name, controller);
 });
+_.each(monthly_retail_sales_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+_.each(raw_retail_sales_controller, function(controller, name) {
+  app.controller(name, controller);
+});
 
 
 
@@ -187,6 +206,10 @@ _.each(performance_controller, function(controller, name) {
 _.each(performance_form, function(controller, name) {
   app.controller(name, controller);
 });
+_.each(retail_performance_form, function(controller, name) {
+  app.controller(name, controller);
+});
+
 
 
 

@@ -34,7 +34,7 @@
               controller: 'satisfaction'
            })
 		   
-		      .when('/open_badges', {
+		   .when('/open_badges', {
               templateUrl: '../views/open_badges.html',
               controller: 'open_badgesCtrl'
            })
@@ -94,14 +94,33 @@
 		      .when('/turnstiles', {
                template: '<turnstiles-controller></turnstiles-controller>'
            })
-		        .when('/record-visitor-numbers', {
+		   
+		   .when('/record-visitor-numbers', {
                template: '<performance-panel></performance-panel>'
            })
-		         .when('/raw-visits', {
+//PERFORMANCE		   
+		     .when('/record-visitor-numbers/:kpi', {
+               template: '<performance-panel></performance-panel>'
+           })
+		   
+		  .when('/record-retail-sales', {
+               template: '<retail-formdata></retail-formdata>'
+           })
+		   
+		   .when('/monthly-retail-sales', {
+               template: '<monthly-retailsales></monthly-retailsales>'
+           })
+		   
+		   .when('/raw-retail-sales', {
+               template: '<raw-retailsales></raw-retailsales>'
+           })
+		   
+
+		   .when('/raw-visits', {
                template: '<raw-visits></raw-visits>'
            })
 		   
-		          .when('/monthly-visits', {
+			.when('/monthly-visits', {
                template: '<monthly-visits></monthly-visits>'
            })
 

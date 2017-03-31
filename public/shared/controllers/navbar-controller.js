@@ -4,18 +4,16 @@ exports.NavController = function($location,AuthService,$scope,$http) {
   $scope.user="not logged in"
   $scope.$location = $location;
  
- 
- $scope.permissions = []
- $scope.user_groups = []
-  $scope.user_groups['AV']=[]
-    $scope.user_groups['ADMIN']=[]
-   $scope.user_groups['RETAIL']=[]
-    $scope.user_groups['DIGITAL']=[]
-	
-		   $scope.user_groups['STAFF']=[]
-	
-	
-	   $scope.user_groups['DEFAULT']=[]
+
+$scope.permissions = []
+$scope.user_groups = []
+$scope.user_groups['AV']=[]
+$scope.user_groups['ADMIN']=[]
+$scope.user_groups['RETAIL']=[]
+$scope.user_groups['DIGITAL']=[]
+$scope.user_groups['STAFF']=[]
+$scope.user_groups['DEFAULT']=[]
+	   
 	
 var timeline = {link:"timeline",value:"timeline"}
 var dead ={link:"dead",value:"downtime"}
@@ -26,9 +24,12 @@ var shopify = {link:"shopify_app",value:"shopify"}
 var users = {link:"users",value:"users"}
 var doom = {link:"doom",value:"DOOM!"}
 var performance = {link:"record-visitor-numbers",value:"enter data"}
+var record_retail_sales = {link:"record-retail-sales",value:"record retail sales"}
+var raw_retail_sales = {link:"raw-retail-sales",value:"raw retail sales"}
+
 var raw_visits = {link:"raw-visits",value:"raw visit data"}
 var monthly_visits = {link:"monthly-visits",value:"monthly visit data"}
-
+var monthly_retail_sales = {link:"monthly-retail-sales",value:"monthly retail sales"}
 
 
 $scope.user_groups['ADMIN'].views=[]
@@ -41,6 +42,9 @@ $scope.user_groups['ADMIN'].views.push(shopify)
 $scope.user_groups['ADMIN'].views.push(performance)
 $scope.user_groups['ADMIN'].views.push(raw_visits)
 $scope.user_groups['ADMIN'].views.push(monthly_visits)
+  $scope.user_groups['ADMIN'].views.push(record_retail_sales)
+   $scope.user_groups['ADMIN'].views.push(monthly_retail_sales) 
+     $scope.user_groups['ADMIN'].views.push(raw_retail_sales) 
   
   
 $scope.user_groups['AV'].views=[]
@@ -59,7 +63,10 @@ $scope.user_groups['DIGITAL'].views.push(shopify)
 $scope.user_groups['DIGITAL'].views.push(performance)
 $scope.user_groups['DIGITAL'].views.push(raw_visits)
 $scope.user_groups['DIGITAL'].views.push(monthly_visits)
-
+$scope.user_groups['DIGITAL'].views.push(record_retail_sales)
+  $scope.user_groups['DIGITAL'].views.push(monthly_retail_sales) 
+     $scope.user_groups['DIGITAL'].views.push(raw_retail_sales) 
+  
 $scope.user_groups['DEFAULT'].views=[]
 $scope.user_groups['DEFAULT'].views.push(timeline) 
 $scope.user_groups['DEFAULT'].views.push(monthly_visits)
@@ -73,7 +80,11 @@ $scope.user_groups['STAFF'].views.push(monthly_visits)
 $scope.user_groups['RETAIL'].views=[]
 $scope.user_groups['RETAIL'].views.push(timeline)
 $scope.user_groups['RETAIL'].views.push(shopify)
-   
+ $scope.user_groups['RETAIL'].views.push(record_retail_sales)
+  $scope.user_groups['RETAIL'].views.push(monthly_retail_sales) 
+      $scope.user_groups['RETAIL'].views.push(raw_retail_sales) 
+	  
+	  
   AuthService.isLoggedIn().then(function(user){
 	 
 	  if(user.data.group){
