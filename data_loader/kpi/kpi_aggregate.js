@@ -68,41 +68,39 @@ get_kpis( function ( result) {
 	
 	var returned_data=[]
 	_.each(venues,function(venue){
-		var returned_row=[]
+		var returned_row={}
 		returned_row.museum=venue
-
-			var years = [2016,2017,2018]
+				var years = [2016,2017,2018,2019]
 			_.each(years,function(year){
-			_.each(moment.monthsShort(),function(month){
-			
-			returned_row[month+" "+year]=0
-				_.each(result,function(row){
-					if(month==moment.monthsShort(row._id.month-1) &&venue==row._id.venue &&row._id.year==year){
-						returned_row[month+" "+year]=row.visits
-					}
+				_.each(moment.monthsShort(),function(month){			
+				returned_row[month+"_"+year]="0"
+					_.each(result,function(row){
+						if(month==moment.monthsShort(row._id.month-1) &&venue==row._id.venue &&row._id.year==year){
+							returned_row[month+"_"+year]=row.visits
+						}
+					})
 				})
 			})
 			
-			
-			
-		})
-		returned_data.push(returned_row)
+	returned_data.push(	returned_row)
 	})
 
 	var headers=[]
 		headers.push("museum")
-		headers.push("Jan")
-		headers.push("Feb")
-		headers.push("Mar")
-		headers.push("Apr")
-		headers.push("May")
-		headers.push("Jun")
-		headers.push("Jul")
-		headers.push("Aug")
-		headers.push("Sep")
-		headers.push("Oct")
-		headers.push("Nov")
-		headers.push("Dec")
+	
+		headers.push("Mar_2017")
+		headers.push("Apr_2017")
+		headers.push("May_2017")
+		headers.push("Jun_2017")
+		headers.push("Jul_2017")
+		headers.push("Aug_2017")
+		headers.push("Sep_2017")
+		headers.push("Oct_2017")
+		headers.push("Nov_2017")
+		headers.push("Dec_2017")
+	    headers.push("Jan_2018")
+		headers.push("Feb_2018")
+		headers.push("Mar_2018")
 
 
 	save_any_data_to_google_sheetInstance.add_data_to_sheet(headers,returned_data,function(analytics_data) {
