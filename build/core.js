@@ -14389,18 +14389,18 @@ exports.users_controller = function($route,$scope, $http, $q, $routeParams, $loc
 
 		 columnDefs.push(
 			{ field: 'username' ,resizable: true},
-			{ field: 'password' ,resizable: true},
+			//{ field: 'password' ,resizable: true},
 			{ field: 'email' ,resizable: true},
 			{ field: 'firstName' ,resizable: true},
 			{ field: 'lastName' ,resizable: true},
 			{ field: 'team' ,resizable: true},
-			{ field: 'group' ,resizable: true},
-			{ field: 'trello_doing_id' ,resizable: true},
-			{ field: 'score' ,resizable: true},
-			{ field: 'bonus' ,resizable: true},
-			{ field: 'leave_start' ,resizable: true},
-			{ field: 'leave_taken' ,resizable: true},
-			{ field: 'number_days_leave' ,resizable: true}
+			{ field: 'group' ,resizable: true}
+			//{ field: 'trello_doing_id' ,resizable: true},
+			//{ field: 'score' ,resizable: true},
+			//{ field: 'bonus' ,resizable: true},
+			//{ field: 'leave_start' ,resizable: true},
+			//{ field: 'leave_taken' ,resizable: true},
+			//{ field: 'number_days_leave' ,resizable: true}
 			)
 			
 			$scope.gridOptions = {
@@ -15029,7 +15029,7 @@ app.config(['$qProvider', function ($qProvider) {
     $qProvider.errorOnUnhandledRejections(false);
 }]);
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_6d410b98.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_ecc89500.js","/")
 },{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/performance/performance-directive":18,"../components/performance/retail/monthly-retail-sales-controller":19,"../components/performance/retail/performance-form-controller":20,"../components/performance/retail/raw-retail-sales-controller":21,"../components/performance/visits/monthly-visits-controller":22,"../components/performance/visits/raw-visits-controller":23,"../components/performance/visits/visits-form-controller":24,"../components/shopify/shopify-controller":25,"../components/shopify/shopify-directive":26,"../components/team/app-controllers":27,"../components/team/form-controller":28,"../components/team/leave-controller":29,"../components/team/team-controller":30,"../components/tech-support/tech-support-controller":31,"../components/tech-support/tech-support-directive":32,"../components/tech-support/trello-services":33,"../components/timeline-settings/timeline-settings-controller":34,"../components/timeline/timeline-controller":35,"../components/timeline/timeline-directive":36,"../components/timeline/timeline-googlesheets-services":37,"../components/timeline/timeline-learning-bookings-services":38,"../components/timeline/timeline-leave-services":39,"../components/timeline/timeline-loans-services":40,"../components/timeline/timeline-services":41,"../components/timeline/timeline-shopify-services":42,"../components/turnstiles/turnstiles-controller":43,"../components/turnstiles/turnstiles-directive":44,"../components/user-admin/users-controller":45,"../components/user-admin/users-directive":46,"../shared/controllers/controllers":47,"../shared/controllers/navbar-controller":48,"../shared/directives/directives":49,"../shared/services/app-services":51,"../shared/services/data-services":52,"b55mWE":4,"buffer":3,"underscore":7}],51:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 

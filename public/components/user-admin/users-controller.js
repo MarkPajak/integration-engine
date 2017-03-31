@@ -16,18 +16,18 @@ exports.users_controller = function($route,$scope, $http, $q, $routeParams, $loc
 
 		 columnDefs.push(
 			{ field: 'username' ,resizable: true},
-			{ field: 'password' ,resizable: true},
+			//{ field: 'password' ,resizable: true},
 			{ field: 'email' ,resizable: true},
 			{ field: 'firstName' ,resizable: true},
 			{ field: 'lastName' ,resizable: true},
 			{ field: 'team' ,resizable: true},
-			{ field: 'group' ,resizable: true},
-			{ field: 'trello_doing_id' ,resizable: true},
-			{ field: 'score' ,resizable: true},
-			{ field: 'bonus' ,resizable: true},
-			{ field: 'leave_start' ,resizable: true},
-			{ field: 'leave_taken' ,resizable: true},
-			{ field: 'number_days_leave' ,resizable: true}
+			{ field: 'group' ,resizable: true}
+			//{ field: 'trello_doing_id' ,resizable: true},
+			//{ field: 'score' ,resizable: true},
+			//{ field: 'bonus' ,resizable: true},
+			//{ field: 'leave_start' ,resizable: true},
+			//{ field: 'leave_taken' ,resizable: true},
+			//{ field: 'number_days_leave' ,resizable: true}
 			)
 			
 			$scope.gridOptions = {
