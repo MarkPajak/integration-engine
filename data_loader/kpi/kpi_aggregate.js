@@ -17,7 +17,7 @@ var fs = require('fs');
 var config=[]
 
 config.save_to_sheets=true
-config.title = "data"
+config.title = "visits_data"
 config.google_sheet_id="1PwpgPwaejQa5F3mPBmbTew7RaQTlpRVZzQ4jPrdKz54"
 
 var Save_any_data_to_google_sheetInstance = require("../services/save_any_data_to_google_sheet.js");
