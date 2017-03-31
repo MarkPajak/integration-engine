@@ -42,7 +42,7 @@ var member_controllers = require('../components/member/member-controller');
 var form_controllers = require('../components/team/form-controller');
 var timeline_controllers = require('../components/timeline/timeline-controller');
 var shopify_controllers = require('../components/shopify/shopify-controller');
-var performance_controller = require('../components/performance/performance-controller');
+//var performance_controller = require('../components/performance/performance-controller');
 var performance_form = require('../components/performance/visits/visits-form-controller');
 var retail_performance_form = require('../components/performance/retail/performance-form-controller');
 
@@ -199,9 +199,7 @@ _.each(shopify_controllers, function(controller, name) {
   app.controller(name, controller);
 });
 
-_.each(performance_controller, function(controller, name) {
-  app.controller(name, controller);
-});
+
 _.each(performance_form, function(controller, name) {
   app.controller(name, controller);
 });

@@ -28,8 +28,8 @@ exports.raw_retail_sales_controller = function($route,$scope, $http, $q, $routeP
 			{ field: 'net_sales' ,resizable: true},
 			{ field: 'no_transactions' ,resizable: true},
 			{ field: 'average_transaction' ,resizable: true},
-			{ field: 'logger_user_name' ,value: "Logged by",resizable: true},
-			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\''}
+			{ field: 'logger_user_name' ,value: "Logged by",resizable: true,visible:false},
+			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',visible:false}
 			)
 			
 			$scope.gridOptions = {

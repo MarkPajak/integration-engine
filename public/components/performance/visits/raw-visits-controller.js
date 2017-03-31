@@ -22,11 +22,11 @@ exports.raw_visitor_numbers_controller = function($route,$scope, $http, $q, $rou
 
 	 columnDefs.push(
 			{ field: 'museum_id' ,value: "Museum",resizable: true},
-			{ field: 'kpi_type' ,value: "kpi",resizable: true},
+			{ field: 'kpi_type' ,value: "kpi",resizable: true,visible:false},
 			{ field: 'value' ,resizable: true},
 			{ field: 'date_value' ,value: "Date",resizable: true ,type: 'date', cellFilter: 'date:\'yyyy-MM-dd\''},
-			{ field: 'logger_user_name' ,value: "Logged by",resizable: true},
-			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'yyyy-MM-dd HH:mm\''}
+			{ field: 'logger_user_name' ,value: "Logged by",resizable: true,visible:false},
+			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'yyyy-MM-dd HH:mm\'',visible:false}
 			)
 			
 			$scope.gridOptions = {
