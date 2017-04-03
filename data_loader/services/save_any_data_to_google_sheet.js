@@ -19,7 +19,7 @@ self.add_data_to_sheet = function(headers,google_data,done){
 	
 		var i=0	
 		console.log(google_data.length + " rows to add")
-		console.log(options)
+		//console.log(options)
 		var selected_sheet;
 
 		async.series([
@@ -32,12 +32,12 @@ self.add_data_to_sheet = function(headers,google_data,done){
 		  },
 		   function getInfoAndWorksheets(step) {
 				
-				console.log('getInfoAndWorksheets')
+				//console.log('getInfoAndWorksheets')
 
 			   doc.getInfo(function(err, info) {
 				  console.log('Loaded doc: '+info.title+' by '+info.author.email);
 				 
-				   console.log(info)
+				  // console.log(info)
 				  _.each(info.worksheets,function(sheet) {
 					console.log('worksheets')
 					if(sheet.title==sheet_name)  {

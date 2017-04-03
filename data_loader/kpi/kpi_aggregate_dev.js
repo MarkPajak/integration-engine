@@ -1,4 +1,4 @@
-monthly_sats = function(model,sheet_name,sum_value){
+monthly_sats = function(model,sheet_name){
 var express = require('express');
 var router = express.Router();
 var self = this
@@ -22,20 +22,20 @@ function get_kpis(cb){
 mongoose.connect(dbConfig.url);	
 model.aggregate([
  
-		 { $group: {
-                _id: { year : { $year : "$date_value" },        
+	
+    { $group: {          
+         _id: { year : { $year : "$date_value" },        
 					   month : { $month : "$date_value" },        
 					   venue:'$museum_id'
-					 },  
-               data: {$sum: sum_value}
-            }
-		 }			
-
+					 },          
+          data: {$sum:  { $divide: ["$total_sales","$no_transactions"]}}
+		}}
+    
     ], function (err, result) {
         if (err) {
             console.log(err);
         } else {
-console.log(sum_value,result)
+console.log(result)
 		cb(result)
 		   	mongoose.connection.close()	
         }
