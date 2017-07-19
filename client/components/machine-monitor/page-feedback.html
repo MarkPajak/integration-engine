@@ -1,0 +1,71 @@
+
+	
+	
+<style>
+		 
+.container {
+	background-color: #f2f2f2;
+	font-size:25px;
+	width:80%;
+	border: 1px solid #ccc;	
+	padding: 20px;
+	top: 20px;
+	-webkit-box-shadow: 0 2px 2px 1px rgba(0,0,0,0.2);
+	box-shadow: 0 2px 2px 1px rgba(0,0,0,0.2);
+	    margin-left: 10%;
+}
+
+	.icon{
+    -webkit-filter: invert(100%)
+}	
+textarea{
+font-size:25px !important;
+}
+
+</style>
+   <div  class="container col-md-4 col-md-offset-4" ng-controller="form_to_trello as vm">      
+ <div>
+      <h1>To Do</h1>
+      <form ng-submit="vm.onSubmit()" name="vm.form" novalidate>
+	  
+        <formly-form model="vm.model" fields="vm.fields" options="vm.options" form="vm.form">
+          <button type="submit" style="{{functionThatReturnsStyle()}}" class="hvr-grow btn btn-primary btn-lg" ng-disabled="vm.form.$invalid">Submit</button>
+          <button type="button" class="hvr-grow  btn btn-lg  btn-default" ng-click="vm.options.resetModel()">Reset</button>
+        </formly-form>
+      </form>
+     
+    </div>
+
+
+    <!-- Put custom templates here -->
+    
+    <script type="text/ng-template" id="custom.html">
+      <div class="form-group">
+        <label for="{{::id}}">{{options.templateOptions.label}}</label>
+        <input id="{{::id}}" name="{{::id}}" class="btn-primary btn-lg " ng-model="model[options.key]" />
+      </div>
+    </script>
+	
+	    <script type="text/ng-template" id="custom-file.html">
+      <div class="form-group">
+        <label for="{{::id}}">{{options.templateOptions.label}}</label>
+        <input type="file"  id="{{::id}}" name="{{::id}}" class="btn-primary btn-lg " ng-model="model[options.key]" />
+      </div>
+    </script>
+	
+	
+		
+    <script type="text/ng-template" id="example-directive.html">
+      <div class="form-group">
+        <label for="{{::id}}">{{options.templateOptions.label}}</label>
+        <input id="{{::id}}" name="{{::id}}" class="btn-primary btn-lg " ng-model="model[options.key]" />
+		
+      </div>
+	
+    </script>
+
+    </div>
+	 <div>
+
+</div>
+<br><br>

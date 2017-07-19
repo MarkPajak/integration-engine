@@ -1,0 +1,116 @@
+<style>
+.material-switch > input[type="checkbox"] {
+    display: none;   
+}
+
+.material-switch > label {
+    cursor: pointer;
+    height: 0px;
+    position: relative; 
+    width: 40px;  
+}
+
+.material-switch > label::before {
+    background: rgb(0, 0, 0);
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    content: '';
+    height: 16px;
+    margin-top: -8px;
+    position:absolute;
+    opacity: 0.3;
+    transition: all 0.4s ease-in-out;
+    width: 40px;
+}
+.material-switch > label::after {
+    background: rgb(255, 255, 255);
+    border-radius: 16px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    content: '';
+    height: 24px;
+    left: -4px;
+    margin-top: -8px;
+    position: absolute;
+    top: -4px;
+    transition: all 0.3s ease-in-out;
+    width: 24px;
+}
+.material-switch > input[type="checkbox"]:checked + label::before {
+    background: inherit;
+    opacity: 0.5;
+}
+.material-switch > input[type="checkbox"]:checked + label::after {
+    background: inherit;
+    left: 20px;
+}
+.list-group-item {
+    height: 50px;
+	}
+</style>
+<line-chart></line-chart>
+
+
+
+			
+
+        <div class="col-xs-3 col-sm-3 col-md-3">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">Filter by Museum</div>
+            
+                <!-- List group -->
+                <ul class="list-group">
+                 
+                    <li class="list-group-item" ng-repeat="fruitName in museums">
+                        {{fruitName}}
+                        <div class="material-switch pull-right">
+                            <input id="someSwitchOptionPrimary{{fruitName}}" value="{{fruitName}}" name="someSwitchOption001{{fruitName}}" type="checkbox"/>
+                            <label for="someSwitchOptionPrimary{{fruitName}}" ng-click="toggleSelection(fruitName)" class="label-primary"></label>
+                        </div>
+                    </li>
+                   
+                </ul>
+            </div>            
+        </div>
+      <div class="col-xs-2 col-sm-2 col-md-2 ">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">Interval</div>
+                    <ul class="panel list-group">
+				  <md-radio-group ng-model="interval">
+				  <md-radio-button value="Monthly" class="md-primary">Monthly</md-radio-button>
+				  <md-radio-button value="Weekly"> Weekly </md-radio-button>
+				</md-radio-group>
+				   </ul>
+            </div>            
+        </div>
+        <div class="col-xs-3 col-sm-3 col-md-3 ">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">Filter by Statistic</div>
+            
+                <!-- List group -->
+                <ul class="list-group" ng-hide="running">
+                 
+                    <li class="list-group-item" ng-repeat="fruitName in chart_stats">
+                        {{fruitName}}
+                        <div class="material-switch pull-right">
+                            <input id="someSwitchOptionPrimary{{fruitName}}" value="{{fruitName}}" name="someSwitchOption001{{fruitName}}" type="checkbox"/>
+                            <label for="someSwitchOptionPrimary{{fruitName}}" class="label-info" ng-click="toggleSelection_stats(fruitName)"></label>
+                        </div>
+                    </li>
+                   
+                </ul>
+            </div>            
+        </div>
+
+
+
+		
+		
+
+<date-select></date-select>
+
+
+
+

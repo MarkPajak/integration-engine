@@ -1,0 +1,46 @@
+ <div href="#" class="button" ng-click="addRow()">Add Row {{counter}}</div>
+<div class="col-lg-12"  >
+<div class="panel-body">
+<div class="panel">
+
+<div class="container-fluid">
+<table >    
+<table  md-table class="table  table-striped">
+  <thead>
+    <tr>
+      <th width="200">Name</th>
+	  <th width="200">Number Days Leave</th>
+	  <th width="200">Remianing</th>
+	  <th width="200">Leave Year</th>
+	  <th width="200">Team</th>
+	  <th width="200">Job</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr   ng-repeat="rowContent in rows">
+      <td   ng-data="user" md-cell ng-click="editComment($event, rowContent)" ng-class="{'md-placeholder': !rowContent.name}">
+  {{rowContent.username || 'Add a comment'}}
+</td>
+ <td   ng-data="number_days_leave" aria-label md-cell ng-click="editComment($event, rowContent)" ng-class="{'md-placeholder': !rowContent.number_days_leave}">
+  {{rowContent.number_days_leave}}
+</td>
+ <td   ng-data="number_days_leave_remaining" aria-label md-cell ng-click="editComment($event, rowContent)" ng-class="{'md-placeholder': !rowContent.number_days_leave_remaining}">
+  {{rowContent.number_days_leave_remaining}}
+</td>
+ <td   ng-data="leave_start" aria-label md-cell ng-click="editComment($event, rowContent)" ng-class="{'md-placeholder': !rowContent.leave_start}">
+  <p ng-bind="rowContent.leave_start | date:'dd/mm/yyyy'"></p>
+</td>
+ <td   ng-data="team" aria-label md-cell ng-click="editComment($event, rowContent)" ng-class="{'md-placeholder': !rowContent.team}">
+  {{rowContent.team}}
+</td>
+ <td   ng-data="job" aria-label md-cell ng-click="editComment($event, rowContent)" ng-class="{'md-placeholder': !rowContent.team}">
+  {{rowContent.job}}
+</td>
+
+
+    </tr>
+  </tbody>
+</table>   
+</div> 
+</div> 
+</div> 

@@ -1,0 +1,13 @@
+<div style="position:relative;"  ng-class="chart_class ? chart_class : 'col-md-4 col-lg-7 col-sm-5 pull-right'" id="line-chart" >
+          <div class="panel panel-default">
+            <div class="panel-heading"> {{chart_heading}} </div>
+            <div class="panel-body data">
+         <canvas id="line" class="chart chart-line" chart-data="line_data"
+chart-labels="line_labels" chart-dataset-override="datasetOverride" chart-series="line_series" chart-options="line_options"
+>
+</canvas>
+       
+		 
+		   </div>
+          </div>
+</div>

@@ -1,0 +1,57 @@
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+ <style>
+  .panel > .panel-heading {
+    background-image: none;
+    background-color: red;
+    color: white;
+
+}
+  .panel > .panel-body {
+ 
+    background-color: white;
+
+}
+</style>
+	  
+	  
+<div ng-show="user.username" class="panel panel-default col-xs-5 col-sm-5 col-md-5">
+<div class="panel-heading">Enter data</div>
+	<div class="panel-body">
+		<form name="visit_form" >
+
+			  <div class="form-group">
+				<label for="exampleSelect1">Museum select</label>
+				<select class="form-control input-lg" id="museum">
+			  <option value="BMAG">Bristol Museum (TEG 1)</option>
+					  <option value="M-SHED">M Shed (TEG)</option>
+					  <option value="GEORGIAN-HOUSE">The Georgian House Museum</option>
+					  <option value="RED-LODGE">The Red Lodge</option>
+					   <option value="BRISTOL-ARCHIVES">Bristol Archives</option>
+					    <option value="BLAISE">Blaise</option>
+				</select>
+			  </div>
+			  <div class="form-group">
+				<label for="comments">Date of visits</label>
+				<input placeholder="mm/dd/yyyy" type = "date" class="form-control input-lg" id="date_value" rows="3"></input>
+			  </div>
+			  <div class="form-group">
+				<label for="comments">Number of visits</label>
+				<input type = "number" class="form-control input-lg" id="no_visits" rows="3"></input>
+			  </div>
+			  <div class="form-group">
+				<label for="comments">Comments</label>
+				<textarea class="form-control input-lg" id="comments" rows="3"></textarea>
+			  </div>
+			   <button ng-click="onSubmit()" type="submit" class="btn input-lg btn-primary submit-button" ng-disabled="vm.form.$invalid">Submit</button>
+			   <button type="button" class="btn input-lg btn-default" ng-click="vm.options.resetModel()">Reset</button>
+		</form>
+	</div>
+</div>
+  <script>
+  $( function() {
+   if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent))
+    $( "#date_value" ).datepicker();
+  } );
+  </script>
+

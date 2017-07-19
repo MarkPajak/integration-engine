@@ -1,0 +1,26 @@
+<style>
+.grid {
+  width: 100%;
+ position:relative;
+ }
+
+.full-height {
+  height: 98vh;
+  
+}
+.ui-grid , .ui-grid-viewport {
+    height: auto !important;
+}
+</style>
+<script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>
+
+  
+<div ng-class="table_class ? table_class : 'col-lg-8 col-sm-8 col-md-8 full-height'"  id="data_grid"  >
+	<button class="btn" ng-show="show_all_Button" ng-click="alldata()">show more data</button>
+	<button class="btn" ng-show="show_all_Button" ng-click="alldata('month')">show just this month</button>
+	<div class="panel panel-default ">
+		<div class="panel-heading"> {{table_heading}}</div>
+	   <div  ng-class="dashboard ? '' : 'full-height'"  ui-grid-auto-resize ui-grid-resize-columns ui-grid-move-columns ui-grid-cellNav ui-grid-edit ui-grid-pinning ui-grid-row-edit ui-grid="gridOptions" ui-grid-selection ui-grid-exporter class="grid">
+	   </div>	
+	</div>
+</div>

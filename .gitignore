@@ -1,0 +1,7 @@
+node_modules/
+secret/
+dump/
+test/
+npm-debug.log
+.env
+db.js

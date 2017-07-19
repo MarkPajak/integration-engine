@@ -1,0 +1,97 @@
+
+<style>
+md-menu-item > .md-button md-icon {
+    margin: auto -34px auto 0;
+}
+
+md-menu-item{
+height:60px;
+}
+.menudemoBasicUsage .md-menu-demo {
+  padding: 24px; }
+.menudemoBasicUsage .menu-demo-container {
+  min-height: 100px; }
+  
+  /* -----
+SVG Icons - svgicons.sparkk.fr
+----- */
+
+.svg-icon {
+  width: 1em;
+  height: 1em;
+}
+
+.svg-icon path,
+.svg-icon polygon,
+.svg-icon rect {
+  fill: #4691f6;
+}
+
+.svg-icon circle {
+  stroke: #4691f6;
+  stroke-width: 1;
+}
+</style>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+	
+<div  ng-controller="BasicDemoCtrl as ctrl" ng-cloak="">
+    <md-menu class="pull-right">
+      <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="ctrl.openMenu($mdMenu, $event)">
+         <i class="material-icons">face</i>
+      </md-button>
+      <md-menu-content width="4">
+        <md-menu-item ng-repeat="track in track_groups">
+          
+		  <md-button ng-click="ctrl.redial($event)">
+            <md-icon md-svg-icon="call:dialpad" md-menu-align-target=""></md-icon>
+				<label class="switch">
+		<div class="settings_locklabel" >{{track.track}}</div>
+		
+			<input
+					type="checkbox"
+					name="selectedFruits[]"
+					value="{{track.track}}"
+					ng-model="track.selected"
+				  > 
+				   <div class="slider round"></div>
+			</label>
+            
+          </md-button>
+		  
+        </md-menu-item>
+        <md-menu-item>
+          <md-button disabled="disabled" ng-click="">
+            <md-icon md-svg-icon="call:voicemail"></md-icon>
+           Settings
+          </md-button>
+        </md-menu-item>
+        <md-menu-divider></md-menu-divider>
+        <md-menu-item>
+          <md-button ng-click="">
+            <md-icon md-svg-icon="social:notifications-{{ctrl.notificationsEnabled ? 'off' : 'on'}}"></md-icon>
+        <label class=" switch checkbox checkbox-inline">
+		<div class="settings_locklabel" >stack</div>
+		<input checked type="checkbox" id="stack"  ng-model="stack" value="">
+		<div class="slider round"></div>
+		</label>
+          </md-button>
+        </md-menu-item>
+		 <md-menu-item  ng-show="isloggedin">
+          <md-button ng-click="">
+         <md-icon md-svg-icon="social:notifications-{{ctrl.notificationsEnabled ? 'off' : 'on'}}"></md-icon>
+         <label class=" switch checkbox checkbox-inline">
+		<div class="settings_locklabel" >unlocked</div>
+		<input checked type="checkbox" id="unlocked"  onclick="timeline.setOptions({'editable':true});" ng-model="locked.add_item" value="">
+		<div class="slider round"></div>
+		</label>
+          </md-button>
+        </md-menu-item>
+		
+		
+
+      </md-menu-content>
+    </md-menu>
+</div>
+	
+

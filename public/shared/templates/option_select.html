@@ -1,0 +1,38 @@
+
+
+
+<style>
+
+label.mini {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: -11px;
+    font-weight: bold;
+}
+.panel-body input.mini {
+    font-size: 14px;
+}
+form-group.mini {
+    margin-bottom: 2px;
+}
+</style>
+<div style="position:relative;" class="col-md-4 col-lg-4 col-sm-4"id="data_grid"  >
+	<div class="panel panel-default">
+	<div class="panel-heading">Filter data</div>
+	<div class="panel-body">	
+		 <div class="form-group">
+
+	<select class="form-control"
+	ng-change="changedValue(filter_pieSelected)"
+	ng-model="filter_pieSelected"
+	
+	>
+		<option   value="{{item.value}}" 
+		ng-repeat="item in filter_pie track by $index">
+		{{item.name}}
+		</option>
+	</select> 
+</div> 
+	</div>
+</div>
+</div>

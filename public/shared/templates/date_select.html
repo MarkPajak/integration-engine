@@ -1,0 +1,30 @@
+<style>
+
+label.mini {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: -11px;
+    font-weight: bold;
+}
+.panel-body input.mini {
+    font-size: 14px;
+}
+form-group.mini {
+    margin-bottom: 2px;
+}
+</style>
+<div style="position:relative;" class="col-md-4 col-lg-4 col-sm-4"id="data_grid"  >
+	<div class="panel panel-default">
+	<div class="panel-heading">Filter by date</div>
+	<div class="panel-body">	
+		  <div class="form-group mini  form-inline">
+				<label class="mini" for="comments">From: </label>
+				<input ng-model="start_date" placeholder="mm/dd/yyyy" type = "date" class="form-control " id="start_date" rows="3"></input>
+		  </div> <div class="form-group mini  form-inline">	
+			  
+				<label  for="comments">Until: </label>
+				<input ng-model="end_date" placeholder="mm/dd/yyyy" type = "date" class="form-control " id="end_date" rows="3"></input>	
+		  </div>
+	</div>
+</div>
+</div>

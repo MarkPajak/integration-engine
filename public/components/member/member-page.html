@@ -1,0 +1,81 @@
+ <div href="#" class="button" ng-click="addRow()">Add Row {{counter}}</div>
+<div class="col-lg-12"  >
+<div class="panel-body">
+<div class="panel">
+<h1>Hi {{me}}</h1>
+<div class="container-fluid">
+Summary
+<table  md-table class="table  table-striped">
+   <thead>
+    <tr>
+	<th width="200"></th>
+	  <th width="200"></th>
+	 </tr>
+  </thead>
+  <tbody>
+ <tr>
+	<td>Number of Days Leave</td>
+	<td>{{me_Data.number_days_leave}}</td>
+ </tr>
+ <tr>
+	<td>Remaining</td>
+	<td>{{me_Data.number_days_leave_remaining}}</td>
+ </tr>
+ <tr>
+	<td>Leave Year Start</td>
+	<td>{{me_Data.leave_start | date:'dd/MMM/yyyy'}}</td>
+ </tr>
+ <tr>
+	<td>Team</td>
+	<td>{{me_Data.team}}</td>
+ </tr>
+ <tr>
+	<td>Job</td>
+	<td>{{me_Data.job}}</td>
+ </tr>
+<td   ng-data="start_date" md-cell ng-click="editComment($event, leave)" ng-class="{'md-placeholder': !leave.start_date}">
+  {{leave.start_date | date:'dd/MMM/yyyy'}}
+</td>
+  </tbody>
+</table>   
+<table  md-table class="table  table-striped">
+Leave
+  <thead>
+    <tr>
+	  <th width="200">Type</th>
+      <th width="200">Start Date</th>
+	  <th width="200">End Date</th>
+	   <th width="200">Number of Week Days</th>
+	    <th width="200">Tally</th>
+	 </tr>
+  </thead>
+  <tbody>
+ <tr   ng-repeat="leave in me_Data.leave_taken">
+ <td   ng-data="type"  ng-class="{'md-placeholder': !leave.type}">
+  {{leave._type }}
+</td>
+<td   ng-data="start_date" md-cell ng-click="editComment($event, leave)" ng-class="{'md-placeholder': !leave.start_date}">
+  {{leave.start_date | date:'dd/MMM/yyyy'}}
+</td>
+<td   ng-data="start_date" md-cell ng-click="editComment($event, leave)" ng-class="{'md-placeholder': !leave.start_date}">
+  {{leave.end_date | date:'dd/MMM/yyyy'}}
+</td>
+<td   ng-data="weekday_duration" ng-class="{'md-placeholder': !leave.weekday_duration}">
+  {{leave.weekday_duration }}
+</td>
+<td   ng-data="tally"  ng-class="{'md-placeholder': !leave.tally}">
+  {{leave.tally }}
+</td>
+<td  >
+  <button type="button" ng-click="removeLeave($event, leave)" class="btn btn-default btn-sm"  ng-class="{'md-placeholder': !rowContent.team}">
+          <span class="glyphicon glyphicon-remove"></span> Remove 
+   </button >
+</td>
+     
+	 
+</tr>
+  </tbody>
+</table>   
+</div> 
+</div> 
+</div> 

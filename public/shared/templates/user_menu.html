@@ -1,0 +1,41 @@
+<style>
+.navbar-nav{
+width:70%;
+   
+}
+.navbar-nav h6,.navbar-nav p{
+color:#9d9d9d;
+   
+}
+
+
+ button{
+      top: 7px;
+    position: relative;
+}
+</style>
+<ul class="nav navbar-nav">
+
+	 <li><a ng-hide="user.firstName" id="logihash" href='/login!'  >Log in</a></li>	
+	<input type="hidden" id="hashval" name="redirect" value="">
+	<li  ng-hide="user.firstName"><a href="/signup">Register</a></li>
+    <li ng-show="user.firstName" class="pull-right" ><a  href='/signout'  > Sign Out</a></li>	
+	<li  ng-show="user.firstName" > <button class="btn btn-primary dropdown-toggle"  data-toggle="dropdown">Menu
+	 <span class="caret"></span></button>
+	 <ul class="dropdown-menu">
+	<li   ng-repeat="view in user.views  track by $index"  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+	<li class="divider"></li> 
+	<li   ng-repeat="view in user.performance track by $index"  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+	<li class="divider"></li> 
+	<li   ng-repeat="view in user.enter_data  track by $index"  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+	</ul>
+</li>
+	<li ng-show="user.firstName" ng-controller="NavController"   role="navigation" class="pull-right">
+	<h6>Logged in as {{user.firstName}}</h6> <h6 ng-show="user.team">group: {{user.group}} </h6>
+	</li>
+</ul>
+<script>
+if( document.getElementById("logihash")){
+	  document.getElementById("logihash").href ='/login!'+location.hash.slice(0).replace("#!/","")
+	  }
+</script>

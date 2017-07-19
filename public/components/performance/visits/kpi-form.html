@@ -1,0 +1,87 @@
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+ <style>
+  .panel > .panel-heading {
+    background-image: none;
+    background-color: red;
+    color: white;
+
+}
+
+</style>
+	  
+	  
+<div ng-show="user.username" class="panel panel-default col-xs-6 col-sm-6 col-md-6">
+<div class="panel-heading">Enter data</div>
+	<div class="panel-body">
+		<form name="visit_form" >
+
+			  <div class="form-group">
+				<label for="exampleSelect1">Museum select</label>
+				<select class="form-control input-lg" ng-model="museum" id="museum">
+			  <option value="BMAG">Bristol Museum</option>
+					  <option value="M-SHED">M Shed</option>
+					  <option value="GEORGIAN-HOUSE">The Georgian House Museum</option>
+					  <option value="RED-LODGE">The Red Lodge</option>
+					   <option value="BRISTOL-ARCHIVES">Bristol Archives</option>
+					    <option value="BLAISE">Blaise</option>
+				</select>
+			  </div>
+			  
+			  		<div class="panel-body"  ng-if="museum=='BRISTOL-ARCHIVES'">
+						<div class="panel-heading">visitor numbers</div>
+							<div ng-repeat="age_group in visitor_groups" >
+								 <div class="form-group col-xs-6">
+									{{age_group.name}}				
+								</div>
+								 <div class="form-group col-xs-6">
+									{{age_group.count}}		 <button class="btn btn-danger" ng-click="deleteUser(age_group)"><i class="icon-trash"></i> Delete</button>			
+								</div>
+							</div>
+	
+						  <div class="form-group col-xs-6">
+							<label>Type:</label>
+							<select class="form-control input-lg" id="visitor_groups" name="visitor_groups">
+								<option value="Searchroom visitors">Searchroom visitors</option>
+								<option value="Other visitors">Other visitors</option>
+								<option value="BAFHS researchers">BAFHS researchers</option>
+									<option value="On-site events">On-site events</option>
+							</select>  
+						  </div>
+						  <div class="form-group col-xs-6">
+							<label>Count</label>
+							<input type="number" class="form-control" id="count" name="count">
+						  </div>
+					
+					
+						 <div class="margin-20">
+						  <a ng-click="addCount()" style="cursor: default">
+							Add another count +
+						  </a>
+						</div>
+				  </div>
+				  
+			  <div class="form-group">
+				<label for="comments">Date of visits</label>
+				<input placeholder="mm/dd/yyyy" type = "date" class="form-control input-lg" id="date_value" rows="3"></input>
+			  </div>
+			  <div class="form-group"  >
+				<label for="comments">Number of visits</label>
+				<input ng-disabled="museum=='BRISTOL-ARCHIVES'" type = "number" class="form-control input-lg" id="no_visits" rows="3"></input>
+			  </div>
+			  <div class="form-group">
+				<label for="comments">Comments</label>
+				<textarea class="form-control input-lg" id="comments" rows="3"></textarea>
+			  </div>
+			   <button ng-click="onSubmit()" type="submit" class="btn btn-primary submit-button" ng-disabled="vm.form.$invalid">Submit</button>
+			   <button type="button" class="btn input-lg btn-default" ng-click="vm.options.resetModel()">Reset</button>
+		</form>
+	</div>
+</div>
+  <script>
+  $( function() {
+   if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent))
+    $( "#date_value" ).datepicker();
+  } );
+  </script>
+

@@ -1,0 +1,17 @@
+<div ng-show="user.firstName" ng-controller="NavController"  class="navbar" role="navigation">
+Logged in as {{user.firstName}} <a href='/signout'  >Sign Out</a><a id="logihash" href='/login'  >Log in</a>
+</div>
+<div  ng-hide="user.firstName" ng-controller="NavController"  class="navbar" role="navigation">
+<form action="/login" method="post" >
+	<input type="text" name="username" placeholder="enter username">
+	<input type="password" name="password" placeholder="password">
+	<input type="hidden" id="hashval" name="redirect" value="">
+	<button type="submit">login</buttton>
+</form>
+</div>
+
+
+
+<script>
+        document.getElementById("hashval").value =location.hash.slice(0).replace("#!/","")
+</script>

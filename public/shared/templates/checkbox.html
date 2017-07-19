@@ -1,0 +1,9 @@
+<label ng-repeat="fruitName in ngModel" >
+  <input
+    type="checkbox"
+    name="selectedFruits[]"
+    value="{{fruitName}}"
+    ng-checked="selected_museums.indexOf(fruitName) > -1"
+    ng-click="ngCheesex(fruitName)"
+  > {{fruitName}}
+</label>

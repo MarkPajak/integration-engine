@@ -1,0 +1,35 @@
+<main id="content" class="group" role="main" ng-controller="deadCtrl">
+<div class="col-lg-10"  >
+<div class="panel-body">
+<div class="panel">
+<table>
+
+<th ><h2 >OFF:</h2></th>
+<!--<th style="width:150px;"><h2 >SCORE</h2></th>-->
+<tbody>
+<tr  class="cards-wrapx" ng-repeat="list in lists | orderByDayNumber: 'points'| orderByDayNumber: 'points' : 'reverse'">
+<td width="250px">
+<P><h4>{{list.title}}</h4></p>
+</td>  
+</tr>
+</tbody>
+</table>
+
+</div>
+<div class="panel">
+<table>
+<th ><h2 >ON:</h2></th>
+<!--<th style="width:150px;"><h2 >SCORE</h2></th>-->
+<tbody>
+<tr  class="cards-wrapx" ng-repeat="list in live_lists | orderByDayNumber: 'points'| orderByDayNumber: 'points' : 'reverse'">
+<td width="250px">
+<P><h4>{{list.title}}</h4></p>
+</td>  
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div> 	
+</main> 

@@ -1,0 +1,69 @@
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <style>
+  .panel > .panel-heading {
+    background-image: none;
+    background-color: red;
+    color: white;
+
+}
+  .panel > .panel-body {
+ 
+    background-color: white;
+
+}
+</style>
+	  <script>
+
+</script>
+<div ng-show="user.username" class="panel panel-default col-xs-4 col-sm-4 col-md-4">
+<div class="panel-heading">Enter data</div>
+	<div class="panel-body">
+		<form name="visit_form" >
+
+			  <div class="form-group">
+				<label for="exampleSelect1">Museum Shop select</label>
+				<select class="form-control input-lg" id="museum">
+			  <option value="BMAG">Bristol Museum shop</option>
+					  <option value="M-SHED">M Shed shop</option>
+					<!--  <option value="GEORGIAN-HOUSE">The Georgian House Museum</option>-->
+					 	<!--   <option value="RED-LODGE">The Red Lodge</option>-->
+					    <option value="BLAISE">Blaise Shop</option>
+					  	<!--   <option value="BRISTOL-ARCHIVES">Bristol Archives</option>-->
+				</select>
+			  </div>
+			  <div class="form-group">
+				<label for="comments">Date of sales</label>
+				<input type = "date" class="form-control input-lg" id="date_value" rows="3"></input>
+			  </div>
+			  <div class="form-group">
+				<label for="comments">Total Sales</label>
+				<input  step="any" type = "number" class="form-control input-lg" id="total_sales" rows="3"></input>
+			  </div>
+			    <div class="form-group">
+				<label for="comments">Non Vat Sales</label>
+				<input  step="any" type = "number" class="form-control input-lg" id="non_vat_sales" rows="3"></input>
+			  </div>
+			  <!-- <div class="form-group">
+				<label for="comments">Net Sales</label>
+				<input type = "number" class="form-control input-lg" id="net_sales" rows="3"></input>
+			  </div>-->
+			  <div class="form-group">
+				<label for="comments">No. Transactions</label>
+				<input type = "number" class="form-control input-lg" id="no_transactions" rows="3"></input>
+			  </div>
+			  <!--  <div class="form-group">
+				<label for="comments">Comments</label>
+				<textarea class="form-control input-lg" id="comments" rows="3"></textarea>
+			  </div>-->
+			   <button ng-click="onSubmit()" type="submit" class="input-lg btn btn-primary submit-button" ng-disabled="vm.form.$invalid">Submit</button>
+			   <button type="button" class="input-lg btn btn-default" ng-click="vm.options.resetModel()">Reset</button>
+		</form>
+	</div>
+</div>
+
+  <script>
+  $( function() {
+   if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent))
+    $( "#date_value" ).datepicker();
+  } );
+  </script>

@@ -1,0 +1,30 @@
+
+
+<main id="content" class="group" role="main" >
+<div class="col-lg-3"  >
+<h1>{{chart_title}}</h1>
+<div class="panel-body">
+<div class="panel">
+  
+				
+<select id="type" name="animals" class="form-control" ng-model="type" autocomplete="">
+
+      <option   ng-select="changeType(type)" ng-repeat="type in machine_types" value="{{type}}" >{{type}}</option>
+</select>
+<select id="animals" name="animals" class="form-control" ng-model="machine" autocomplete="">
+   
+	 <option ng-select="changeMachine(machine)" ng-repeat="machine in machinesx track by $index" value="{{machine}}" >{{machine}}</option>
+</select>
+	
+	<input  date-range-picker class="form-control date-picker" type="text" ng-model="datePicker.date" />
+	  
+</div>
+</div>
+</div>
+	   
+
+	
+	
+	
+</main> 
+<div ng-hide="currentPath === '/'"  ng-include="'views/line-chart.html'"></div>

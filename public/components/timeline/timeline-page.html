@@ -1,0 +1,431 @@
+<timeline-menu></timeline-menu>
+<addtimeline-items></addtimeline-items>
+<style>
+.menudemoBasicUsage .md-menu-demo {
+  padding: 24px; }
+
+.menudemoBasicUsage .menu-demo-container {
+  min-height: 200px; }
+
+
+/*
+Copyright 2016 Google Inc. All Rights Reserved. 
+Use of this source code is governed by an MIT-style license that can be foundin the LICENSE file at http://material.angularjs.org/HEAD/license.
+*/
+body{
+overflow:off;
+}
+/*
+			if(event.value>0&&event.value<=10){scale_class="scale_01"}
+												if(event.value>10&&event.value<=100){scale_class="scale_02"}
+												if(event.value>100&&event.value<=500){scale_class="scale_03"}
+												if(event.value>500&&event.value<=1000){scale_class="scale_04"}
+												if(event.value>1000&&event.value<=2000){scale_class="scale_05"}
+												if(event.value>2000&&event.value<=3000){scale_class="scale_06"}
+												if(event.value>3000&&event.value<=4000){scale_class="scale_07"}
+												if(event.value>4000&&event.value<=5000){scale_class="scale_08"}
+												if(event.value>5000&&event.value<=10000){scale_class="scale_09"}
+												if(event.value>10000){scale_class="scale_10"}
+*/
+
+.scale_01 {
+    color: black;
+    background: rgba(5, 106, 236, 0.01);
+}
+
+.scale_02 {
+    color: black;
+    background: rgba(5, 106, 236, 0.1);
+}
+
+.scale_03 {
+    color: black;
+    background: rgba(5, 106, 236, 0.2);
+}
+
+.scale_04 {
+    color: black;
+    background: rgba(5, 106, 236, 0.3);
+}
+
+.scale_05 {
+    color: black;
+    background: rgba(5, 106, 236, 0.4);
+}
+
+.scale_06 {
+    color: black;
+    background: rgba(5, 106, 236, 0.5);
+}
+
+.scale_07 {
+    color: black;
+    background: rgba(5, 106, 236, 0.7);
+}
+
+.scale_08 {
+    color: black;
+    background: rgba(5, 106, 236, 0.8);
+}
+
+.scale_09 {
+    color: black;
+    background: rgba(5, 106, 236,0.9);
+}
+
+.scale_10 {
+    color: black;
+    background: rgba(5, 106, 236, 1);
+}
+
+
+.vis-label .vis-inner {min-height: 50px;}
+
+input{
+z-index:1000;
+}
+.btn-primary {
+    color: #fff;
+    background-color: #000000;
+    border-color: #000000;
+}
+.date_add{
+position:relative;
+z-index:100;
+
+}
+.vis-panel {
+    box-sizing: content-box;
+}
+.vis-timeline{
+   z-index: 0;
+background-color:white;
+}
+
+#myProgress {
+  position: relative;
+  width: 100%;
+  height: 30px;
+  background-color: #ddd;
+  margin-top:20px;
+  display:none
+}
+
+#myBar {
+  position: absolute;
+  width: 1%;
+  height: 100%;
+  background-color: #4C7DAF;
+
+ 
+}
+ .vis-left{
+     width: 184px;
+	 }
+	 
+ .live{
+    
+	color:white;
+	background-color:  #2D6698;
+
+
+ }
+ 
+ .alpha,.beta{
+   
+	color:white;
+	background-color:  #3E86C5;
+
+ 
+ 
+ }
+ 
+ .lightblue{
+  background-color:#83BAC7;
+ }
+ .blue{
+
+   
+
+	background-color:rgba(77, 132, 251, 0.61);
+	z-index:50;
+	
+ }
+.red {
+	 
+	color:white;
+	z-index:100;
+	
+	background-color:rgba(215, 0, 90, 0.73);
+	
+}
+.provisional {
+	 
+	color:white;
+	background-color:#C18AC7;
+	
+}
+.green,.back-footer-green{
+	background: #83C7BB;
+}
+.orange{
+	  
+	color:white;
+	background: #EC6A05;
+	
+}
+
+
+.titlediv, .vis-item{
+
+	   
+}
+
+.title_heading{
+	/*float: right;*/
+	/*left: 13px;*/
+	/* position: relative; */
+	font-size:18px;
+}
+
+input[type="radio"], input[type="checkbox"]{
+    margin: 12px 0 0 !important;
+    margin-top: 1px \9;
+    line-height: normal;
+}
+.image_box{
+	position: relative;
+	float: left;
+	width:100px;
+}
+  /* alternating column backgrounds */
+  .vis-time-axis .grid.vis-odd {
+    background: #f5f5f5;
+  }
+
+  /* gray background in weekends, white text color */
+  .vis-time-axis .vis-grid.vis-saturday,
+  .vis-time-axis .vis-grid.vis-sunday {
+    background: gray;
+  }
+  .vis-time-axis .vis-text.vis-saturday,
+  .vis-time-axis .vis-text.vis-sunday {
+    color: white;
+  }
+  #timelinebox{
+ 
+   
+    width: 360px;
+    right: auto;
+    height: 660px;
+    bottom: auto;
+    left: 707px;
+    top: -500px;
+
+}
+
+.checkbox-inline{
+    
+	}
+	.iconbar{
+	position:fixed;
+	width:25%;
+	float:right;
+	top:0px;
+	left:0px;
+	
+	display:block;
+		position:relative;
+		cursor: all-scroll;
+	    border: #585858;
+		border-style: solid;
+		border-width: 2px;
+		border-radius: 6PX;
+	    background-image: url('assets/img/drag.png');
+		color: black;
+		background-size: 10%;
+		background-repeat: no-repeat;
+		background-position: top right; 
+		background-position-y: 10px;
+		max-height:300px;
+		/*overflow-y:auto;*/
+	}
+	
+	.checkboxList{
+	max-height:1000px;
+	display:block;
+	overflow-y:auto;
+	}
+.draggable { }
+  .ui-widget-header p, .ui-widget-content p { margin: 0; }
+
+  #tool_holder{
+  position:relative;
+  top:0px;
+  width:100%;
+  height:300px;
+rgba(105, 105, 105, 0.68);
+  }
+  
+  .data_boxd{
+float:right;
+    top: 0px;
+   width:60%;
+  max-width:800px;
+   position: relative;
+  }
+  
+  .data_box input,textarea{
+ width:100%;
+ z-index:501;
+     font-size: 20px;
+  }
+.days{
+    top: 10px;
+ 
+    right: 0px;
+}
+/* The switch - the box around the slider */
+.switchx {
+    position: absolute;
+    z-index: 9000;
+    top: -10px;
+    left: 110px;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+/* Hide default HTML checkbox */
+.switch input {display:none;}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.locklabel{
+position:absolute;
+    left: -70px;
+top:5px;
+}
+.settings_locklabel{
+    position: relative;
+    left: 80px;
+    top: 5px;
+    width: 130px;
+	}
+	
+	.notes{
+    float: right;
+    left: 163px;
+    position: relative;
+    font-size: 18px;
+    margin-left: 70px;
+    top: -46px;
+	}
+	
+	.vis-tooltip{
+	position:absolute;
+	height:100px
+	with:100px;
+	font-size:2-;
+	}
+</style>
+
+
+
+<div id="example-timeline"></div>
+
+
+<timeline-infobox></timeline-infobox>
+
+	<span  ng-hide="'true'" class="checkboxList iconbar panel-footer ">
+		<div class="panel-heading">Select individual items for timeline</div>
+		<div class="panel-body">
+		<table class="table">
+		
+		<tr ng-repeat="group in groups">
+		<td>	<label class="switch">
+			<div class="settings_locklabel" > {{group.content}}</div>
+			<input
+					type="checkbox"
+					name="selectedFruits[]"
+					value="{{group.content}}"
+					ng-model="group.selected"
+				  >
+				   <div class="slider round"></div>
+			</label>
+			</td></tr>
+		</table>
+		</div>
+		
+	
+	</span >
+
+
+
+
+
+<script>
+
+$( ".draggable,.iconbar" ).draggable({  snap:"html,#tool_holder,.iconbar", containment: 'window' });
+$( ".panel" ).draggable({ snap: true });
+$(document).ready(function(){
+   
+});
+
+  $("#tool_holder").droppable({ accept: ".iconbar", scope: "drop"})
+</script>
+
+
+<div id="log"></div>
+

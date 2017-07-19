@@ -1,0 +1,5 @@
+cd ..
+cd ..
+
+npm start
+

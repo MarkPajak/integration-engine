@@ -1,0 +1,100 @@
+doctype html
+html(ng-app='app')
+	head
+		title=title
+		link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css')
+		meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
+		script(src='//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js')
+		script(src='//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js')
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		link(rel='stylesheet', href='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
+		link(rel='stylesheet', href='/css/login.css')
+		link(rel='stylesheet', href='/css/style.css')
+		link(rel='stylesheet', href='/css/app.css')
+		link(rel='stylesheet', href='/css/animations.css')
+		link(rel='stylesheet', href='/css/responsive.css')
+		link(href='/css/one-page-wonder.css', rel='stylesheet')
+		link(rel='stylesheet', href='scripts/angular-ui-grid/ui-grid.min.css')
+		link(href='/css/deck-grid.css', rel='stylesheet')
+		// 3 KB
+		link(href='/css/responsive.css', rel='stylesheet')
+		// 3 KB
+		link(href='/css/normalize.css', rel='stylesheet')
+		// 3 KB
+		link(href='/css/angular-material.css', rel='stylesheet')
+		// 3 KB
+		link(href='/css/bootstrap.css', rel='stylesheet')
+		// 3 KB
+		link(href='/css/vis.css', rel='stylesheet')
+		script(src='scripts/jquery/dist/jquery.js')		
+		script(src='scripts/jqueryui/jquery-ui.min.js')
+		script(src='scripts/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js')
+		link(rel='stylesheet', src='scripts/jqueryui/jqueryui.min.css')
+		script(src='scripts/angular/angular.js')
+		script(src='scripts/angular-animate/angular-animate.js')
+		script(src='scripts/angular-route/angular-route.js')
+		script(src='scripts/angular-resource/angular-resource.js')
+		script(src='scripts/angular-utils-pagination/dirPagination.js')
+		script(src='scripts/angular-aria/angular-aria.min.js')
+		script(src='scripts/ng-scrollbar/dist/ng-scrollbar.min.js')
+		script(src='scripts/angular-material/angular-material.js')
+		script(src='scripts/angular-sanitize/angular-sanitize.min.js')
+		script(src='scripts/angulargrid/angulargrid.min.js')
+		script(src='scripts/underscore/underscore.js')
+		script(src='scripts/api-check/dist/api-check.min.js')
+		script(src='scripts/angular-formly/dist/formly.min.js')
+		link(rel='stylesheet', href='scripts/bootstrap-daterangepicker/daterangepicker.css')
+		script(src='scripts/bootstrap-daterangepicker/moment.min.js')
+		script(src='scripts/bootstrap-daterangepicker/daterangepicker.js')
+		script(src='scripts/angular-ui-router/release/angular-ui-router.js')
+		script(src='lib/angular-daterangepicker.js')
+		script(src='lib/md5.js')
+		// DEV charts
+		script(src='scripts/angular-bootstrap/ui-bootstrap.min.js')
+		script(src='scripts/chart.js/dist/Chart.js')
+		script(src='lib/angular-chart.js')
+		// vis
+		script(src='scripts/sweetalert/dist/sweetalert.min.js')
+		script(src='lib/sweetalert.multi.js')
+		link(rel='stylesheet', src='scripts/sweetalert/dist/sweetalert.css')
+		script(src='scripts/vis/dist/vis.js')
+		link(href='scripts/sweetalert/dist/sweetalert.css', rel='stylesheet')
+		// 3 KB
+		script(src='scripts/angular-dragdrop/src/angular-dragdrop.min.js')
+		script(src='scripts/angular-ui-grid/ui-grid.js')
+		// style sheet
+		link(href='scripts/angular-material-data-table/dist/md-data-table.min.css', rel='stylesheet', type='text/css')
+		// module
+		script(type='text/javascript', src='scripts/angular-material-data-table/dist/md-data-table.min.js')
+		script(type='text/javascript', 
+		src='scripts/angular-cookies/angular-cookies.min.js')
+		script(src='http://ngmaterial.assets.s3.amazonaws.com/svg-assets-cache.js')
+		script(src='scripts/angular-messages/angular-messages.min.js')
+		
+		
+		script(src='scripts/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js')
+		script(src='bin/core.js')
+		body
+			.navbar.navbar-inverse.navbar-static-top(role='navigation')
+				.container
+					.navbar-header
+						button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+							span.sr-only Toggle navigation
+							span.icon-bar
+							span.icon-bar
+							span.icon-bar
+						
+						img.logo(src= "images/culture_logo.JPG", style='max-height: 50px;')
+					.collapse.navbar-collapse
+							user-menu
+			.container
+				if messages.error
+					.alert.alert-danger
+						div= messages.error
+					if messages.info
+					.alert.alert-info
+						div= messages.info
+					if messages.success
+					.alert.alert-success
+						div= messages.success
+			block content

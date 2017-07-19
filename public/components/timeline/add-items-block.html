@@ -1,0 +1,13 @@
+<div  ng-show="locked.add_item" class="  iconbar   bg-color-green">	
+	<div   class="  panel-footer ">
+		<h5>Drag onto timeline to add an event:</h5>
+			<div  id="drag_date1" class="blue date_add btn btn-primary" data-drag="true" data-jqyoui-options="{revert: 'valid'}" ng-model="list1" jqyoui-draggable="{ snap: true,animate:true,onDrop:'dragstop()'}">{{list1.title}}</div>
+			<div id="drag_date2" class="red date_add btn btn-primary" data-drag="true" data-jqyoui-options="{revert: 'valid'}" ng-model="list2" jqyoui-draggable="{ snap: true,animate:true,onDrop:'dragstop()'}" >{{list2.title}}</div>
+			<div  id="drag_date3" class="red date_add btn btn-primary" data-drag="true" data-jqyoui-options="{revert: 'valid'}" ng-model="list3" jqyoui-draggable="{ snap: true,animate:true,onDrop:'dragstop()'}" >{{list3.title}}</div>
+			<div  ng-hide="true" id="drag_date4" class="blue date_add btn btn-primary" data-drag="true" data-jqyoui-options="{revert: 'valid'}" ng-model="list1" jqyoui-draggable="{ snap: true,animate:true,onDrop:'dragstop()'}"><option-select></option-select></div>
+		<div class="  panel-footer "></div>
+	</div>
+	
+	
+
+</div>
