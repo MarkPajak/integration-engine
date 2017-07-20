@@ -32,9 +32,9 @@ exports.timeline_shopify_functions =  function ($http,Timeline,$rootScope) {
 												$rootScope.added_track_groups.push("Shopify product types")														
 													$rootScope.track_groups.push({"track":"Shopify product types"})
 													}
-												console.log('shop products',eventss)
+												//console.log('shop products',eventss)
 												$.each(eventss, function( index, event ) {	
-													console.log('shop event',event)
+													//console.log('shop event',event)
 												
 															scale_class="";	
 												
@@ -83,7 +83,7 @@ exports.timeline_shopify_functions =  function ($http,Timeline,$rootScope) {
 																			start:start_date,
 																			end:end_date
 																		}
-console.log('shopEvent',shopEvent)																		
+																		
 														visevents.add( shopEvent)
 																		
 															

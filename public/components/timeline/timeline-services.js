@@ -1,17 +1,38 @@
 
 
-exports.timeline_functions = function ($http,Timeline,$rootScope) {
+exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$rootScope,$timeout) {
 	
 
+  
   return {
   
-  
+  update_andCompile: function(item) {
+  var self = this
+			$compile($("timeline-databar"))($rootScope);
+			
+			setTimeout(function() {
+            var groups = new vis.DataSet($rootScope.groups);		
+			var list = groups.get({
+								filter: function(item) {
+								
+									return (item.selected == true);
+								}
+								})
+								
+			$rootScope.timeline.setGroups(list);
+			self.enable_event_drop()
+                            }, 1500);
+			 
+		
+			
+		},	
+			
   export_JSON_to_CSV: function(JSONData, ReportTitle, ShowLabel){
   
   
     //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
     var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
-    console.log('arrData',arrData)
+    //console.log('arrData',arrData)
     var CSV = '';    
     //Set Report title in first row or line
     
@@ -205,25 +226,7 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 		  	
 	  
 	  },
-	  
-	   	changeTracks: function(selection){
-
-				var groups = new vis.DataSet($rootScope.groups);
-				var group = new vis.DataSet( $rootScope.leave_groups);
-				var list =groups.get({
-						filter: function(item) {
-							
-							return (  selection.indexOf(item.track)!=-1);
-						}
-					})
-					
-						timeline.setGroups(list);
-						
-					
-						this.enable_event_drop()
-		
-				},  
-  
+	
 	   
 
 
@@ -251,7 +254,7 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 			//timeline.setGroups(list);
 			//this.enable_event_drop()	
 			
-				
+				this.update_andCompile()
 			
 		
 				},  
@@ -272,7 +275,7 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 					
 						this.enable_event_drop()
 		
-				},  
+			},  
 		changeGroups: function(selection){
 
 				var groups = new vis.DataSet($rootScope.groups);
@@ -313,9 +316,7 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 					$rootScope.addednames.push(value.group)
 					//n.b. may be able to order groups when locatiobn hierarchy given in emu
 					content=value.group ||"NA"
-					if( value.group.toLowerCase()=="temporary exhibition gallery"){ content="<b>M SHED:</b> "+value.group}
-					if( value.group.toLowerCase()=="window on bristol"){ content="<b>M SHED:</b> "+value.group}
-					if( value.group.toLowerCase()=="first floor foyer"){ content="<b>M SHED:</b> "+value.group}
+	
 					 
 					 _groups.push({
 										id				:	value.group,
@@ -323,7 +324,7 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 										track			:    value.track,
 										order		    :    value.order,
 										event_type		:	 value.event_type,
-										content			:    content,
+										content			:    value.group_name,
 										event_typeSORT	:    content,
 										selected         : value.select_group 
 									})
@@ -338,32 +339,12 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
   
    		 event_html: function(name,showimage,image,start_date,end_date,notes ,days){
 			var notes=notes ||""
-				var htmlContent = '<div class="titlediv" >'
-																htmlContent+='<div class="title_heading">'
-																	if(showimage){
-																	htmlContent+='<div class="image_box">'
-																	htmlContent+='<img src="http://museums.bristol.gov.uk/multimedia/entry.php?request=resource&irn='+image +'&height=50&format=jpeg" />'
-																	htmlContent+='</div>'	
-																}	
-																htmlContent+=name
-																	if(days>0 &&end_date){
-																		//htmlContent+='<div class="days">'
-																		htmlContent+=" - "+ days + " days"
-																		//htmlContent+='</div>';
-																}
-																htmlContent+='</div>';
-																
-																htmlContent+="<span> ";
-																htmlContent+=start_date 
-																if(end_date) {htmlContent+= "-" + end_date};
-																htmlContent+="<span>";
-																htmlContent+= '</div>'
-																htmlContent+='<div class="notes">'
-																htmlContent+="<p>"+notes
-																
-																											
-													htmlContent+= '</div>'
-													
+			var image=image ||""
+	
+			var showimage=showimage ||""
+			
+			var htmlContent= "<timeline-databar   name='" + name + "' image='" + image + "' showimage='" + showimage + "' startdate='" + start_date + "' enddate='" + end_date + "' notes='" + notes + "' days='" + days + "'></timeline-databar>"; //'<timeline-databar></timeline-databar>'
+		
 			return htmlContent
 
 			},
@@ -377,7 +358,7 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 			//fetch the timeline dataSetitem 
 					selected_item =	timeline.itemsData.getDataSet().get(selected_timeline_id)
 			//update the data entry form
-			console.log(selected_item)
+			//console.log(selected_item)
 			
 			$rootScope.selected_timeline_id=selected_timeline_id
 			$rootScope.selected_item=selected_item.name
@@ -387,7 +368,7 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 			}
 			$rootScope.selected_id=selected_item._id
 			$rootScope.selected_notes=selected_item.notes
-			console.log('startDate'+new Date(selected_item.start))
+			//console.log('startDate'+new Date(selected_item.start))
 			$rootScope.datePicker.date={startDate:new Date(selected_item.start),endDate:new Date (selected_item.end)}
 			
 }
@@ -405,7 +386,10 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 	updateItem: function(options){
 		if(typeof(timeline)!="undefined"){
 		timeline.itemsData.getDataSet().update(options)
+		this.update_andCompile()
+		
 		}
+	
 			
 	},
 	
@@ -573,22 +557,13 @@ $rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (ite
 				
            
 						
-				var list = groups.get({
-						filter: function(item) {
-							return (item);
-						}
-				})
-					
-				timeline.setGroups(list);
-					$rootScope.myGroup = {
-					selected:{}
-				};
-				$rootScope.groups=list
+			
 			
 		
-				 
+				
                 timeline.setItems(dates);
                 timeline.setOptions(options);
+				
 				timeline.fit()
 				
 				//self.changeGroups($rootScope.groups.selected)
@@ -630,7 +605,17 @@ $rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (ite
                 });
 
 			
-				self.enable_event_drop()
+			self.enable_event_drop()
+			//$compile($("timeline-databar"))($rootScope);
+			 var list = groups.get({
+						filter: function(item) {
+							return (item);
+						}
+				})
+					
+			//timeline.setGroups(list);   
+		
+			
               
     }
 	 

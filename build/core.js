@@ -15382,7 +15382,7 @@ myArray.push(obj);
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline-settings/timeline-settings-controller.js","/../components/timeline-settings")
 },{"b55mWE":4,"buffer":3}],74:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-exports.timeline_controller=     function($scope, $http, $q, $routeParams, $location,
+exports.timeline_controller=     function($compile,  $scope, $http, $q, $routeParams, $location,
          $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate,Raw_visits,timeline_visitor_figures_functions
     ) {
 		
@@ -15440,6 +15440,7 @@ $scope.dateRangeOptions = {
 					id: $scope.selected_id,				
 					}, options);				
 					timeline_functions.updateItem(options)
+					
 	
 		
 			}}				
@@ -15484,6 +15485,9 @@ $scope.dateRangeOptions = {
 			   options={stack:stack}
 		timeline_functions.updateOptions(options)
 		  }
+		  
+		
+		  
         })
 
         $scope.editing = [];
@@ -15573,7 +15577,7 @@ $scope.dateRangeOptions = {
 */
 
 		$scope.changedValue = function(place) {
-         console.log(place)
+        // console.log(place)
 		  //console.log( $rootScope.filter_pieSelected)
 		 $rootScope.filter_pieSelected=place
         }
@@ -15721,6 +15725,8 @@ $scope.dateRangeOptions = {
 											var group =	"NA"
 											if( event.type=="Exhibition"||event.type=="Gallery"){
 											 group =	event.event_space||"NA" 
+											 group_name =	"<b>"+event.venue+":</b></br> "+event.event_space||"NA" 
+											 
 											}
 											else{
 												 group =	event.type ||"NA"
@@ -15746,10 +15752,12 @@ $scope.dateRangeOptions = {
 													if(event.startDate){ //timeline errors if no start date
 													dates.add({
 																		group		:	group, 
+																		group_name		:	group_name, 
 																		select_group :select_group,
 																		title		:	event.name,
 																		name:event.name,
 																		type		: "background",
+
 																		content		:	htmlContent,
 																		order:event.venue+event.event_space,
 																		track:event.venue,
@@ -15772,9 +15780,9 @@ $scope.dateRangeOptions = {
 			$scope.total_install_derig=install_days_tally+derig_days_tally
 			$scope.average_install_length=Math.round(install_days_tally/install_instance_tally)
 			$scope.average_derig_length=Math.round(derig_days_tally/derig_tally)
-				  timeline_functions.setup(Timeline,groups,dates)
-				  
-				
+			timeline_functions.setup(Timeline,groups,dates)
+		
+	
 
 		$scope.team_leave()
 	
@@ -15783,7 +15791,7 @@ $scope.dateRangeOptions = {
 	$scope.learning_bookings()
 	$scope.loans()
 	$scope.shopify()
-	
+	//
 	var checked_event_types=[]
 											checked_event_types.push('Tour')
 											checked_event_types.push('Walk')
@@ -15825,9 +15833,11 @@ $scope.$watch('groups|filter:{selected:true}', function (nv) {
 	$( ".draggable,.iconbar" ).css({ 'top':'0px' });
   }, true);
   
-
+timeline_functions.update_andCompile()
 			
-            })
+	})	
+			
+      
 			
 		$scope.exportCSV= function(){
 		data_to_export=$rootScope.timeline.itemsData.getDataSet()
@@ -15915,7 +15925,7 @@ $scope.$watch('groups|filter:{selected:true}', function (nv) {
 								$rootScope.groups.push(_group)
 							})
 							
-							 console.log('$rootScope.groups',$rootScope.groups)
+							// console.log('$rootScope.groups',$rootScope.groups)
 							 _.each(public_dates._data, function(date) {
 								$rootScope.timeline.itemsData.getDataSet().add(date)
 							})
@@ -16092,6 +16102,8 @@ exports.add_timeline_items_controller=    function($scope, $http, $q, $routePara
     ) {
 
   }
+  
+
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-controller.js","/../components/timeline")
 },{"b55mWE":4,"buffer":3}],75:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
@@ -16117,12 +16129,34 @@ exports.add_timeline_items_controller=    function($scope, $http, $q, $routePara
 	}
 	
 		
-			exports.timelineInfobox = function() {
+exports.timelineInfobox = function() {
   return {
    controller: 'add_timeline_info_box',
     templateUrl: './components/timeline/info-box.html'
   }
 	}
+	
+	
+	exports.timelineDatabar= function( $compile ) {
+ 
+ return{
+	restrict: 'E',
+      templateUrl: './components/timeline/timeline-item.html',
+	  scope: {
+		 startdate: "@",
+		 id: "@",
+		  enddate: "@",
+		  name: "@",
+		  image: "@",
+		  showimage: "@",
+		  notes: "@",		 
+		  days: "@"
+		
+		}
+    }
+	}
+	
+
 	
 	
 
@@ -17058,18 +17092,39 @@ exports.timeline_loans_functions =  function ($http,Timeline,$rootScope) {
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 
-exports.timeline_functions = function ($http,Timeline,$rootScope) {
+exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$rootScope,$timeout) {
 	
 
+  
   return {
   
-  
+  update_andCompile: function(item) {
+  var self = this
+			$compile($("timeline-databar"))($rootScope);
+			
+			setTimeout(function() {
+            var groups = new vis.DataSet($rootScope.groups);		
+			var list = groups.get({
+								filter: function(item) {
+								
+									return (item.selected == true);
+								}
+								})
+								
+			$rootScope.timeline.setGroups(list);
+			self.enable_event_drop()
+                            }, 1500);
+			 
+		
+			
+		},	
+			
   export_JSON_to_CSV: function(JSONData, ReportTitle, ShowLabel){
   
   
     //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
     var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
-    console.log('arrData',arrData)
+    //console.log('arrData',arrData)
     var CSV = '';    
     //Set Report title in first row or line
     
@@ -17263,25 +17318,7 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 		  	
 	  
 	  },
-	  
-	   	changeTracks: function(selection){
-
-				var groups = new vis.DataSet($rootScope.groups);
-				var group = new vis.DataSet( $rootScope.leave_groups);
-				var list =groups.get({
-						filter: function(item) {
-							
-							return (  selection.indexOf(item.track)!=-1);
-						}
-					})
-					
-						timeline.setGroups(list);
-						
-					
-						this.enable_event_drop()
-		
-				},  
-  
+	
 	   
 
 
@@ -17309,7 +17346,7 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 			//timeline.setGroups(list);
 			//this.enable_event_drop()	
 			
-				
+				this.update_andCompile()
 			
 		
 				},  
@@ -17330,7 +17367,7 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 					
 						this.enable_event_drop()
 		
-				},  
+			},  
 		changeGroups: function(selection){
 
 				var groups = new vis.DataSet($rootScope.groups);
@@ -17371,9 +17408,7 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 					$rootScope.addednames.push(value.group)
 					//n.b. may be able to order groups when locatiobn hierarchy given in emu
 					content=value.group ||"NA"
-					if( value.group.toLowerCase()=="temporary exhibition gallery"){ content="<b>M SHED:</b> "+value.group}
-					if( value.group.toLowerCase()=="window on bristol"){ content="<b>M SHED:</b> "+value.group}
-					if( value.group.toLowerCase()=="first floor foyer"){ content="<b>M SHED:</b> "+value.group}
+	
 					 
 					 _groups.push({
 										id				:	value.group,
@@ -17381,7 +17416,7 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 										track			:    value.track,
 										order		    :    value.order,
 										event_type		:	 value.event_type,
-										content			:    content,
+										content			:    value.group_name,
 										event_typeSORT	:    content,
 										selected         : value.select_group 
 									})
@@ -17396,32 +17431,12 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
   
    		 event_html: function(name,showimage,image,start_date,end_date,notes ,days){
 			var notes=notes ||""
-				var htmlContent = '<div class="titlediv" >'
-																htmlContent+='<div class="title_heading">'
-																	if(showimage){
-																	htmlContent+='<div class="image_box">'
-																	htmlContent+='<img src="http://museums.bristol.gov.uk/multimedia/entry.php?request=resource&irn='+image +'&height=50&format=jpeg" />'
-																	htmlContent+='</div>'	
-																}	
-																htmlContent+=name
-																	if(days>0 &&end_date){
-																		//htmlContent+='<div class="days">'
-																		htmlContent+=" - "+ days + " days"
-																		//htmlContent+='</div>';
-																}
-																htmlContent+='</div>';
-																
-																htmlContent+="<span> ";
-																htmlContent+=start_date 
-																if(end_date) {htmlContent+= "-" + end_date};
-																htmlContent+="<span>";
-																htmlContent+= '</div>'
-																htmlContent+='<div class="notes">'
-																htmlContent+="<p>"+notes
-																
-																											
-													htmlContent+= '</div>'
-													
+			var image=image ||""
+	
+			var showimage=showimage ||""
+			
+			var htmlContent= "<timeline-databar   name='" + name + "' image='" + image + "' showimage='" + showimage + "' startdate='" + start_date + "' enddate='" + end_date + "' notes='" + notes + "' days='" + days + "'></timeline-databar>"; //'<timeline-databar></timeline-databar>'
+		
 			return htmlContent
 
 			},
@@ -17435,7 +17450,7 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 			//fetch the timeline dataSetitem 
 					selected_item =	timeline.itemsData.getDataSet().get(selected_timeline_id)
 			//update the data entry form
-			console.log(selected_item)
+			//console.log(selected_item)
 			
 			$rootScope.selected_timeline_id=selected_timeline_id
 			$rootScope.selected_item=selected_item.name
@@ -17445,7 +17460,7 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 			}
 			$rootScope.selected_id=selected_item._id
 			$rootScope.selected_notes=selected_item.notes
-			console.log('startDate'+new Date(selected_item.start))
+			//console.log('startDate'+new Date(selected_item.start))
 			$rootScope.datePicker.date={startDate:new Date(selected_item.start),endDate:new Date (selected_item.end)}
 			
 }
@@ -17463,7 +17478,10 @@ exports.timeline_functions = function ($http,Timeline,$rootScope) {
 	updateItem: function(options){
 		if(typeof(timeline)!="undefined"){
 		timeline.itemsData.getDataSet().update(options)
+		this.update_andCompile()
+		
 		}
+	
 			
 	},
 	
@@ -17631,22 +17649,13 @@ $rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (ite
 				
            
 						
-				var list = groups.get({
-						filter: function(item) {
-							return (item);
-						}
-				})
-					
-				timeline.setGroups(list);
-					$rootScope.myGroup = {
-					selected:{}
-				};
-				$rootScope.groups=list
+			
 			
 		
-				 
+				
                 timeline.setItems(dates);
                 timeline.setOptions(options);
+				
 				timeline.fit()
 				
 				//self.changeGroups($rootScope.groups.selected)
@@ -17688,7 +17697,17 @@ $rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (ite
                 });
 
 			
-				self.enable_event_drop()
+			self.enable_event_drop()
+			//$compile($("timeline-databar"))($rootScope);
+			 var list = groups.get({
+						filter: function(item) {
+							return (item);
+						}
+				})
+					
+			//timeline.setGroups(list);   
+		
+			
               
     }
 	 
@@ -17732,9 +17751,9 @@ exports.timeline_shopify_functions =  function ($http,Timeline,$rootScope) {
 												$rootScope.added_track_groups.push("Shopify product types")														
 													$rootScope.track_groups.push({"track":"Shopify product types"})
 													}
-												console.log('shop products',eventss)
+												//console.log('shop products',eventss)
 												$.each(eventss, function( index, event ) {	
-													console.log('shop event',event)
+													//console.log('shop event',event)
 												
 															scale_class="";	
 												
@@ -17783,7 +17802,7 @@ exports.timeline_shopify_functions =  function ($http,Timeline,$rootScope) {
 																			start:start_date,
 																			end:end_date
 																		}
-console.log('shopEvent',shopEvent)																		
+																		
 														visevents.add( shopEvent)
 																		
 															
@@ -17873,9 +17892,9 @@ exports.timeline_visitor_figures_functions =  function ($http,Timeline,$rootScop
 												$rootScope.added_track_groups.push("visitor figures")														
 													$rootScope.track_groups.push({"track":"visitor figures"})
 													}
-												console.log('visitor figures',eventss)
+												//console.log('visitor figures',eventss)
 												$.each(eventss, function( index, event ) {	
-													console.log('visitor figures',event)
+													//console.log('visitor figures',event)
 												
 															scale_class="";	
 												
@@ -17924,7 +17943,7 @@ exports.timeline_visitor_figures_functions =  function ($http,Timeline,$rootScop
 																			start:start_date,
 																			end:end_date
 																		}
-console.log('shopEvent',shopEvent)																		
+//console.log('shopEvent',shopEvent)																		
 														visevents.add( shopEvent)
 																		
 															
@@ -19740,7 +19759,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
           
         }])
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_1baef7b6.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_69f8f96c.js","/")
 },{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/performance/analyser/analyser-controller":18,"../components/performance/dashboard-controllers":19,"../components/performance/donations/monthly-donations-controller":20,"../components/performance/donations/performance-form-controller":21,"../components/performance/donations/raw-donations-controller":22,"../components/performance/donations/yearly-donations-controller":23,"../components/performance/events/monthly-events-controller":24,"../components/performance/events/performance-form-controller":25,"../components/performance/events/raw-events-controller":26,"../components/performance/events/yearly-events-controller":27,"../components/performance/exhibitions-pwyt/monthly-donations-controller":28,"../components/performance/exhibitions-pwyt/performance-form-controller":29,"../components/performance/exhibitions-pwyt/raw-donations-controller":30,"../components/performance/exhibitions/exhibitions-summary-controller":31,"../components/performance/gallery-visits/monthly-teg-controller":32,"../components/performance/gallery-visits/performance-form-controller":33,"../components/performance/gallery-visits/raw-teg-controller":34,"../components/performance/gallery-visits/weekly-teg-controller":35,"../components/performance/gallery-visits/yearly-teg-controller":36,"../components/performance/gift-aid/monthly-giftaid-controller":37,"../components/performance/gift-aid/performance-form-controller":38,"../components/performance/gift-aid/raw-giftaid-controller":39,"../components/performance/learning/age-learning-controller":40,"../components/performance/learning/monthly-learning-controller":41,"../components/performance/learning/performance-form-controller":42,"../components/performance/learning/raw-learning-controller":43,"../components/performance/learning/yearly-learning-controller":44,"../components/performance/operations/monthly-operations-controller":45,"../components/performance/operations/performance-form-controller":46,"../components/performance/operations/raw-operations-controller":47,"../components/performance/operations/yearly-operations-controller":48,"../components/performance/performance-directive":49,"../components/performance/retail/monthly-retail-sales-controller":50,"../components/performance/retail/performance-form-controller":51,"../components/performance/retail/raw-retail-sales-controller":52,"../components/performance/retail/yearly-retail-sales-controller":53,"../components/performance/turnstiles/monthly-turnstiles-controller":54,"../components/performance/turnstiles/raw-turnstiles-controller":55,"../components/performance/visits/monthly-visits-controller":56,"../components/performance/visits/raw-visits-controller":57,"../components/performance/visits/visits-form-controller":58,"../components/performance/visits/yearly-visits-controller":59,"../components/performance/welcome-desk/monthly-welcomedesk-controller":60,"../components/performance/welcome-desk/performance-form-controller":61,"../components/performance/welcome-desk/raw-welcomedesk-controller":62,"../components/performance/welcome-desk/yearly-welcomedesk-controller":63,"../components/shopify/shopify-controller":64,"../components/shopify/shopify-directive":65,"../components/team/app-controllers":66,"../components/team/form-controller":67,"../components/team/leave-controller":68,"../components/team/team-controller":69,"../components/tech-support/tech-support-controller":70,"../components/tech-support/tech-support-directive":71,"../components/tech-support/trello-services":72,"../components/timeline-settings/timeline-settings-controller":73,"../components/timeline/timeline-controller":74,"../components/timeline/timeline-directive":75,"../components/timeline/timeline-googlesheets-services":76,"../components/timeline/timeline-learning-bookings-services":77,"../components/timeline/timeline-leave-services":78,"../components/timeline/timeline-loans-services":79,"../components/timeline/timeline-services":80,"../components/timeline/timeline-shopify-services":81,"../components/timeline/timeline-visitor-figures-services":82,"../components/turnstiles/turnstiles-controller":83,"../components/turnstiles/turnstiles-directive":84,"../components/user-admin/users-controller":85,"../components/user-admin/users-directive":86,"../shared/controllers/controllers":87,"../shared/controllers/navbar-controller":88,"../shared/directives/directives":89,"../shared/services/app-services":91,"../shared/services/data-services":92,"b55mWE":4,"buffer":3,"underscore":7}],91:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.data_table_reload = function() {	

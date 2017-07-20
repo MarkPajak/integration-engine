@@ -1,4 +1,4 @@
-exports.timeline_controller=     function($scope, $http, $q, $routeParams, $location,
+exports.timeline_controller=     function($compile,  $scope, $http, $q, $routeParams, $location,
          $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate,Raw_visits,timeline_visitor_figures_functions
     ) {
 		
@@ -56,6 +56,7 @@ $scope.dateRangeOptions = {
 					id: $scope.selected_id,				
 					}, options);				
 					timeline_functions.updateItem(options)
+					
 	
 		
 			}}				
@@ -100,6 +101,9 @@ $scope.dateRangeOptions = {
 			   options={stack:stack}
 		timeline_functions.updateOptions(options)
 		  }
+		  
+		
+		  
         })
 
         $scope.editing = [];
@@ -189,7 +193,7 @@ $scope.dateRangeOptions = {
 */
 
 		$scope.changedValue = function(place) {
-         console.log(place)
+        // console.log(place)
 		  //console.log( $rootScope.filter_pieSelected)
 		 $rootScope.filter_pieSelected=place
         }
@@ -337,6 +341,8 @@ $scope.dateRangeOptions = {
 											var group =	"NA"
 											if( event.type=="Exhibition"||event.type=="Gallery"){
 											 group =	event.event_space||"NA" 
+											 group_name =	"<b>"+event.venue+":</b></br> "+event.event_space||"NA" 
+											 
 											}
 											else{
 												 group =	event.type ||"NA"
@@ -362,10 +368,12 @@ $scope.dateRangeOptions = {
 													if(event.startDate){ //timeline errors if no start date
 													dates.add({
 																		group		:	group, 
+																		group_name		:	group_name, 
 																		select_group :select_group,
 																		title		:	event.name,
 																		name:event.name,
 																		type		: "background",
+
 																		content		:	htmlContent,
 																		order:event.venue+event.event_space,
 																		track:event.venue,
@@ -388,9 +396,9 @@ $scope.dateRangeOptions = {
 			$scope.total_install_derig=install_days_tally+derig_days_tally
 			$scope.average_install_length=Math.round(install_days_tally/install_instance_tally)
 			$scope.average_derig_length=Math.round(derig_days_tally/derig_tally)
-				  timeline_functions.setup(Timeline,groups,dates)
-				  
-				
+			timeline_functions.setup(Timeline,groups,dates)
+		
+	
 
 		$scope.team_leave()
 	
@@ -399,7 +407,7 @@ $scope.dateRangeOptions = {
 	$scope.learning_bookings()
 	$scope.loans()
 	$scope.shopify()
-	
+	//
 	var checked_event_types=[]
 											checked_event_types.push('Tour')
 											checked_event_types.push('Walk')
@@ -441,9 +449,11 @@ $scope.$watch('groups|filter:{selected:true}', function (nv) {
 	$( ".draggable,.iconbar" ).css({ 'top':'0px' });
   }, true);
   
-
+timeline_functions.update_andCompile()
 			
-            })
+	})	
+			
+      
 			
 		$scope.exportCSV= function(){
 		data_to_export=$rootScope.timeline.itemsData.getDataSet()
@@ -531,7 +541,7 @@ $scope.$watch('groups|filter:{selected:true}', function (nv) {
 								$rootScope.groups.push(_group)
 							})
 							
-							 console.log('$rootScope.groups',$rootScope.groups)
+							// console.log('$rootScope.groups',$rootScope.groups)
 							 _.each(public_dates._data, function(date) {
 								$rootScope.timeline.itemsData.getDataSet().add(date)
 							})
@@ -708,3 +718,4 @@ exports.add_timeline_items_controller=    function($scope, $http, $q, $routePara
     ) {
 
   }
+  

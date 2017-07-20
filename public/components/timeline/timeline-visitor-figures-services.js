@@ -30,9 +30,9 @@ exports.timeline_visitor_figures_functions =  function ($http,Timeline,$rootScop
 												$rootScope.added_track_groups.push("visitor figures")														
 													$rootScope.track_groups.push({"track":"visitor figures"})
 													}
-												console.log('visitor figures',eventss)
+												//console.log('visitor figures',eventss)
 												$.each(eventss, function( index, event ) {	
-													console.log('visitor figures',event)
+													//console.log('visitor figures',event)
 												
 															scale_class="";	
 												
@@ -81,7 +81,7 @@ exports.timeline_visitor_figures_functions =  function ($http,Timeline,$rootScop
 																			start:start_date,
 																			end:end_date
 																		}
-console.log('shopEvent',shopEvent)																		
+//console.log('shopEvent',shopEvent)																		
 														visevents.add( shopEvent)
 																		
 															
