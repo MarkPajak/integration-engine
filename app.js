@@ -15,11 +15,12 @@ var mongoose = require('mongoose');
 var nodemailer = require('nodemailer');
 var bcrypt = require('bcrypt-nodejs');
 var async = require('async');
-var config = require('./test/Config-debug');
+
 var winston = require('winston');
 
 // Connect to DB
 if(process.env.test){
+var config = require('./test/Config-debug');
 	console.log("TEST MODE DEBUGGING")
 	mongoose.connect(dbConfig.test);
 }
@@ -129,7 +130,7 @@ app.use('/events', events);
 app.use('/operations', operations);
 
 
-
+/*
 
 // We will log normal api operations into api.log
 console.log("starting logger...");
@@ -140,7 +141,7 @@ winston.add(winston.transports.File, {
 winston.handleExceptions(new winston.transports.File({
 	filename: config.logger.exception
 }));
-
+*/
 
 
 if(process.env.machine=="turnstile"){
