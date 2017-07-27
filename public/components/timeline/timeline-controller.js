@@ -401,7 +401,18 @@ $scope.dateRangeOptions = {
 											var group =	"NA"
 											if( event.type=="Exhibition"||event.type=="Gallery" || event.type=="Gallery Refurbishment"){
 											 group =	event.event_space||"NA" 
-											 group_name =	"<b>"+event.venue+":</b></br> "+event.event_space||"NA" 
+											if(event.venue=="Bristol Museum & Art Gallery")venue_pic= 176421 
+											if(event.venue=="Red Lodge Museum" )venue_pic=  37235
+											if(event.venue=="Georgian House" )venue_pic= 189420 
+											if(event.venue=="Bristol Archives" )venue_pic= 217822 
+											if(event.venue=="M Shed" )venue_pic= 206079 
+											 
+											
+											
+											 group_name="<table><tr><td><b>"+event.event_space||"NA" +":</b></br>"
+											 group_name+=event.venue+":</td><td>"
+											 group_name+=	'<img  class="pull-right" src="http://museums.bristol.gov.uk/multimedia/entry.php?request=resource&irn='+venue_pic+'&height=50&format=jpeg" />'
+											group_name+="</td></tr</table>"
 											 
 											}
 											else{
