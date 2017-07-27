@@ -11,7 +11,8 @@
     "test": "gulp server_test",
     "test_route": "mocha ./test/routes.js",
     "test_account": "mocha ./test/account.js",
-    "backup": "mongodump",
+    "backup": "mongodump && cp -r * ../testbackup",
+	"upd8": "git pull",
     "doom": "node data_loader/turnstiles/turnstile-controller.js",
     "karma_test": "./node_modules/karma/bin/karma start ./karma.local.conf.js",
     "karma": "./node_modules/karma/bin/karma start ./test/karma.local.conf.js"
