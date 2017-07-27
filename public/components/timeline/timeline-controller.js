@@ -49,8 +49,18 @@ $scope.dateRangeOptions = {
 				
 				
 			   if(date){
-			//if($rootScope.selected_t_id==event.items[0]){	
-					html=timeline_functions.event_html($scope.selected_item,"","",moment(date.startDate).format("MMM Do YYYY") , moment(date.endDate).format("MMM Do YYYY")|| "",$rootScope.selected_notes + "(" +days+" days)" )
+			
+			var event_to_add=	{id :  $scope.selected_id,
+													  name :$scope.selected_item,
+													  showimage :"",
+													  image :"",
+													  start_date :moment(date.startDate).format("MMM Do YYYY"),
+													  end_date : moment(date.endDate).format("MMM Do YYYY")|| "",
+													  notes  :$rootScope.selected_notes + "(" +days+" days)" ,
+													 days :days}
+			
+			
+					html=timeline_functions.event_html(event_to_add)
 					var options={id:$scope.selected_timeline_id,content:html,start:moment(date.startDate)._d,end:moment(date.endDate)._d,start_date:moment(date.startDate)._d,end_date:moment(date.endDate)._d}
 					Timeline.update({
 					id: $scope.selected_id,				
@@ -67,8 +77,18 @@ $scope.dateRangeOptions = {
 
 					date=$rootScope.datePicker.date
 					days=timeline_functions.days(moment(date.startDate),moment(date.endDate))
+					
+								
+			var event_to_add=	{id :  $scope.selected_id,
+													  name :$scope.selected_item,
+													  showimage :"",
+													  image :"",
+													  start_date :moment(date.startDate).format("MMM Do YYYY"),
+													  end_date : moment(date.endDate).format("MMM Do YYYY")|| "",
+													  notes  :$rootScope.selected_notes + "(" +days+" days)" ,
+													 days :days}
 			
-					html=timeline_functions.event_html($scope.selected_item,"","",moment(date.startDate).format("MMM Do YYYY") , moment(date.endDate).format("MMM Do YYYY")|| "",selected_note,days)
+					html=timeline_functions.event_html(event_to_add)
 					var options={id:$scope.selected_timeline_id,content:html,notes:selected_note}
 					Timeline.update({
 					id: $scope.selected_id,				
@@ -83,8 +103,18 @@ $scope.dateRangeOptions = {
 
 			date=$rootScope.datePicker.date
 			days=timeline_functions.days(moment(date.startDate),moment(date.endDate))
-			//if($rootScope.selected_t_id==event.items[0]){	
-					html=timeline_functions.event_html(selected_item,"","",moment(date.startDate).format("MMM Do YYYY") , moment(date.endDate).format("MMM Do YYYY")|| "",$rootScope.selected_notes ,days)
+			
+											
+			var event_to_add=	{id :  $scope.selected_id,
+													  name :$scope.selected_item,
+													  showimage :"",
+													  image :"",
+													  start_date :moment(date.startDate).format("MMM Do YYYY"),
+													  end_date : moment(date.endDate).format("MMM Do YYYY")|| "",
+													  notes  :$rootScope.selected_notes ,
+													 days :days}
+			
+					html=timeline_functions.event_html(event_to_add)
 					var options={id:$scope.selected_timeline_id,content:html,name:selected_item}
 					Timeline.update({
 					id: $scope.selected_id,				
@@ -278,7 +308,16 @@ $scope.dateRangeOptions = {
 						  //	$rootScope.track_groups.push({"track":data._type})
 						}
 							
-							
+								var event_to_add=	{id : data._id,
+													  name :data.name,
+													  showimage :"",
+													  image :"",
+													  start_date :moment(data.start_date).format("MMM Do YY"),
+													  end_date :end_date ||"",
+													  notes  :data.notes ,
+													 days :data.days
+													 }
+													 
 						   second_dates.add({
 								_id: data._id,
 								className:data.className,
@@ -286,7 +325,7 @@ $scope.dateRangeOptions = {
 								name:data.name,
 								_type:data._type,
 								track:data._type,
-								content: timeline_functions.event_html(data.name,"","",moment(data.start_date).format("MMM Do YY") , end_date ||"",data.notes ,data.days),
+								content: timeline_functions.event_html(event_to_add),
 								group: data.group||"NA",
 								order:data._type,
 								notes: data.notes,
@@ -352,7 +391,24 @@ $scope.dateRangeOptions = {
 												if(event.images[0]){
 												eventimages=event.images[0].irn
 												}
-												var htmlContent =  timeline_functions.event_html(event.name,true&&event.images[0],eventimages,event.startDate,event.endDate)
+												
+												var event_to_add = {}
+												
+												//event.ID,event.ID,event.name,true&&event.images[0],eventimages,event.startDate,event.endDate)
+												
+												var event_to_add=	{id : event.ID,
+													  name :event.name,
+													  showimage :true&&event.images[0],
+													  image :eventimages,
+													  start_date :event.startDate,
+													  end_date :event.endDate,
+													  notes  :"",
+													  description  :event.description,
+													 days :data.days
+													 }
+												
+												
+												var htmlContent =  timeline_functions.event_html(event_to_add)
 													if( 	$rootScope.added_track_groups.indexOf(event.venue)==-1){
 												$rootScope.added_track_groups.push(event.venue)														
 													$rootScope.track_groups.push({"track":event.venue})
@@ -368,6 +424,7 @@ $scope.dateRangeOptions = {
 													if(event.startDate){ //timeline errors if no start date
 													dates.add({
 																		group		:	group, 
+																		ID:event.ID,
 																		group_name		:	group_name, 
 																		select_group :select_group,
 																		title		:	event.name,

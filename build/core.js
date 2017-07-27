@@ -15433,8 +15433,18 @@ $scope.dateRangeOptions = {
 				
 				
 			   if(date){
-			//if($rootScope.selected_t_id==event.items[0]){	
-					html=timeline_functions.event_html($scope.selected_item,"","",moment(date.startDate).format("MMM Do YYYY") , moment(date.endDate).format("MMM Do YYYY")|| "",$rootScope.selected_notes + "(" +days+" days)" )
+			
+			var event_to_add=	{id :  $scope.selected_id,
+													  name :$scope.selected_item,
+													  showimage :"",
+													  image :"",
+													  start_date :moment(date.startDate).format("MMM Do YYYY"),
+													  end_date : moment(date.endDate).format("MMM Do YYYY")|| "",
+													  notes  :$rootScope.selected_notes + "(" +days+" days)" ,
+													 days :days}
+			
+			
+					html=timeline_functions.event_html(event_to_add)
 					var options={id:$scope.selected_timeline_id,content:html,start:moment(date.startDate)._d,end:moment(date.endDate)._d,start_date:moment(date.startDate)._d,end_date:moment(date.endDate)._d}
 					Timeline.update({
 					id: $scope.selected_id,				
@@ -15451,8 +15461,18 @@ $scope.dateRangeOptions = {
 
 					date=$rootScope.datePicker.date
 					days=timeline_functions.days(moment(date.startDate),moment(date.endDate))
+					
+								
+			var event_to_add=	{id :  $scope.selected_id,
+													  name :$scope.selected_item,
+													  showimage :"",
+													  image :"",
+													  start_date :moment(date.startDate).format("MMM Do YYYY"),
+													  end_date : moment(date.endDate).format("MMM Do YYYY")|| "",
+													  notes  :$rootScope.selected_notes + "(" +days+" days)" ,
+													 days :days}
 			
-					html=timeline_functions.event_html($scope.selected_item,"","",moment(date.startDate).format("MMM Do YYYY") , moment(date.endDate).format("MMM Do YYYY")|| "",selected_note,days)
+					html=timeline_functions.event_html(event_to_add)
 					var options={id:$scope.selected_timeline_id,content:html,notes:selected_note}
 					Timeline.update({
 					id: $scope.selected_id,				
@@ -15467,8 +15487,18 @@ $scope.dateRangeOptions = {
 
 			date=$rootScope.datePicker.date
 			days=timeline_functions.days(moment(date.startDate),moment(date.endDate))
-			//if($rootScope.selected_t_id==event.items[0]){	
-					html=timeline_functions.event_html(selected_item,"","",moment(date.startDate).format("MMM Do YYYY") , moment(date.endDate).format("MMM Do YYYY")|| "",$rootScope.selected_notes ,days)
+			
+											
+			var event_to_add=	{id :  $scope.selected_id,
+													  name :$scope.selected_item,
+													  showimage :"",
+													  image :"",
+													  start_date :moment(date.startDate).format("MMM Do YYYY"),
+													  end_date : moment(date.endDate).format("MMM Do YYYY")|| "",
+													  notes  :$rootScope.selected_notes ,
+													 days :days}
+			
+					html=timeline_functions.event_html(event_to_add)
 					var options={id:$scope.selected_timeline_id,content:html,name:selected_item}
 					Timeline.update({
 					id: $scope.selected_id,				
@@ -15662,7 +15692,16 @@ $scope.dateRangeOptions = {
 						  //	$rootScope.track_groups.push({"track":data._type})
 						}
 							
-							
+								var event_to_add=	{id : data._id,
+													  name :data.name,
+													  showimage :"",
+													  image :"",
+													  start_date :moment(data.start_date).format("MMM Do YY"),
+													  end_date :end_date ||"",
+													  notes  :data.notes ,
+													 days :data.days
+													 }
+													 
 						   second_dates.add({
 								_id: data._id,
 								className:data.className,
@@ -15670,7 +15709,7 @@ $scope.dateRangeOptions = {
 								name:data.name,
 								_type:data._type,
 								track:data._type,
-								content: timeline_functions.event_html(data.name,"","",moment(data.start_date).format("MMM Do YY") , end_date ||"",data.notes ,data.days),
+								content: timeline_functions.event_html(event_to_add),
 								group: data.group||"NA",
 								order:data._type,
 								notes: data.notes,
@@ -15736,7 +15775,24 @@ $scope.dateRangeOptions = {
 												if(event.images[0]){
 												eventimages=event.images[0].irn
 												}
-												var htmlContent =  timeline_functions.event_html(event.name,true&&event.images[0],eventimages,event.startDate,event.endDate)
+												
+												var event_to_add = {}
+												
+												//event.ID,event.ID,event.name,true&&event.images[0],eventimages,event.startDate,event.endDate)
+												
+												var event_to_add=	{id : event.ID,
+													  name :event.name,
+													  showimage :true&&event.images[0],
+													  image :eventimages,
+													  start_date :event.startDate,
+													  end_date :event.endDate,
+													  notes  :"",
+													  description  :event.description,
+													 days :data.days
+													 }
+												
+												
+												var htmlContent =  timeline_functions.event_html(event_to_add)
 													if( 	$rootScope.added_track_groups.indexOf(event.venue)==-1){
 												$rootScope.added_track_groups.push(event.venue)														
 													$rootScope.track_groups.push({"track":event.venue})
@@ -15752,6 +15808,7 @@ $scope.dateRangeOptions = {
 													if(event.startDate){ //timeline errors if no start date
 													dates.add({
 																		group		:	group, 
+																		ID:event.ID,
 																		group_name		:	group_name, 
 																		select_group :select_group,
 																		title		:	event.name,
@@ -16141,12 +16198,39 @@ exports.timelineInfobox = function() {
  
  return{
 	restrict: 'E',
+	 link: function($scope, $el) {
+		
+	
+		
+		
+		
+		
+      var script = document.createElement('script');
+	  
+      script.text = "$(function() {;"
+	  script.text +=" $('#infobutton'+ '"+ $scope.id +"').hide();"
+	  script.text +=" $('#timeline'+ '"+ $scope.id +"').mouseover(function() {"; 
+	  script.text +=" $('#infobutton'+ '"+ $scope.id +"').show();"; 
+      script.text +="});"; 
+	  	  script.text +=" $('#timeline'+ '"+ $scope.id +"').mouseout(function() {"; 
+	  script.text +=" $('#infobutton'+ '"+ $scope.id +"').hide();"; 
+      script.text +="});"; 
+	  script.text +="$('#infobutton'+ '"+ $scope.id +"').on('click', function(event){ "
+	  script.text +=" $('#infobox_name').text('').append('" + $scope.name  +"'); "; 
+	  script.text +=" $('#infobox_description').text('').append('" + $scope.description  +"');"; 
+	  script.text +="});});"
+		 
+		 
+      $el.append(script);
+    },
+
       templateUrl: './components/timeline/timeline-item.html',
 	  scope: {
-		 startdate: "@",
-		 id: "@",
+		  startdate: "@",
+		  id: "@",
 		  enddate: "@",
 		  name: "@",
+		  description: "@",
 		  image: "@",
 		  showimage: "@",
 		  notes: "@",		 
@@ -17270,8 +17354,19 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 									var dateDroppedOn =time
 									target_date = time
 									_days=self.days(moment(date_dropped).startOf('day')._d,moment(date_dropped).add(days, 'days')._d)
+									
+								var event_to_add=	{id : id,
+													  name : value,
+													  showimage :"",
+													  image :"",
+													  start_date :moment(date_dropped).startOf('day')._d,
+													  end_date :moment(date_dropped).add(days, 'days')._d,
+													  notes  :"",
+												  days :_days.days}
+									
+									
 									var new_date = {
-										content: self.event_html(value,"","",moment(date_dropped).startOf('day')._d,moment(date_dropped).add(days, 'days')._d, "",_days),
+										content: self.event_html(event_to_add),
 										name:value,
 										group: group,
 										dropped_group:dropped_group,
@@ -17429,13 +17524,25 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 
 		},
   
-   		 event_html: function(name,showimage,image,start_date,end_date,notes ,days){
+   		 event_html: function(event_to_add){
+		 
+		 
+			var  id = event_to_add.id
+		 	var  name = event_to_add.name
+		 	var  showimage = event_to_add.showimage
+		 	var  image =event_to_add.image
+		 	var  start_date =event_to_add.start_date
+		 	var  end_date =event_to_add.end_date
+		 	var  notes  =event_to_add.notes ||""
+		 	var  days =event_to_add.days
+			var  description =event_to_add.description ||""
+		 
 			var notes=notes ||""
 			var image=image ||""
 	
 			var showimage=showimage ||""
 			
-			var htmlContent= "<timeline-databar   name='" + name + "' image='" + image + "' showimage='" + showimage + "' startdate='" + start_date + "' enddate='" + end_date + "' notes='" + notes + "' days='" + days + "'></timeline-databar>"; //'<timeline-databar></timeline-databar>'
+			var htmlContent= "<timeline-databar    description='" + description + "' description='" + description + "' id='" + id + "' name='" + name + "' image='" + image + "' showimage='" + showimage + "' startdate='" + start_date + "' enddate='" + end_date + "' notes='" + notes + "' days='" + days + "'></timeline-databar>"; //'<timeline-databar></timeline-databar>'
 		
 			return htmlContent
 
@@ -17510,9 +17617,19 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 					 groupOrder:'order',					
                     onMove: function(item, callback) {
 $rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (item.end)}
-                        var _timeline = new Timeline({
-                          //  content: item.content,
-							 content:  self.event_html(item.name,"","",item.start, item.end,item.notes ),
+                        	var event_to_add=	{id : item.id,
+													  name : item.name,
+													  showimage :"",
+													  image :"",
+													  start_date :item.start,
+													  end_date : item.end,
+													  notes  :item.notes ,
+												  days :""}
+						
+						var _timeline = new Timeline({
+									
+						  
+							 content:  self.event_html(event_to_add ),
                             group: item.group,
                             start_date: item.start,
                             end_date: item.end,
@@ -17534,8 +17651,20 @@ $rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (ite
                                 callback(item); // send back adjusted item
 
 									days=self.days(item.start, item.end)
+									
+										
+								var event_to_add=	{id : item.id,
+													  name :value,
+													  showimage :"",
+													  image :"",
+													  start_date :item.start,
+													  end_date : item.end,
+													  notes  :item.notes ,
+													days :days}
+									
+									
                                 var _timeline = new Timeline({
-                                    content:  self.event_html(value,"","",item.start, item.end,item.notes ,days),
+                                    content:  self.event_html(event_to_add),
 									name: item.name,
                                     group: item.group,
                                     start_date: item.start,
@@ -17564,9 +17693,17 @@ $rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (ite
 								
 								days=self.days(item.start, moment(item.start).add(5, 'days'))
 																		
-     
+								var event_to_add=	{id : item.id,
+													  name :value,
+													  showimage :"",
+													  image :"",
+													  start_date :item.start,
+													  end_date :  moment(item.start).add(5, 'days'),
+													  notes  :"" ,
+													 days :days}
+													
                                 var _timeline = new Timeline({
-                                        content: self.event_html(value,"","",item.start, moment(item.start).add(5, 'days'),"" ,days),
+                                        content: self.event_html(event_to_add),
 										name:value,
                                         group: item.group,
 										_type:"note",
@@ -19759,7 +19896,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
           
         }])
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_69f8f96c.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_ad5f2e2b.js","/")
 },{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/performance/analyser/analyser-controller":18,"../components/performance/dashboard-controllers":19,"../components/performance/donations/monthly-donations-controller":20,"../components/performance/donations/performance-form-controller":21,"../components/performance/donations/raw-donations-controller":22,"../components/performance/donations/yearly-donations-controller":23,"../components/performance/events/monthly-events-controller":24,"../components/performance/events/performance-form-controller":25,"../components/performance/events/raw-events-controller":26,"../components/performance/events/yearly-events-controller":27,"../components/performance/exhibitions-pwyt/monthly-donations-controller":28,"../components/performance/exhibitions-pwyt/performance-form-controller":29,"../components/performance/exhibitions-pwyt/raw-donations-controller":30,"../components/performance/exhibitions/exhibitions-summary-controller":31,"../components/performance/gallery-visits/monthly-teg-controller":32,"../components/performance/gallery-visits/performance-form-controller":33,"../components/performance/gallery-visits/raw-teg-controller":34,"../components/performance/gallery-visits/weekly-teg-controller":35,"../components/performance/gallery-visits/yearly-teg-controller":36,"../components/performance/gift-aid/monthly-giftaid-controller":37,"../components/performance/gift-aid/performance-form-controller":38,"../components/performance/gift-aid/raw-giftaid-controller":39,"../components/performance/learning/age-learning-controller":40,"../components/performance/learning/monthly-learning-controller":41,"../components/performance/learning/performance-form-controller":42,"../components/performance/learning/raw-learning-controller":43,"../components/performance/learning/yearly-learning-controller":44,"../components/performance/operations/monthly-operations-controller":45,"../components/performance/operations/performance-form-controller":46,"../components/performance/operations/raw-operations-controller":47,"../components/performance/operations/yearly-operations-controller":48,"../components/performance/performance-directive":49,"../components/performance/retail/monthly-retail-sales-controller":50,"../components/performance/retail/performance-form-controller":51,"../components/performance/retail/raw-retail-sales-controller":52,"../components/performance/retail/yearly-retail-sales-controller":53,"../components/performance/turnstiles/monthly-turnstiles-controller":54,"../components/performance/turnstiles/raw-turnstiles-controller":55,"../components/performance/visits/monthly-visits-controller":56,"../components/performance/visits/raw-visits-controller":57,"../components/performance/visits/visits-form-controller":58,"../components/performance/visits/yearly-visits-controller":59,"../components/performance/welcome-desk/monthly-welcomedesk-controller":60,"../components/performance/welcome-desk/performance-form-controller":61,"../components/performance/welcome-desk/raw-welcomedesk-controller":62,"../components/performance/welcome-desk/yearly-welcomedesk-controller":63,"../components/shopify/shopify-controller":64,"../components/shopify/shopify-directive":65,"../components/team/app-controllers":66,"../components/team/form-controller":67,"../components/team/leave-controller":68,"../components/team/team-controller":69,"../components/tech-support/tech-support-controller":70,"../components/tech-support/tech-support-directive":71,"../components/tech-support/trello-services":72,"../components/timeline-settings/timeline-settings-controller":73,"../components/timeline/timeline-controller":74,"../components/timeline/timeline-directive":75,"../components/timeline/timeline-googlesheets-services":76,"../components/timeline/timeline-learning-bookings-services":77,"../components/timeline/timeline-leave-services":78,"../components/timeline/timeline-loans-services":79,"../components/timeline/timeline-services":80,"../components/timeline/timeline-shopify-services":81,"../components/timeline/timeline-visitor-figures-services":82,"../components/turnstiles/turnstiles-controller":83,"../components/turnstiles/turnstiles-directive":84,"../components/user-admin/users-controller":85,"../components/user-admin/users-directive":86,"../shared/controllers/controllers":87,"../shared/controllers/navbar-controller":88,"../shared/directives/directives":89,"../shared/services/app-services":91,"../shared/services/data-services":92,"b55mWE":4,"buffer":3,"underscore":7}],91:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.data_table_reload = function() {	

@@ -1,11 +1,27 @@
+<style>
+.infobutton{
+z-index:601;
+
+}
+
+
+
+</style>
 <div class="titlediv" >
-	<div class="title_heading" style="font-weight:bold;">{{name}}<span  ng-show="days > 0" style="float:right;display:block;position:relative;" class="days"></span>
+	<div id="timeline{{id}}" class="title_heading" style="font-weight:bold;">{{name}}<span  ng-show="days > 0" style="float:right;display:block;position:relative;" class="days"></span>
+		<button  type="button" id="infobutton{{id}}" class="pull-right infobutton btn btn-info" data-toggle="modal" data-target="#timelineinfobox"><span id="infobutton{{id}}" ng-class=" notes  ? 'glyphicon glyphicon-info-sign' : 'glyphicon glyphicon-pencil'" aria-hidden="true"></span></button>
 		<div class="image_box" ng-show="showimage" >
 			<img src="http://museums.bristol.gov.uk/multimedia/entry.php?request=resource&irn={{image}}&height=50&format=jpeg" />
 		</div>
 	</div>
 	<span >{{startdate}}-{{enddate}}</span>
 	</div>
-<div class="notes">
-	<p>{{notes}}
-</div>
+
+
+
+
+
+
+
+
+

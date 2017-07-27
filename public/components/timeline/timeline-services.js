@@ -178,8 +178,19 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 									var dateDroppedOn =time
 									target_date = time
 									_days=self.days(moment(date_dropped).startOf('day')._d,moment(date_dropped).add(days, 'days')._d)
+									
+								var event_to_add=	{id : id,
+													  name : value,
+													  showimage :"",
+													  image :"",
+													  start_date :moment(date_dropped).startOf('day')._d,
+													  end_date :moment(date_dropped).add(days, 'days')._d,
+													  notes  :"",
+												  days :_days.days}
+									
+									
 									var new_date = {
-										content: self.event_html(value,"","",moment(date_dropped).startOf('day')._d,moment(date_dropped).add(days, 'days')._d, "",_days),
+										content: self.event_html(event_to_add),
 										name:value,
 										group: group,
 										dropped_group:dropped_group,
@@ -337,13 +348,25 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 
 		},
   
-   		 event_html: function(name,showimage,image,start_date,end_date,notes ,days){
+   		 event_html: function(event_to_add){
+		 
+		 
+			var  id = event_to_add.id
+		 	var  name = event_to_add.name
+		 	var  showimage = event_to_add.showimage
+		 	var  image =event_to_add.image
+		 	var  start_date =event_to_add.start_date
+		 	var  end_date =event_to_add.end_date
+		 	var  notes  =event_to_add.notes ||""
+		 	var  days =event_to_add.days
+			var  description =event_to_add.description ||""
+		 
 			var notes=notes ||""
 			var image=image ||""
 	
 			var showimage=showimage ||""
 			
-			var htmlContent= "<timeline-databar   name='" + name + "' image='" + image + "' showimage='" + showimage + "' startdate='" + start_date + "' enddate='" + end_date + "' notes='" + notes + "' days='" + days + "'></timeline-databar>"; //'<timeline-databar></timeline-databar>'
+			var htmlContent= "<timeline-databar    description='" + description + "' description='" + description + "' id='" + id + "' name='" + name + "' image='" + image + "' showimage='" + showimage + "' startdate='" + start_date + "' enddate='" + end_date + "' notes='" + notes + "' days='" + days + "'></timeline-databar>"; //'<timeline-databar></timeline-databar>'
 		
 			return htmlContent
 
@@ -418,9 +441,19 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 					 groupOrder:'order',					
                     onMove: function(item, callback) {
 $rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (item.end)}
-                        var _timeline = new Timeline({
-                          //  content: item.content,
-							 content:  self.event_html(item.name,"","",item.start, item.end,item.notes ),
+                        	var event_to_add=	{id : item.id,
+													  name : item.name,
+													  showimage :"",
+													  image :"",
+													  start_date :item.start,
+													  end_date : item.end,
+													  notes  :item.notes ,
+												  days :""}
+						
+						var _timeline = new Timeline({
+									
+						  
+							 content:  self.event_html(event_to_add ),
                             group: item.group,
                             start_date: item.start,
                             end_date: item.end,
@@ -442,8 +475,20 @@ $rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (ite
                                 callback(item); // send back adjusted item
 
 									days=self.days(item.start, item.end)
+									
+										
+								var event_to_add=	{id : item.id,
+													  name :value,
+													  showimage :"",
+													  image :"",
+													  start_date :item.start,
+													  end_date : item.end,
+													  notes  :item.notes ,
+													days :days}
+									
+									
                                 var _timeline = new Timeline({
-                                    content:  self.event_html(value,"","",item.start, item.end,item.notes ,days),
+                                    content:  self.event_html(event_to_add),
 									name: item.name,
                                     group: item.group,
                                     start_date: item.start,
@@ -472,9 +517,17 @@ $rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (ite
 								
 								days=self.days(item.start, moment(item.start).add(5, 'days'))
 																		
-     
+								var event_to_add=	{id : item.id,
+													  name :value,
+													  showimage :"",
+													  image :"",
+													  start_date :item.start,
+													  end_date :  moment(item.start).add(5, 'days'),
+													  notes  :"" ,
+													 days :days}
+													
                                 var _timeline = new Timeline({
-                                        content: self.event_html(value,"","",item.start, moment(item.start).add(5, 'days'),"" ,days),
+                                        content: self.event_html(event_to_add),
 										name:value,
                                         group: item.group,
 										_type:"note",

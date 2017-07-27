@@ -4,6 +4,9 @@ var express = require('express');
 var router = express.Router();
 var _ = require('underscore');
 var json2csv =  require('json2csv');
+Route_permissions= require('../functions/route_permissions.js');
+route_permissions=new Route_permissions()
+Api_calls= require('../functions/standard_api_calls.js');
 
 var isAuthenticated = function (req, res, next) {
 	console.log('if user is authenticated in the session, call the next() to call the next request handler ')
@@ -414,41 +417,7 @@ var query = {'museum_id':req.params.museum_id,'date_value':req.params.date_value
   })
 });
 
-/* POST /todos */
-router.post('/', isAuthenticated, function(req, res, next) {
-  Team.create(req.body, function (err, post) {
-    if (err) return next(err);
-    res.json(post);
-  });
-});
+api_calls=new Api_calls(Team,router)
 
-/* GET /todos/id */
-router.get('/:id', isAuthenticated, function(req, res, next) {
-  Team.findById(req.params.id, function (err, post) {
-    if (err) return next(err);
-    res.json(post);
-  });
-});
-
-/* PUT /todos/:id */
-router.put('/:id', isAuthenticated, function(req, res, next) {
-  Team.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
-    if (err) return next(err);
-    res.json(post);
-  });
-});
-
-
-/* DELETE /todos/:id */
-router.delete('/:id', isAuthenticated, function(req, res, next) {
-  Team.findByIdAndRemove(req.params.id, req.body, function (err, post) {
-    if (err) return next(err);
-    res.json(post);
-  });
-});
-
-
-
-module.exports = router;
 
 module.exports = router;

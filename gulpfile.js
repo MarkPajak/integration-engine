@@ -78,19 +78,28 @@ gulp.task('browserify-test', function() {
     pipe(gulp.dest('./test/bin'));
 });
 
+gulp.task('server_test',function() {
+    return gulp.src(['test/users/*.js'], { read: false })
+        .pipe(mocha({ reporter: 'list' }))
+        .on('error', gutil.log);
+})
 
-
+gulp.task('mocha', ['browserify-client'],function() {
+    return gulp.src(['test/users/*.js'], { read: false })
+        .pipe(mocha({ reporter: 'list' }))
+        .on('error', gutil.log);
+})
 
 gulp.task('watch', function() {
   gulp.watch(['public/**/*.js','!public/bin/*.js'], ['browserify-client','browserify-test', 'test']);
   gulp.watch('test/**/*.js', ['test']);
 });
 
-gulp.task('build', ['uglify']);
+gulp.task('build', ['mocha']);
 
 gulp.task('test', ['browserify-test','test-karma'])
 
-gulp.task('mocha', [])
+//gulp.task('mocha', [])
 
 gulp.task('test-karma', function (done) {
     return karma.start({
@@ -99,11 +108,7 @@ gulp.task('test-karma', function (done) {
   }, done);
 });
 
-gulp.task('mocha', function() {
-    return gulp.src(['test/users/*.js'], { read: false })
-        .pipe(mocha({ reporter: 'list' }))
-        .on('error', gutil.log);
-});
+;
 
 
 gulp.task('go', ['test', 'build', 'watch']);

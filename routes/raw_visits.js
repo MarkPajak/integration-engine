@@ -3,16 +3,11 @@ var express = require('express');
 var router = express.Router();
 var json2csv =  require('json2csv');
 var _ =  require('underscore');
-var isAuthenticated = function (req, res, next) {
-	console.log('if user is authenticated in the session, call the next() to call the next request handler ')
-	// Passport adds this method to request object. A middleware is allowed to add properties to
-	// request and response objects
-	if (req.isAuthenticated())
-	if (req.user.group=="DEFAULT") return false ;
-		return next();
+Route_permissions= require('./functions/route_permissions.js');
+route_permissions=new Route_permissions()
 
-	return false
-}
+Api_calls= require('./functions/standard_api_calls.js');
+
 
 var Team = require('../models/Kpi_log.js');
 
@@ -197,7 +192,7 @@ router.get('/csv', function(req, res, next) {
   })
 });
 /* GET /todos listing. */
-router.get('/:museum_id/:date_value/:exact',isAuthenticated, function(req, res, next) {
+router.get('/:museum_id/:date_value/:exact',route_permissions.isAuthenticated, function(req, res, next) {
 
 var query = {}
 
@@ -224,39 +219,10 @@ if(decodeURIComponent(req.params.museum_id)!="#"){
   })
 });
 
-/* POST /todos */
-router.post('/', isAuthenticated, function(req, res, next) {
-  Team.create(req.body, function (err, post) {
-    if (err) return next(err);
-    res.json(post);
-  });
-});
-
-/* GET /todos/id */
-router.get('/:id', isAuthenticated, function(req, res, next) {
-  Team.findById(req.params.id, function (err, post) {
-    if (err) return next(err);
-    res.json(post);
-  });
-});
-
-/* PUT /todos/:id */
-router.put('/:id', isAuthenticated, function(req, res, next) {
-  Team.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
-    if (err) return next(err);
-    res.json(post);
-  });
-});
 
 
-/* DELETE /todos/:id */
-router.delete('/:id', isAuthenticated, function(req, res, next) {
-  Team.findByIdAndRemove(req.params.id, req.body, function (err, post) {
-    if (err) return next(err);
-    res.json(post);
-  });
-});
 
+api_calls=new Api_calls(Team,router)
 
 
 module.exports = router;

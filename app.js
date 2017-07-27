@@ -15,11 +15,12 @@ var mongoose = require('mongoose');
 var nodemailer = require('nodemailer');
 var bcrypt = require('bcrypt-nodejs');
 var async = require('async');
-var config = require('./Config-debug');
+var config = require('./test/Config-debug');
 var winston = require('winston');
 
 // Connect to DB
 if(process.env.test){
+	console.log("TEST MODE DEBUGGING")
 	mongoose.connect(dbConfig.test);
 }
 else
