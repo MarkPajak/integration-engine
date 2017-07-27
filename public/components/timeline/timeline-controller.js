@@ -409,10 +409,10 @@ $scope.dateRangeOptions = {
 											 
 											
 											
-											 group_name="<table><tr><td><b>"+event.event_space||"NA" +":</b></br>"
-											 group_name+=event.venue+":</td><td>"
-											 group_name+=	'<img  class="pull-right" src="http://museums.bristol.gov.uk/multimedia/entry.php?request=resource&irn='+venue_pic+'&height=50&format=jpeg" />'
-											group_name+="</td></tr</table>"
+											group_name="<table><tr><td><b>"+event.event_space+"</b><br></br>"
+											group_name+=event.venue+"</td><td>"
+											group_name+=	'<img  class="pull-right" src="http://museums.bristol.gov.uk/multimedia/entry.php?request=resource&irn='+venue_pic+'&height=50&format=jpeg" />'
+											group_name+="</td></tr></table>"
 											 
 											}
 											else{
