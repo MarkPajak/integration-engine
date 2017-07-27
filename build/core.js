@@ -15400,6 +15400,31 @@ $rootScope.added_track_groups=[]
 $rootScope.datePicker=[];
 
 
+	  $scope.isloggedin=false	
+	  
+	  AuthService.isLoggedIn().then(function(user){
+			console.log('this and that')
+			
+			$scope.user=user
+			$scope.isloggedin=true	
+			main_function()
+			
+	  })
+	   
+	  	setTimeout(function() {
+		
+			if($scope.isloggedin==false){
+				main_function()
+			} 
+		
+        }, 1500);
+	  
+
+main_function = function(){
+
+
+
+
 $scope.filter_pie=[]
 			$scope.filter_pie.push({value:"2017 total_children",name:"No. children"})
 			$scope.filter_pie.push({value:"2017 total_sessions",name:"No. sessions"})
@@ -15411,13 +15436,7 @@ $scope.plot_graph =null;
 
 
 $rootScope.datePicker.date = {startDate:null, endDate: null};
-	  $scope.isloggedin=false	
-	  AuthService.isLoggedIn().then(function(user){
-			$scope.isloggedin=true	
-			//$scope.lockstatus=true
-			//$scope.unlock=true
-			//timeline_functions.unlock(true)
-	  })
+
 	
 
 
@@ -15438,8 +15457,8 @@ $scope.dateRangeOptions = {
 													  name :$scope.selected_item,
 													  showimage :"",
 													  image :"",
-													  start_date :moment(date.startDate).format("MMM Do YYYY"),
-													  end_date : moment(date.endDate).format("MMM Do YYYY")|| "",
+													  start_date :moment(date.startDate).format("MMM Do"),
+													  end_date : moment(date.endDate).format("MMM Do")|| "",
 													  notes  :$rootScope.selected_notes + "(" +days+" days)" ,
 													 days :days}
 			
@@ -15463,13 +15482,13 @@ $scope.dateRangeOptions = {
 					days=timeline_functions.days(moment(date.startDate),moment(date.endDate))
 					
 								
-			var event_to_add=	{id :  $scope.selected_id,
+									var event_to_add=	{id :  $scope.selected_id,
 													  name :$scope.selected_item,
 													  showimage :"",
 													  image :"",
-													  start_date :moment(date.startDate).format("MMM Do YYYY"),
-													  end_date : moment(date.endDate).format("MMM Do YYYY")|| "",
-													  notes  :$rootScope.selected_notes + "(" +days+" days)" ,
+													  start_date :moment(date.startDate).format("MMM Do"),
+													  end_date : moment(date.endDate).format("MMM Do")|| "",
+													  notes  :$rootScope.selected_notes ,
 													 days :days}
 			
 					html=timeline_functions.event_html(event_to_add)
@@ -15493,8 +15512,8 @@ $scope.dateRangeOptions = {
 													  name :$scope.selected_item,
 													  showimage :"",
 													  image :"",
-													  start_date :moment(date.startDate).format("MMM Do YYYY"),
-													  end_date : moment(date.endDate).format("MMM Do YYYY")|| "",
+													  start_date :moment(date.startDate).format("MMM Do"),
+													  end_date : moment(date.endDate).format("MMM Do")|| "",
 													  notes  :$rootScope.selected_notes ,
 													 days :days}
 			
@@ -15696,28 +15715,30 @@ $scope.dateRangeOptions = {
 													  name :data.name,
 													  showimage :"",
 													  image :"",
-													  start_date :moment(data.start_date).format("MMM Do YY"),
+													  start_date :moment(data.start_date).format("MMM Do"),
 													  end_date :end_date ||"",
 													  notes  :data.notes ,
 													 days :data.days
 													 }
 													 
-						   second_dates.add({
-								_id: data._id,
-								className:data.className,
-								select_group :false,
-								name:data.name,
-								_type:data._type,
-								track:data._type,
-								content: timeline_functions.event_html(event_to_add),
-								group: data.group||"NA",
-								order:data._type,
-								notes: data.notes,
-								title:data.notes,
-								start: data.start_date,
-								days:data.days,
-								end: data.end_date 
-							})
+						 if($scope.isloggedin==true){
+							 second_dates.add({
+									_id: data._id,
+									className:data.className,
+									select_group :false,
+									name:data.name,
+									_type:data._type,
+									track:data._type,
+									content: timeline_functions.event_html(event_to_add),
+									group: data.group||"NA",
+									order:data._type,
+									notes: data.notes,
+									//title:data.notes,
+									start: data.start_date,
+									days:data.days,
+									end: data.end_date 
+								})
+						}
 						}
                     }
                 })
@@ -15752,7 +15773,7 @@ $scope.dateRangeOptions = {
 											//if( event.startDate!=""){
 												
 											//if( checked_event_types.indexOf(event.type)>=0){	
-											if( event.type=="Exhibition"||event.type=="Gallery"){
+											if( event.type=="Exhibition"||event.type=="Gallery" || event.type=="Gallery Refurbishment"){
 											var end_date=new Date(event.endDate)
 											
 											if(event.endDate==""||event.endDate==event.startDate){
@@ -15762,7 +15783,7 @@ $scope.dateRangeOptions = {
 										
 											}
 											var group =	"NA"
-											if( event.type=="Exhibition"||event.type=="Gallery"){
+											if( event.type=="Exhibition"||event.type=="Gallery" || event.type=="Gallery Refurbishment"){
 											 group =	event.event_space||"NA" 
 											 group_name =	"<b>"+event.venue+":</b></br> "+event.event_space||"NA" 
 											 
@@ -15830,10 +15851,11 @@ $scope.dateRangeOptions = {
 
 			  })
 			    })
-			
-			_.each(second_dates._data, function(date) {
-			dates.add(date)
+		
+				_.each(second_dates._data, function(date) {
+				dates.add(date)
 			})
+			
 			$scope.total_install_derig=install_days_tally+derig_days_tally
 			$scope.average_install_length=Math.round(install_days_tally/install_instance_tally)
 			$scope.average_derig_length=Math.round(derig_days_tally/derig_tally)
@@ -15934,7 +15956,7 @@ timeline_functions.update_andCompile()
 			
 			if( $scope.isloggedin){
 			
-			console.log($scope.user)
+			
 			 var groups =$rootScope.groups
 			 
 			  $rootScope.timeline.setGroups(groups);
@@ -16115,7 +16137,7 @@ timeline_functions.update_andCompile()
     };
 	
 	
-	 
+	} 
  
 exports.BasicDemoCtrl=   function ($mdDialog,$scope, $http, $q, $routeParams, $location
 
@@ -16142,6 +16164,8 @@ exports.BasicDemoCtrl=   function ($mdDialog,$scope, $http, $q, $routeParams, $l
       // This never happens.
     };
   }
+  
+  
 
 exports.add_timeline_items_controller=    function($scope, $http, $q, $routeParams, $location,
          $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate
@@ -16149,7 +16173,7 @@ exports.add_timeline_items_controller=    function($scope, $http, $q, $routePara
 	
 	$scope.unlocked=false
 	$scope.$watch('locked', function (locked) {
-		console.log(locked)
+		
 		$scope.locked=locked
   })
   }
@@ -16209,11 +16233,17 @@ exports.timelineInfobox = function() {
 	  
       script.text = "$(function() {;"
 	  script.text +=" $('#infobutton'+ '"+ $scope.id +"').hide();"
+	  script.text +=" $('#miniicon'+ '"+ $scope.id +"').show();"
+	  
+	  
+	  
 	  script.text +=" $('#timeline'+ '"+ $scope.id +"').mouseover(function() {"; 
 	  script.text +=" $('#infobutton'+ '"+ $scope.id +"').show();"; 
+	  script.text +=" $('#miniicon'+ '"+ $scope.id +"').hide();"
       script.text +="});"; 
 	  	  script.text +=" $('#timeline'+ '"+ $scope.id +"').mouseout(function() {"; 
 	  script.text +=" $('#infobutton'+ '"+ $scope.id +"').hide();"; 
+	    script.text +=" $('#miniicon'+ '"+ $scope.id +"').show();"; 
       script.text +="});"; 
 	  script.text +="$('#infobutton'+ '"+ $scope.id +"').on('click', function(event){ "
 	  script.text +=" $('#infobox_name').text('').append('" + $scope.name  +"'); "; 
@@ -17331,7 +17361,7 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
                             $(ui.draggable[0]).hide()
 							
 							if(ui.draggable[0].innerHTML=="PROVISIONAL DATE"){
-                            self.prettyPrompt('Add item', 'Enter text content for new item:',"", function(value) {
+                            self.prettyPrompt('Add a provisional date', 'Name:',"", function(value) {
                             if (value) {
                                	add_item(group,group,time,value,"blue",30,ui.draggable[0].innerHTML)
 							}
@@ -17350,19 +17380,21 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 							
 									 date_dropped=(moment(time).startOf('day')._d)
 									
+									 
+									
 									var id = ui.draggable[0].id
 									var dateDroppedOn =time
 									target_date = time
-									_days=self.days(moment(date_dropped).startOf('day')._d,moment(date_dropped).add(days, 'days')._d)
+									_days=self.days(moment(time).startOf('day')._d,moment(time).add(days, 'days')._d)
 									
 								var event_to_add=	{id : id,
 													  name : value,
 													  showimage :"",
 													  image :"",
-													  start_date :moment(date_dropped).startOf('day')._d,
-													  end_date :moment(date_dropped).add(days, 'days')._d,
+													  start_date :moment(time).startOf('day').format("MMM Do"),
+													  end_date :moment(time).add(days, 'days').format("MMM Do"),
 													  notes  :"",
-												  days :_days.days}
+														days :_days.days}
 									
 									
 									var new_date = {
@@ -19896,7 +19928,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
           
         }])
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_ad5f2e2b.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_4fa7c3eb.js","/")
 },{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/performance/analyser/analyser-controller":18,"../components/performance/dashboard-controllers":19,"../components/performance/donations/monthly-donations-controller":20,"../components/performance/donations/performance-form-controller":21,"../components/performance/donations/raw-donations-controller":22,"../components/performance/donations/yearly-donations-controller":23,"../components/performance/events/monthly-events-controller":24,"../components/performance/events/performance-form-controller":25,"../components/performance/events/raw-events-controller":26,"../components/performance/events/yearly-events-controller":27,"../components/performance/exhibitions-pwyt/monthly-donations-controller":28,"../components/performance/exhibitions-pwyt/performance-form-controller":29,"../components/performance/exhibitions-pwyt/raw-donations-controller":30,"../components/performance/exhibitions/exhibitions-summary-controller":31,"../components/performance/gallery-visits/monthly-teg-controller":32,"../components/performance/gallery-visits/performance-form-controller":33,"../components/performance/gallery-visits/raw-teg-controller":34,"../components/performance/gallery-visits/weekly-teg-controller":35,"../components/performance/gallery-visits/yearly-teg-controller":36,"../components/performance/gift-aid/monthly-giftaid-controller":37,"../components/performance/gift-aid/performance-form-controller":38,"../components/performance/gift-aid/raw-giftaid-controller":39,"../components/performance/learning/age-learning-controller":40,"../components/performance/learning/monthly-learning-controller":41,"../components/performance/learning/performance-form-controller":42,"../components/performance/learning/raw-learning-controller":43,"../components/performance/learning/yearly-learning-controller":44,"../components/performance/operations/monthly-operations-controller":45,"../components/performance/operations/performance-form-controller":46,"../components/performance/operations/raw-operations-controller":47,"../components/performance/operations/yearly-operations-controller":48,"../components/performance/performance-directive":49,"../components/performance/retail/monthly-retail-sales-controller":50,"../components/performance/retail/performance-form-controller":51,"../components/performance/retail/raw-retail-sales-controller":52,"../components/performance/retail/yearly-retail-sales-controller":53,"../components/performance/turnstiles/monthly-turnstiles-controller":54,"../components/performance/turnstiles/raw-turnstiles-controller":55,"../components/performance/visits/monthly-visits-controller":56,"../components/performance/visits/raw-visits-controller":57,"../components/performance/visits/visits-form-controller":58,"../components/performance/visits/yearly-visits-controller":59,"../components/performance/welcome-desk/monthly-welcomedesk-controller":60,"../components/performance/welcome-desk/performance-form-controller":61,"../components/performance/welcome-desk/raw-welcomedesk-controller":62,"../components/performance/welcome-desk/yearly-welcomedesk-controller":63,"../components/shopify/shopify-controller":64,"../components/shopify/shopify-directive":65,"../components/team/app-controllers":66,"../components/team/form-controller":67,"../components/team/leave-controller":68,"../components/team/team-controller":69,"../components/tech-support/tech-support-controller":70,"../components/tech-support/tech-support-directive":71,"../components/tech-support/trello-services":72,"../components/timeline-settings/timeline-settings-controller":73,"../components/timeline/timeline-controller":74,"../components/timeline/timeline-directive":75,"../components/timeline/timeline-googlesheets-services":76,"../components/timeline/timeline-learning-bookings-services":77,"../components/timeline/timeline-leave-services":78,"../components/timeline/timeline-loans-services":79,"../components/timeline/timeline-services":80,"../components/timeline/timeline-shopify-services":81,"../components/timeline/timeline-visitor-figures-services":82,"../components/turnstiles/turnstiles-controller":83,"../components/turnstiles/turnstiles-directive":84,"../components/user-admin/users-controller":85,"../components/user-admin/users-directive":86,"../shared/controllers/controllers":87,"../shared/controllers/navbar-controller":88,"../shared/directives/directives":89,"../shared/services/app-services":91,"../shared/services/data-services":92,"b55mWE":4,"buffer":3,"underscore":7}],91:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.data_table_reload = function() {	

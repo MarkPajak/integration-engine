@@ -43,11 +43,17 @@ exports.timelineInfobox = function() {
 	  
       script.text = "$(function() {;"
 	  script.text +=" $('#infobutton'+ '"+ $scope.id +"').hide();"
+	  script.text +=" $('#miniicon'+ '"+ $scope.id +"').show();"
+	  
+	  
+	  
 	  script.text +=" $('#timeline'+ '"+ $scope.id +"').mouseover(function() {"; 
 	  script.text +=" $('#infobutton'+ '"+ $scope.id +"').show();"; 
+	  script.text +=" $('#miniicon'+ '"+ $scope.id +"').hide();"
       script.text +="});"; 
 	  	  script.text +=" $('#timeline'+ '"+ $scope.id +"').mouseout(function() {"; 
 	  script.text +=" $('#infobutton'+ '"+ $scope.id +"').hide();"; 
+	    script.text +=" $('#miniicon'+ '"+ $scope.id +"').show();"; 
       script.text +="});"; 
 	  script.text +="$('#infobutton'+ '"+ $scope.id +"').on('click', function(event){ "
 	  script.text +=" $('#infobox_name').text('').append('" + $scope.name  +"'); "; 

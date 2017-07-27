@@ -16,6 +16,31 @@ $rootScope.added_track_groups=[]
 $rootScope.datePicker=[];
 
 
+	  $scope.isloggedin=false	
+	  
+	  AuthService.isLoggedIn().then(function(user){
+			console.log('this and that')
+			
+			$scope.user=user
+			$scope.isloggedin=true	
+			main_function()
+			
+	  })
+	   
+	  	setTimeout(function() {
+		
+			if($scope.isloggedin==false){
+				main_function()
+			} 
+		
+        }, 1500);
+	  
+
+main_function = function(){
+
+
+
+
 $scope.filter_pie=[]
 			$scope.filter_pie.push({value:"2017 total_children",name:"No. children"})
 			$scope.filter_pie.push({value:"2017 total_sessions",name:"No. sessions"})
@@ -27,13 +52,7 @@ $scope.plot_graph =null;
 
 
 $rootScope.datePicker.date = {startDate:null, endDate: null};
-	  $scope.isloggedin=false	
-	  AuthService.isLoggedIn().then(function(user){
-			$scope.isloggedin=true	
-			//$scope.lockstatus=true
-			//$scope.unlock=true
-			//timeline_functions.unlock(true)
-	  })
+
 	
 
 
@@ -54,8 +73,8 @@ $scope.dateRangeOptions = {
 													  name :$scope.selected_item,
 													  showimage :"",
 													  image :"",
-													  start_date :moment(date.startDate).format("MMM Do YYYY"),
-													  end_date : moment(date.endDate).format("MMM Do YYYY")|| "",
+													  start_date :moment(date.startDate).format("MMM Do"),
+													  end_date : moment(date.endDate).format("MMM Do")|| "",
 													  notes  :$rootScope.selected_notes + "(" +days+" days)" ,
 													 days :days}
 			
@@ -79,13 +98,13 @@ $scope.dateRangeOptions = {
 					days=timeline_functions.days(moment(date.startDate),moment(date.endDate))
 					
 								
-			var event_to_add=	{id :  $scope.selected_id,
+									var event_to_add=	{id :  $scope.selected_id,
 													  name :$scope.selected_item,
 													  showimage :"",
 													  image :"",
-													  start_date :moment(date.startDate).format("MMM Do YYYY"),
-													  end_date : moment(date.endDate).format("MMM Do YYYY")|| "",
-													  notes  :$rootScope.selected_notes + "(" +days+" days)" ,
+													  start_date :moment(date.startDate).format("MMM Do"),
+													  end_date : moment(date.endDate).format("MMM Do")|| "",
+													  notes  :$rootScope.selected_notes ,
 													 days :days}
 			
 					html=timeline_functions.event_html(event_to_add)
@@ -109,8 +128,8 @@ $scope.dateRangeOptions = {
 													  name :$scope.selected_item,
 													  showimage :"",
 													  image :"",
-													  start_date :moment(date.startDate).format("MMM Do YYYY"),
-													  end_date : moment(date.endDate).format("MMM Do YYYY")|| "",
+													  start_date :moment(date.startDate).format("MMM Do"),
+													  end_date : moment(date.endDate).format("MMM Do")|| "",
 													  notes  :$rootScope.selected_notes ,
 													 days :days}
 			
@@ -312,28 +331,30 @@ $scope.dateRangeOptions = {
 													  name :data.name,
 													  showimage :"",
 													  image :"",
-													  start_date :moment(data.start_date).format("MMM Do YY"),
+													  start_date :moment(data.start_date).format("MMM Do"),
 													  end_date :end_date ||"",
 													  notes  :data.notes ,
 													 days :data.days
 													 }
 													 
-						   second_dates.add({
-								_id: data._id,
-								className:data.className,
-								select_group :false,
-								name:data.name,
-								_type:data._type,
-								track:data._type,
-								content: timeline_functions.event_html(event_to_add),
-								group: data.group||"NA",
-								order:data._type,
-								notes: data.notes,
-								title:data.notes,
-								start: data.start_date,
-								days:data.days,
-								end: data.end_date 
-							})
+						 if($scope.isloggedin==true){
+							 second_dates.add({
+									_id: data._id,
+									className:data.className,
+									select_group :false,
+									name:data.name,
+									_type:data._type,
+									track:data._type,
+									content: timeline_functions.event_html(event_to_add),
+									group: data.group||"NA",
+									order:data._type,
+									notes: data.notes,
+									//title:data.notes,
+									start: data.start_date,
+									days:data.days,
+									end: data.end_date 
+								})
+						}
 						}
                     }
                 })
@@ -368,7 +389,7 @@ $scope.dateRangeOptions = {
 											//if( event.startDate!=""){
 												
 											//if( checked_event_types.indexOf(event.type)>=0){	
-											if( event.type=="Exhibition"||event.type=="Gallery"){
+											if( event.type=="Exhibition"||event.type=="Gallery" || event.type=="Gallery Refurbishment"){
 											var end_date=new Date(event.endDate)
 											
 											if(event.endDate==""||event.endDate==event.startDate){
@@ -378,7 +399,7 @@ $scope.dateRangeOptions = {
 										
 											}
 											var group =	"NA"
-											if( event.type=="Exhibition"||event.type=="Gallery"){
+											if( event.type=="Exhibition"||event.type=="Gallery" || event.type=="Gallery Refurbishment"){
 											 group =	event.event_space||"NA" 
 											 group_name =	"<b>"+event.venue+":</b></br> "+event.event_space||"NA" 
 											 
@@ -446,10 +467,11 @@ $scope.dateRangeOptions = {
 
 			  })
 			    })
-			
-			_.each(second_dates._data, function(date) {
-			dates.add(date)
+		
+				_.each(second_dates._data, function(date) {
+				dates.add(date)
 			})
+			
 			$scope.total_install_derig=install_days_tally+derig_days_tally
 			$scope.average_install_length=Math.round(install_days_tally/install_instance_tally)
 			$scope.average_derig_length=Math.round(derig_days_tally/derig_tally)
@@ -550,7 +572,7 @@ timeline_functions.update_andCompile()
 			
 			if( $scope.isloggedin){
 			
-			console.log($scope.user)
+			
 			 var groups =$rootScope.groups
 			 
 			  $rootScope.timeline.setGroups(groups);
@@ -731,7 +753,7 @@ timeline_functions.update_andCompile()
     };
 	
 	
-	 
+	} 
  
 exports.BasicDemoCtrl=   function ($mdDialog,$scope, $http, $q, $routeParams, $location
 
@@ -758,6 +780,8 @@ exports.BasicDemoCtrl=   function ($mdDialog,$scope, $http, $q, $routeParams, $l
       // This never happens.
     };
   }
+  
+  
 
 exports.add_timeline_items_controller=    function($scope, $http, $q, $routeParams, $location,
          $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate
@@ -765,7 +789,7 @@ exports.add_timeline_items_controller=    function($scope, $http, $q, $routePara
 	
 	$scope.unlocked=false
 	$scope.$watch('locked', function (locked) {
-		console.log(locked)
+		
 		$scope.locked=locked
   })
   }

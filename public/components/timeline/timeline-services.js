@@ -155,7 +155,7 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
                             $(ui.draggable[0]).hide()
 							
 							if(ui.draggable[0].innerHTML=="PROVISIONAL DATE"){
-                            self.prettyPrompt('Add item', 'Enter text content for new item:',"", function(value) {
+                            self.prettyPrompt('Add a provisional date', 'Name:',"", function(value) {
                             if (value) {
                                	add_item(group,group,time,value,"blue",30,ui.draggable[0].innerHTML)
 							}
@@ -174,19 +174,21 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 							
 									 date_dropped=(moment(time).startOf('day')._d)
 									
+									 
+									
 									var id = ui.draggable[0].id
 									var dateDroppedOn =time
 									target_date = time
-									_days=self.days(moment(date_dropped).startOf('day')._d,moment(date_dropped).add(days, 'days')._d)
+									_days=self.days(moment(time).startOf('day')._d,moment(time).add(days, 'days')._d)
 									
 								var event_to_add=	{id : id,
 													  name : value,
 													  showimage :"",
 													  image :"",
-													  start_date :moment(date_dropped).startOf('day')._d,
-													  end_date :moment(date_dropped).add(days, 'days')._d,
+													  start_date :moment(time).startOf('day').format("MMM Do"),
+													  end_date :moment(time).add(days, 'days').format("MMM Do"),
 													  notes  :"",
-												  days :_days.days}
+														days :_days.days}
 									
 									
 									var new_date = {
