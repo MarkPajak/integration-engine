@@ -75,10 +75,11 @@ main_function = function(){
 																				 days :days}
 										
 										
-												html=timeline_functions.event_html(event_to_add)
-												var options={id:$scope.selected_timeline_id,content:html,start:moment(date.startDate)._d,end:moment(date.endDate)._d,start_date:moment(date.startDate)._d,end_date:moment(date.endDate)._d}
+										html=timeline_functions.event_html(event_to_add)
 												
-												Timeline.update({
+										var options={id:$scope.selected_timeline_id,content:html,start:moment(date.startDate)._d,end:moment(date.endDate)._d,start_date:moment(date.startDate)._d,end_date:moment(date.endDate)._d}
+												
+										Timeline.update({
 												id: $scope.selected_id,				
 												}, options);				
 												console.log('updatedItem',options)
@@ -91,33 +92,10 @@ main_function = function(){
         }
 
 				$scope.$watch('selected_notes', function(selected_note) {
-
-					date=$rootScope.datePicker.date
-					days=timeline_functions.days(moment(date.startDate),moment(date.endDate))
-					$scope.selected_start = moment(date.startDate ).format("MMM Do")
-					$scope.selected_end = moment(date.endDate).format("MMM Do")
-					if(moment(date.startDate).isValid()){ //true
-								
-									var event_to_add=	{id :  $scope.selected_id,
-													  name :$scope.selected_item,
-													  showimage :"",
-													  image :"",
-													  start_date :moment(date.startDate).format("MMM Do"),
-													  end_date : moment(date.endDate).format("MMM Do")|| "",
-													  notes  :$rootScope.selected_notes ,
-													 days :days}
 				
-					
-					
-					html=timeline_functions.event_html(event_to_add)
-					var options={id:$scope.selected_timeline_id,content:html,notes:selected_note,start:moment(date.startDate)._d,end:moment(date.endDate)._d}
-					Timeline.update({
-					id: $scope.selected_id,				
-					}, options);
-					timeline_functions.updateItem(options)
-					}
-	
-			})
+					timeline_functions.event_edited($scope,selected_note)
+				
+				})
 			
 		
 			
@@ -149,13 +127,13 @@ main_function = function(){
 					
 					timeline_functions.updateItem(options)
 			}
-			/*
-			}
-			else
-			{
-				console.log('not logged in')
-			}
-			*/
+			
+			//}
+		//	else
+			//{
+			//	console.log('not logged in')
+			//}
+			
 			})
 	 
 	$scope.$watch('stack', function(stack) {
@@ -335,7 +313,7 @@ main_function = function(){
 					}
 	
 			//VIS ERRORS IF INITIALISED WITH AN EMPTY START DATE
-			timeline_functions.setup(Timeline,$rootScope.groups, new vis.DataSet(date)	)
+			timeline_functions.setup(Timeline,$rootScope.groups, new vis.DataSet(date))
 			
 			
 			
@@ -556,8 +534,9 @@ exports.add_timeline_items_controller=    function($scope, $http, $q, $routePara
          $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate
     ) {
 		
-		
-		
+
 
   }
+  
+
   

@@ -5,6 +5,8 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 
   
   return {
+  
+	
  
 		  loadgroups: function(items){
 	
@@ -41,20 +43,26 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 		},
 	
   update_andCompile: function(item) {
-  var self = this
+			
+			var self = this
+			
 			$compile($("timeline-databar"))($rootScope);
+			console.log('update_andCompile') //MEMORY LEAK WARNING
 			
 			setTimeout(function() {
-            var groups = new vis.DataSet($rootScope.groups);		
-			var list = groups.get({
+			
+						var groups = new vis.DataSet($rootScope.groups);		
+						var list = groups.get({
 								filter: function(item) {
 								
 									return (item.selected == true);
 								}
 								})
 								
-			$rootScope.timeline.setGroups(list);
-			self.enable_event_drop()
+						$rootScope.timeline.setGroups(list);
+						self.enable_event_drop()
+						//$rootScope.timeline.redraw()
+			
                             }, 1500);
 			 
 		
@@ -77,7 +85,7 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 	
 
 
-			populate_timeline_track_method_b: function(rootScope,data_functions) {
+		populate_timeline_track_method_b: function(rootScope,data_functions) {
 			
 				 var self = this
 				 $rootScope.groups = $rootScope.groups || []
@@ -88,9 +96,9 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 					self.add_events_loop(rootScope,datax,data_functions)
 					})
 		
-			},
+		},
 		 
-			add_events_loop: function(rootScope,datax,dataset_functions) {
+		add_events_loop: function(rootScope,datax,dataset_functions) {
 	
 				var self = this
 				dataset_functions.add_events(datax, function(public_dates){
@@ -103,13 +111,13 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 								rootScope.timeline.itemsData.getDataSet().add(date)
 								}
 							})
-							rootScope.timeline.itemsData.on("update", function(){self.update_andCompile()})
+							//rootScope.timeline.itemsData.on("update", function(){self.update_andCompile()})
 							rootScope.timeline.fit()
 							$timeout(self.update_andCompile(),500) //needed due to angular wierdness with directives
 				})
 	
 	
-			},
+		},
 		 
 		 
 		
@@ -324,7 +332,7 @@ console.log('saved',_item)
 	  unlock: function(unlock){
 		
                         
-								timeline.setOptions({'editable':unlock});
+								timeline.setOptions({'editable':unlock,'selectable': unlock });
 								timeline.options.editable=true
 			
 							
@@ -437,8 +445,8 @@ console.log('saved',_item)
 		selected_data:	 function (event) {
 				
 					var self=this
-		
-					//if(timeline.options.editable){
+	
+					//if(timeline.options.editable==true){
 							console.log('get ID to update')
 							selected_timeline_id=event.items[0]
 							 if(selected_timeline_id){
@@ -457,7 +465,7 @@ console.log('saved',_item)
 					//}
 					//else
 					//{
-					//	console.log('timeline locked')
+						//console.log('timeline locked')
 					//}
 
            },
@@ -472,11 +480,65 @@ console.log('saved',_item)
 			
 				
 	},
+	
+	event_edited: function(scope,selected_note){
+
+	console.log('event_edited')
+	
+	//latest attempt to fix mem leak 
+	//mooved from controller
+	
+	
+			var self = this
+	
+			if( scope.locked.add_item){	
+					date=$rootScope.datePicker.date
+					days=self.days(moment(date.startDate),moment(date.endDate))
+					scope.selected_start = moment(date.startDate ).format("MMM Do")
+					scope.selected_end = moment(date.endDate).format("MMM Do")
+					if(moment(date.startDate).isValid()){ //true
+								
+									var event_to_add=	{id :  scope.selected_id,
+													  name :scope.selected_item,
+													  showimage :"",
+													  image :"",
+													  start_date :moment(date.startDate).format("MMM Do"),
+													  end_date : moment(date.endDate).format("MMM Do")|| "",
+													  notes  :$rootScope.selected_notes ,
+													 days :days}
+				
+					
+					//THIS CAUSES A REFRESH OF THE TIMELINE DIRECTIVE (GOOD)
+					html=self.event_html(event_to_add)
+					var options={id:scope.selected_timeline_id,content:html,notes:selected_note,start:moment(date.startDate)._d,end:moment(date.endDate)._d}
+					
+					Timeline.update({
+								id: scope.selected_id			
+								}, options, function(){self.updateItem(options) });
+				
+				}
+				}
+				else
+				{
+				console.log('timeline locked')
+				}
+	
+	
+	
+	
+	},
+	
+	
+	
+	
+	
 	updateItem: function(options){
 		if(typeof(timeline)!="undefined"){
 			if(timeline.itemsData){
 				timeline.itemsData.getDataSet().update(options)
+				
 				this.update_andCompile()
+				
 			}
 		
 		}
@@ -484,7 +546,7 @@ console.log('saved',_item)
 			
 	},
 	
-    setup: function(Timeline,groups,dates) {
+    setup: function(Timeline,groups,dates,isloggedin) {
 		
 		var self=this
 	
@@ -506,25 +568,29 @@ console.log('saved',_item)
 					//groupEditable:true,
 					stack:false,
 					orientation:{"axis":"top"},
+					selectable: true,  
                     editable: false,  
-					 groupOrder:'order',					
+					groupOrder:'order',					
                     onMove: function(item, callback) {
-						
+						console.log('onMove')
 						
 							$rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (item.end)}
 
 							days=self.days(moment(item.start),moment(item.end))
 							$rootScope.selected_days = days
 							if(moment(item.start).isValid()){ //true
+							console.log('ok date')
 									var event_to_add=	{id : item._id,
 															  name : item.name,
 															  showimage :"",
 															  image :"",
+															  group: item.group,
 															  start_date : moment(item.start).startOf('day').format("MMM Do"),
 															  end_date : moment(item.end).startOf('day').format("MMM Do"),
 															  notes  :item.notes ,
 															days :days}
 									
+									/*
 									var _timeline = new Timeline({
 										content:  self.event_html(event_to_add ),
 										group: item.group,
@@ -532,19 +598,46 @@ console.log('saved',_item)
 										end_date: item.end,
 										_id: item._id
 									})
+									
 								   
 									Timeline.update({
 										id: item._id
 									}, _timeline);
 									
-							
-								html=self.event_html(event_to_add)
+							*/
+								//html=self.event_html(event_to_add)
+								/*
 								var _options={id:item._id,content:html,name: item.name,start:moment(event_to_add.start_date)._d}
+								
 								Timeline.update({
 								id: $rootScope.selected_id,				
 								}, _options);			
 								
 								self.updateItem(_options)	
+								*/
+								
+								console.log(item._id) //TIMELINE
+								console.log(item.id) //timeline
+								
+								//NB DIFFERENT IDS FOR Timeline and Timeline vis vs mongo
+								html=self.event_html(event_to_add)
+								var options={ id:item.id,
+												group: item.group,
+												content:html,
+												notes:event_to_add.notes,
+												start:moment(item.start)._d,
+												end:moment(item.end)._d,
+												start_date:moment(item.start)._d,
+												end_date:moment(item.end)._d
+												}
+								Timeline.update({
+								id:  item._id				
+								}, options, function(){self.updateItem(options) });
+								
+								
+								
+								
+								
 								
 								
 									
@@ -553,6 +646,7 @@ console.log('saved',_item)
 							}
 							else
 							{
+							console.log('invalid date')
 									callback(item);
 								
 							}
@@ -722,16 +816,19 @@ console.log('saved',_item)
 
            
 				//self.changeGroups($rootScope.groups.selected)
-				
-				 timeline.on('select', function (properties) {
+				 $rootScope.timeline.setOptions(options);
+				 
+				 $rootScope.timeline.on('select', function (properties) {
+						console.log('timeline selected')
+						console.log($rootScope.timeline.options)
 						self.selected_data( properties)
 
 				});
 				
-			   timeline.setItems(dates);
+			   $rootScope.timeline.setItems(dates);
 			   console.log('timelineoptions',options)
-               timeline.setOptions(options);
-				timeline.fit()
+              
+				$rootScope.timeline.fit()
 				
 				
 				
@@ -762,7 +859,8 @@ console.log('saved',_item)
 			moveRight=function () {  this.move(-0.2); }
 
                 dates.on('*', function(event, properties) {
-                    self.logEvent(event, properties);
+				//event.preventDefault()
+                   // self.logEvent(event, properties);
                 });
 
 			

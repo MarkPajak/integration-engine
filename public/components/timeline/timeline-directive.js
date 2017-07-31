@@ -32,12 +32,9 @@ exports.timelineInfobox = function() {
  
  return{
 	restrict: 'E',
-	 link: function($scope, $el) {
-		
 	
-		
-		
-		
+	 link: function($scope, $el) {
+	
 		
       var script = document.createElement('script');
 	  
@@ -56,9 +53,9 @@ exports.timelineInfobox = function() {
 	  script.text +=" $('#infobox_name').text('').append('" + $scope.name  +"'); "; 
 	  script.text +=" $('#infobox_description').text('').append('" + $scope.description  +"');"; 
 	  script.text +="});});"
-		 
-		 
+		 	 
       $el.append(script);
+  
     },
 
       templateUrl: './components/timeline/timeline-item.html',
