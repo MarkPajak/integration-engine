@@ -1,31 +1,30 @@
 exports.timeline_controller=     function($compile,  $scope, $http, $q, $routeParams, $location,
-         $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate,Raw_visits,timeline_visitor_figures_functions
+         $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate,Raw_visits,timeline_visitor_figures_functions,timeline_install_functions, $timeout,timeline_exhibitions_functions
     ) {
 		
-$scope.locked=[]
-$scope.locked.add_item = false
-$scope.locked['true']={status:" locked",value:false}
-$scope.locked['false']={status:" unlocked",value:true}
-$scope.average_install_length = 0
-$scope.password=false
-$scope.lockstatus=false
-$scope.average_derig_length = 0
-$rootScope.addednames=[]
-$rootScope.track_groups=[]
-$rootScope.added_track_groups=[]
-$rootScope.datePicker=[];
-
-
-	  $scope.isloggedin=false	
-	  
-	  AuthService.isLoggedIn().then(function(user){
-			console.log('this and that')
-			
-			$scope.user=user
-			$scope.isloggedin=true	
-			main_function()
-			
-	  })
+		$scope.locked=[]
+		$scope.locked.add_item = false
+		$scope.locked['true']={status:" locked",value:false}
+		$scope.locked['false']={status:" unlocked",value:true}
+		$scope.average_install_length = 0
+		$scope.password=false
+		$scope.lockstatus=false
+		$scope.average_derig_length = 0
+		$rootScope.addednames=[]
+		$rootScope.track_groups=[]
+		$rootScope.added_track_groups=[]
+		$rootScope.datePicker=[];
+		$scope.isloggedin=false	
+	 
+		
+		  AuthService.isLoggedIn().then(function(user){
+				console.log('this and that')
+				
+				$scope.user=user
+				$scope.isloggedin=true	
+				main_function()
+				
+		  })
 	   
 	  	setTimeout(function() {
 		
@@ -33,7 +32,7 @@ $rootScope.datePicker=[];
 				main_function()
 			} 
 		
-        }, 1500);
+        }, 2000);
 	  
 
 main_function = function(){
@@ -41,62 +40,63 @@ main_function = function(){
 
 
 
-$scope.filter_pie=[]
+			$scope.filter_pie=[]
 			$scope.filter_pie.push({value:"2017 total_children",name:"No. children"})
 			$scope.filter_pie.push({value:"2017 total_sessions",name:"No. sessions"})
 			$scope.filter_pie.push({value:"2017 total_teachers",name:"No. teachers"})
 			$scope.filter_pieSelected = $scope.filter_pie[0].name; 
-
-
-$scope.plot_graph =null;
-
-
-$rootScope.datePicker.date = {startDate:null, endDate: null};
-
-	
-
-
-	
-$scope.dateRangeOptions = {
-        locale : {
-            format : 'DD/MM/YYYY'
-        },
-        eventHandlers : {
-            'apply.daterangepicker' : function() {  
-               date=$rootScope.datePicker.date
-			   	days=timeline_functions.days(moment(date.startDate),moment(date.endDate))
+			$scope.plot_graph =null;
+			$rootScope.datePicker.date = {startDate:null, endDate: null};
+			
+			$scope.dateRangeOptions = {
 				
 				
-			   if(date){
-			
-			var event_to_add=	{id :  $scope.selected_id,
-													  name :$scope.selected_item,
-													  showimage :"",
-													  image :"",
-													  start_date :moment(date.startDate).format("MMM Do"),
-													  end_date : moment(date.endDate).format("MMM Do")|| "",
-													  notes  :$rootScope.selected_notes + "(" +days+" days)" ,
-													 days :days}
-			
-			
-					html=timeline_functions.event_html(event_to_add)
-					var options={id:$scope.selected_timeline_id,content:html,start:moment(date.startDate)._d,end:moment(date.endDate)._d,start_date:moment(date.startDate)._d,end_date:moment(date.endDate)._d}
-					Timeline.update({
-					id: $scope.selected_id,				
-					}, options);				
-					timeline_functions.updateItem(options)
-					
-	
-		
-			}}				
-            }
+					locale : {
+						format : 'DD/MM/YYYY'
+					},
+//TIMELINE EVENT HANDLERS					
+					eventHandlers : {
+						
+										'apply.daterangepicker' : function() {  
+										   date=$rootScope.datePicker.date
+											days=timeline_functions.days(moment(date.startDate),moment(date.endDate))
+											
+											
+										 
+										   	if(moment(date.startDate).isValid()){ //true
+										
+										var event_to_add=	{id :  $scope.selected_id,
+																				  name :$scope.selected_item,
+																				  showimage :"",
+																				  image :"",
+																				  start_date :moment(date.startDate).format("MMM Do"),
+																				  end_date : moment(date.endDate).format("MMM Do")|| "",
+																				  notes  :$rootScope.selected_notes + "(" +days+" days)" ,
+																				 days :days}
+										
+										
+												html=timeline_functions.event_html(event_to_add)
+												var options={id:$scope.selected_timeline_id,content:html,start:moment(date.startDate)._d,end:moment(date.endDate)._d,start_date:moment(date.startDate)._d,end_date:moment(date.endDate)._d}
+												
+												Timeline.update({
+												id: $scope.selected_id,				
+												}, options);				
+												console.log('updatedItem',options)
+												timeline_functions.updateItem(options)
+												
+								
+									
+										}}				
+						}
         }
 
 				$scope.$watch('selected_notes', function(selected_note) {
 
 					date=$rootScope.datePicker.date
 					days=timeline_functions.days(moment(date.startDate),moment(date.endDate))
-					
+					$scope.selected_start = moment(date.startDate ).format("MMM Do")
+					$scope.selected_end = moment(date.endDate).format("MMM Do")
+					if(moment(date.startDate).isValid()){ //true
 								
 									var event_to_add=	{id :  $scope.selected_id,
 													  name :$scope.selected_item,
@@ -106,13 +106,16 @@ $scope.dateRangeOptions = {
 													  end_date : moment(date.endDate).format("MMM Do")|| "",
 													  notes  :$rootScope.selected_notes ,
 													 days :days}
-			
+				
+					
+					
 					html=timeline_functions.event_html(event_to_add)
-					var options={id:$scope.selected_timeline_id,content:html,notes:selected_note}
+					var options={id:$scope.selected_timeline_id,content:html,notes:selected_note,start:moment(date.startDate)._d,end:moment(date.endDate)._d}
 					Timeline.update({
 					id: $scope.selected_id,				
-					}, options);				
+					}, options);
 					timeline_functions.updateItem(options)
+					}
 	
 			})
 			
@@ -120,9 +123,14 @@ $scope.dateRangeOptions = {
 			
 			$scope.$watch('selected_item', function(selected_item) {
 
+			//if( !$scope.locked.add_item){	
+			
 			date=$rootScope.datePicker.date
 			days=timeline_functions.days(moment(date.startDate),moment(date.endDate))
-			
+			$scope.selected_start = moment(date.startDate ).format("MMM Do")
+					$scope.selected_end = moment(date.endDate).format("MMM Do")
+					
+			if(moment(date.startDate).isValid()){ //true
 											
 			var event_to_add=	{id :  $scope.selected_id,
 													  name :$scope.selected_item,
@@ -134,12 +142,20 @@ $scope.dateRangeOptions = {
 													 days :days}
 			
 					html=timeline_functions.event_html(event_to_add)
-					var options={id:$scope.selected_timeline_id,content:html,name:selected_item}
+					var options={id:$scope.selected_timeline_id,content:html,name:selected_item,start:moment(date.startDate)._d,end:moment(date.endDate)._d,}
 					Timeline.update({
 					id: $scope.selected_id,				
 					}, options);				
+					
 					timeline_functions.updateItem(options)
-	
+			}
+			/*
+			}
+			else
+			{
+				console.log('not logged in')
+			}
+			*/
 			})
 	 
 	$scope.$watch('stack', function(stack) {
@@ -148,13 +164,18 @@ $scope.dateRangeOptions = {
 		 if(typeof(stack)!="undefined"){
 			 
 			   options={stack:stack}
-		timeline_functions.updateOptions(options)
+				timeline_functions.updateOptions(options)
 		  }
 		  
 		
 		  
         })
 
+		
+		
+//END EVENT HANDLERS
+
+		
         $scope.editing = [];
         $scope.timeline = Timeline.query();
 
@@ -242,8 +263,7 @@ $scope.dateRangeOptions = {
 */
 
 		$scope.changedValue = function(place) {
-        // console.log(place)
-		  //console.log( $rootScope.filter_pieSelected)
+       
 		 $rootScope.filter_pieSelected=place
         }
 
@@ -259,11 +279,6 @@ $scope.dateRangeOptions = {
 
   
 
-        $scope.$watch('machine', function() {
-
-
-
-            })
             // selected fruits
         $scope.machine_types_selection = [];
 
@@ -276,228 +291,110 @@ $scope.dateRangeOptions = {
 
 
 
-
+/*
         var _data = [];
         $scope.data = []
         $scope.day_data = []
         $scope.team = [];
         $scope.labels = $scope.team
         $scope.chart_title = "Machine activity"
-
-        var timeline
-
-     
+*/
 
             var groups = new vis.DataSet();
             var dates = new vis.DataSet();
-			var dates = new vis.DataSet();
 			var second_dates = new vis.DataSet();
             var all_groups = []
             var i = 0
 
       
 
-      install_days_tally = 0
-	  install_instance_tally=0 
-	  derig_tally = 0
-	 derig_days_tally=0
-            Timeline.query({}, function(team) {
-			 
-                _.each(team, function(data) {
-				
-				
-				data.days=timeline_functions.days(data.start_date,data.end_date)
-					var end_date
-                    if ( data.group != "") {
-						if( data.start_date!=""){
-					if(typeof(data.end_date)!="undefined"){
-						end_date=(moment(data.end_date).format("MMM Do YY"))
-						}
-						if(data._type=="INSTALL"){
-						install_instance_tally++
-						 install_days_tally +=data.days
-						}
-						else if(data._type=="DERIG"){
-						derig_tally++						
-						  derig_days_tally +=data.days
-						  }
-						if( 	$rootScope.added_track_groups.indexOf(data._type)==-1){	
-						
-						 $rootScope.added_track_groups.push(data._type)
-						  //	$rootScope.track_groups.push({"track":data._type})
-						}
-							
-								var event_to_add=	{id : data._id,
-													  name :data.name,
-													  showimage :"",
-													  image :"",
-													  start_date :moment(data.start_date).format("MMM Do"),
-													  end_date :end_date ||"",
-													  notes  :data.notes ,
-													 days :data.days
-													 }
-													 
-						 if($scope.isloggedin==true){
-							 second_dates.add({
-									_id: data._id,
-									className:data.className,
-									select_group :false,
-									name:data.name,
-									_type:data._type,
-									track:data._type,
-									content: timeline_functions.event_html(event_to_add),
-									group: data.group||"NA",
-									order:data._type,
-									notes: data.notes,
-									//title:data.notes,
-									start: data.start_date,
-									days:data.days,
-									end: data.end_date 
-								})
-						}
-						}
-                    }
-                })
-			  timeline_functions.get_events().then(function(data) {
-			  			
-			var checked_event_types=[]
-			
-			if($("#add_emu_exhibitions").is(':checked')){
-				
-				checked_event_types.push('Exhibition')
-				checked_event_types.push('Gallery')
-				
-			}
-		
-			
-			//if($("#whats_on").is(':checked')){
-				checked_event_types.push('Family')
-				checked_event_types.push('Tour')
-				checked_event_types.push('Walk')
-				checked_event_types.push('Rides')
-				checked_event_types.push('Tours')
-				checked_event_types.push('Talk')
-				checked_event_types.push('Lecture')
-				checked_event_types.push('Special Event')
-				checked_event_types.push('Event')
-				
-			//}
-			
-			   _.each(data.data, function(events) {
-			   _.each(events, function(event) {
-												
-											//if( event.startDate!=""){
-												
-											//if( checked_event_types.indexOf(event.type)>=0){	
-											if( event.type=="Exhibition"||event.type=="Gallery" || event.type=="Gallery Refurbishment"){
-											var end_date=new Date(event.endDate)
-											
-											if(event.endDate==""||event.endDate==event.startDate){
-										
-											var end_date=new Date(event.startDate)
-											//end_date.setDate(end_date.getDate() + 1)
-										
-											}
-											var group =	"NA"
-											if( event.type=="Exhibition"||event.type=="Gallery" || event.type=="Gallery Refurbishment"){
-											 group =	event.event_space||"NA" 
-											if(event.venue=="Bristol Museum & Art Gallery")venue_pic= 176421 
-											if(event.venue=="Red Lodge Museum" )venue_pic=  37235
-											if(event.venue=="Georgian House" )venue_pic= 189420 
-											if(event.venue=="Bristol Archives" )venue_pic= 217822 
-											if(event.venue=="M Shed" )venue_pic= 206079 
-											 
-											
-											
-											group_name="<table><tr><td><b>"+event.event_space+"</b><br></br>"
-											group_name+=event.venue+"</td><td>"
-											group_name+=	'<img  class="pull-right" src="http://museums.bristol.gov.uk/multimedia/entry.php?request=resource&irn='+venue_pic+'&height=50&format=jpeg" />'
-											group_name+="</td></tr></table>"
-											 
-											}
-											else{
-												 group =	event.type ||"NA"
-											}
-													
-												var eventimages = false
-												if(event.images[0]){
-												eventimages=event.images[0].irn
-												}
-												
-												var event_to_add = {}
-												
-												//event.ID,event.ID,event.name,true&&event.images[0],eventimages,event.startDate,event.endDate)
-												
-												var event_to_add=	{id : event.ID,
-													  name :event.name,
-													  showimage :true&&event.images[0],
-													  image :eventimages,
-													  start_date :event.startDate,
-													  end_date :event.endDate,
-													  notes  :"",
-													  description  :event.description,
-													 days :data.days
-													 }
-												
-												
-												var htmlContent =  timeline_functions.event_html(event_to_add)
-													if( 	$rootScope.added_track_groups.indexOf(event.venue)==-1){
-												$rootScope.added_track_groups.push(event.venue)														
-													$rootScope.track_groups.push({"track":event.venue})
-													}
-													select_group = true
-													if($routeParams.track){
-													select_group = false
-													if($routeParams.track=="Arts and Events"){
-													//select_group = true
-													}
-													}
-													
-													if(event.startDate){ //timeline errors if no start date
-													dates.add({
-																		group		:	group, 
-																		ID:event.ID,
-																		group_name		:	group_name, 
-																		select_group :select_group,
-																		title		:	event.name,
-																		name:event.name,
-																		type		: "background",
-
-																		content		:	htmlContent,
-																		order:event.venue+event.event_space,
-																		track:event.venue,
-																		start		:	new Date(event.startDate), 
-																		end			:	event.endDate, 
-																		className 	:	"green",
-																		event_type  :   "WHATS ON"
-																		})
-														}
-																		
-											//}
-											}
-
-			  })
-			    })
-		
-				_.each(second_dates._data, function(date) {
-				dates.add(date)
-			})
-			
+			install_days_tally = 0
+			install_instance_tally=0 
+			derig_tally = 0
+			derig_days_tally=0
 			$scope.total_install_derig=install_days_tally+derig_days_tally
 			$scope.average_install_length=Math.round(install_days_tally/install_instance_tally)
 			$scope.average_derig_length=Math.round(derig_days_tally/derig_tally)
-			timeline_functions.setup(Timeline,groups,dates)
+			
+			var container = document.getElementById('example-timeline');
+            timeline = new vis.Timeline(container);
+			 $rootScope.timeline=	timeline
+			
+			date={content:"STARTER"  ,
+					group:"STARTER",
+					group_id:"STARTER",
+					id:"STARTER",
+					name:"STARTER"  ,
+					event_type:"STARTER",
+					track:"STARTER",
+					order: "STARTER",
+					subgroup: "STARTER",
+					start:new Date(),
+					end:new Date(),
+					//className 	:	"orange"
+					}
+	
+			//VIS ERRORS IF INITIALISED WITH AN EMPTY START DATE
+			timeline_functions.setup(Timeline,$rootScope.groups, new vis.DataSet(date)	)
+			
+			
+			
+			$scope.add_exhibitions= function(){						
+					timeline_functions.populate_timeline_track_method_b($rootScope,timeline_exhibitions_functions)
+			}
+			
+			$scope.add_installs_derigs= function(){				
+					timeline_functions.populate_timeline_track($rootScope,Timeline,timeline_install_functions)	
+			}
+			
+			$scope.team_leave= function(){
+					timeline_functions.populate_timeline_track_method_b($rootScope,timeline_leave_functions)				
+			}
+			
+			$scope.visitor_figures= function(){							
+					timeline_functions.populate_timeline_track($rootScope,Raw_visits,timeline_visitor_figures_functions)
+			}
+			
+			$scope.shopify= function(){							
+					timeline_functions.populate_timeline_track($rootScope,Shopify_aggregate,timeline_shopify_functions)
+			}
+				
+			$scope.loans= function(){							
+					timeline_functions.populate_timeline_track_method_b($rootScope,timeline_loans_functions)
+			}
+			
+			$scope.learning_bookings= function(){							
+					timeline_functions.populate_timeline_track_method_b($rootScope,timeline_learning_functions)
+			}
+			
+			
+			$scope.timeline_googlesheets_functions= function(data_settings){
+			
+					var groups =$rootScope.groups
+					$rootScope.timeline.setGroups(groups);
+					timeline_googlesheets_functions.get_events(data_settings)
+				  		  
+			}
+			
+			
+			$scope.shopify() //NB for some reason need this to appear for unlogged in users otherwise text wont load in directives
+			
+			if( $scope.isloggedin){	
+			
+			
+					$scope.add_installs_derigs()
+					$scope.team_leave()
+					$scope.visitor_figures()
+					$scope.learning_bookings()
+					$scope.loans()
+					
+
+			}			
+			
+			$scope.add_exhibitions()
+		
 		
 	
-
-		$scope.team_leave()
-	
-	$scope.visitor_figures()
-	
-	$scope.learning_bookings()
-	$scope.loans()
-	$scope.shopify()
-	//
 	var checked_event_types=[]
 											checked_event_types.push('Tour')
 											checked_event_types.push('Walk')
@@ -518,229 +415,79 @@ $scope.dateRangeOptions = {
 
 	
 
-		
+		$timeout(timeline_functions.update_andCompile(),500) //needed due to angular wierdness with directives
 
-	
+    // check if there is query in url
+    // and fire search in case its value is not empty
+
 	$scope.$watch('track_groups|filter:{selected:true}', function (nv) {
-    var selection = nv.map(function (track_groups) {
-	
-      return track_groups.track;
-    });
-	$scope.selected_tracks=selection
-	timeline_functions.changeTracks(selection)
-	//$( ".draggable,.iconbar" ).css({ 'top':'0px' });
-  }, true);
-	
-$scope.$watch('groups|filter:{selected:true}', function (nv) {
-    var selection = nv.map(function (group) {
-      return group.content;
-    });
-	timeline_functions.changeGroups(selection)
-	$( ".draggable,.iconbar" ).css({ 'top':'0px' });
+		
+					var selection = nv.map(function (track_groups) {
+					
+					  return track_groups.track;
+					});
+					$scope.selected_tracks=selection
+					timeline_functions.changeTracks(selection)
+					//$( ".draggable,.iconbar" ).css({ 'top':'0px' });
   }, true);
   
-timeline_functions.update_andCompile()
+	
+$scope.$watch('groups|filter:{selected:true}', function (nv) {
+	
+					var selection = nv.map(function (group) {
+					  return group.content;
+					});
+					timeline_functions.changeGroups(selection)
+					$( ".draggable,.iconbar" ).css({ 'top':'0px' });
+	
+  }, true);
+
+	
+	
+
 			
-	})	
-			
+	
       
 			
 		$scope.exportCSV= function(){
-		data_to_export=$rootScope.timeline.itemsData.getDataSet()
-		
-		visibles=$rootScope.timeline.getVisibleItems()
-		events=[]
-		
-		  _.each(data_to_export._data, function(event,index) {
-		
-		  if(visibles.indexOf(event.id)!=-1){
-		  console.log("in")
-		  var _event ={  
-						 id			:event.id,
-						 name		:event.name,
-						 start_date	:moment(event.start).format("DD/MM/YYYY"),
-						 end_date	:moment(event.end).format("DD/MM/YYYY"),
-					     event_type	:event.track
-					   
+			
+				data_to_export=$rootScope.timeline.itemsData.getDataSet()
+				
+				visibles=$rootScope.timeline.getVisibleItems()
+				events=[]
+				
+				  _.each(data_to_export._data, function(event,index) {
+				
+				  if(visibles.indexOf(event.id)!=-1){
+				  console.log("in")
+				  var _event ={  
+								 id			:event.id,
+								 name		:event.name,
+								 start_date	:moment(event.start).format("DD/MM/YYYY"),
+								 end_date	:moment(event.end).format("DD/MM/YYYY"),
+								 event_type	:event.track
+							   
+								}
+					 events.push(_event)
 						}
-			 events.push(_event)
-				}
-		  
-		   
-		  
-		  })
-				
-		timeline_functions.export_JSON_to_CSV(events, "Timeline dates", true)
-	}
-	$scope.leaveChanged= function(leave){
-				
-		
+				  
+				   
+				  
+				  })
+						
+				timeline_functions.export_JSON_to_CSV(events, "Timeline dates", true)
 	}
 	
 
 				
-			$scope.team_leave= function(){
-			
-			if( $scope.isloggedin){
 			
 			
-			 var groups =$rootScope.groups
-			 
-			  $rootScope.timeline.setGroups(groups);
-			  
-				  timeline_leave_functions.get_eventss().then(function(data) {
-					 
-						timeline_leave_functions.add_leave(data, function(leave_dates){
-							 
-							 $rootScope.leave_groups = timeline_functions.loadgroups(leave_dates)
-							 
-						
-						
-							_.each($rootScope.leave_groups, function(_group) {
-								
-								$rootScope.groups.push(_group)
-							})
-							
-							
-							 _.each(leave_dates._data, function(date) {
-								$rootScope.timeline.itemsData.getDataSet().add(date)
-							})
-						})
-					})
-					
-			}
-			
-			}
-			
-			$scope.visitor_figures= function(){
-			
-			 var groups =$rootScope.groups
-			 
-			  $rootScope.timeline.setGroups(groups);
-			  
-				  Raw_visits.query({}, function(datax) {
-					
-						timeline_visitor_figures_functions.add_events(datax, function(public_dates){
-							
-							 $rootScope.leave_groups = timeline_functions.loadgroups(public_dates)
-							 
-						
-						
-							_.each($rootScope.leave_groups, function(_group) {
-								
-								$rootScope.groups.push(_group)
-							})
-							
-							// console.log('$rootScope.groups',$rootScope.groups)
-							 _.each(public_dates._data, function(date) {
-								$rootScope.timeline.itemsData.getDataSet().add(date)
-							})
-						})
-					})
-			
-			}
-			
-			$scope.shopify= function(){
-			
-			 var groups =$rootScope.groups
-			 
-			  $rootScope.timeline.setGroups(groups);
-			  
-				  Shopify_aggregate.query({}, function(datax) {
-					
-						timeline_shopify_functions.add_events(datax, function(public_dates){
-							
-							 $rootScope.leave_groups = timeline_functions.loadgroups(public_dates)
-							 
-						
-						
-							_.each($rootScope.leave_groups, function(_group) {
-								
-								$rootScope.groups.push(_group)
-							})
-							
-							 console.log('$rootScope.groups',$rootScope.groups)
-							 _.each(public_dates._data, function(date) {
-								$rootScope.timeline.itemsData.getDataSet().add(date)
-							})
-						})
-					})
-			
-			}
-				$scope.loans= function(){
-			
-			 var groups =$rootScope.groups
-			 
-			  $rootScope.timeline.setGroups(groups);
-			  
-				  timeline_loans_functions.get_events().then(function(datax) {
-					
-						timeline_loans_functions.add_events(datax, function(public_dates){
-							
-							 $rootScope.leave_groups = timeline_functions.loadgroups(public_dates)
-							 
-						
-						
-							_.each($rootScope.leave_groups, function(_group) {
-								
-								$rootScope.groups.push(_group)
-							})
-							
-							 console.log('$rootScope.groups',$rootScope.groups)
-							 _.each(public_dates._data, function(date) {
-								$rootScope.timeline.itemsData.getDataSet().add(date)
-							})
-						})
-					})
-			
-			}
 			
 		
-			
-			
-			$scope.timeline_googlesheets_functions= function(data_settings){
-			
-					var groups =$rootScope.groups
-					$rootScope.timeline.setGroups(groups);
-					timeline_googlesheets_functions.get_events(data_settings)
-				  		  
-			}
-			
 		
 			
-			
-			$scope.learning_bookings= function(){
-			
-			 var groups =$rootScope.groups
-			 
-			  $rootScope.timeline.setGroups(groups);
-			  
-				  timeline_learning_functions.get_events().then(function(datax) {
-					
-						timeline_learning_functions.add_events(datax, function(public_dates){
-							
-							 $rootScope.leave_groups = timeline_functions.loadgroups(public_dates)
-							 
-						
-						
-							_.each($rootScope.leave_groups, function(_group) {
-								
-								$rootScope.groups.push(_group)
-							})
-							
-							 console.log('$rootScope.groups',$rootScope.groups)
-							 _.each(public_dates._data, function(date) {
-								$rootScope.timeline.itemsData.getDataSet().add(date)
-							})
-						})
-					})
-			
-			}
-			
+		
 
-			
-
-  
 		       
             $scope.list1 = {
                 title: 'PROVISIONAL DATE'
@@ -759,7 +506,7 @@ timeline_functions.update_andCompile()
 		
 
 
-        })
+       // })
 
     };
 	
@@ -808,6 +555,9 @@ exports.add_timeline_items_controller=    function($scope, $http, $q, $routePara
   exports.add_timeline_info_box=    function($scope, $http, $q, $routeParams, $location,
          $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate
     ) {
+		
+		
+		
 
   }
   

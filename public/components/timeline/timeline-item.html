@@ -7,7 +7,7 @@ z-index:601;
 <div class="titlediv" >
 	<div id="timeline{{id}}" class="title_heading" style="font-weight:bold;">{{name}}<span  id="miniicon{{id}}" ng-class=" notes  ? 'miniicon{{id}} glyphicon glyphicon-info-sign pull-right' : 'miniicon{{id}}'" aria-hidden="true"></span><span  ng-show="days > 0" style="float:right;display:block;position:relative;" class="days"></span>
 		<button  type="button" id="infobutton{{id}}" class="pull-right infobutton btn btn-info" data-toggle="modal" data-target="#timelineinfobox"><span id="infobutton{{id}}" ng-class=" notes  ? 'glyphicon glyphicon-info-sign' : 'glyphicon glyphicon-pencil'" aria-hidden="true"></span></button>
-		<div class="image_box" ng-show="showimage" >
+		<div class="image_box" ng-show="image" >
 			<img src="http://museums.bristol.gov.uk/multimedia/entry.php?request=resource&irn={{image}}&height=50&format=jpeg" />
 		</div>
 	</div>

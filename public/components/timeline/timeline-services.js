@@ -5,7 +5,41 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 
   
   return {
-  
+ 
+		  loadgroups: function(items){
+	
+			var _groups=[]
+			var addednames=[]
+			
+			 _.each(items._data, function(value) {
+			
+			if(value.start_date!="0000-00-00" && value.end_date!="0000-00-00"&& value.start_date!="" &&value.end_date!=""&&value.project_name!=""){
+				
+				if($.inArray(value.group, $rootScope.addednames)==-1 ){
+					$rootScope.addednames.push(value.group)
+					//n.b. may be able to order groups when locatiobn hierarchy given in emu
+					content=value.group ||"NA"
+	
+					 
+					 _groups.push({
+										id				:	value.group,
+										//display		:	'shown',
+										track			:    value.track,
+										order		    :    value.order,
+										event_type		:	 value.event_type,
+										content			:    value.group_name,
+										event_typeSORT	:    content,
+										selected         : value.select_group 
+									})
+				}
+				}
+			})
+
+			console.log(_groups)
+			return _groups		
+
+		},
+	
   update_andCompile: function(item) {
   var self = this
 			$compile($("timeline-databar"))($rootScope);
@@ -26,8 +60,61 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 		
 			
 		},	
+		
+		populate_timeline_track: function(rootScope,dataset,dataset_functions) {
+			 
+				 var self = this
+				 $rootScope.groups = $rootScope.groups || []
+				 var groups =rootScope.groups
+				  rootScope.timeline.setGroups(groups);
+				  
+					dataset.query({}, function(datax) {
+						self.add_events_loop(rootScope,datax,dataset_functions)
+					})
+					
+		},
+		
+	
+
+
+			populate_timeline_track_method_b: function(rootScope,data_functions) {
 			
-  export_JSON_to_CSV: function(JSONData, ReportTitle, ShowLabel){
+				 var self = this
+				 $rootScope.groups = $rootScope.groups || []
+				 var groups =rootScope.groups
+				  rootScope.timeline.setGroups(groups);
+			  
+				  data_functions.get_events().then(function(datax) {					  
+					self.add_events_loop(rootScope,datax,data_functions)
+					})
+		
+			},
+		 
+			add_events_loop: function(rootScope,datax,dataset_functions) {
+	
+				var self = this
+				dataset_functions.add_events(datax, function(public_dates){
+							 rootScope.leave_groups = self.loadgroups(public_dates)
+							_.each(rootScope.leave_groups, function(_group) {
+								rootScope.groups.push(_group)
+							})
+							 _.each(public_dates._data, function(date) {
+								if($rootScope.timeline.itemsData){
+								rootScope.timeline.itemsData.getDataSet().add(date)
+								}
+							})
+							rootScope.timeline.itemsData.on("update", function(){self.update_andCompile()})
+							rootScope.timeline.fit()
+							$timeout(self.update_andCompile(),500) //needed due to angular wierdness with directives
+				})
+	
+	
+			},
+		 
+		 
+		
+			
+		export_JSON_to_CSV: function(JSONData, ReportTitle, ShowLabel){
   
   
     //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
@@ -141,13 +228,14 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
                 $(".vis-group").droppable({
                     accept: '.date_add',
                     drop: function(event, ui) {
-
+		event.preventDefault()
+console.log('drop')
                         if (!$('.already-dropped').length) {
                             $('body').addClass('already-dropped');
                             setTimeout(function() {
                                 $('.already-dropped').removeClass('already-dropped');
                             }, 100);
-                            event.preventDefault()
+                          
                             time=(timeline.getEventProperties(event).time)
 							group=(timeline.getEventProperties(event).group)
 							
@@ -171,7 +259,7 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 							}
 							
 							function add_item(dropped_group,group,time,value,colour,days,type){
-							
+console.log('add_item')
 									 date_dropped=(moment(time).startOf('day')._d)
 									
 									 
@@ -188,7 +276,8 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 													  start_date :moment(time).startOf('day').format("MMM Do"),
 													  end_date :moment(time).add(days, 'days').format("MMM Do"),
 													  notes  :"",
-														days :_days.days}
+														days :_days
+													}
 									
 									
 									var new_date = {
@@ -203,8 +292,11 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 										days:_days
 
 									}
+console.log('save')
 									var _timeline = new Timeline(new_date)
 										.$save(function(_item) {
+										
+console.log('saved',_item)
 											new_date.start =_item.start_date
 											new_date.end = _item.end_date
 											new_date._id = _item._id
@@ -233,7 +325,7 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 		
                         
 								timeline.setOptions({'editable':unlock});
-								
+								timeline.options.editable=true
 			
 							
 		  	
@@ -316,39 +408,7 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
   
   },
   
-  		  loadgroups: function(items){
-	
-			var _groups=[]
-			var addednames=[]
-			
-			 _.each(items._data, function(value) {
-			
-			if(value.start_date!="0000-00-00" && value.end_date!="0000-00-00"&& value.start_date!="" &&value.end_date!=""&&value.project_name!=""){
-				
-				if($.inArray(value.group, $rootScope.addednames)==-1 ){
-					$rootScope.addednames.push(value.group)
-					//n.b. may be able to order groups when locatiobn hierarchy given in emu
-					content=value.group ||"NA"
-	
-					 
-					 _groups.push({
-										id				:	value.group,
-										//display		:	'shown',
-										track			:    value.track,
-										order		    :    value.order,
-										event_type		:	 value.event_type,
-										content			:    value.group_name,
-										event_typeSORT	:    content,
-										selected         : value.select_group 
-									})
-				}
-				}
-			})
-
-			console.log(_groups)
-			return _groups		
-
-		},
+  	
   
    		 event_html: function(event_to_add){
 		 
@@ -356,11 +416,11 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 			var  id = event_to_add.id
 		 	var  name = event_to_add.name
 		 	var  showimage = event_to_add.showimage
-		 	var  image =event_to_add.image
-		 	var  start_date =event_to_add.start_date
-		 	var  end_date =event_to_add.end_date
-		 	var  notes  =event_to_add.notes ||""
-		 	var  days =event_to_add.days
+		 	var  image = event_to_add.image
+		 	var  start_date = event_to_add.start_date
+		 	var  end_date = event_to_add.end_date
+		 	var  notes  = event_to_add.notes ||""
+		 	var  days = event_to_add.days
 			var  description =event_to_add.description ||""
 		 
 			var notes=notes ||""
@@ -373,31 +433,35 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 			return htmlContent
 
 			},
-				selected_data:	 function (event) {
-			 var self=this
-			 	console.log('get ID to update')
-					selected_timeline_id=event.items[0]
-			 if(selected_timeline_id){
-			 //newly selected - get ID to update
+			
+		selected_data:	 function (event) {
 				
-			//fetch the timeline dataSetitem 
-					selected_item =	timeline.itemsData.getDataSet().get(selected_timeline_id)
-			//update the data entry form
-			//console.log(selected_item)
-			
-			$rootScope.selected_timeline_id=selected_timeline_id
-			$rootScope.selected_item=selected_item.name
-			$rootScope.selected_type=selected_item._type
-			if(selected_item.days>0){
-			$rootScope.selected_days=" - " +selected_item.days + " days"
-			}
-			$rootScope.selected_id=selected_item._id
-			$rootScope.selected_notes=selected_item.notes
-			//console.log('startDate'+new Date(selected_item.start))
-			$rootScope.datePicker.date={startDate:new Date(selected_item.start),endDate:new Date (selected_item.end)}
-			
-}
-            },
+					var self=this
+		
+					//if(timeline.options.editable){
+							console.log('get ID to update')
+							selected_timeline_id=event.items[0]
+							 if(selected_timeline_id){
+										selected_item =	timeline.itemsData.getDataSet().get(selected_timeline_id)
+										$rootScope.selected_timeline_id=selected_timeline_id
+										$rootScope.selected_item=selected_item.name
+										$rootScope.selected_type=selected_item._type
+										if(selected_item.days>0){
+												$rootScope.selected_days=" - " +selected_item.days + " days"
+										}
+										$rootScope.selected_id=selected_item._id
+										$rootScope.selected_notes=selected_item.notes
+										$rootScope.datePicker.date={startDate:new Date(selected_item.start),endDate:new Date (selected_item.end)}
+							
+							}
+					//}
+					//else
+					//{
+					//	console.log('timeline locked')
+					//}
+
+           },
+		   
    get_events: function() {
       return $http.get('http://museums.bristol.gov.uk/sync/data/events.JSON');  //1. this returns promise
     },
@@ -410,8 +474,10 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 	},
 	updateItem: function(options){
 		if(typeof(timeline)!="undefined"){
-		timeline.itemsData.getDataSet().update(options)
-		this.update_andCompile()
+			if(timeline.itemsData){
+				timeline.itemsData.getDataSet().update(options)
+				this.update_andCompile()
+			}
 		
 		}
 	
@@ -419,7 +485,8 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 	},
 	
     setup: function(Timeline,groups,dates) {
-	var self=this
+		
+		var self=this
 	
 
          var options = {
@@ -442,31 +509,55 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
                     editable: false,  
 					 groupOrder:'order',					
                     onMove: function(item, callback) {
-$rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (item.end)}
-                        	var event_to_add=	{id : item.id,
-													  name : item.name,
-													  showimage :"",
-													  image :"",
-													  start_date :item.start,
-													  end_date : item.end,
-													  notes  :item.notes ,
-												  days :""}
 						
-						var _timeline = new Timeline({
-									
-						  
-							 content:  self.event_html(event_to_add ),
-                            group: item.group,
-                            start_date: item.start,
-                            end_date: item.end,
-                            _id: item._id
-                        })
-                       
-                        Timeline.update({
-                            id: item._id
-                        }, _timeline);
+						
+							$rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (item.end)}
 
-                        callback(item);
+							days=self.days(moment(item.start),moment(item.end))
+							$rootScope.selected_days = days
+							if(moment(item.start).isValid()){ //true
+									var event_to_add=	{id : item._id,
+															  name : item.name,
+															  showimage :"",
+															  image :"",
+															  start_date : moment(item.start).startOf('day').format("MMM Do"),
+															  end_date : moment(item.end).startOf('day').format("MMM Do"),
+															  notes  :item.notes ,
+															days :days}
+									
+									var _timeline = new Timeline({
+										content:  self.event_html(event_to_add ),
+										group: item.group,
+										start_date: item.start,
+										end_date: item.end,
+										_id: item._id
+									})
+								   
+									Timeline.update({
+										id: item._id
+									}, _timeline);
+									
+							
+								html=self.event_html(event_to_add)
+								var _options={id:item._id,content:html,name: item.name,start:moment(event_to_add.start_date)._d}
+								Timeline.update({
+								id: $rootScope.selected_id,				
+								}, _options);			
+								
+								self.updateItem(_options)	
+								
+								
+									
+								callback(item);
+								
+							}
+							else
+							{
+									callback(item);
+								
+							}
+									
+								
 
                     },
                     onUpdate: function(item, callback) {
@@ -474,10 +565,10 @@ $rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (ite
                         self.prettyPrompt('Update item', 'Edit items text:', item.content, function(value) {
                             if (value) {
                                 item.content = value;
-                                callback(item); // send back adjusted item
+                                //callback(item); // send back adjusted item
 
 									days=self.days(item.start, item.end)
-									
+									if(moment(item.start).isValid()){ //true
 										
 								var event_to_add=	{id : item.id,
 													  name :value,
@@ -502,7 +593,26 @@ $rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (ite
                                 Timeline.update({
                                     id: item._id
                                 }, _timeline);
-                                callback(item);
+                               
+								
+									//$rootScope.timeline.itemsData.on("update", function(){
+									
+									var _options={id:item._id,content:self.event_html(event_to_add),start:moment(event_to_add.startDate)._d,end:moment(event_to_add.endDate)._d,start_date:moment(event_to_add.startDate)._d,end_date:moment(event_to_add.endDate)._d}
+									console.log(_options)
+									console.log('updated',_options)
+									self.updateItem(_options)
+									$timeout(self.update_andCompile(),1000) 
+									
+									//})
+									
+								
+								
+								 callback(item);
+							}
+										else
+										{
+										console.log('invalid date')
+										}							
                             } else {
                                 callback(null); // cancel updating the item
                             }
@@ -577,7 +687,7 @@ $rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (ite
                     }
                 };
 
-  var container = document.getElementById('example-timeline');
+
   
   
 		var self = this
@@ -603,33 +713,29 @@ $rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (ite
 				
 				
 
+				//var container = document.getElementById('example-timeline');
+               // timeline = new vis.Timeline(container);
+				//groups=self.loadgroups(dates)
+				//$rootScope.rawData=dates
+				//$rootScope.groups=groups
+				//var groups = new vis.DataSet(groups);
 
-                timeline = new vis.Timeline(container);
-				groups=self.loadgroups(dates)
-				$rootScope.rawData=dates
-				$rootScope.groups=groups
-				var groups = new vis.DataSet(groups);
-				
            
-						
-			
-			
-		
-				
-                timeline.setItems(dates);
-                timeline.setOptions(options);
-				
-				timeline.fit()
-				
 				//self.changeGroups($rootScope.groups.selected)
 				
-				timeline.on('select', function (properties) {
+				 timeline.on('select', function (properties) {
 						self.selected_data( properties)
 
 				});
 				
+			   timeline.setItems(dates);
+			   console.log('timelineoptions',options)
+               timeline.setOptions(options);
+				timeline.fit()
 				
-					$rootScope.timeline=timeline					
+				
+				
+							
 			move=function(percentage) {
 				var range = this.timeline.getWindow();
 				var interval = range.end - range.start;
@@ -661,13 +767,14 @@ $rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (ite
 
 			
 			self.enable_event_drop()
-			//$compile($("timeline-databar"))($rootScope);
-			 var list = groups.get({
+			$compile($("timeline-databar"))($rootScope);
+				/*
+				var list = groups.get({
 						filter: function(item) {
 							return (item);
 						}
 				})
-					
+			*/
 			//timeline.setGroups(list);   
 		
 			

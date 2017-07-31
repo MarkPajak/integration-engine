@@ -15383,33 +15383,32 @@ myArray.push(obj);
 },{"b55mWE":4,"buffer":3}],74:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.timeline_controller=     function($compile,  $scope, $http, $q, $routeParams, $location,
-         $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate,Raw_visits,timeline_visitor_figures_functions
+         $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate,Raw_visits,timeline_visitor_figures_functions,timeline_install_functions, $timeout,timeline_exhibitions_functions
     ) {
 		
-$scope.locked=[]
-$scope.locked.add_item = false
-$scope.locked['true']={status:" locked",value:false}
-$scope.locked['false']={status:" unlocked",value:true}
-$scope.average_install_length = 0
-$scope.password=false
-$scope.lockstatus=false
-$scope.average_derig_length = 0
-$rootScope.addednames=[]
-$rootScope.track_groups=[]
-$rootScope.added_track_groups=[]
-$rootScope.datePicker=[];
-
-
-	  $scope.isloggedin=false	
-	  
-	  AuthService.isLoggedIn().then(function(user){
-			console.log('this and that')
-			
-			$scope.user=user
-			$scope.isloggedin=true	
-			main_function()
-			
-	  })
+		$scope.locked=[]
+		$scope.locked.add_item = false
+		$scope.locked['true']={status:" locked",value:false}
+		$scope.locked['false']={status:" unlocked",value:true}
+		$scope.average_install_length = 0
+		$scope.password=false
+		$scope.lockstatus=false
+		$scope.average_derig_length = 0
+		$rootScope.addednames=[]
+		$rootScope.track_groups=[]
+		$rootScope.added_track_groups=[]
+		$rootScope.datePicker=[];
+		$scope.isloggedin=false	
+	 
+		
+		  AuthService.isLoggedIn().then(function(user){
+				console.log('this and that')
+				
+				$scope.user=user
+				$scope.isloggedin=true	
+				main_function()
+				
+		  })
 	   
 	  	setTimeout(function() {
 		
@@ -15417,7 +15416,7 @@ $rootScope.datePicker=[];
 				main_function()
 			} 
 		
-        }, 1500);
+        }, 2000);
 	  
 
 main_function = function(){
@@ -15425,62 +15424,63 @@ main_function = function(){
 
 
 
-$scope.filter_pie=[]
+			$scope.filter_pie=[]
 			$scope.filter_pie.push({value:"2017 total_children",name:"No. children"})
 			$scope.filter_pie.push({value:"2017 total_sessions",name:"No. sessions"})
 			$scope.filter_pie.push({value:"2017 total_teachers",name:"No. teachers"})
 			$scope.filter_pieSelected = $scope.filter_pie[0].name; 
-
-
-$scope.plot_graph =null;
-
-
-$rootScope.datePicker.date = {startDate:null, endDate: null};
-
-	
-
-
-	
-$scope.dateRangeOptions = {
-        locale : {
-            format : 'DD/MM/YYYY'
-        },
-        eventHandlers : {
-            'apply.daterangepicker' : function() {  
-               date=$rootScope.datePicker.date
-			   	days=timeline_functions.days(moment(date.startDate),moment(date.endDate))
+			$scope.plot_graph =null;
+			$rootScope.datePicker.date = {startDate:null, endDate: null};
+			
+			$scope.dateRangeOptions = {
 				
 				
-			   if(date){
-			
-			var event_to_add=	{id :  $scope.selected_id,
-													  name :$scope.selected_item,
-													  showimage :"",
-													  image :"",
-													  start_date :moment(date.startDate).format("MMM Do"),
-													  end_date : moment(date.endDate).format("MMM Do")|| "",
-													  notes  :$rootScope.selected_notes + "(" +days+" days)" ,
-													 days :days}
-			
-			
-					html=timeline_functions.event_html(event_to_add)
-					var options={id:$scope.selected_timeline_id,content:html,start:moment(date.startDate)._d,end:moment(date.endDate)._d,start_date:moment(date.startDate)._d,end_date:moment(date.endDate)._d}
-					Timeline.update({
-					id: $scope.selected_id,				
-					}, options);				
-					timeline_functions.updateItem(options)
-					
-	
-		
-			}}				
-            }
+					locale : {
+						format : 'DD/MM/YYYY'
+					},
+//TIMELINE EVENT HANDLERS					
+					eventHandlers : {
+						
+										'apply.daterangepicker' : function() {  
+										   date=$rootScope.datePicker.date
+											days=timeline_functions.days(moment(date.startDate),moment(date.endDate))
+											
+											
+										 
+										   	if(moment(date.startDate).isValid()){ //true
+										
+										var event_to_add=	{id :  $scope.selected_id,
+																				  name :$scope.selected_item,
+																				  showimage :"",
+																				  image :"",
+																				  start_date :moment(date.startDate).format("MMM Do"),
+																				  end_date : moment(date.endDate).format("MMM Do")|| "",
+																				  notes  :$rootScope.selected_notes + "(" +days+" days)" ,
+																				 days :days}
+										
+										
+												html=timeline_functions.event_html(event_to_add)
+												var options={id:$scope.selected_timeline_id,content:html,start:moment(date.startDate)._d,end:moment(date.endDate)._d,start_date:moment(date.startDate)._d,end_date:moment(date.endDate)._d}
+												
+												Timeline.update({
+												id: $scope.selected_id,				
+												}, options);				
+												console.log('updatedItem',options)
+												timeline_functions.updateItem(options)
+												
+								
+									
+										}}				
+						}
         }
 
 				$scope.$watch('selected_notes', function(selected_note) {
 
 					date=$rootScope.datePicker.date
 					days=timeline_functions.days(moment(date.startDate),moment(date.endDate))
-					
+					$scope.selected_start = moment(date.startDate ).format("MMM Do")
+					$scope.selected_end = moment(date.endDate).format("MMM Do")
+					if(moment(date.startDate).isValid()){ //true
 								
 									var event_to_add=	{id :  $scope.selected_id,
 													  name :$scope.selected_item,
@@ -15490,13 +15490,16 @@ $scope.dateRangeOptions = {
 													  end_date : moment(date.endDate).format("MMM Do")|| "",
 													  notes  :$rootScope.selected_notes ,
 													 days :days}
-			
+				
+					
+					
 					html=timeline_functions.event_html(event_to_add)
-					var options={id:$scope.selected_timeline_id,content:html,notes:selected_note}
+					var options={id:$scope.selected_timeline_id,content:html,notes:selected_note,start:moment(date.startDate)._d,end:moment(date.endDate)._d}
 					Timeline.update({
 					id: $scope.selected_id,				
-					}, options);				
+					}, options);
 					timeline_functions.updateItem(options)
+					}
 	
 			})
 			
@@ -15504,9 +15507,14 @@ $scope.dateRangeOptions = {
 			
 			$scope.$watch('selected_item', function(selected_item) {
 
+			//if( !$scope.locked.add_item){	
+			
 			date=$rootScope.datePicker.date
 			days=timeline_functions.days(moment(date.startDate),moment(date.endDate))
-			
+			$scope.selected_start = moment(date.startDate ).format("MMM Do")
+					$scope.selected_end = moment(date.endDate).format("MMM Do")
+					
+			if(moment(date.startDate).isValid()){ //true
 											
 			var event_to_add=	{id :  $scope.selected_id,
 													  name :$scope.selected_item,
@@ -15518,12 +15526,20 @@ $scope.dateRangeOptions = {
 													 days :days}
 			
 					html=timeline_functions.event_html(event_to_add)
-					var options={id:$scope.selected_timeline_id,content:html,name:selected_item}
+					var options={id:$scope.selected_timeline_id,content:html,name:selected_item,start:moment(date.startDate)._d,end:moment(date.endDate)._d,}
 					Timeline.update({
 					id: $scope.selected_id,				
 					}, options);				
+					
 					timeline_functions.updateItem(options)
-	
+			}
+			/*
+			}
+			else
+			{
+				console.log('not logged in')
+			}
+			*/
 			})
 	 
 	$scope.$watch('stack', function(stack) {
@@ -15532,13 +15548,18 @@ $scope.dateRangeOptions = {
 		 if(typeof(stack)!="undefined"){
 			 
 			   options={stack:stack}
-		timeline_functions.updateOptions(options)
+				timeline_functions.updateOptions(options)
 		  }
 		  
 		
 		  
         })
 
+		
+		
+//END EVENT HANDLERS
+
+		
         $scope.editing = [];
         $scope.timeline = Timeline.query();
 
@@ -15626,8 +15647,7 @@ $scope.dateRangeOptions = {
 */
 
 		$scope.changedValue = function(place) {
-        // console.log(place)
-		  //console.log( $rootScope.filter_pieSelected)
+       
 		 $rootScope.filter_pieSelected=place
         }
 
@@ -15643,11 +15663,6 @@ $scope.dateRangeOptions = {
 
   
 
-        $scope.$watch('machine', function() {
-
-
-
-            })
             // selected fruits
         $scope.machine_types_selection = [];
 
@@ -15660,228 +15675,110 @@ $scope.dateRangeOptions = {
 
 
 
-
+/*
         var _data = [];
         $scope.data = []
         $scope.day_data = []
         $scope.team = [];
         $scope.labels = $scope.team
         $scope.chart_title = "Machine activity"
-
-        var timeline
-
-     
+*/
 
             var groups = new vis.DataSet();
             var dates = new vis.DataSet();
-			var dates = new vis.DataSet();
 			var second_dates = new vis.DataSet();
             var all_groups = []
             var i = 0
 
       
 
-      install_days_tally = 0
-	  install_instance_tally=0 
-	  derig_tally = 0
-	 derig_days_tally=0
-            Timeline.query({}, function(team) {
-			 
-                _.each(team, function(data) {
-				
-				
-				data.days=timeline_functions.days(data.start_date,data.end_date)
-					var end_date
-                    if ( data.group != "") {
-						if( data.start_date!=""){
-					if(typeof(data.end_date)!="undefined"){
-						end_date=(moment(data.end_date).format("MMM Do YY"))
-						}
-						if(data._type=="INSTALL"){
-						install_instance_tally++
-						 install_days_tally +=data.days
-						}
-						else if(data._type=="DERIG"){
-						derig_tally++						
-						  derig_days_tally +=data.days
-						  }
-						if( 	$rootScope.added_track_groups.indexOf(data._type)==-1){	
-						
-						 $rootScope.added_track_groups.push(data._type)
-						  //	$rootScope.track_groups.push({"track":data._type})
-						}
-							
-								var event_to_add=	{id : data._id,
-													  name :data.name,
-													  showimage :"",
-													  image :"",
-													  start_date :moment(data.start_date).format("MMM Do"),
-													  end_date :end_date ||"",
-													  notes  :data.notes ,
-													 days :data.days
-													 }
-													 
-						 if($scope.isloggedin==true){
-							 second_dates.add({
-									_id: data._id,
-									className:data.className,
-									select_group :false,
-									name:data.name,
-									_type:data._type,
-									track:data._type,
-									content: timeline_functions.event_html(event_to_add),
-									group: data.group||"NA",
-									order:data._type,
-									notes: data.notes,
-									//title:data.notes,
-									start: data.start_date,
-									days:data.days,
-									end: data.end_date 
-								})
-						}
-						}
-                    }
-                })
-			  timeline_functions.get_events().then(function(data) {
-			  			
-			var checked_event_types=[]
-			
-			if($("#add_emu_exhibitions").is(':checked')){
-				
-				checked_event_types.push('Exhibition')
-				checked_event_types.push('Gallery')
-				
-			}
-		
-			
-			//if($("#whats_on").is(':checked')){
-				checked_event_types.push('Family')
-				checked_event_types.push('Tour')
-				checked_event_types.push('Walk')
-				checked_event_types.push('Rides')
-				checked_event_types.push('Tours')
-				checked_event_types.push('Talk')
-				checked_event_types.push('Lecture')
-				checked_event_types.push('Special Event')
-				checked_event_types.push('Event')
-				
-			//}
-			
-			   _.each(data.data, function(events) {
-			   _.each(events, function(event) {
-												
-											//if( event.startDate!=""){
-												
-											//if( checked_event_types.indexOf(event.type)>=0){	
-											if( event.type=="Exhibition"||event.type=="Gallery" || event.type=="Gallery Refurbishment"){
-											var end_date=new Date(event.endDate)
-											
-											if(event.endDate==""||event.endDate==event.startDate){
-										
-											var end_date=new Date(event.startDate)
-											//end_date.setDate(end_date.getDate() + 1)
-										
-											}
-											var group =	"NA"
-											if( event.type=="Exhibition"||event.type=="Gallery" || event.type=="Gallery Refurbishment"){
-											 group =	event.event_space||"NA" 
-											if(event.venue=="Bristol Museum & Art Gallery")venue_pic= 176421 
-											if(event.venue=="Red Lodge Museum" )venue_pic=  37235
-											if(event.venue=="Georgian House" )venue_pic= 189420 
-											if(event.venue=="Bristol Archives" )venue_pic= 217822 
-											if(event.venue=="M Shed" )venue_pic= 206079 
-											 
-											
-											
-											group_name="<table><tr><td><b>"+event.event_space+"</b><br></br>"
-											group_name+=event.venue+"</td><td>"
-											group_name+=	'<img  class="pull-right" src="http://museums.bristol.gov.uk/multimedia/entry.php?request=resource&irn='+venue_pic+'&height=50&format=jpeg" />'
-											group_name+="</td></tr></table>"
-											 
-											}
-											else{
-												 group =	event.type ||"NA"
-											}
-													
-												var eventimages = false
-												if(event.images[0]){
-												eventimages=event.images[0].irn
-												}
-												
-												var event_to_add = {}
-												
-												//event.ID,event.ID,event.name,true&&event.images[0],eventimages,event.startDate,event.endDate)
-												
-												var event_to_add=	{id : event.ID,
-													  name :event.name,
-													  showimage :true&&event.images[0],
-													  image :eventimages,
-													  start_date :event.startDate,
-													  end_date :event.endDate,
-													  notes  :"",
-													  description  :event.description,
-													 days :data.days
-													 }
-												
-												
-												var htmlContent =  timeline_functions.event_html(event_to_add)
-													if( 	$rootScope.added_track_groups.indexOf(event.venue)==-1){
-												$rootScope.added_track_groups.push(event.venue)														
-													$rootScope.track_groups.push({"track":event.venue})
-													}
-													select_group = true
-													if($routeParams.track){
-													select_group = false
-													if($routeParams.track=="Arts and Events"){
-													//select_group = true
-													}
-													}
-													
-													if(event.startDate){ //timeline errors if no start date
-													dates.add({
-																		group		:	group, 
-																		ID:event.ID,
-																		group_name		:	group_name, 
-																		select_group :select_group,
-																		title		:	event.name,
-																		name:event.name,
-																		type		: "background",
-
-																		content		:	htmlContent,
-																		order:event.venue+event.event_space,
-																		track:event.venue,
-																		start		:	new Date(event.startDate), 
-																		end			:	event.endDate, 
-																		className 	:	"green",
-																		event_type  :   "WHATS ON"
-																		})
-														}
-																		
-											//}
-											}
-
-			  })
-			    })
-		
-				_.each(second_dates._data, function(date) {
-				dates.add(date)
-			})
-			
+			install_days_tally = 0
+			install_instance_tally=0 
+			derig_tally = 0
+			derig_days_tally=0
 			$scope.total_install_derig=install_days_tally+derig_days_tally
 			$scope.average_install_length=Math.round(install_days_tally/install_instance_tally)
 			$scope.average_derig_length=Math.round(derig_days_tally/derig_tally)
-			timeline_functions.setup(Timeline,groups,dates)
+			
+			var container = document.getElementById('example-timeline');
+            timeline = new vis.Timeline(container);
+			 $rootScope.timeline=	timeline
+			
+			date={content:"STARTER"  ,
+					group:"STARTER",
+					group_id:"STARTER",
+					id:"STARTER",
+					name:"STARTER"  ,
+					event_type:"STARTER",
+					track:"STARTER",
+					order: "STARTER",
+					subgroup: "STARTER",
+					start:new Date(),
+					end:new Date(),
+					//className 	:	"orange"
+					}
+	
+			//VIS ERRORS IF INITIALISED WITH AN EMPTY START DATE
+			timeline_functions.setup(Timeline,$rootScope.groups, new vis.DataSet(date)	)
+			
+			
+			
+			$scope.add_exhibitions= function(){						
+					timeline_functions.populate_timeline_track_method_b($rootScope,timeline_exhibitions_functions)
+			}
+			
+			$scope.add_installs_derigs= function(){				
+					timeline_functions.populate_timeline_track($rootScope,Timeline,timeline_install_functions)	
+			}
+			
+			$scope.team_leave= function(){
+					timeline_functions.populate_timeline_track_method_b($rootScope,timeline_leave_functions)				
+			}
+			
+			$scope.visitor_figures= function(){							
+					timeline_functions.populate_timeline_track($rootScope,Raw_visits,timeline_visitor_figures_functions)
+			}
+			
+			$scope.shopify= function(){							
+					timeline_functions.populate_timeline_track($rootScope,Shopify_aggregate,timeline_shopify_functions)
+			}
+				
+			$scope.loans= function(){							
+					timeline_functions.populate_timeline_track_method_b($rootScope,timeline_loans_functions)
+			}
+			
+			$scope.learning_bookings= function(){							
+					timeline_functions.populate_timeline_track_method_b($rootScope,timeline_learning_functions)
+			}
+			
+			
+			$scope.timeline_googlesheets_functions= function(data_settings){
+			
+					var groups =$rootScope.groups
+					$rootScope.timeline.setGroups(groups);
+					timeline_googlesheets_functions.get_events(data_settings)
+				  		  
+			}
+			
+			
+			$scope.shopify() //NB for some reason need this to appear for unlogged in users otherwise text wont load in directives
+			
+			if( $scope.isloggedin){	
+			
+			
+					$scope.add_installs_derigs()
+					$scope.team_leave()
+					$scope.visitor_figures()
+					$scope.learning_bookings()
+					$scope.loans()
+					
+
+			}			
+			
+			$scope.add_exhibitions()
+		
 		
 	
-
-		$scope.team_leave()
-	
-	$scope.visitor_figures()
-	
-	$scope.learning_bookings()
-	$scope.loans()
-	$scope.shopify()
-	//
 	var checked_event_types=[]
 											checked_event_types.push('Tour')
 											checked_event_types.push('Walk')
@@ -15902,229 +15799,79 @@ $scope.dateRangeOptions = {
 
 	
 
-		
+		$timeout(timeline_functions.update_andCompile(),500) //needed due to angular wierdness with directives
 
-	
+    // check if there is query in url
+    // and fire search in case its value is not empty
+
 	$scope.$watch('track_groups|filter:{selected:true}', function (nv) {
-    var selection = nv.map(function (track_groups) {
-	
-      return track_groups.track;
-    });
-	$scope.selected_tracks=selection
-	timeline_functions.changeTracks(selection)
-	//$( ".draggable,.iconbar" ).css({ 'top':'0px' });
-  }, true);
-	
-$scope.$watch('groups|filter:{selected:true}', function (nv) {
-    var selection = nv.map(function (group) {
-      return group.content;
-    });
-	timeline_functions.changeGroups(selection)
-	$( ".draggable,.iconbar" ).css({ 'top':'0px' });
+		
+					var selection = nv.map(function (track_groups) {
+					
+					  return track_groups.track;
+					});
+					$scope.selected_tracks=selection
+					timeline_functions.changeTracks(selection)
+					//$( ".draggable,.iconbar" ).css({ 'top':'0px' });
   }, true);
   
-timeline_functions.update_andCompile()
+	
+$scope.$watch('groups|filter:{selected:true}', function (nv) {
+	
+					var selection = nv.map(function (group) {
+					  return group.content;
+					});
+					timeline_functions.changeGroups(selection)
+					$( ".draggable,.iconbar" ).css({ 'top':'0px' });
+	
+  }, true);
+
+	
+	
+
 			
-	})	
-			
+	
       
 			
 		$scope.exportCSV= function(){
-		data_to_export=$rootScope.timeline.itemsData.getDataSet()
-		
-		visibles=$rootScope.timeline.getVisibleItems()
-		events=[]
-		
-		  _.each(data_to_export._data, function(event,index) {
-		
-		  if(visibles.indexOf(event.id)!=-1){
-		  console.log("in")
-		  var _event ={  
-						 id			:event.id,
-						 name		:event.name,
-						 start_date	:moment(event.start).format("DD/MM/YYYY"),
-						 end_date	:moment(event.end).format("DD/MM/YYYY"),
-					     event_type	:event.track
-					   
+			
+				data_to_export=$rootScope.timeline.itemsData.getDataSet()
+				
+				visibles=$rootScope.timeline.getVisibleItems()
+				events=[]
+				
+				  _.each(data_to_export._data, function(event,index) {
+				
+				  if(visibles.indexOf(event.id)!=-1){
+				  console.log("in")
+				  var _event ={  
+								 id			:event.id,
+								 name		:event.name,
+								 start_date	:moment(event.start).format("DD/MM/YYYY"),
+								 end_date	:moment(event.end).format("DD/MM/YYYY"),
+								 event_type	:event.track
+							   
+								}
+					 events.push(_event)
 						}
-			 events.push(_event)
-				}
-		  
-		   
-		  
-		  })
-				
-		timeline_functions.export_JSON_to_CSV(events, "Timeline dates", true)
-	}
-	$scope.leaveChanged= function(leave){
-				
-		
+				  
+				   
+				  
+				  })
+						
+				timeline_functions.export_JSON_to_CSV(events, "Timeline dates", true)
 	}
 	
 
 				
-			$scope.team_leave= function(){
-			
-			if( $scope.isloggedin){
 			
 			
-			 var groups =$rootScope.groups
-			 
-			  $rootScope.timeline.setGroups(groups);
-			  
-				  timeline_leave_functions.get_eventss().then(function(data) {
-					 
-						timeline_leave_functions.add_leave(data, function(leave_dates){
-							 
-							 $rootScope.leave_groups = timeline_functions.loadgroups(leave_dates)
-							 
-						
-						
-							_.each($rootScope.leave_groups, function(_group) {
-								
-								$rootScope.groups.push(_group)
-							})
-							
-							
-							 _.each(leave_dates._data, function(date) {
-								$rootScope.timeline.itemsData.getDataSet().add(date)
-							})
-						})
-					})
-					
-			}
-			
-			}
-			
-			$scope.visitor_figures= function(){
-			
-			 var groups =$rootScope.groups
-			 
-			  $rootScope.timeline.setGroups(groups);
-			  
-				  Raw_visits.query({}, function(datax) {
-					
-						timeline_visitor_figures_functions.add_events(datax, function(public_dates){
-							
-							 $rootScope.leave_groups = timeline_functions.loadgroups(public_dates)
-							 
-						
-						
-							_.each($rootScope.leave_groups, function(_group) {
-								
-								$rootScope.groups.push(_group)
-							})
-							
-							// console.log('$rootScope.groups',$rootScope.groups)
-							 _.each(public_dates._data, function(date) {
-								$rootScope.timeline.itemsData.getDataSet().add(date)
-							})
-						})
-					})
-			
-			}
-			
-			$scope.shopify= function(){
-			
-			 var groups =$rootScope.groups
-			 
-			  $rootScope.timeline.setGroups(groups);
-			  
-				  Shopify_aggregate.query({}, function(datax) {
-					
-						timeline_shopify_functions.add_events(datax, function(public_dates){
-							
-							 $rootScope.leave_groups = timeline_functions.loadgroups(public_dates)
-							 
-						
-						
-							_.each($rootScope.leave_groups, function(_group) {
-								
-								$rootScope.groups.push(_group)
-							})
-							
-							 console.log('$rootScope.groups',$rootScope.groups)
-							 _.each(public_dates._data, function(date) {
-								$rootScope.timeline.itemsData.getDataSet().add(date)
-							})
-						})
-					})
-			
-			}
-				$scope.loans= function(){
-			
-			 var groups =$rootScope.groups
-			 
-			  $rootScope.timeline.setGroups(groups);
-			  
-				  timeline_loans_functions.get_events().then(function(datax) {
-					
-						timeline_loans_functions.add_events(datax, function(public_dates){
-							
-							 $rootScope.leave_groups = timeline_functions.loadgroups(public_dates)
-							 
-						
-						
-							_.each($rootScope.leave_groups, function(_group) {
-								
-								$rootScope.groups.push(_group)
-							})
-							
-							 console.log('$rootScope.groups',$rootScope.groups)
-							 _.each(public_dates._data, function(date) {
-								$rootScope.timeline.itemsData.getDataSet().add(date)
-							})
-						})
-					})
-			
-			}
 			
 		
-			
-			
-			$scope.timeline_googlesheets_functions= function(data_settings){
-			
-					var groups =$rootScope.groups
-					$rootScope.timeline.setGroups(groups);
-					timeline_googlesheets_functions.get_events(data_settings)
-				  		  
-			}
-			
 		
 			
-			
-			$scope.learning_bookings= function(){
-			
-			 var groups =$rootScope.groups
-			 
-			  $rootScope.timeline.setGroups(groups);
-			  
-				  timeline_learning_functions.get_events().then(function(datax) {
-					
-						timeline_learning_functions.add_events(datax, function(public_dates){
-							
-							 $rootScope.leave_groups = timeline_functions.loadgroups(public_dates)
-							 
-						
-						
-							_.each($rootScope.leave_groups, function(_group) {
-								
-								$rootScope.groups.push(_group)
-							})
-							
-							 console.log('$rootScope.groups',$rootScope.groups)
-							 _.each(public_dates._data, function(date) {
-								$rootScope.timeline.itemsData.getDataSet().add(date)
-							})
-						})
-					})
-			
-			}
-			
+		
 
-			
-
-  
 		       
             $scope.list1 = {
                 title: 'PROVISIONAL DATE'
@@ -16143,7 +15890,7 @@ timeline_functions.update_andCompile()
 		
 
 
-        })
+       // })
 
     };
 	
@@ -16192,6 +15939,9 @@ exports.add_timeline_items_controller=    function($scope, $http, $q, $routePara
   exports.add_timeline_info_box=    function($scope, $http, $q, $routeParams, $location,
          $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate
     ) {
+		
+		
+		
 
   }
   
@@ -16245,16 +15995,13 @@ exports.timelineInfobox = function() {
       script.text = "$(function() {;"
 	  script.text +=" $('#infobutton'+ '"+ $scope.id +"').hide();"
 	  script.text +=" $('#miniicon'+ '"+ $scope.id +"').show();"
-	  
-	  
-	  
 	  script.text +=" $('#timeline'+ '"+ $scope.id +"').mouseover(function() {"; 
 	  script.text +=" $('#infobutton'+ '"+ $scope.id +"').show();"; 
 	  script.text +=" $('#miniicon'+ '"+ $scope.id +"').hide();"
       script.text +="});"; 
-	  	  script.text +=" $('#timeline'+ '"+ $scope.id +"').mouseout(function() {"; 
+	  script.text +=" $('#timeline'+ '"+ $scope.id +"').mouseout(function() {"; 
 	  script.text +=" $('#infobutton'+ '"+ $scope.id +"').hide();"; 
-	    script.text +=" $('#miniicon'+ '"+ $scope.id +"').show();"; 
+	  script.text +=" $('#miniicon'+ '"+ $scope.id +"').show();"; 
       script.text +="});"; 
 	  script.text +="$('#infobutton'+ '"+ $scope.id +"').on('click', function(event){ "
 	  script.text +=" $('#infobox_name').text('').append('" + $scope.name  +"'); "; 
@@ -16288,6 +16035,193 @@ exports.timelineInfobox = function() {
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-directive.js","/../components/timeline")
 },{"b55mWE":4,"buffer":3}],76:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+
+exports.timeline_exhibitions_functions =  function (timeline_functions,$http,Timeline,$rootScope,$routeParams) {
+
+
+  return {
+  
+ get_events: function() {
+      return $http.get('http://museums.bristol.gov.uk/sync/data/events.JSON');  //1. this returns promise
+    },
+  
+  
+  
+  	add_events: function (eventss, fn){
+		
+			  var visevents = new vis.DataSet();
+			    var groups = new vis.DataSet()
+									var self=this
+		
+		var checked_event_types=[]
+			
+			if($("#add_emu_exhibitions").is(':checked')){
+				
+				checked_event_types.push('Exhibition')
+				checked_event_types.push('Gallery')
+				
+			}
+		
+			
+			//if($("#whats_on").is(':checked')){
+				checked_event_types.push('Family')
+				checked_event_types.push('Tour')
+				checked_event_types.push('Walk')
+				checked_event_types.push('Rides')
+				checked_event_types.push('Tours')
+				checked_event_types.push('Talk')
+				checked_event_types.push('Lecture')
+				checked_event_types.push('Special Event')
+				checked_event_types.push('Event')
+				
+			//}
+	
+								
+					
+																	
+				$.each(eventss.data.events, function( index, event ) {	
+											
+											if( event.startDate!=""){
+												
+											//if( checked_event_types.indexOf(event.type)>=0){	
+											if( event.type=="Exhibition"||event.type=="Gallery" || event.type=="Gallery Refurbishment"){
+											var end_date=new Date(event.endDate)
+											
+											if(event.endDate==""||event.endDate==event.startDate){
+										
+											var end_date=new Date(event.startDate)
+											//end_date.setDate(end_date.getDate() + 1)
+										
+											}
+											var group =	"NA"
+											if( event.type=="Exhibition"||event.type=="Gallery" || event.type=="Gallery Refurbishment"){
+											 group =	event.event_space||"NA" 
+											if(event.venue=="Bristol Museum & Art Gallery")venue_pic= 176421 
+											if(event.venue=="Red Lodge Museum" )venue_pic=  37235
+											if(event.venue=="Georgian House" )venue_pic= 189420 
+											if(event.venue=="Bristol Archives" )venue_pic= 217822 
+											if(event.venue=="M Shed" )venue_pic= 206079 
+											 
+											
+											
+											group_name="<table><tr><td><b>"+event.event_space+"</b><br></br>"
+											group_name+=event.venue+"</td><td>"
+											group_name+=	'<img  class="pull-right" src="http://museums.bristol.gov.uk/multimedia/entry.php?request=resource&irn='+venue_pic+'&height=50&format=jpeg" />'
+											group_name+="</td></tr></table>"
+											 
+											}
+											else{
+												 group =	event.type ||"NA"
+											}
+													
+												var eventimages = false
+												if(event.images[0]){
+												eventimages=event.images[0].irn
+												}
+												
+												var event_to_add = {}
+												
+										
+												
+												var event_to_add=	{id : event.ID,
+													  name :event.name,
+													  showimage :true&&event.images[0],
+													  image :eventimages,
+													  start_date :event.startDate,
+													  end_date :event.endDate,
+													  notes  :"",
+													  description  :event.description,
+													 days: ""
+													 }
+												
+												
+												var htmlContent =  timeline_functions.event_html(event_to_add)
+													if( 	$rootScope.added_track_groups.indexOf(event.venue)==-1){
+												$rootScope.added_track_groups.push(event.venue)														
+													$rootScope.track_groups.push({"track":event.venue})
+													}
+													select_group = true
+													if($routeParams.track){
+													select_group = false
+													if($routeParams.track=="Arts and Events"){
+													//select_group = true
+													}
+													}
+													
+													if(event.startDate){ //timeline errors if no start date
+													visevents.add({
+																		group		:	group, 
+																		ID:event.ID,
+																		group_name		:	group_name, 
+																		select_group :select_group,
+																		title		:	event.name,
+																		name:event.name,
+																		type		: "background",
+
+																		content		:	htmlContent,
+																		order:event.venue+event.event_space,
+																		track:event.venue,
+																		start		:	new Date(event.startDate), 
+																		end			:	event.endDate, 
+																		className 	:	"green",
+																		event_type  :   "WHATS ON"
+																		})
+														}
+																		
+											}
+											}
+
+			  })
+			   
+							//NB STARTER						
+					  					
+										
+										return	fn(visevents)
+
+		},
+  
+   		 event_html: function(name,showimage,image,start_date,end_date,notes ){
+			var notes=notes ||""
+				var htmlContent = '<div class="titlediv" >'
+																htmlContent+='<div class="title_heading">'
+																htmlContent+=name
+																htmlContent+='</div>';
+																htmlContent+="<span> ";
+																htmlContent+=start_date+ "-" + end_date;
+																htmlContent+="<span>";
+																htmlContent+="<p>"+notes
+																
+																if(showimage){
+																	htmlContent+='<div class="image_box">'
+																	htmlContent+='<img src="http://museums.bristol.gov.uk/multimedia/entry.php?request=resource&irn='+image +'&height=50&format=jpeg" />'
+																	htmlContent+='</div>'	
+																}													
+													htmlContent+= '</div>'
+													
+			return htmlContent
+
+			},
+  
+	
+	updateOptions: function(options){
+
+		timeline.setOptions(options)
+			
+				
+	},
+	updateItem: function(options){
+		options.id=$rootScope.selected_t_id
+		timeline.itemsData.getDataSet().update(options)
+		
+				
+	},
+	
+  };
+}
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-exhibitions-services.js","/../components/timeline")
+},{"b55mWE":4,"buffer":3}],77:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_googlesheets_functions =  function (timeline_functions,$http,Timeline,$rootScope,$routeParams) {
@@ -16543,7 +16477,154 @@ exports.timeline_googlesheets_functions =  function (timeline_functions,$http,Ti
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-googlesheets-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],77:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],78:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+
+exports.timeline_install_functions =  function (timeline_functions,$http,Timeline,$rootScope) {
+
+
+  return {
+  
+     get_events: function() {
+		 
+		 /*
+		 'https://www.googleapis.com/calendar/v3/calendars/en.uk#holiday@group.v.calendar.google.com/events?key=AIzaSyDi8arJr4JvnETpZVylXUVpxZDyBHNkQyk';
+				  */
+				  
+		 	 var SheetToJSONServiceURL = "http://emudev-app1/team/digital/projects/scripts/php/emu/loans.php?start_date=2014-01-01"
+			 
+			 
+			 console.log(SheetToJSONServiceURL)
+			 
+      return $http.get(SheetToJSONServiceURL);  //1. this returns promise
+    },
+  
+  
+  
+  	add_events: function (eventss, fn){
+	
+								
+									var visevents = new vis.DataSet();
+									var self=this
+										
+												
+												tempdates=[]
+											if( 	$rootScope.added_track_groups.indexOf("Shopify product types")==-1){
+												$rootScope.added_track_groups.push("Shopify product types")														
+													$rootScope.track_groups.push({"track":"Shopify product types"})
+													}
+												console.log('INSTALL EVENTS',eventss)
+												$.each(eventss, function( index, data ) {
+													
+																data.days=timeline_functions.days(data.start_date,data.end_date)
+																var end_date
+																if ( data.group != "") {
+																	if( data.start_date!=""){
+																if(typeof(data.end_date)!="undefined"){
+																			end_date=(moment(data.end_date).format("MMM Do YY"))
+																	}
+																	if(data._type=="INSTALL"){
+																			install_instance_tally++
+																			install_days_tally +=data.days
+																	}
+																	else if(data._type=="DERIG"){
+																			derig_tally++						
+																			derig_days_tally +=data.days
+																	  }
+																	if($rootScope.added_track_groups.indexOf(data._type)==-1){	
+																	
+																			$rootScope.added_track_groups.push(data._type)
+																	
+																	}
+																		
+																			var event_to_add={
+																								  id : data._id,
+																								  name :data.name,
+																								  showimage :"",
+																								  image :"",
+																								  start_date :moment(data.start_date).format("MMM Do"),
+																								  end_date :end_date ||"",
+																								  notes  :data.notes ,
+																								  days :data.days
+																							}
+																								 
+																			 //if($rootScope.isloggedin==true){
+																				 visevents.add({
+																						_id: data._id,
+																						className:data.className,
+																						select_group :false,
+																						name:data.name,
+																						_type:data._type,
+																						track:data._type,
+																						content: timeline_functions.event_html(event_to_add),
+																						group: data.group||"NA",
+																						order:data._type,
+																						notes: data.notes,
+																						//title:data.notes,
+																						start: data.start_date,
+																						days:data.days,
+																						end: data.end_date 
+																					})
+																			//}
+																	}
+																}
+																							
+														
+																		
+															
+																	
+												})
+														
+														
+													
+													
+										  					
+										
+										return	fn(visevents)
+
+		},
+  
+   		 event_html: function(name,showimage,image,start_date,end_date,notes ){
+			var notes=notes ||""
+				var htmlContent = '<div class="titlediv" >'
+																htmlContent+='<div class="title_heading">'
+																htmlContent+=name
+																htmlContent+='</div>';
+																htmlContent+="<span> ";
+																htmlContent+=start_date+ "-" + end_date;
+																htmlContent+="<span>";
+																htmlContent+="<p>"+notes
+																
+																if(showimage){
+																	htmlContent+='<div class="image_box">'
+																	htmlContent+='<img src="http://museums.bristol.gov.uk/multimedia/entry.php?request=resource&irn='+image +'&height=50&format=jpeg" />'
+																	htmlContent+='</div>'	
+																}													
+													htmlContent+= '</div>'
+													
+			return htmlContent
+
+			},
+  
+	
+	updateOptions: function(options){
+
+		timeline.setOptions(options)
+			
+				
+	},
+	updateItem: function(options){
+		options.id=$rootScope.selected_t_id
+		timeline.itemsData.getDataSet().update(options)
+		
+				
+	},
+	
+  };
+}
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-installs-services.js","/../components/timeline")
+},{"b55mWE":4,"buffer":3}],79:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_learning_functions = function ($http,Timeline,$rootScope) {
@@ -16663,7 +16744,7 @@ exports.timeline_learning_functions = function ($http,Timeline,$rootScope) {
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-learning-bookings-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],78:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],80:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_leave_functions =  function ($http,Timeline,$rootScope) {
@@ -16676,7 +16757,7 @@ exports.timeline_leave_functions =  function ($http,Timeline,$rootScope) {
   
   
   
-  	add_leave: function (eventss, fn){
+  	add_events: function (eventss, fn){
 	
 								
 									  var visevents = new vis.DataSet();
@@ -17094,7 +17175,7 @@ exports.timeline_leave_functions =  function ($http,Timeline,$rootScope) {
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-leave-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],79:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],81:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_loans_functions =  function ($http,Timeline,$rootScope) {
@@ -17213,7 +17294,7 @@ exports.timeline_loans_functions =  function ($http,Timeline,$rootScope) {
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-loans-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],80:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],82:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 
@@ -17222,7 +17303,41 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 
   
   return {
-  
+ 
+		  loadgroups: function(items){
+	
+			var _groups=[]
+			var addednames=[]
+			
+			 _.each(items._data, function(value) {
+			
+			if(value.start_date!="0000-00-00" && value.end_date!="0000-00-00"&& value.start_date!="" &&value.end_date!=""&&value.project_name!=""){
+				
+				if($.inArray(value.group, $rootScope.addednames)==-1 ){
+					$rootScope.addednames.push(value.group)
+					//n.b. may be able to order groups when locatiobn hierarchy given in emu
+					content=value.group ||"NA"
+	
+					 
+					 _groups.push({
+										id				:	value.group,
+										//display		:	'shown',
+										track			:    value.track,
+										order		    :    value.order,
+										event_type		:	 value.event_type,
+										content			:    value.group_name,
+										event_typeSORT	:    content,
+										selected         : value.select_group 
+									})
+				}
+				}
+			})
+
+			console.log(_groups)
+			return _groups		
+
+		},
+	
   update_andCompile: function(item) {
   var self = this
 			$compile($("timeline-databar"))($rootScope);
@@ -17243,8 +17358,61 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 		
 			
 		},	
+		
+		populate_timeline_track: function(rootScope,dataset,dataset_functions) {
+			 
+				 var self = this
+				 $rootScope.groups = $rootScope.groups || []
+				 var groups =rootScope.groups
+				  rootScope.timeline.setGroups(groups);
+				  
+					dataset.query({}, function(datax) {
+						self.add_events_loop(rootScope,datax,dataset_functions)
+					})
+					
+		},
+		
+	
+
+
+			populate_timeline_track_method_b: function(rootScope,data_functions) {
 			
-  export_JSON_to_CSV: function(JSONData, ReportTitle, ShowLabel){
+				 var self = this
+				 $rootScope.groups = $rootScope.groups || []
+				 var groups =rootScope.groups
+				  rootScope.timeline.setGroups(groups);
+			  
+				  data_functions.get_events().then(function(datax) {					  
+					self.add_events_loop(rootScope,datax,data_functions)
+					})
+		
+			},
+		 
+			add_events_loop: function(rootScope,datax,dataset_functions) {
+	
+				var self = this
+				dataset_functions.add_events(datax, function(public_dates){
+							 rootScope.leave_groups = self.loadgroups(public_dates)
+							_.each(rootScope.leave_groups, function(_group) {
+								rootScope.groups.push(_group)
+							})
+							 _.each(public_dates._data, function(date) {
+								if($rootScope.timeline.itemsData){
+								rootScope.timeline.itemsData.getDataSet().add(date)
+								}
+							})
+							rootScope.timeline.itemsData.on("update", function(){self.update_andCompile()})
+							rootScope.timeline.fit()
+							$timeout(self.update_andCompile(),500) //needed due to angular wierdness with directives
+				})
+	
+	
+			},
+		 
+		 
+		
+			
+		export_JSON_to_CSV: function(JSONData, ReportTitle, ShowLabel){
   
   
     //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
@@ -17358,13 +17526,14 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
                 $(".vis-group").droppable({
                     accept: '.date_add',
                     drop: function(event, ui) {
-
+		event.preventDefault()
+console.log('drop')
                         if (!$('.already-dropped').length) {
                             $('body').addClass('already-dropped');
                             setTimeout(function() {
                                 $('.already-dropped').removeClass('already-dropped');
                             }, 100);
-                            event.preventDefault()
+                          
                             time=(timeline.getEventProperties(event).time)
 							group=(timeline.getEventProperties(event).group)
 							
@@ -17388,7 +17557,7 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 							}
 							
 							function add_item(dropped_group,group,time,value,colour,days,type){
-							
+console.log('add_item')
 									 date_dropped=(moment(time).startOf('day')._d)
 									
 									 
@@ -17405,7 +17574,8 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 													  start_date :moment(time).startOf('day').format("MMM Do"),
 													  end_date :moment(time).add(days, 'days').format("MMM Do"),
 													  notes  :"",
-														days :_days.days}
+														days :_days
+													}
 									
 									
 									var new_date = {
@@ -17420,8 +17590,11 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 										days:_days
 
 									}
+console.log('save')
 									var _timeline = new Timeline(new_date)
 										.$save(function(_item) {
+										
+console.log('saved',_item)
 											new_date.start =_item.start_date
 											new_date.end = _item.end_date
 											new_date._id = _item._id
@@ -17450,7 +17623,7 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 		
                         
 								timeline.setOptions({'editable':unlock});
-								
+								timeline.options.editable=true
 			
 							
 		  	
@@ -17533,39 +17706,7 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
   
   },
   
-  		  loadgroups: function(items){
-	
-			var _groups=[]
-			var addednames=[]
-			
-			 _.each(items._data, function(value) {
-			
-			if(value.start_date!="0000-00-00" && value.end_date!="0000-00-00"&& value.start_date!="" &&value.end_date!=""&&value.project_name!=""){
-				
-				if($.inArray(value.group, $rootScope.addednames)==-1 ){
-					$rootScope.addednames.push(value.group)
-					//n.b. may be able to order groups when locatiobn hierarchy given in emu
-					content=value.group ||"NA"
-	
-					 
-					 _groups.push({
-										id				:	value.group,
-										//display		:	'shown',
-										track			:    value.track,
-										order		    :    value.order,
-										event_type		:	 value.event_type,
-										content			:    value.group_name,
-										event_typeSORT	:    content,
-										selected         : value.select_group 
-									})
-				}
-				}
-			})
-
-			console.log(_groups)
-			return _groups		
-
-		},
+  	
   
    		 event_html: function(event_to_add){
 		 
@@ -17573,11 +17714,11 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 			var  id = event_to_add.id
 		 	var  name = event_to_add.name
 		 	var  showimage = event_to_add.showimage
-		 	var  image =event_to_add.image
-		 	var  start_date =event_to_add.start_date
-		 	var  end_date =event_to_add.end_date
-		 	var  notes  =event_to_add.notes ||""
-		 	var  days =event_to_add.days
+		 	var  image = event_to_add.image
+		 	var  start_date = event_to_add.start_date
+		 	var  end_date = event_to_add.end_date
+		 	var  notes  = event_to_add.notes ||""
+		 	var  days = event_to_add.days
 			var  description =event_to_add.description ||""
 		 
 			var notes=notes ||""
@@ -17590,31 +17731,35 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 			return htmlContent
 
 			},
-				selected_data:	 function (event) {
-			 var self=this
-			 	console.log('get ID to update')
-					selected_timeline_id=event.items[0]
-			 if(selected_timeline_id){
-			 //newly selected - get ID to update
+			
+		selected_data:	 function (event) {
 				
-			//fetch the timeline dataSetitem 
-					selected_item =	timeline.itemsData.getDataSet().get(selected_timeline_id)
-			//update the data entry form
-			//console.log(selected_item)
-			
-			$rootScope.selected_timeline_id=selected_timeline_id
-			$rootScope.selected_item=selected_item.name
-			$rootScope.selected_type=selected_item._type
-			if(selected_item.days>0){
-			$rootScope.selected_days=" - " +selected_item.days + " days"
-			}
-			$rootScope.selected_id=selected_item._id
-			$rootScope.selected_notes=selected_item.notes
-			//console.log('startDate'+new Date(selected_item.start))
-			$rootScope.datePicker.date={startDate:new Date(selected_item.start),endDate:new Date (selected_item.end)}
-			
-}
-            },
+					var self=this
+		
+					//if(timeline.options.editable){
+							console.log('get ID to update')
+							selected_timeline_id=event.items[0]
+							 if(selected_timeline_id){
+										selected_item =	timeline.itemsData.getDataSet().get(selected_timeline_id)
+										$rootScope.selected_timeline_id=selected_timeline_id
+										$rootScope.selected_item=selected_item.name
+										$rootScope.selected_type=selected_item._type
+										if(selected_item.days>0){
+												$rootScope.selected_days=" - " +selected_item.days + " days"
+										}
+										$rootScope.selected_id=selected_item._id
+										$rootScope.selected_notes=selected_item.notes
+										$rootScope.datePicker.date={startDate:new Date(selected_item.start),endDate:new Date (selected_item.end)}
+							
+							}
+					//}
+					//else
+					//{
+					//	console.log('timeline locked')
+					//}
+
+           },
+		   
    get_events: function() {
       return $http.get('http://museums.bristol.gov.uk/sync/data/events.JSON');  //1. this returns promise
     },
@@ -17627,8 +17772,10 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 	},
 	updateItem: function(options){
 		if(typeof(timeline)!="undefined"){
-		timeline.itemsData.getDataSet().update(options)
-		this.update_andCompile()
+			if(timeline.itemsData){
+				timeline.itemsData.getDataSet().update(options)
+				this.update_andCompile()
+			}
 		
 		}
 	
@@ -17636,7 +17783,8 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
 	},
 	
     setup: function(Timeline,groups,dates) {
-	var self=this
+		
+		var self=this
 	
 
          var options = {
@@ -17659,31 +17807,55 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$r
                     editable: false,  
 					 groupOrder:'order',					
                     onMove: function(item, callback) {
-$rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (item.end)}
-                        	var event_to_add=	{id : item.id,
-													  name : item.name,
-													  showimage :"",
-													  image :"",
-													  start_date :item.start,
-													  end_date : item.end,
-													  notes  :item.notes ,
-												  days :""}
 						
-						var _timeline = new Timeline({
-									
-						  
-							 content:  self.event_html(event_to_add ),
-                            group: item.group,
-                            start_date: item.start,
-                            end_date: item.end,
-                            _id: item._id
-                        })
-                       
-                        Timeline.update({
-                            id: item._id
-                        }, _timeline);
+						
+							$rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (item.end)}
 
-                        callback(item);
+							days=self.days(moment(item.start),moment(item.end))
+							$rootScope.selected_days = days
+							if(moment(item.start).isValid()){ //true
+									var event_to_add=	{id : item._id,
+															  name : item.name,
+															  showimage :"",
+															  image :"",
+															  start_date : moment(item.start).startOf('day').format("MMM Do"),
+															  end_date : moment(item.end).startOf('day').format("MMM Do"),
+															  notes  :item.notes ,
+															days :days}
+									
+									var _timeline = new Timeline({
+										content:  self.event_html(event_to_add ),
+										group: item.group,
+										start_date: item.start,
+										end_date: item.end,
+										_id: item._id
+									})
+								   
+									Timeline.update({
+										id: item._id
+									}, _timeline);
+									
+							
+								html=self.event_html(event_to_add)
+								var _options={id:item._id,content:html,name: item.name,start:moment(event_to_add.start_date)._d}
+								Timeline.update({
+								id: $rootScope.selected_id,				
+								}, _options);			
+								
+								self.updateItem(_options)	
+								
+								
+									
+								callback(item);
+								
+							}
+							else
+							{
+									callback(item);
+								
+							}
+									
+								
 
                     },
                     onUpdate: function(item, callback) {
@@ -17691,10 +17863,10 @@ $rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (ite
                         self.prettyPrompt('Update item', 'Edit items text:', item.content, function(value) {
                             if (value) {
                                 item.content = value;
-                                callback(item); // send back adjusted item
+                                //callback(item); // send back adjusted item
 
 									days=self.days(item.start, item.end)
-									
+									if(moment(item.start).isValid()){ //true
 										
 								var event_to_add=	{id : item.id,
 													  name :value,
@@ -17719,7 +17891,26 @@ $rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (ite
                                 Timeline.update({
                                     id: item._id
                                 }, _timeline);
-                                callback(item);
+                               
+								
+									//$rootScope.timeline.itemsData.on("update", function(){
+									
+									var _options={id:item._id,content:self.event_html(event_to_add),start:moment(event_to_add.startDate)._d,end:moment(event_to_add.endDate)._d,start_date:moment(event_to_add.startDate)._d,end_date:moment(event_to_add.endDate)._d}
+									console.log(_options)
+									console.log('updated',_options)
+									self.updateItem(_options)
+									$timeout(self.update_andCompile(),1000) 
+									
+									//})
+									
+								
+								
+								 callback(item);
+							}
+										else
+										{
+										console.log('invalid date')
+										}							
                             } else {
                                 callback(null); // cancel updating the item
                             }
@@ -17794,7 +17985,7 @@ $rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (ite
                     }
                 };
 
-  var container = document.getElementById('example-timeline');
+
   
   
 		var self = this
@@ -17820,33 +18011,29 @@ $rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (ite
 				
 				
 
+				//var container = document.getElementById('example-timeline');
+               // timeline = new vis.Timeline(container);
+				//groups=self.loadgroups(dates)
+				//$rootScope.rawData=dates
+				//$rootScope.groups=groups
+				//var groups = new vis.DataSet(groups);
 
-                timeline = new vis.Timeline(container);
-				groups=self.loadgroups(dates)
-				$rootScope.rawData=dates
-				$rootScope.groups=groups
-				var groups = new vis.DataSet(groups);
-				
            
-						
-			
-			
-		
-				
-                timeline.setItems(dates);
-                timeline.setOptions(options);
-				
-				timeline.fit()
-				
 				//self.changeGroups($rootScope.groups.selected)
 				
-				timeline.on('select', function (properties) {
+				 timeline.on('select', function (properties) {
 						self.selected_data( properties)
 
 				});
 				
+			   timeline.setItems(dates);
+			   console.log('timelineoptions',options)
+               timeline.setOptions(options);
+				timeline.fit()
 				
-					$rootScope.timeline=timeline					
+				
+				
+							
 			move=function(percentage) {
 				var range = this.timeline.getWindow();
 				var interval = range.end - range.start;
@@ -17878,13 +18065,14 @@ $rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (ite
 
 			
 			self.enable_event_drop()
-			//$compile($("timeline-databar"))($rootScope);
-			 var list = groups.get({
+			$compile($("timeline-databar"))($rootScope);
+				/*
+				var list = groups.get({
 						filter: function(item) {
 							return (item);
 						}
 				})
-					
+			*/
 			//timeline.setGroups(list);   
 		
 			
@@ -17895,7 +18083,7 @@ $rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (ite
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],81:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],83:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_shopify_functions =  function ($http,Timeline,$rootScope) {
@@ -18038,7 +18226,7 @@ exports.timeline_shopify_functions =  function ($http,Timeline,$rootScope) {
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-shopify-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],82:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],84:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_visitor_figures_functions =  function ($http,Timeline,$rootScope) {
@@ -18179,7 +18367,7 @@ exports.timeline_visitor_figures_functions =  function ($http,Timeline,$rootScop
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-visitor-figures-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],83:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],85:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.turnstiles_controller = function(log_messages,$scope, AuthService,$http, $q, $routeParams, $location,$rootScope, turnstile_app
@@ -18374,7 +18562,7 @@ $scope.settings=[]
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/turnstiles/turnstiles-controller.js","/../components/turnstiles")
-},{"b55mWE":4,"buffer":3}],84:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],86:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	exports.turnstilesController = function() {
   return {
@@ -18402,7 +18590,7 @@ $scope.settings=[]
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/turnstiles/turnstiles-directive.js","/../components/turnstiles")
-},{"b55mWE":4,"buffer":3}],85:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],87:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.users_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Team
     ) {
@@ -18528,7 +18716,7 @@ exports.users_controller = function($route,$scope, $http, $q, $routeParams, $loc
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/user-admin/users-controller.js","/../components/user-admin")
-},{"b55mWE":4,"buffer":3}],86:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],88:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	exports.userAdmin = function() {
   return {
@@ -18540,7 +18728,7 @@ exports.users_controller = function($route,$scope, $http, $q, $routeParams, $loc
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/user-admin/users-directive.js","/../components/user-admin")
-},{"b55mWE":4,"buffer":3}],87:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],89:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.ProductDetailsController = function($location, $scope, $routeParams, $http) {
 
@@ -18566,7 +18754,7 @@ exports.RadioController = function($location, $scope, $routeParams, $http) {
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/controllers/controllers.js","/controllers")
-},{"b55mWE":4,"buffer":3}],88:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],90:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	
 exports.NavController = function($location,AuthService,$scope,$http) {
@@ -18996,7 +19184,7 @@ $scope.user_groups['RETAIL'].performance=performance_data
 };
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/controllers/navbar-controller.js","/controllers")
-},{"b55mWE":4,"buffer":3}],89:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],91:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 	exports.userMenu = function() {
@@ -19042,7 +19230,7 @@ $scope.user_groups['RETAIL'].performance=performance_data
   }
 	}
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/directives/directives.js","/directives")
-},{"b55mWE":4,"buffer":3}],90:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],92:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 /* app */
@@ -19170,8 +19358,8 @@ var app_services = require('../shared/services/app-services');
 var timeline_services = require('../components/timeline/timeline-services');
 var timeline_leave_services = require('../components/timeline/timeline-leave-services');
 var timeline_shopify_functions = require('../components/timeline/timeline-shopify-services');
-
-
+var timeline_install_functions = require('../components/timeline/timeline-installs-services');
+var timeline_exhibitions_functions = require('../components/timeline/timeline-exhibitions-services');
 var timeline_visitor_figures_functions = require('../components/timeline/timeline-visitor-figures-services');
 var timeline_googlesheets_functions = require('../components/timeline/timeline-googlesheets-services');
 var timeline_learning_services = require('../components/timeline/timeline-learning-bookings-services');
@@ -19544,6 +19732,19 @@ _.each(timeline_leave_services, function(factory, name) {
 _.each(timeline_shopify_functions, function(factory, name) {
   app.factory(name, factory);
 });
+
+_.each(timeline_install_functions, function(factory, name) {
+  app.factory(name, factory);
+});
+
+_.each(timeline_exhibitions_functions, function(factory, name) {
+  app.factory(name, factory);
+});
+
+
+
+
+
 _.each(timeline_visitor_figures_functions, function(factory, name) {
   app.factory(name, factory);
 });
@@ -19641,7 +19842,7 @@ app.config(['$locationProvider', function($locationProvider) {
 
 
 app.config(['$qProvider', function ($qProvider) {
-   // $qProvider.errorOnUnhandledRejections(false);
+    $qProvider.errorOnUnhandledRejections(false); //prevents the Possibly unhandled rejection errror
 }]);
 
        
@@ -19939,8 +20140,8 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
           
         }])
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_d7b5c67.js","/")
-},{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/performance/analyser/analyser-controller":18,"../components/performance/dashboard-controllers":19,"../components/performance/donations/monthly-donations-controller":20,"../components/performance/donations/performance-form-controller":21,"../components/performance/donations/raw-donations-controller":22,"../components/performance/donations/yearly-donations-controller":23,"../components/performance/events/monthly-events-controller":24,"../components/performance/events/performance-form-controller":25,"../components/performance/events/raw-events-controller":26,"../components/performance/events/yearly-events-controller":27,"../components/performance/exhibitions-pwyt/monthly-donations-controller":28,"../components/performance/exhibitions-pwyt/performance-form-controller":29,"../components/performance/exhibitions-pwyt/raw-donations-controller":30,"../components/performance/exhibitions/exhibitions-summary-controller":31,"../components/performance/gallery-visits/monthly-teg-controller":32,"../components/performance/gallery-visits/performance-form-controller":33,"../components/performance/gallery-visits/raw-teg-controller":34,"../components/performance/gallery-visits/weekly-teg-controller":35,"../components/performance/gallery-visits/yearly-teg-controller":36,"../components/performance/gift-aid/monthly-giftaid-controller":37,"../components/performance/gift-aid/performance-form-controller":38,"../components/performance/gift-aid/raw-giftaid-controller":39,"../components/performance/learning/age-learning-controller":40,"../components/performance/learning/monthly-learning-controller":41,"../components/performance/learning/performance-form-controller":42,"../components/performance/learning/raw-learning-controller":43,"../components/performance/learning/yearly-learning-controller":44,"../components/performance/operations/monthly-operations-controller":45,"../components/performance/operations/performance-form-controller":46,"../components/performance/operations/raw-operations-controller":47,"../components/performance/operations/yearly-operations-controller":48,"../components/performance/performance-directive":49,"../components/performance/retail/monthly-retail-sales-controller":50,"../components/performance/retail/performance-form-controller":51,"../components/performance/retail/raw-retail-sales-controller":52,"../components/performance/retail/yearly-retail-sales-controller":53,"../components/performance/turnstiles/monthly-turnstiles-controller":54,"../components/performance/turnstiles/raw-turnstiles-controller":55,"../components/performance/visits/monthly-visits-controller":56,"../components/performance/visits/raw-visits-controller":57,"../components/performance/visits/visits-form-controller":58,"../components/performance/visits/yearly-visits-controller":59,"../components/performance/welcome-desk/monthly-welcomedesk-controller":60,"../components/performance/welcome-desk/performance-form-controller":61,"../components/performance/welcome-desk/raw-welcomedesk-controller":62,"../components/performance/welcome-desk/yearly-welcomedesk-controller":63,"../components/shopify/shopify-controller":64,"../components/shopify/shopify-directive":65,"../components/team/app-controllers":66,"../components/team/form-controller":67,"../components/team/leave-controller":68,"../components/team/team-controller":69,"../components/tech-support/tech-support-controller":70,"../components/tech-support/tech-support-directive":71,"../components/tech-support/trello-services":72,"../components/timeline-settings/timeline-settings-controller":73,"../components/timeline/timeline-controller":74,"../components/timeline/timeline-directive":75,"../components/timeline/timeline-googlesheets-services":76,"../components/timeline/timeline-learning-bookings-services":77,"../components/timeline/timeline-leave-services":78,"../components/timeline/timeline-loans-services":79,"../components/timeline/timeline-services":80,"../components/timeline/timeline-shopify-services":81,"../components/timeline/timeline-visitor-figures-services":82,"../components/turnstiles/turnstiles-controller":83,"../components/turnstiles/turnstiles-directive":84,"../components/user-admin/users-controller":85,"../components/user-admin/users-directive":86,"../shared/controllers/controllers":87,"../shared/controllers/navbar-controller":88,"../shared/directives/directives":89,"../shared/services/app-services":91,"../shared/services/data-services":92,"b55mWE":4,"buffer":3,"underscore":7}],91:[function(require,module,exports){
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_127410df.js","/")
+},{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/performance/analyser/analyser-controller":18,"../components/performance/dashboard-controllers":19,"../components/performance/donations/monthly-donations-controller":20,"../components/performance/donations/performance-form-controller":21,"../components/performance/donations/raw-donations-controller":22,"../components/performance/donations/yearly-donations-controller":23,"../components/performance/events/monthly-events-controller":24,"../components/performance/events/performance-form-controller":25,"../components/performance/events/raw-events-controller":26,"../components/performance/events/yearly-events-controller":27,"../components/performance/exhibitions-pwyt/monthly-donations-controller":28,"../components/performance/exhibitions-pwyt/performance-form-controller":29,"../components/performance/exhibitions-pwyt/raw-donations-controller":30,"../components/performance/exhibitions/exhibitions-summary-controller":31,"../components/performance/gallery-visits/monthly-teg-controller":32,"../components/performance/gallery-visits/performance-form-controller":33,"../components/performance/gallery-visits/raw-teg-controller":34,"../components/performance/gallery-visits/weekly-teg-controller":35,"../components/performance/gallery-visits/yearly-teg-controller":36,"../components/performance/gift-aid/monthly-giftaid-controller":37,"../components/performance/gift-aid/performance-form-controller":38,"../components/performance/gift-aid/raw-giftaid-controller":39,"../components/performance/learning/age-learning-controller":40,"../components/performance/learning/monthly-learning-controller":41,"../components/performance/learning/performance-form-controller":42,"../components/performance/learning/raw-learning-controller":43,"../components/performance/learning/yearly-learning-controller":44,"../components/performance/operations/monthly-operations-controller":45,"../components/performance/operations/performance-form-controller":46,"../components/performance/operations/raw-operations-controller":47,"../components/performance/operations/yearly-operations-controller":48,"../components/performance/performance-directive":49,"../components/performance/retail/monthly-retail-sales-controller":50,"../components/performance/retail/performance-form-controller":51,"../components/performance/retail/raw-retail-sales-controller":52,"../components/performance/retail/yearly-retail-sales-controller":53,"../components/performance/turnstiles/monthly-turnstiles-controller":54,"../components/performance/turnstiles/raw-turnstiles-controller":55,"../components/performance/visits/monthly-visits-controller":56,"../components/performance/visits/raw-visits-controller":57,"../components/performance/visits/visits-form-controller":58,"../components/performance/visits/yearly-visits-controller":59,"../components/performance/welcome-desk/monthly-welcomedesk-controller":60,"../components/performance/welcome-desk/performance-form-controller":61,"../components/performance/welcome-desk/raw-welcomedesk-controller":62,"../components/performance/welcome-desk/yearly-welcomedesk-controller":63,"../components/shopify/shopify-controller":64,"../components/shopify/shopify-directive":65,"../components/team/app-controllers":66,"../components/team/form-controller":67,"../components/team/leave-controller":68,"../components/team/team-controller":69,"../components/tech-support/tech-support-controller":70,"../components/tech-support/tech-support-directive":71,"../components/tech-support/trello-services":72,"../components/timeline-settings/timeline-settings-controller":73,"../components/timeline/timeline-controller":74,"../components/timeline/timeline-directive":75,"../components/timeline/timeline-exhibitions-services":76,"../components/timeline/timeline-googlesheets-services":77,"../components/timeline/timeline-installs-services":78,"../components/timeline/timeline-learning-bookings-services":79,"../components/timeline/timeline-leave-services":80,"../components/timeline/timeline-loans-services":81,"../components/timeline/timeline-services":82,"../components/timeline/timeline-shopify-services":83,"../components/timeline/timeline-visitor-figures-services":84,"../components/turnstiles/turnstiles-controller":85,"../components/turnstiles/turnstiles-directive":86,"../components/user-admin/users-controller":87,"../components/user-admin/users-directive":88,"../shared/controllers/controllers":89,"../shared/controllers/navbar-controller":90,"../shared/directives/directives":91,"../shared/services/app-services":93,"../shared/services/data-services":94,"b55mWE":4,"buffer":3,"underscore":7}],93:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.data_table_reload = function() {	
 
@@ -20844,7 +21045,7 @@ exports.screen_saver_loop=function($rootScope,$location,$interval,Team) {
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/services/app-services.js","/services")
-},{"b55mWE":4,"buffer":3}],92:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],94:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var status = require('http-status');
          
@@ -21567,4 +21768,4 @@ exports.Tallys = function($resource){
 		
 	
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/services/data-services.js","/services")
-},{"b55mWE":4,"buffer":3,"http-status":5}]},{},[90])
+},{"b55mWE":4,"buffer":3,"http-status":5}]},{},[92])

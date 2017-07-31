@@ -124,8 +124,8 @@ var app_services = require('../shared/services/app-services');
 var timeline_services = require('../components/timeline/timeline-services');
 var timeline_leave_services = require('../components/timeline/timeline-leave-services');
 var timeline_shopify_functions = require('../components/timeline/timeline-shopify-services');
-
-
+var timeline_install_functions = require('../components/timeline/timeline-installs-services');
+var timeline_exhibitions_functions = require('../components/timeline/timeline-exhibitions-services');
 var timeline_visitor_figures_functions = require('../components/timeline/timeline-visitor-figures-services');
 var timeline_googlesheets_functions = require('../components/timeline/timeline-googlesheets-services');
 var timeline_learning_services = require('../components/timeline/timeline-learning-bookings-services');
@@ -498,6 +498,19 @@ _.each(timeline_leave_services, function(factory, name) {
 _.each(timeline_shopify_functions, function(factory, name) {
   app.factory(name, factory);
 });
+
+_.each(timeline_install_functions, function(factory, name) {
+  app.factory(name, factory);
+});
+
+_.each(timeline_exhibitions_functions, function(factory, name) {
+  app.factory(name, factory);
+});
+
+
+
+
+
 _.each(timeline_visitor_figures_functions, function(factory, name) {
   app.factory(name, factory);
 });
@@ -595,7 +608,7 @@ app.config(['$locationProvider', function($locationProvider) {
 
 
 app.config(['$qProvider', function ($qProvider) {
-   // $qProvider.errorOnUnhandledRejections(false);
+    $qProvider.errorOnUnhandledRejections(false); //prevents the Possibly unhandled rejection errror
 }]);
 
        

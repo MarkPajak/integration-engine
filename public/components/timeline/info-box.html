@@ -1,31 +1,52 @@
-<!-- Modal -->
+
+
+
+
+
 <div id="timelineinfobox" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+   
+
+   <div class="modal-dialog">
+   
 
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header">
+	
+		
+	   <div class="modal-header" >
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 id="infobox_name" class="modal-title">{{name}}</h4>
-      </div>
-      <div class="modal-body">
-	  <h5>Selected Event</h5>
-
 		
-			<h4>{{$root.selected_type}}{{$root.selected_days}}</h4>
-	
+      </div>
 
-		<div class="form-group"><label>Name:</label>
-			<input ng-disabled="!locked.add_item" type="text"  ng-data="{{selected_id}}" ng-model="$root.selected_item"></input>
-		</div>
-		<div class="form-group"><label>Dates:</label>
-			<input  ng-disabled="!locked.add_item" date-range-picker options="dateRangeOptions" class="form-control date-picker"   type="text" ng-model="$root.datePicker.date" />
-		</div>
-	  <p ng-show="description" id="infobox_description"></p>
-	  	<div class="form-group"><label>Notes:</label>
-			<textarea ng-disabled="!locked.add_item" type="text" lines="5" ng-data="{{selected_id}}" ng-model="$root.selected_notes"></textarea>
-		</div>
-        <p>{{startdate}}-{{enddate}}</p>
+
+  
+  <div class="modal-body" >
+		
+<dl class="row"  >
+	<dt class="col-sm-3">Dates: </dt>
+	<dd class="col-sm-9"  ng-show="!locked.add_item">{{ selected_start }} - {{ selected_end }} </dd>
+	<dd class="col-sm-9"  ng-show="locked.add_item"> 
+		<input  ng-disabled="!locked.add_item" date-range-picker options="dateRangeOptions" class="form-control date-picker"   type="text" ng-model="$root.datePicker.date" ng-model-options="{ debounce: 1000 }" />
+	</dd> 
+
+	<dt class="col-sm-3">Type:</dt>
+	<dd class="col-sm-9"  >{{$root.selected_type}}</dd>
+
+	<dt class="col-sm-3">Length:</dt>
+	<dd class="col-sm-9">{{$root.selected_days}}</dd>
+
+	<dt class="col-sm-3">Notes:</dt>
+	<dd class="col-sm-9"  ng-show="!locked.add_item">{{$root.selected_notes}}</dd>
+	<dd class="col-sm-9"  ng-show="locked.add_item"> 
+		<textarea ng-disabled="!locked.add_item" type="text" lines="5" ng-data="{{selected_id}}" ng-model="$root.selected_notes" ng-model-options="{ debounce: 1000 }" ></textarea>
+	</dd> 
+
+</dl>
+				
+
+	
+		
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

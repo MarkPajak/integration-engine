@@ -26,7 +26,7 @@ function handleError(err) {
   this.emit('end');
 }
 
-gulp.task('browserify-client', ['lint-public'], function() {
+gulp.task('browserify-client',  function() {
   return gulp.src('public/shared/core.js')
     .pipe(browserify({
       insertGlobals: true

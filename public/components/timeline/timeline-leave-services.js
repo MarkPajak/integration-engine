@@ -9,7 +9,7 @@ exports.timeline_leave_functions =  function ($http,Timeline,$rootScope) {
   
   
   
-  	add_leave: function (eventss, fn){
+  	add_events: function (eventss, fn){
 	
 								
 									  var visevents = new vis.DataSet();
