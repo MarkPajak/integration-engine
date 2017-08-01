@@ -1,7 +1,44 @@
 
 var _ = require('underscore');
+var ical = require('ical-generator')
+
+
+
 
 var refactor_data_table = function (options){
+
+
+this.calendar_feed = function (events){
+
+				_events = []
+				_.each(events,function(event,i){
+								var _event = {
+											start:event.start,
+											end:event.end,
+											timestamp: event.timestamp,
+											summary:event.summary,
+											organizer:event.organizer
+											}
+									
+									_events.push(_event)
+				})
+
+
+				// You can also create events directly with ical()
+				cal = ical({
+					domain: 'sebbo.net',
+					prodId: '//superman-industries.com//ical-generator//EN',
+					events: _events
+				}).toString();
+
+console.log(cal)
+
+				return (cal)
+
+
+
+}
+
 	
 	this.mongo_aggregator=  { "$add": [ "$date_value", 7 * 60 * 60 * 1000 ] }         
 		
