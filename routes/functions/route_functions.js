@@ -31,7 +31,7 @@ this.calendar_feed = function (events){
 					events: _events
 				}).toString();
 
-console.log(cal)
+
 
 				return (cal)
 

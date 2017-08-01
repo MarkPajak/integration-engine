@@ -686,7 +686,7 @@ exports.Tallys = function($resource){
 		  
 		  var events = [];
 			
-			$http.get('http://museums.bristol.gov.uk/sync/data/events.JSON')
+	$http.get('http://museums.bristol.gov.uk/sync/data/events.JSON')
     .then(function(response) {
       events = response;
     }); 
