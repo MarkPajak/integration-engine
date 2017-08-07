@@ -128,6 +128,17 @@ exports.Monthly_visits =  function($resource){
   
   }
   
+  
+    exports.Weekly_welcomedesk =  function($resource){
+	  
+	return $resource('/welcomedesk/weekly',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+  
+  }
+  
+  
       exports.Monthly_exhibitions_pwyt =  function($resource){
 	  
 	return $resource('/exhibitions_pwyt/all',{ }, {
@@ -223,7 +234,16 @@ exports.Monthly_visits =  function($resource){
        
 
   } 
-  
+     exports.Weekly_donations =  function($resource){
+	  
+	  
+	return $resource('/donations/weekly',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+       
+
+  }
       exports.Monthly_learning =  function($resource){
 	  
 	  
@@ -283,6 +303,33 @@ exports.Monthly_visits =  function($resource){
 	
 		
             return $resource('/welcomedesk/:id/:museum_id/:date_value/:exact', null,
+			{ 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray:true}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+ }
+ 
+       exports.Resources =  function($resource){
+	 
+		 
+            return $resource('/resources/:id/:name/:type/:date_value/:exact/:museum_id', null,
+			{ 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray:true}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+ }
+ 
+ 
+      exports.Bookings =  function($resource){
+	 
+		 
+            return $resource('/bookings/:id/:type/:date_value/:exact', null,
 			{ 'get':    {method:'GET'},  // get individual record
 			  'save':   {method:'POST'}, // create record
 			  'query':  {method:'GET', isArray:true}, // get list all records

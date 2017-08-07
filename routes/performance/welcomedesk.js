@@ -185,7 +185,170 @@ router.get('/total', function(req, res, next) {
 
 });
 
+router.get('/weekly', function(req, res, next) {
 
+
+function get_kpis(cb){
+
+
+Team.aggregate([
+			
+
+
+		{ $group: {
+                _id: {
+						"kpi_year": { "$year":  route_functions.mongo_aggregator }, 
+						"kpi_week": { "$week": route_functions.mongo_aggregator}, 
+
+					   kpi_venue:'$museum_id',
+					   
+					 },  
+				
+               total: { $sum:  { $sum: [ "$cash", "$card" ] }} ,
+			   number_transactions: { $sum:    "$no_transactions" } ,
+			  // ATV: {$sum:  { $divide: [ { $sum:  { $sum: [ "$cash", "$card" ] }}   ,{ $sum:    "$no_transactions" } ]}},
+		      
+            }
+		 },
+
+	 { $project : {kpi_venue:"$_id.kpi_venue", kpi_year :"$_id.kpi_year", kpi_week :"$_id.kpi_week",ATV:'$ATV',number_transactions:'$number_transactions', total:"$total"}  },
+
+		
+
+    ], function (err, result) {
+	
+	
+	console.log(err)
+	
+	
+	Kpi_aggregate.aggregate([
+			
+
+
+		{ $group: {
+                _id: {
+
+						"year": { "$year":  route_functions.mongo_aggregator }, 
+						"month":{ "$month":  route_functions.mongo_aggregator }, 
+    
+					   venue:'$museum_id',
+					   
+					 },  
+				
+               visits: { $sum:  { $sum: [ "$value" ] }} ,
+			
+		      
+            }
+		 },
+
+	 { $project : {venue:"$_id.venue", year :"$_id.year", month :"$_id.month",ATV:'$ATV',number_transactions:'$number_transactions', visits:"$visits"}  },
+
+		
+	  ], function (err, result2) {
+	
+        if (err) {
+            console.log(err);
+        } else {
+		
+		
+		_.each(result,function(kpi,i){
+			_.each(result2,function(visits,ii){
+			//console.log(visits.year)
+			if(kpi.kpi_venue==visits.venue &&  kpi.kpi_week==visits.month && kpi.kpi_year==visits.year){
+			result[i].visits=visits.visits
+			result[i].conversion=((kpi.number_transactions/visits.visits)*100).toFixed(2)+"%"; 
+			result[i].ATV=((kpi.total/kpi.number_transactions).toFixed(2))
+
+			}
+			
+			
+			})
+		})
+		
+		
+//res.json(result)
+	cb(result)
+		   	//mongoose.connection.close()	
+        }
+		
+    });
+	    });
+}
+
+get_kpis( function ( result) {
+	
+
+	
+	
+	
+
+	
+	//load venues
+	var venues=[]
+	_.each(result,function(row){
+		if(venues.indexOf(row.kpi_venue)==-1){
+			console.log('adding venue ',row.kpi_venue)
+			venues.push(row.kpi_venue)
+		}
+	})
+	
+	function wind_up_Stats(	result,returned_row,analysis_field,venue){
+	var years = [2015,2016,2017,2018]
+			_.each(years,function(year){
+			for (week = 0; week < moment().isoWeeksInYear(); week++) { 
+				week_value = moment().day("Monday").year(year).week(week).format('DD/MM/YY')
+		
+				returned_row[week_value]=""
+			
+				_.each(result,function(row){
+					if(week==row.kpi_week &&venue==row.kpi_venue &&row.kpi_year==year){
+						returned_row[week_value]=row[analysis_field]
+					}
+				})
+			}
+			
+			
+			
+		})
+		return(returned_row)
+	}
+	
+	
+	var returned_data=[]
+
+	_.each(venues,function(venue){
+		console.log(venue)
+	var returned_row={}
+		returned_row.museum=venue
+		returned_row.stat="Welcome desk total"
+		returned_data.push(	 wind_up_Stats(	result,returned_row,"total",venue))
+	var returned_row={}
+		returned_row.museum=venue
+		returned_row.stat="Welcome desk no. of transactions"
+		returned_data.push(	 wind_up_Stats(	result,returned_row,"number_transactions",venue))
+	var returned_row={}
+		returned_row.museum=venue
+		returned_row.stat="Welcome desk  average transaction"
+		returned_data.push(	 wind_up_Stats(	result,returned_row,"ATV",venue))
+	var returned_row={}
+		returned_row.museum=venue
+		returned_row.stat="Welcome desk visits"
+		returned_data.push(	 wind_up_Stats(	result,returned_row,"visits",venue))
+	var returned_row={}
+		returned_row.museum=venue
+		returned_row.stat="Welcome desk  conversion"
+		returned_data.push(	 wind_up_Stats(	result,returned_row,"conversion",venue))
+	
+	})
+
+
+res.json(returned_data)
+	
+})
+
+
+
+});
 router.get('/all', function(req, res, next) {
 
 

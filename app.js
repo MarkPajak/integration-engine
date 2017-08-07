@@ -45,6 +45,11 @@ var turnstiles_logging = require('./routes/remote/turnstiles_logging')
 var kpi_aggregate = require('./routes/kpi_aggregate')	
 	
 
+//RESOURCE BOOKING
+var resources = require('./routes/resource-bookings/resource')	
+var resource_booking = require('./routes/resource-bookings/bookings')		
+	
+	
 //PERFORMANCE KPIS	
 var raw_visits = require('./routes/raw_visits')
 var retail_sales = require('./routes/performance/retail_sales')
@@ -129,6 +134,10 @@ app.use('/gallery_visits', gallery_visits);
 app.use('/events', events);
 app.use('/operations', operations);
 
+
+//RESOURCE BOOKING
+app.use('/bookings', resource_booking);
+app.use('/resources', resources);
 
 /*
 

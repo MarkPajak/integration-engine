@@ -1,4 +1,4 @@
-exports.analyser_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope,Monthly_products_sold_online,Weekly_visits, Monthly_products_published,Monthly_welcomedesk,Monthly_donations,Monthly_visits,Weekly_retail_sales,Monthly_turnstiles,Monthly_retail_sales,Monthly_teg, make_a_pie,make_a_line_chart,weekly_data_table_columns,monthly_data_table_columns,grid_ui_settings,data_table_reload,table_security
+exports.analyser_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope,Weekly_donations,Weekly_welcomedesk,Monthly_products_sold_online,Weekly_visits, Monthly_products_published,Monthly_welcomedesk,Monthly_donations,Monthly_visits,Weekly_retail_sales,Monthly_turnstiles,Monthly_retail_sales,Monthly_teg, make_a_pie,make_a_line_chart,weekly_data_table_columns,monthly_data_table_columns,grid_ui_settings,data_table_reload,table_security
     ) {
 		
 		$scope.interval="Weekly"
@@ -227,7 +227,14 @@ exports.analyser_controller = function($route,$scope, $http, $q, $routeParams, $
 					
 					Weekly_retail_sales.query({}, function(sales) {
 					
-						$scope.windup(sales,"","","","","",visits,"")	
+							Weekly_welcomedesk.query({}, function(welcome) {
+							
+							
+							Weekly_donations.query({}, function(donations) {
+					
+								$scope.windup(sales,"",welcome,"","",donations,visits,"")	
+			})
+			})
 			})
 			})
 			}

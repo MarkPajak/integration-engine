@@ -85,7 +85,7 @@ this.calendar_feed = function (events){
 
 	 
 	 this.retail_stats_monthly=function(result,result2){				   
-console.log('result',result)
+			console.log('result',result)
 			_.each(result,function(kpi,i){
 			_.each(result2,function(visits,ii){
 			

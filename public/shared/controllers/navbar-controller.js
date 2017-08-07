@@ -351,6 +351,8 @@ performance_data.push(events)
 performance_data.push(monthly_events)
 performance_data.push(operations)
 performance_data.push(monthly_operations)
+performance_data.push(monthly_welcomedesk)
+
 
 enter_data.push(record_teg)
 enter_data.push(record_operations)

@@ -15,6 +15,16 @@ var nav_controller = require('../shared/controllers/navbar-controller');
 var tech_support_controller = require('../components/tech-support/tech-support-controller');
 
 
+//RESOURCE BOOKING
+var  rooms_controller = require('../components/resource-bookings/rooms/raw-rooms-controller');
+var  record_rooms_controller = require('../components/resource-bookings/rooms/form-controller');
+
+var resources_directives = require('../components/resource-bookings/directive');
+
+
+
+
+
 var dashboard_controllers = require('../components/machine-monitor/dashboard-controller');
 var feedback_controllers = require('../components/machine-monitor/feedback-controller');
 var satisfaction_controllers = require('../components/machine-monitor/satisfaction-controller');
@@ -302,6 +312,21 @@ _.each(nav_controller, function(controller, name) {
 _.each(tech_support_controller, function(controller, name) {
   app.controller(name, controller);
 });
+
+
+
+
+_.each(record_rooms_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+
+_.each(rooms_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+
+
 _.each(downtime_controllers, function(controller, name) {
   app.controller(name, controller);
 });
@@ -474,6 +499,9 @@ _.each(timeline_settings_controller, function(controller, name) {
 });
 
 
+ _.each(resources_directives, function(directive, name) {
+  app.directive(name, directive);
+});
 
 
 _.each(data_services, function(factory, name) {
@@ -675,7 +703,10 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
               templateUrl: '../components/timeline-settings/timeline-settings-page.html',
               controller: 'timeline_settings_controller'
            })
-		   
+		    .when('/room-hire', {
+              template: '<time-line ng-init="init(\'room-hire\')"  ></time-line>'
+			  
+           })
 		   
 		   
 		   .when('/timeline/:track', {
@@ -880,9 +911,14 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
 			.when('/monthly-turnstiles', {
                template: '<monthly-turnstiles></monthly-turnstiles>'
            })
+		   
+		   .when('/rooms', {
+               template: '<rooms-Formdata></rooms-Formdata>'
+           })
 
 
-		      .when('/turnstiles/:venue', {
+
+		    .when('/turnstiles/:venue', {
                template: '<turnstiles-controller></turnstiles-controller>'
            })
 		      .when('/tech-support:token', {

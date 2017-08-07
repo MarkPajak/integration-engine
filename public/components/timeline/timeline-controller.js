@@ -16,26 +16,28 @@ exports.timeline_controller=     function($compile,  $scope, $http, $q, $routePa
 		$rootScope.datePicker=[];
 		$scope.isloggedin=false	
 	 
+
+
+	 
 		
-		  AuthService.isLoggedIn().then(function(user){
-				console.log('this and that')
-				
-				$scope.user=user
-				$scope.isloggedin=true	
-				main_function()
-				
-		  })
-	   
-	  	setTimeout(function() {
+	 $scope.init = function(timeline_mode)
+  {
+	 	  	setTimeout(function() {
 		
 			if($scope.isloggedin==false){
-				main_function()
+				main_function(timeline_mode)
 			} 
 		
-        }, 2000);
+        }, 2000); 
+	 
+
+  };
+
+	   
+
 	  
 
-main_function = function(){
+main_function = function(timeline_mode){
 
 
 
@@ -357,6 +359,19 @@ main_function = function(){
 			
 			$scope.shopify() //NB for some reason need this to appear for unlogged in users otherwise text wont load in directives
 			
+			
+			//WE'll do some routing here - might need to put it in a better place one day
+			
+			
+			if(timeline_mode=="room-hire"){
+				
+					$scope.visitor_figures()
+				
+				
+				
+			}
+			else
+			{
 			if( $scope.isloggedin){	
 			
 			
@@ -370,7 +385,7 @@ main_function = function(){
 			}			
 			
 			$scope.add_exhibitions()
-		
+			}
 		
 	
 	var checked_event_types=[]
