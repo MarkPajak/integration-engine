@@ -15561,6 +15561,26 @@ exports.timeline_controller=     function($compile,  $scope, $http, $q, $routePa
 
 	 
 		
+	  $scope.isloggedin=false	
+	  
+	  AuthService.isLoggedIn().then(function(user){
+			console.log('this and that')
+			
+			$scope.user=user
+			$scope.isloggedin=true	
+			main_function()
+			
+	  })
+	   
+	  	setTimeout(function() {
+		
+			if($scope.isloggedin==false){
+				main_function()
+			} 
+		
+        }, 1500);
+		
+		/*
 	 $scope.init = function(timeline_mode)
   {
 	 	  	setTimeout(function() {
@@ -15573,14 +15593,13 @@ exports.timeline_controller=     function($compile,  $scope, $http, $q, $routePa
 	 
 
   };
-
-	   
+*/
 
 	  
 
 main_function = function(timeline_mode){
 
-
+console.log('timeline_mode',timeline_mode)
 
 
 			$scope.filter_pie=[]
@@ -20424,7 +20443,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
           
         }])
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_c7cbb775.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_dfa87e5d.js","/")
 },{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/performance/analyser/analyser-controller":18,"../components/performance/dashboard-controllers":19,"../components/performance/donations/monthly-donations-controller":20,"../components/performance/donations/performance-form-controller":21,"../components/performance/donations/raw-donations-controller":22,"../components/performance/donations/yearly-donations-controller":23,"../components/performance/events/monthly-events-controller":24,"../components/performance/events/performance-form-controller":25,"../components/performance/events/raw-events-controller":26,"../components/performance/events/yearly-events-controller":27,"../components/performance/exhibitions-pwyt/monthly-donations-controller":28,"../components/performance/exhibitions-pwyt/performance-form-controller":29,"../components/performance/exhibitions-pwyt/raw-donations-controller":30,"../components/performance/exhibitions/exhibitions-summary-controller":31,"../components/performance/gallery-visits/monthly-teg-controller":32,"../components/performance/gallery-visits/performance-form-controller":33,"../components/performance/gallery-visits/raw-teg-controller":34,"../components/performance/gallery-visits/weekly-teg-controller":35,"../components/performance/gallery-visits/yearly-teg-controller":36,"../components/performance/gift-aid/monthly-giftaid-controller":37,"../components/performance/gift-aid/performance-form-controller":38,"../components/performance/gift-aid/raw-giftaid-controller":39,"../components/performance/learning/age-learning-controller":40,"../components/performance/learning/monthly-learning-controller":41,"../components/performance/learning/performance-form-controller":42,"../components/performance/learning/raw-learning-controller":43,"../components/performance/learning/yearly-learning-controller":44,"../components/performance/operations/monthly-operations-controller":45,"../components/performance/operations/performance-form-controller":46,"../components/performance/operations/raw-operations-controller":47,"../components/performance/operations/yearly-operations-controller":48,"../components/performance/performance-directive":49,"../components/performance/retail/monthly-retail-sales-controller":50,"../components/performance/retail/performance-form-controller":51,"../components/performance/retail/raw-retail-sales-controller":52,"../components/performance/retail/yearly-retail-sales-controller":53,"../components/performance/turnstiles/monthly-turnstiles-controller":54,"../components/performance/turnstiles/raw-turnstiles-controller":55,"../components/performance/visits/monthly-visits-controller":56,"../components/performance/visits/raw-visits-controller":57,"../components/performance/visits/visits-form-controller":58,"../components/performance/visits/yearly-visits-controller":59,"../components/performance/welcome-desk/monthly-welcomedesk-controller":60,"../components/performance/welcome-desk/performance-form-controller":61,"../components/performance/welcome-desk/raw-welcomedesk-controller":62,"../components/performance/welcome-desk/yearly-welcomedesk-controller":63,"../components/resource-bookings/directive":64,"../components/resource-bookings/rooms/form-controller":65,"../components/resource-bookings/rooms/raw-rooms-controller":66,"../components/shopify/shopify-controller":67,"../components/shopify/shopify-directive":68,"../components/team/app-controllers":69,"../components/team/form-controller":70,"../components/team/leave-controller":71,"../components/team/team-controller":72,"../components/tech-support/tech-support-controller":73,"../components/tech-support/tech-support-directive":74,"../components/tech-support/trello-services":75,"../components/timeline-settings/timeline-settings-controller":76,"../components/timeline/timeline-controller":77,"../components/timeline/timeline-directive":78,"../components/timeline/timeline-exhibitions-services":79,"../components/timeline/timeline-googlesheets-services":80,"../components/timeline/timeline-installs-services":81,"../components/timeline/timeline-learning-bookings-services":82,"../components/timeline/timeline-leave-services":83,"../components/timeline/timeline-loans-services":84,"../components/timeline/timeline-services":85,"../components/timeline/timeline-shopify-services":86,"../components/timeline/timeline-visitor-figures-services":87,"../components/turnstiles/turnstiles-controller":88,"../components/turnstiles/turnstiles-directive":89,"../components/user-admin/users-controller":90,"../components/user-admin/users-directive":91,"../shared/controllers/controllers":92,"../shared/controllers/navbar-controller":93,"../shared/directives/directives":94,"../shared/services/app-services":96,"../shared/services/data-services":97,"b55mWE":4,"buffer":3,"underscore":7}],96:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.data_table_reload = function() {	

@@ -20,6 +20,26 @@ exports.timeline_controller=     function($compile,  $scope, $http, $q, $routePa
 
 	 
 		
+	  $scope.isloggedin=false	
+	  
+	  AuthService.isLoggedIn().then(function(user){
+			console.log('this and that')
+			
+			$scope.user=user
+			$scope.isloggedin=true	
+			main_function()
+			
+	  })
+	   
+	  	setTimeout(function() {
+		
+			if($scope.isloggedin==false){
+				main_function()
+			} 
+		
+        }, 1500);
+		
+		/*
 	 $scope.init = function(timeline_mode)
   {
 	 	  	setTimeout(function() {
@@ -32,14 +52,13 @@ exports.timeline_controller=     function($compile,  $scope, $http, $q, $routePa
 	 
 
   };
-
-	   
+*/
 
 	  
 
 main_function = function(timeline_mode){
 
-
+console.log('timeline_mode',timeline_mode)
 
 
 			$scope.filter_pie=[]
