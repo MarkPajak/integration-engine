@@ -6,11 +6,16 @@ var BookingsSchema = new mongoose.Schema({
 		  end_date: { type: Date},
 		  group: { type: String, required: true },
 		  _type: { type: String, required: true },
-		  className:{ type: String, required: true },
-		  content: { type: String, required: true },
-		  name: { type: String, required: true },
+		  //className:{ type: String, required: true },
+		  //content: { type: String, required: true },
+		 // name: { type: String, required: true },
 		  notes:{ type: String},
-		  days:{ type: Number }
+		  days:{ type: Number },
+		  
+		 
+			date_logged: { type: Date, required: true},
+			comments: { type: String},
+			logger_user_name: { type: String}
 });
 
 

@@ -1,5 +1,5 @@
 exports.timeline_controller=     function($compile,  $scope, $http, $q, $routeParams, $location,
-         $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate,Raw_visits,timeline_visitor_figures_functions,timeline_install_functions, $timeout,timeline_exhibitions_functions
+         $location, $rootScope, trello,timeline_bookings_functions, get_trello_board, date_calc, Todos, Timeline, Bookings,Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate,Raw_visits,timeline_visitor_figures_functions,timeline_install_functions, $timeout,timeline_exhibitions_functions
     ) {
 		
 		$scope.locked=[]
@@ -22,37 +22,35 @@ exports.timeline_controller=     function($compile,  $scope, $http, $q, $routePa
 		
 	  $scope.isloggedin=false	
 	  
-	  AuthService.isLoggedIn().then(function(user){
+
+		
+	 $scope.init = function(timeline_mode)
+  {
+	 	  	setTimeout(function() {
+		
+			
+			
+				  AuthService.isLoggedIn().then(function(user){
 			console.log('this and that')
 			
 			$scope.user=user
 			$scope.isloggedin=true	
-			main_function()
+			main_function(timeline_mode)
 			
 	  })
 	   
 	  	setTimeout(function() {
 		
 			if($scope.isloggedin==false){
-				main_function()
+				main_function(timeline_mode)
 			} 
 		
         }, 1500);
 		
-		/*
-	 $scope.init = function(timeline_mode)
-  {
-	 	  	setTimeout(function() {
-		
-			if($scope.isloggedin==false){
-				main_function(timeline_mode)
-			} 
-		
-        }, 2000); 
-	 
+ 
 
-  };
-*/
+  })
+}
 
 	  
 
@@ -354,6 +352,12 @@ console.log('timeline_mode',timeline_mode)
 					timeline_functions.populate_timeline_track($rootScope,Raw_visits,timeline_visitor_figures_functions)
 			}
 			
+			
+				$scope.bookings= function(){							
+					timeline_functions.populate_timeline_track($rootScope,Bookings,timeline_bookings_functions)
+			}
+			
+			
 			$scope.shopify= function(){							
 					timeline_functions.populate_timeline_track($rootScope,Shopify_aggregate,timeline_shopify_functions)
 			}
@@ -384,7 +388,7 @@ console.log('timeline_mode',timeline_mode)
 			
 			if(timeline_mode=="room-hire"){
 				
-					$scope.visitor_figures()
+					$scope.bookings()
 				
 				
 				

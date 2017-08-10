@@ -4,7 +4,7 @@ var Collection = require('../../models/resource-booking/bookings.js');
 Route_permissions= require('../functions/route_permissions.js');
 route_permissions=new Route_permissions()
 Api_calls= require('../functions/standard_api_calls.js');
-
+//    return $resource('/bookings/:id/:type/:start_date/:end_date', null,
 
 /* GET /todos listing. */
 router.get('/',route_permissions.isAuthenticated, function(req, res, next) {
@@ -17,7 +17,8 @@ router.get('/',route_permissions.isAuthenticated, function(req, res, next) {
   })
 });
 
-router.get('/:date_value/:exact/:museum_id',route_permissions.isAuthenticated, function(req, res, next) {
+
+router.get('/:group/:start_date/:end_date',route_permissions.isAuthenticated, function(req, res, next) {
 
 var query = {}
 

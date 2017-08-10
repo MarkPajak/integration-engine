@@ -18,6 +18,11 @@ var tech_support_controller = require('../components/tech-support/tech-support-c
 //RESOURCE BOOKING
 var  rooms_controller = require('../components/resource-bookings/rooms/raw-rooms-controller');
 var  record_rooms_controller = require('../components/resource-bookings/rooms/form-controller');
+var  equipment_controller = require('../components/resource-bookings/equipment/raw-equipment-controller');
+var  record_equipment_controller = require('../components/resource-bookings/equipment/form-controller');
+var  record_bookings_controller = require('../components/resource-bookings/bookings/form-controller');
+var  bookings_controller = require('../components/resource-bookings/bookings/raw-bookings-controller');
+var  timeline_bookings_services = require('../components/timeline/timeline-bookings-services');
 
 var resources_directives = require('../components/resource-bookings/directive');
 
@@ -66,6 +71,7 @@ var raw_exhibitions_pwyt_controller = require('../components/performance/exhibit
 var exhibitions_pwyt_performance_form = require('../components/performance/exhibitions-pwyt/performance-form-controller');
 
 var monthly_giftaid_controller = require('../components/performance/gift-aid/monthly-giftaid-controller');
+var monthly_all_giftaid_controller = require('../components/performance/gift-aid/monthly-allgiftaid-controller');
 var raw_giftaid_controller = require('../components/performance/gift-aid/raw-giftaid-controller');
 var giftaid_performance_form = require('../components/performance/gift-aid/performance-form-controller');
 
@@ -232,6 +238,14 @@ _.each(monthly_giftaid_controller, function(controller, name) {
   app.controller(name, controller);
 });
 
+_.each(monthly_all_giftaid_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+
+
+
+
 _.each(monthly_welcomedesk_controller, function(controller, name) {
   app.controller(name, controller);
 });
@@ -313,6 +327,25 @@ _.each(tech_support_controller, function(controller, name) {
   app.controller(name, controller);
 });
 
+
+
+
+_.each(record_bookings_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(bookings_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+
+_.each(record_equipment_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(equipment_controller, function(controller, name) {
+  app.controller(name, controller);
+});
 
 
 
@@ -537,6 +570,10 @@ _.each(timeline_exhibitions_functions, function(factory, name) {
 
 
 
+_.each(timeline_bookings_services, function(factory, name) {
+  app.factory(name, factory);
+});
+
 
 
 _.each(timeline_visitor_figures_functions, function(factory, name) {
@@ -696,7 +733,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
               controller: 'form_to_trellox'
            })
 		     .when('/timeline', {
-              template: '<time-line></time-line>'
+              template: '<time-line ng-init="init(\'timeline\')"  ></time-line>'
 			  
            })
 		    .when('/timeline_settings', {
@@ -833,7 +870,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
            })
 		   
 			.when('/monthly-giftaid', {
-               template: '<monthly-giftaid></monthly-giftaid>'
+               template: '<giftaid-dashboard></giftaid-dashboard>'
            })
 		   
 		    	   .when('/record-donations', {
@@ -912,10 +949,18 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
                template: '<monthly-turnstiles></monthly-turnstiles>'
            })
 		   
-		   .when('/rooms', {
+		 //RESOURCE BOOKING 
+
+		  .when('/rooms', {
                template: '<rooms-Formdata></rooms-Formdata>'
            })
-
+			.when('/equipment', {
+               template: '<equipment-Formdata></equipment-Formdata>'
+           })
+		   
+		.when('/bookings', {
+               template: '<bookings-Formdata></bookings-Formdata>'
+           })
 
 
 		    .when('/turnstiles/:venue', {

@@ -98,7 +98,7 @@ enter_data.push(record_events)
 
 
 var performance_data=[]
-//performance_data.push(raw_visits)
+performance_data.push(raw_visits)
 performance_data.push(monthly_visits)
 //performance_data.push(raw_retail_sales)
 performance_data.push(monthly_retail_sales)

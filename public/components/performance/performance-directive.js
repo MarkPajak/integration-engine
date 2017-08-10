@@ -194,6 +194,10 @@ exports.giftaidFormdata = function() {
   }
 	}
 	
+	
+
+	
+	
 		
 		exports.recordGiftaid = function() {
   return {
@@ -202,8 +206,19 @@ exports.giftaidFormdata = function() {
   }
 	}
 	
+			exports.monthlyAllgiftaid = function() {
+  return {
+    restrict: "E",
+    scope: {},
+   controller: 'monthly_all_giftaid_controller',
+   templateUrl: './shared/templates/data_table.html'
+  }
+	}
+	
 		exports.monthlyGiftaid = function() {
   return {
+    restrict: "E",
+    scope: {},
    controller: 'monthly_giftaid_controller',
    templateUrl: './shared/templates/data_table.html'
   }
@@ -505,6 +520,12 @@ exports.recordTeg  = function() {
   }
 	}	
 	
+exports.giftaidDashboard = function() {
+  return {
+    controller: 'dashboard_controller',
+    templateUrl: './components/performance/gift-aid/dashboard.html'
+  }
+	}	
 		
 	
 			

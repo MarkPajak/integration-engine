@@ -19,3 +19,48 @@
       templateUrl: './components/resource-bookings/rooms/kpi-form.html'
   }
 	}
+	
+	
+	
+		exports.equipmentFormdata = function() {
+  return {
+  // controller: 'giftaid_performance_form',
+      templateUrl: './components/resource-bookings/equipment/kpi-form-and-data.html'
+  }
+  }
+	
+		exports.rawEquipment = function() {
+  return {
+   controller: 'raw_equipment_controller',
+     templateUrl: './shared/templates/data_table.html'
+  }
+	}
+		exports.recordEquipment = function() {
+  return {
+  controller: 'record_equipment_controller',
+      templateUrl: './components/resource-bookings/equipment/kpi-form.html'
+  }
+	}
+	
+	
+			exports.bookingsFormdata = function() {
+  return {
+  // controller: 'giftaid_performance_form',
+      templateUrl: './components/resource-bookings/bookings/kpi-form-and-data.html'
+  }
+  }
+	
+		exports.rawBookings = function() {
+  return {
+   controller: 'raw_bookings_controller',
+     templateUrl: './shared/templates/data_table.html'
+  }
+	}
+		exports.recordBookings = function() {
+  return {
+  controller: 'record_bookings_controller',
+      templateUrl: './components/resource-bookings/bookings/kpi-form.html'
+  }
+	}
+
+

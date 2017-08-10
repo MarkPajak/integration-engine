@@ -7,7 +7,7 @@ Api_calls= require('../functions/standard_api_calls.js');
 
 
 /* GET /todos listing. */
-router.get('/:name/:type',route_permissions.isAuthenticated, function(req, res, next) {
+router.get('/:name/:type/:exact',route_permissions.isAuthenticated, function(req, res, next) {
 
   Collection.find()
 	   .populate('leave_taken')
@@ -18,28 +18,25 @@ router.get('/:name/:type',route_permissions.isAuthenticated, function(req, res, 
 });
 
 
-router.get('/:date_value/:exact/:museum_id',route_permissions.isAuthenticated, function(req, res, next) {
+router.get('/:type/:date_value/:exact/:museum_id',route_permissions.isAuthenticated, function(req, res, next) {
 
 var query = {}
-
 /*
-if( req.params.exact=="false"){
-	 _.extend(query, {date_value: {$gte: req.params.date_value}})
+
+if( req.params.type){
+	 _.extend(query, {type:{ $eq:req.params.type}})
 	 console.log(query)
 }
-else
-{
-  _.extend(query,{date_value:req.params.date_value})
-}
-
+*/
+/*
 if(decodeURIComponent(req.params.museum_id)!="#"){
  _.extend(query,{museum_id: decodeURIComponent(req.params.museum_id)})
 }
 
 */
+ console.log("req.params.type",req.params.type)
 
-
-  Collection.find(query)
+  Collection.find( {"type":req.params.type})
 		.sort({date_value: 'desc'})
 	   .exec (  function (err, todos) {
     if (err) return next(err);

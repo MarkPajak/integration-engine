@@ -1,6 +1,6 @@
 
 
-exports.raw_rooms_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Resources,data_table_reload,get_table_data,grid_ui_settings,make_a_pie,make_a_line_chart,monthly_data_table_columns,table_security
+exports.raw_equipment_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Resources,data_table_reload,get_table_data,grid_ui_settings,make_a_pie,make_a_line_chart,monthly_data_table_columns,table_security
     ) {
 		
 		
@@ -9,14 +9,14 @@ exports.raw_rooms_controller = function($route,$scope, $http, $q, $routeParams, 
 		$rootScope.featured_collection=Resources
 		$scope.gridOptions=[]
 		$scope.gridOptions.data=[]
-		$scope.extraQuery = { "museum_id":"#","type":"room"}
+		$scope.extraQuery = { "museum_id":"#","type":"equipment"}
 		
 		var columnDefs= []
 		
 
 		$rootScope.canEdit_table=true
 		 columnDefs.push(
-			{ field: 'name' ,name: "Room",resizable: true,width:"150"},			
+			{ field: 'name' ,name: "Device",resizable: true,width:"150"},			
 			
 			{ field: 'comments' ,value: "comments",resizable: true,visible:true},
 			{ field: 'logger_user_name' ,value: "Logged by",resizable: true,visible:false},

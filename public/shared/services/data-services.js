@@ -205,6 +205,17 @@ exports.Monthly_visits =  function($resource){
        
 
   } 
+  
+        exports.Monthly_all_giftaid =  function($resource){
+	  
+	  
+	return $resource('/allgiftaid/all',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+       
+
+  }
       exports.Monthly_giftaid =  function($resource){
 	  
 	  
@@ -329,7 +340,7 @@ exports.Monthly_visits =  function($resource){
       exports.Bookings =  function($resource){
 	 
 		 
-            return $resource('/bookings/:id/:type/:date_value/:exact', null,
+            return $resource('/bookings/:id/:group/:start_date/:end_date', null,
 			{ 'get':    {method:'GET'},  // get individual record
 			  'save':   {method:'POST'}, // create record
 			  'query':  {method:'GET', isArray:true}, // get list all records

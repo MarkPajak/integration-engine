@@ -55,6 +55,7 @@ var raw_visits = require('./routes/raw_visits')
 var retail_sales = require('./routes/performance/retail_sales')
 var donations = require('./routes/performance/donations')
 var giftaid = require('./routes/performance/giftaid')
+var allgiftaid = require('./routes/performance/all_giftaid')
 var welcomedesk = require('./routes/performance/welcomedesk')
 var learning = require('./routes/performance/learning')
 var exhibitions_pwyt =  require('./routes/performance/exhibitions_pwyt')
@@ -127,6 +128,9 @@ app.use('/kpi_aggregate', kpi_aggregate);
 app.use('/retail_sales', retail_sales);
 app.use('/donations', donations);
 app.use('/giftaid', giftaid);
+app.use('/allgiftaid', allgiftaid);
+
+
 app.use('/welcomedesk', welcomedesk);
 app.use('/learning', learning);
 app.use('/exhibitions_pwyt', exhibitions_pwyt);
