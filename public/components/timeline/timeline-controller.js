@@ -15,19 +15,14 @@ exports.timeline_controller=     function($compile,  $scope, $http, $q, $routePa
 		$rootScope.added_track_groups=[]
 		$rootScope.datePicker=[];
 		$scope.isloggedin=false	
-	 
-
-
-	 
-		
-	  $scope.isloggedin=false	
+		$scope.isloggedin=false	
 	  
 
 		
 	 $scope.init = function(timeline_mode)
   {
 	 	  	setTimeout(function() {
-		
+			(timeline_mode=="room-hire")	? $scope.timeline_track = Bookings :  $scope.timeline_track = Timeline 
 			
 			
 				  AuthService.isLoggedIn().then(function(user){
@@ -184,7 +179,7 @@ console.log('timeline_mode',timeline_mode)
                 id: id
             })
         }
-		(timeline_mode=="room-hire")	? $scope.timeline_track = Bookings :  $scope.timeline_track = Timeline 
+	
 		
 				
 				

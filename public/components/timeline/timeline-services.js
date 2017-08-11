@@ -1,6 +1,6 @@
 
 
-exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,$rootScope,$timeout) {
+exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,Bookings,$rootScope,$timeout) {
 	
 
   
@@ -300,8 +300,11 @@ console.log('add_item')
 										days:_days
 
 									}
-console.log('save')
-									var _timeline = new $rootScope.timeline_track(new_date)
+									
+									console.log('save')
+									var timeline_track
+									($rootScope.timeline_mode=="room-hire")	? timeline_track = Bookings :  timeline_track = Timeline 
+									var _timeline = new timeline_track(new_date)
 										.$save(function(_item) {
 										
 console.log('saved',_item)
