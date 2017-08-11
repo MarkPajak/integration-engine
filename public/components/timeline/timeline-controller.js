@@ -16,7 +16,7 @@ exports.timeline_controller=     function($compile,  $scope, $http, $q, $routePa
 		$rootScope.datePicker=[];
 		$scope.isloggedin=false	
 		$scope.isloggedin=false	
-	  
+	   $scope.timeline_track = Timeline 
 
 		
 	 $scope.init = function(timeline_mode)

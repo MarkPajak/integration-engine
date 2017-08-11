@@ -6,7 +6,7 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,Bo
   
   return {
   
-	
+		timeline_track : Timeline,
  
 		  loadgroups: function(items){
 	
@@ -302,9 +302,10 @@ console.log('add_item')
 									}
 									
 									console.log('save')
-									var timeline_track
-									($rootScope.timeline_mode=="room-hire")	? timeline_track = Bookings :  timeline_track = Timeline 
-									var _timeline = new timeline_track(new_date)
+									
+								
+									
+									var _timeline = new self.timeline_track(new_date)
 										.$save(function(_item) {
 										
 console.log('saved',_item)
@@ -514,7 +515,7 @@ console.log('saved',_item)
 					//THIS CAUSES A REFRESH OF THE TIMELINE DIRECTIVE (GOOD)
 					html=self.event_html(event_to_add)
 					var options={id:scope.selected_timeline_id,content:html,notes:selected_note,start:moment(date.startDate)._d,end:moment(date.endDate)._d}
-					scope.timeline_track.update({
+					self.timeline_track.update({
 								id: scope.selected_id			
 								}, options, function(){self.updateItem(options) });
 				
@@ -632,7 +633,7 @@ console.log('saved',_item)
 												start_date:moment(item.start)._d,
 												end_date:moment(item.end)._d
 												}
-								$rootScope.timeline_track.update({
+								self.timeline_track.update({
 								id:  item._id				
 								}, options, function(){self.updateItem(options) });
 								
@@ -676,7 +677,7 @@ console.log('saved',_item)
 													days :days}
 									
 									
-                                var _timeline = new $rootScope.timeline_track({
+                                var _timeline = new self.timeline_track({
                                     content:  self.event_html(event_to_add),
 									name: item.name,
                                     group: item.group,
@@ -686,7 +687,7 @@ console.log('saved',_item)
 
                                 })
                                
-                                $rootScope.timeline_track.update({
+                                self.timeline_track.update({
                                     id: item._id
                                 }, _timeline);
                                
@@ -734,7 +735,7 @@ console.log('saved',_item)
 													  notes  :"" ,
 													 days :days}
 													
-                                var _timeline = new $rootScope.timeline_track({
+                                var _timeline = new self.timeline_track({
                                         content: self.event_html(event_to_add),
 										name:value,
                                         group: item.group,
@@ -771,7 +772,7 @@ console.log('saved',_item)
                     onRemove: function(item, callback) {
 
                         if (item._id) {
-                            Timeline.remove({
+                            self.timeline_track.remove({
                                 id: item._id
                             })
                             callback(item);

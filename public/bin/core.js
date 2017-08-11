@@ -16126,7 +16126,7 @@ exports.timeline_controller=     function($compile,  $scope, $http, $q, $routePa
 		$rootScope.datePicker=[];
 		$scope.isloggedin=false	
 		$scope.isloggedin=false	
-	  
+	   $scope.timeline_track = Timeline 
 
 		
 	 $scope.init = function(timeline_mode)
@@ -18044,7 +18044,7 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,Bo
   
   return {
   
-	
+		timeline_track : Timeline,
  
 		  loadgroups: function(items){
 	
@@ -18340,9 +18340,10 @@ console.log('add_item')
 									}
 									
 									console.log('save')
-									var timeline_track
-									($rootScope.timeline_mode=="room-hire")	? timeline_track = Bookings :  timeline_track = Timeline 
-									var _timeline = new timeline_track(new_date)
+									
+								
+									
+									var _timeline = new self.timeline_track(new_date)
 										.$save(function(_item) {
 										
 console.log('saved',_item)
@@ -18552,7 +18553,7 @@ console.log('saved',_item)
 					//THIS CAUSES A REFRESH OF THE TIMELINE DIRECTIVE (GOOD)
 					html=self.event_html(event_to_add)
 					var options={id:scope.selected_timeline_id,content:html,notes:selected_note,start:moment(date.startDate)._d,end:moment(date.endDate)._d}
-					scope.timeline_track.update({
+					self.timeline_track.update({
 								id: scope.selected_id			
 								}, options, function(){self.updateItem(options) });
 				
@@ -18670,7 +18671,7 @@ console.log('saved',_item)
 												start_date:moment(item.start)._d,
 												end_date:moment(item.end)._d
 												}
-								$rootScope.timeline_track.update({
+								self.timeline_track.update({
 								id:  item._id				
 								}, options, function(){self.updateItem(options) });
 								
@@ -18714,7 +18715,7 @@ console.log('saved',_item)
 													days :days}
 									
 									
-                                var _timeline = new $rootScope.timeline_track({
+                                var _timeline = new self.timeline_track({
                                     content:  self.event_html(event_to_add),
 									name: item.name,
                                     group: item.group,
@@ -18724,7 +18725,7 @@ console.log('saved',_item)
 
                                 })
                                
-                                $rootScope.timeline_track.update({
+                                self.timeline_track.update({
                                     id: item._id
                                 }, _timeline);
                                
@@ -18772,7 +18773,7 @@ console.log('saved',_item)
 													  notes  :"" ,
 													 days :days}
 													
-                                var _timeline = new $rootScope.timeline_track({
+                                var _timeline = new self.timeline_track({
                                         content: self.event_html(event_to_add),
 										name:value,
                                         group: item.group,
@@ -18809,7 +18810,7 @@ console.log('saved',_item)
                     onRemove: function(item, callback) {
 
                         if (item._id) {
-                            Timeline.remove({
+                            self.timeline_track.remove({
                                 id: item._id
                             })
                             callback(item);
@@ -21063,7 +21064,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
           
         }])
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_9f3f30f3.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_b3885150.js","/")
 },{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/performance/analyser/analyser-controller":18,"../components/performance/dashboard-controllers":19,"../components/performance/donations/monthly-donations-controller":20,"../components/performance/donations/performance-form-controller":21,"../components/performance/donations/raw-donations-controller":22,"../components/performance/donations/yearly-donations-controller":23,"../components/performance/events/monthly-events-controller":24,"../components/performance/events/performance-form-controller":25,"../components/performance/events/raw-events-controller":26,"../components/performance/events/yearly-events-controller":27,"../components/performance/exhibitions-pwyt/monthly-donations-controller":28,"../components/performance/exhibitions-pwyt/performance-form-controller":29,"../components/performance/exhibitions-pwyt/raw-donations-controller":30,"../components/performance/exhibitions/exhibitions-summary-controller":31,"../components/performance/gallery-visits/monthly-teg-controller":32,"../components/performance/gallery-visits/performance-form-controller":33,"../components/performance/gallery-visits/raw-teg-controller":34,"../components/performance/gallery-visits/weekly-teg-controller":35,"../components/performance/gallery-visits/yearly-teg-controller":36,"../components/performance/gift-aid/monthly-allgiftaid-controller":37,"../components/performance/gift-aid/monthly-giftaid-controller":38,"../components/performance/gift-aid/performance-form-controller":39,"../components/performance/gift-aid/raw-giftaid-controller":40,"../components/performance/learning/age-learning-controller":41,"../components/performance/learning/monthly-learning-controller":42,"../components/performance/learning/performance-form-controller":43,"../components/performance/learning/raw-learning-controller":44,"../components/performance/learning/yearly-learning-controller":45,"../components/performance/operations/monthly-operations-controller":46,"../components/performance/operations/performance-form-controller":47,"../components/performance/operations/raw-operations-controller":48,"../components/performance/operations/yearly-operations-controller":49,"../components/performance/performance-directive":50,"../components/performance/retail/monthly-retail-sales-controller":51,"../components/performance/retail/performance-form-controller":52,"../components/performance/retail/raw-retail-sales-controller":53,"../components/performance/retail/yearly-retail-sales-controller":54,"../components/performance/turnstiles/monthly-turnstiles-controller":55,"../components/performance/turnstiles/raw-turnstiles-controller":56,"../components/performance/visits/monthly-visits-controller":57,"../components/performance/visits/raw-visits-controller":58,"../components/performance/visits/visits-form-controller":59,"../components/performance/visits/yearly-visits-controller":60,"../components/performance/welcome-desk/monthly-welcomedesk-controller":61,"../components/performance/welcome-desk/performance-form-controller":62,"../components/performance/welcome-desk/raw-welcomedesk-controller":63,"../components/performance/welcome-desk/yearly-welcomedesk-controller":64,"../components/resource-bookings/bookings/form-controller":65,"../components/resource-bookings/bookings/raw-bookings-controller":66,"../components/resource-bookings/directive":67,"../components/resource-bookings/equipment/form-controller":68,"../components/resource-bookings/equipment/raw-equipment-controller":69,"../components/resource-bookings/rooms/form-controller":70,"../components/resource-bookings/rooms/raw-rooms-controller":71,"../components/shopify/shopify-controller":72,"../components/shopify/shopify-directive":73,"../components/team/app-controllers":74,"../components/team/form-controller":75,"../components/team/leave-controller":76,"../components/team/team-controller":77,"../components/tech-support/tech-support-controller":78,"../components/tech-support/tech-support-directive":79,"../components/tech-support/trello-services":80,"../components/timeline-settings/timeline-settings-controller":81,"../components/timeline/timeline-bookings-services":82,"../components/timeline/timeline-controller":83,"../components/timeline/timeline-directive":84,"../components/timeline/timeline-exhibitions-services":85,"../components/timeline/timeline-googlesheets-services":86,"../components/timeline/timeline-installs-services":87,"../components/timeline/timeline-learning-bookings-services":88,"../components/timeline/timeline-leave-services":89,"../components/timeline/timeline-loans-services":90,"../components/timeline/timeline-services":91,"../components/timeline/timeline-shopify-services":92,"../components/timeline/timeline-visitor-figures-services":93,"../components/turnstiles/turnstiles-controller":94,"../components/turnstiles/turnstiles-directive":95,"../components/user-admin/users-controller":96,"../components/user-admin/users-directive":97,"../shared/controllers/controllers":98,"../shared/controllers/navbar-controller":99,"../shared/directives/directives":100,"../shared/services/app-services":102,"../shared/services/data-services":103,"b55mWE":4,"buffer":3,"underscore":7}],102:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.data_table_reload = function() {	
