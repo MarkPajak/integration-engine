@@ -127,7 +127,7 @@ exports.timeline_bookings_functions =  function ($http,Timeline,$rootScope) {
 	},
 	updateItem: function(options){
 		options.id=$rootScope.selected_t_id
-		timeline.itemsData.getDataSet().update(options)
+		//timeline.itemsData.getDataSet().update(options)
 		
 				
 	},

@@ -9,12 +9,13 @@ Api_calls= require('../functions/standard_api_calls.js');
 /* GET /todos listing. */
 router.get('/:name/:type/:exact',route_permissions.isAuthenticated, function(req, res, next) {
 
-  Collection.find()
+  Collection.find( {"type":req.params.type})
 	   .populate('leave_taken')
 	   .exec (  function (err, todos) {
     if (err) return next(err);
     res.json(todos);
   })
+  
 });
 
 

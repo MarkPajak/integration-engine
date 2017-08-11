@@ -5,9 +5,24 @@ exports.record_bookings_controller =  function($scope, $http, $q,
 //$scope.setDate = data_table_reload.setDate;
 			$scope.extraQuery = { "museum_id":"#"}
 
-    // function definition
+    $scope.rooms=[]
 	
 	  $scope.Resources=Resources
+	  
+	var query = {'name':"#",'type':"room",'exact':false};
+			
+			Resources.query(query, function(rooms) {
+						
+					
+					  _.each(rooms, function(room){
+					  
+					  var _room = []
+					  _room.name=room.name
+					  
+						$scope.rooms.push(_room)
+					  })
+			
+			})	
 	 
  $scope.onSubmit=function() {
 		
@@ -22,17 +37,17 @@ exports.record_bookings_controller =  function($scope, $http, $q,
 		  notes:{ type: String},
 		  days:{ type: Number }
 */
-		var type = "ROOM"
+		var type = "ROOM BOOKING"
 		    var kpis = new Bookings({
 					
 				//DEPARTMENTAL VARIABLES	
 				start_date: new Date(visit_form.start_date.value),	
 				end_date: new Date(visit_form.end_date.value),	
-				group: visit_form.group.value,	
+				group: visit_form.room.value,	
 				_type: type,	
 				//className:visit_form.className.value,	
 				 // content: visit_form.comments.value,	
-				name: visit_form.group.value,	
+				name: visit_form.name.value,	
 				notes:visit_form.comments.value,	
 				
 					
@@ -45,7 +60,11 @@ exports.record_bookings_controller =  function($scope, $http, $q,
 					logger_user_name: $scope.user.username
             });
 			
-			var query = {'_type':type,'group':visit_form.group.value,'start_date':visit_form.start_date.value,'end_date':visit_form.end_date.value};
+			var query = {'name': visit_form.name.value,
+						'_type':type,
+						'group':visit_form.room.value,
+						'start_date':visit_form.start_date.value,
+						'end_date':visit_form.end_date.value};
 			
 			Bookings.query(query, function(visits) {
 				  $scope.$emit('form_submit');

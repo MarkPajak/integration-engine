@@ -12,6 +12,10 @@ exports.raw_bookings_controller = function($route,$scope, $http, $q, $routeParam
 		$scope.gridOptions=[]
 		$scope.gridOptions.data=[]
 		$scope.extraQuery = { "museum_id":"#","type":"room"}
+		$scope.rooms=[]
+		
+		
+		
 		
 		var columnDefs= []
 		

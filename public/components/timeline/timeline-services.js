@@ -301,7 +301,7 @@ console.log('add_item')
 
 									}
 console.log('save')
-									var _timeline = new Timeline(new_date)
+									var _timeline = new $rootScope.timeline_track(new_date)
 										.$save(function(_item) {
 										
 console.log('saved',_item)
@@ -511,8 +511,7 @@ console.log('saved',_item)
 					//THIS CAUSES A REFRESH OF THE TIMELINE DIRECTIVE (GOOD)
 					html=self.event_html(event_to_add)
 					var options={id:scope.selected_timeline_id,content:html,notes:selected_note,start:moment(date.startDate)._d,end:moment(date.endDate)._d}
-					
-					Timeline.update({
+					scope.timeline_track.update({
 								id: scope.selected_id			
 								}, options, function(){self.updateItem(options) });
 				
@@ -630,7 +629,7 @@ console.log('saved',_item)
 												start_date:moment(item.start)._d,
 												end_date:moment(item.end)._d
 												}
-								Timeline.update({
+								$rootScope.timeline_track.update({
 								id:  item._id				
 								}, options, function(){self.updateItem(options) });
 								
@@ -674,7 +673,7 @@ console.log('saved',_item)
 													days :days}
 									
 									
-                                var _timeline = new Timeline({
+                                var _timeline = new $rootScope.timeline_track({
                                     content:  self.event_html(event_to_add),
 									name: item.name,
                                     group: item.group,
@@ -684,7 +683,7 @@ console.log('saved',_item)
 
                                 })
                                
-                                Timeline.update({
+                                $rootScope.timeline_track.update({
                                     id: item._id
                                 }, _timeline);
                                
@@ -732,7 +731,7 @@ console.log('saved',_item)
 													  notes  :"" ,
 													 days :days}
 													
-                                var _timeline = new Timeline({
+                                var _timeline = new $rootScope.timeline_track({
                                         content: self.event_html(event_to_add),
 										name:value,
                                         group: item.group,

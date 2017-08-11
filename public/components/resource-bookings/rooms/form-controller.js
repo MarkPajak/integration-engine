@@ -8,6 +8,10 @@ exports.record_rooms_controller =  function($scope, $http, $q,
     // function definition
 	
 	  $scope.Resources=Resources
+	  
+	  
+	  
+	  
 	 
  $scope.onSubmit=function() {
 		

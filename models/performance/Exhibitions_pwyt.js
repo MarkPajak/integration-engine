@@ -9,7 +9,7 @@ var PWYT_kpi = new mongoose.Schema({
 			
 
 		
-			donation_box_amount: { type: Number, required: true},
+			donation_box_amount: { type: Number},
 			donation_box_no: { type: String},
 			no_envelopes: { type: Number},
 			//non_vat_sales: { type: Number},

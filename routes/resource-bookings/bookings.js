@@ -18,7 +18,7 @@ router.get('/',route_permissions.isAuthenticated, function(req, res, next) {
 });
 
 
-router.get('/:group/:start_date/:end_date',route_permissions.isAuthenticated, function(req, res, next) {
+router.get('/:group/:start_date/:end_date/:_type',route_permissions.isAuthenticated, function(req, res, next) {
 
 var query = {}
 

@@ -8,7 +8,7 @@ var BookingsSchema = new mongoose.Schema({
 		  _type: { type: String, required: true },
 		  //className:{ type: String, required: true },
 		  //content: { type: String, required: true },
-		 // name: { type: String, required: true },
+		  name: { type: String, required: true },
 		  notes:{ type: String},
 		  days:{ type: Number },
 		  

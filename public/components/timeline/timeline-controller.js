@@ -31,7 +31,7 @@ exports.timeline_controller=     function($compile,  $scope, $http, $q, $routePa
 			
 			
 				  AuthService.isLoggedIn().then(function(user){
-			console.log('this and that')
+		
 			
 			$scope.user=user
 			$scope.isloggedin=true	
@@ -98,7 +98,7 @@ console.log('timeline_mode',timeline_mode)
 												
 										var options={id:$scope.selected_timeline_id,content:html,start:moment(date.startDate)._d,end:moment(date.endDate)._d,start_date:moment(date.startDate)._d,end_date:moment(date.endDate)._d}
 												
-										Timeline.update({
+										$scope.timeline_track.update({
 												id: $scope.selected_id,				
 												}, options);				
 												console.log('updatedItem',options)
@@ -140,7 +140,7 @@ console.log('timeline_mode',timeline_mode)
 			
 					html=timeline_functions.event_html(event_to_add)
 					var options={id:$scope.selected_timeline_id,content:html,name:selected_item,start:moment(date.startDate)._d,end:moment(date.endDate)._d,}
-					Timeline.update({
+					$scope.timeline_track.update({
 					id: $scope.selected_id,				
 					}, options);				
 					
@@ -184,7 +184,11 @@ console.log('timeline_mode',timeline_mode)
                 id: id
             })
         }
-        Timeline.query({}, function(team) {
+		(timeline_mode=="room-hire")	? $scope.timeline_track = Bookings :  $scope.timeline_track = Timeline 
+		
+				
+				
+        $scope.timeline_track.query({}, function(team) {
             _.each(team, function(row,index) {
 		
 		 
@@ -204,7 +208,7 @@ console.log('timeline_mode',timeline_mode)
         $scope.save = function() {
 		
             if (!$scope.newTimeline || $scope.newTimeline.length < 1) return;
-            var timeline = new Timeline({
+            var timeline = new $scope.timeline_track({
                 name: $scope.newTimeline,
                 completed: false
             });
@@ -218,7 +222,7 @@ console.log('timeline_mode',timeline_mode)
 
         $scope.update = function(index) {
             var timeline = $scope.timeline[index];
-            Timeline.update({
+            $scope.timeline_track.update({
                 id: timeline._id
             }, timeline);
             $scope.editing[index] = false;
@@ -235,7 +239,7 @@ console.log('timeline_mode',timeline_mode)
 
         $scope.remove = function(index) {
             var timeline = $scope.timeline[index];
-            Timeline.remove({
+            $scope.timeline_track.remove({
                 id: timeline._id
             }, function() {
                 $scope.timeline.splice(index, 1);
@@ -387,7 +391,7 @@ console.log('timeline_mode',timeline_mode)
 			
 			
 			if(timeline_mode=="room-hire"){
-				
+				$scope.timeline_track = Bookings
 					$scope.bookings()
 				
 				
@@ -395,6 +399,7 @@ console.log('timeline_mode',timeline_mode)
 			}
 			else
 			{
+			$scope.timeline_track = Timeline
 			if( $scope.isloggedin){	
 			
 			
