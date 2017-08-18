@@ -6,6 +6,18 @@ route_permissions=new Route_permissions()
 Api_calls= require('../functions/standard_api_calls.js');
 
 
+
+router.get('/',route_permissions.isAuthenticated, function(req, res, next) {
+
+  Collection.find()
+	   .populate('leave_taken')
+	   .exec (  function (err, todos) {
+    if (err) return next(err);
+    res.json(todos);
+  })
+});
+
+
 /* GET /todos listing. */
 router.get('/:name/:type/:exact',route_permissions.isAuthenticated, function(req, res, next) {
 

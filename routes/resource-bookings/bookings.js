@@ -4,6 +4,9 @@ var Collection = require('../../models/resource-booking/bookings.js');
 Route_permissions= require('../functions/route_permissions.js');
 route_permissions=new Route_permissions()
 Api_calls= require('../functions/standard_api_calls.js');
+var request = require('request');
+var moment = require('moment')
+var _ =  require('underscore');
 //    return $resource('/bookings/:id/:type/:start_date/:end_date', null,
 
 /* GET /todos listing. */
@@ -15,6 +18,78 @@ router.get('/',route_permissions.isAuthenticated, function(req, res, next) {
     if (err) return next(err);
     res.json(todos);
   })
+});
+
+
+
+
+router.get('/calendar/:room', function(req, res, next) {
+
+Events = []
+
+room = decodeURI(req.params.room)
+
+console.log(room)
+
+  Collection.find({"group":room})
+     .exec(function(err, events) {
+	 
+	 
+	
+
+
+				 
+			/*
+				
+		  start_date: { type: Date, required: true },
+		  end_date: { type: Date},
+		  group: { type: String, required: true },
+		  _type: { type: String, required: true },
+		  className:{ type: String, required: true },
+		  content: { type: String, required: true },
+		  name: { type: String, required: true },
+		  notes:{ type: String},
+		  days:{ type: Number },
+		  */
+		   
+		   	 _.each(events,function(event,i){
+	 
+				if( event.end_date){
+				
+					var date = []
+					date = {
+								start: event.start_date,
+								end: new Date( event.end_date.getTime() + 3600000),
+								timestamp: new Date(),
+								summary: "["+event._type + "]  " + event.name + " - "  + (event.group !="" ? event.group + " - " : "") ,
+								organizer: 'digital room bookings timeline <bmaga.digital@bristol.gov.uk>',
+								text:"description aboyut this" 
+							}
+							
+					Events.push(date)
+					
+					}
+					
+				 })
+				 
+				 if (err) return next(err);
+		res.send(route_functions.calendar_feed(Events))
+  });
+
+
+		   
+    
+	 
+	 
+	 
+			
+				 
+
+
+
+  
+ 
+ 
 });
 
 
