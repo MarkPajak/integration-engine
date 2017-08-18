@@ -32,11 +32,23 @@
 			<div class="form-group">
 
 			<label for="start_date">Date from:</label>
-			<input type = "date" class="form-control input-lg" id="start_date" rows="3">
+			
 
+			<input class="form-control input-lg" id="start_date"
+						   ng-model="ctrl.input_start"
+						   ng-model-options="{ updateOn: 'blur' }"
+						   placeholder="Select a date..."
+						   moment-picker="ctrl.input_start">
+			
 			<label for="end_date">Date to:</label>
-			<input type = "date" class="form-control input-lg" id="end_date" rows="3">
+		
 
+			<input  id="end_date" class="form-control input-lg"
+							   ng-model="ctrl.input_end"
+							   ng-model-options="{ updateOn: 'blur' }"
+							   placeholder="Select a date..."
+							   moment-picker="ctrl.input_end">
+			
 			</div>
 					
 			  

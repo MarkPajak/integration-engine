@@ -178,10 +178,10 @@ var feedback_services = require('../components/machine-monitor/feedback-services
 		'md.data.table',
 		'ui.router'	,	
 		'ui.grid', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit','ui.grid.resizeColumns','ui.grid.pinning',
-		 'ui.grid.autoResize','ngMessages', 'material.svgAssetsCache'
+		 'ui.grid.autoResize','ngMessages', 'material.svgAssetsCache',	'moment-picker'
 		])
 		
-		
+	
 	
 
 _.each(yearly_events_controller, function(controller, name) {
