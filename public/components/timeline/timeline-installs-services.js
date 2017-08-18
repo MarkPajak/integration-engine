@@ -64,11 +64,14 @@ exports.timeline_install_functions =  function (timeline_functions,$http,Timelin
 																								  start_date :moment(data.start_date).format("MMM Do"),
 																								  end_date :end_date ||"",
 																								  notes  :data.notes ,
-																								  days :data.days
+																								  days :data.days,
+																								  install_features:data.install_features		
 																							}
 																								 
-																			 //if($rootScope.isloggedin==true){
-																				 visevents.add({
+																	
+
+
+																				visevents.add({
 																						_id: data._id,
 																						className:data.className,
 																						select_group :false,
@@ -82,6 +85,7 @@ exports.timeline_install_functions =  function (timeline_functions,$http,Timelin
 																						//title:data.notes,
 																						start: data.start_date,
 																						days:data.days,
+																						install_features:data.install_features,																					
 																						end: data.end_date 
 																					})
 																			//}

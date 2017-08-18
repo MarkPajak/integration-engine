@@ -3,13 +3,7 @@ var _ = require('underscore');
 
 var route_permissions = function (options){
 	
-	
-	
-	
-	
 
-	
-	
 	this.isAdmin = function (req, res, next) {
 	console.log('isAuthenticated ',req.isAuthenticated())
 
@@ -20,6 +14,7 @@ var route_permissions = function (options){
 		}
 		else
 		{
+		console.log('isAuthenticated',req.user.group)
 			return next();
 		}
 	}

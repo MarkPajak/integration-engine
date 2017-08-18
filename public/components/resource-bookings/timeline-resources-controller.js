@@ -1,5 +1,5 @@
-exports.timeline_controller=     function($compile,  $scope, $http, $q, $routeParams, $location,
-         $location, $rootScope, trello,timeline_bookings_functions, get_trello_board, date_calc, Todos, Timeline, Bookings,Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate,Raw_visits,timeline_visitor_figures_functions,timeline_install_functions, $timeout,timeline_exhibitions_functions
+exports.timeline_resources_controller=     function($compile,  $scope, $http, $q, $routeParams, $location,
+         $location, $rootScope, trello,timeline_bookings_functions, get_trello_board, date_calc, Todos, Timeline, Bookings,Team, kiosk_activity,timeline_functions_resources,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate,Raw_visits,timeline_visitor_figures_functions,timeline_install_functions, $timeout,timeline_exhibitions_functions
     ) {
 		
 		$scope.locked=[]
@@ -17,32 +17,20 @@ exports.timeline_controller=     function($compile,  $scope, $http, $q, $routePa
 		$scope.isloggedin=false	
 		$scope.isloggedin=false	
 	    $scope.timeline_track = Timeline 
+
 		
-		
-		$rootScope.installmodels=[]				
-		$rootScope.installmodels.push({"name":"painting","selected":false,"icon":"picture"})
-		$rootScope.installmodels.push({"name":"graphics","selected":false,"icon":"tint"})
-		$rootScope.installmodels.push({"name":"av","selected":false,"icon":"volume-up"})
-		$rootScope.installmodels.push({"name":"build","selected":false,"icon":"wrench"})
-		$rootScope.installmodels.push({"name":"objects","selected":false,"icon":"tower"})
-		$scope.haspermissions=false
-	
 	 $scope.init = function(timeline_mode)
   {
 	 setTimeout(function() {
 	 
-			(timeline_mode=="room-hire")	? $scope.timeline_track = Bookings :  $scope.timeline_track = Timeline 
+				$scope.timeline_track = Bookings 
 			
 			
-			 AuthService.isLoggedIn().then(function(user){
+				  AuthService.isLoggedIn().then(function(user){
 		
 			
-						$scope.user=user
-						$scope.isloggedin=true			
-						if(	user.data.group=="ADMIN"){$scope.haspermissions=true}
-						if(	user.data.group=="EXHIBITIONS"){$scope.haspermissions=true}
-						if(	user.data.group=="DIGITAL"){$scope.haspermissions=true}
-
+			$scope.user=user
+			$scope.isloggedin=true	
 			main_function(timeline_mode)
 			
 	  })
@@ -53,7 +41,7 @@ exports.timeline_controller=     function($compile,  $scope, $http, $q, $routePa
 				main_function(timeline_mode)
 			} 
 		
-        }, 2000);
+        }, 1500);
 
   })
 }
@@ -64,8 +52,7 @@ main_function = function(timeline_mode){
 
 
 
-	if(timeline_mode=="room-hire" ){ timeline_track = Bookings } else{  timeline_track = Timeline }
-
+	 timeline_track = Bookings 
 			$scope.filter_pie=[]
 			$scope.filter_pie.push({value:"2017 total_children",name:"No. children"})
 			$scope.filter_pie.push({value:"2017 total_sessions",name:"No. sessions"})
@@ -85,7 +72,7 @@ main_function = function(timeline_mode){
 						
 										'apply.daterangepicker' : function() {  
 										   date=$rootScope.datePicker.date
-											days=timeline_functions.days(moment(date.startDate),moment(date.endDate))
+											days=timeline_functions_resources.days(moment(date.startDate),moment(date.endDate))
 											
 											
 										 
@@ -97,20 +84,19 @@ main_function = function(timeline_mode){
 																				  image :"",
 																				  start_date :moment(date.startDate).format("MMM Do"),
 																				  end_date : moment(date.endDate).format("MMM Do")|| "",
-																				  notes  :$rootScope.selected_notes + "(" +days+" days)" ,			
-																				 install_features:$rootScope.installmodels,
+																				  notes  :$rootScope.selected_notes + "(" +days+" days)" ,
 																				 days :days}
 										
 										
-										html=timeline_functions.event_html(event_to_add)
+										html=timeline_functions_resources.event_html(event_to_add)
 												
-										var options={id:$scope.selected_timeline_id,content:html,install_features:$rootScope.installmodels, start:moment(date.startDate)._d,end:moment(date.endDate)._d,start_date:moment(date.startDate)._d,end_date:moment(date.endDate)._d}
+										var options={id:$scope.selected_timeline_id,content:html,start:moment(date.startDate)._d,end:moment(date.endDate)._d,start_date:moment(date.startDate)._d,end_date:moment(date.endDate)._d}
 												
 										timeline_track.update({
 												id: $scope.selected_id,				
 												}, options);				
 												console.log('updatedItem',options)
-												timeline_functions.updateItem(options)
+												timeline_functions_resources.updateItem(options)
 												
 								
 									
@@ -119,43 +105,42 @@ main_function = function(timeline_mode){
         }
 
 				$scope.$watch('selected_notes', function(selected_note) {
-				console.log('selected_notes edited',selected_note)
-						timeline_functions.event_edited($scope,selected_note)
+				
+					timeline_functions_resources.event_edited($scope,selected_note)
 				
 				})
-				
+			
 		
-				
-
 			
 			$scope.$watch('selected_item', function(selected_item) {
 
 			//if( !$scope.locked.add_item){	
 			
 			date=$rootScope.datePicker.date
-			days=timeline_functions.days(moment(date.startDate),moment(date.endDate))
+			days=timeline_functions_resources.days(moment(date.startDate),moment(date.endDate))
 			$scope.selected_start = moment(date.startDate ).format("MMM Do")
-			$scope.selected_end = moment(date.endDate).format("MMM Do")
+					$scope.selected_end = moment(date.endDate).format("MMM Do")
 					
 			if(moment(date.startDate).isValid()){ //true
 											
-			var event_to_add=	{id :  $scope.selected_id,
-													  name :$scope.selected_item,
-													  showimage :"",
-													  image :"",
-													  start_date :moment(date.startDate).format("MMM Do"),
-													  end_date : moment(date.endDate).format("MMM Do")|| "",
-													  notes  :$rootScope.selected_notes ,
-													  
-													 days :days}
+			var event_to_add=	{
+									id :  $scope.selected_id,
+									name :$scope.selected_item,
+									showimage :"",
+									image :"",
+									start_date :moment(date.startDate).format("MMM Do"),
+									end_date : moment(date.endDate).format("MMM Do")|| "",
+									notes  :$rootScope.selected_notes ,
+									days :days
+								}
 			
-					html=timeline_functions.event_html(event_to_add)
+					html=timeline_functions_resources.event_html(event_to_add)
 					var options={id:$scope.selected_timeline_id,content:html,name:selected_item,start:moment(date.startDate)._d,end:moment(date.endDate)._d,}
 					timeline_track.update({
 					id: $scope.selected_id,				
 					}, options);				
 					
-					timeline_functions.updateItem(options)
+					timeline_functions_resources.updateItem(options)
 			}
 			
 			//}
@@ -172,7 +157,7 @@ main_function = function(timeline_mode){
 					 if(typeof(stack)!="undefined"){
 						 
 						   options={stack:stack}
-							timeline_functions.updateOptions(options)
+							timeline_functions_resources.updateOptions(options)
 					  }
 		  
 		
@@ -340,42 +325,42 @@ main_function = function(timeline_mode){
 					}
 	
 			//VIS ERRORS IF INITIALISED WITH AN EMPTY START DATE
-			timeline_functions.setup( $scope.timeline_track ,$rootScope.groups, new vis.DataSet(date))
+			timeline_functions_resources.setup( $scope.timeline_track ,$rootScope.groups, new vis.DataSet(date))
 			
 			
 			
 			$scope.add_exhibitions= function(){						
-					timeline_functions.populate_timeline_track_method_b($rootScope,timeline_exhibitions_functions,timeline_track)
+					timeline_functions_resources.populate_timeline_track_method_b($rootScope,timeline_exhibitions_functions,timeline_track)
 			}
 			
 			$scope.add_installs_derigs= function(){				
-					timeline_functions.populate_timeline_track($rootScope,Timeline,timeline_install_functions,timeline_track)	
+					timeline_functions_resources.populate_timeline_track($rootScope,Timeline,timeline_install_functions,timeline_track)	
 			}
 			
 			$scope.team_leave= function(){
-					timeline_functions.populate_timeline_track_method_b($rootScope,timeline_leave_functions,timeline_track)				
+					timeline_functions_resources.populate_timeline_track_method_b($rootScope,timeline_leave_functions,timeline_track)				
 			}
 			
 			$scope.visitor_figures= function(){							
-					timeline_functions.populate_timeline_track($rootScope,Raw_visits,timeline_visitor_figures_functions,timeline_track)
+					timeline_functions_resources.populate_timeline_track($rootScope,Raw_visits,timeline_visitor_figures_functions,timeline_track)
 			}
 			
 			
-				$scope.bookings= function(){							
-					timeline_functions.populate_timeline_track($rootScope,Bookings,timeline_bookings_functions,timeline_track)
+			$scope.Resources= function(){							
+					timeline_functions_resources.populate_timeline_track($rootScope,Bookings,timeline_bookings_functions,timeline_track)
 			}
 			
 			
 			$scope.shopify= function(){							
-					timeline_functions.populate_timeline_track($rootScope,Shopify_aggregate,timeline_shopify_functions,timeline_track)
+					timeline_functions_resources.populate_timeline_track($rootScope,Shopify_aggregate,timeline_shopify_functions,timeline_track)
 			}
 				
 			$scope.loans= function(){							
-					timeline_functions.populate_timeline_track_method_b($rootScope,timeline_loans_functions,timeline_track)
+					timeline_functions_resources.populate_timeline_track_method_b($rootScope,timeline_loans_functions,timeline_track)
 			}
 			
 			$scope.learning_bookings= function(){							
-					timeline_functions.populate_timeline_track_method_b($rootScope,timeline_learning_functions,timeline_track)
+					timeline_functions_resources.populate_timeline_track_method_b($rootScope,timeline_learning_functions,timeline_track)
 			}
 			
 			
@@ -389,37 +374,11 @@ main_function = function(timeline_mode){
 			
 			
 			$scope.shopify() //NB for some reason need this to appear for unlogged in users otherwise text wont load in directives
-			
-			
-			//WE'll do some routing here - might need to put it in a better place one day
-			
-			
-			if(timeline_mode=="room-hire"){
-				
-		
+
 			
 					timeline_track = Bookings
-					$scope.bookings()
-			
-			}
-			else
-			{
-			timeline_track = Timeline
-			if( $scope.isloggedin){	
-			
-			
-					$scope.add_installs_derigs()
-					$scope.team_leave()
-					$scope.visitor_figures()
-					$scope.learning_bookings()
-					$scope.loans()
-					
+					$scope.Resources()
 
-			}			
-			
-			$scope.add_exhibitions()
-			}
-		
 	
 	var checked_event_types=[]
 											checked_event_types.push('Tour')
@@ -439,21 +398,17 @@ main_function = function(timeline_mode){
 					$scope.timeline_googlesheets_functions(data_settings)
 				})
 		
-		timeline_functions.update_andCompile()	
+		timeline_functions_resources.update_andCompile()	
 		
 		})
 
 	
 
+		
+
     // check if there is query in url
     // and fire search in case its value is not empty
-		 $scope.$watch('installmodels|filter:{selected:true}', function (nv) {
-						timeline_functions.event_edited($scope)
 
-		}, true);
-	
-	
-	
 	$scope.$watch('track_groups|filter:{selected:true}', function (nv) {
 		
 					var selection = nv.map(function (track_groups) {
@@ -461,7 +416,7 @@ main_function = function(timeline_mode){
 					  return track_groups.track;
 					});
 					$scope.selected_tracks=selection
-					timeline_functions.changeTracks(selection)
+					timeline_functions_resources.changeTracks(selection)
 					//$( ".draggable,.iconbar" ).css({ 'top':'0px' });
   }, true);
   
@@ -471,13 +426,13 @@ $scope.$watch('groups|filter:{selected:true}', function (nv) {
 					var selection = nv.map(function (group) {
 					  return group.content;
 					});
-					timeline_functions.changeGroups(selection)
+					timeline_functions_resources.changeGroups(selection)
 					$( ".draggable,.iconbar" ).css({ 'top':'0px' });
 	
-}, true);
+  }, true);
 
 	
-
+	
 
 			
 	
@@ -509,7 +464,7 @@ $scope.$watch('groups|filter:{selected:true}', function (nv) {
 				  
 				  })
 						
-				timeline_functions.export_JSON_to_CSV(events, "Timeline dates", true)
+				timeline_functions_resources.export_JSON_to_CSV(events, "Timeline dates", true)
 	}
 	
 
@@ -527,10 +482,10 @@ $scope.$watch('groups|filter:{selected:true}', function (nv) {
                 title: 'PROVISIONAL DATE'
             };
             $scope.list2 = {
-                title: 'INSTALL'
+                title: 'Meeting'
             };
             $scope.list3 = {
-                title: 'DERIG'
+                title: 'Event'
             };
 
             $scope.onDropComplete = function(data, evt) {
@@ -576,7 +531,7 @@ exports.BasicDemoCtrl=   function ($mdDialog,$scope, $http, $q, $routeParams, $l
   
 
 exports.add_timeline_items_controller=    function($scope, $http, $q, $routeParams, $location,
-         $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate
+         $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions_resources,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate
     ) {
 	
 	$scope.unlocked=false
@@ -587,15 +542,12 @@ exports.add_timeline_items_controller=    function($scope, $http, $q, $routePara
   }
   
   exports.add_timeline_info_box=    function($scope, $http, $q, $routeParams, $location,
-         $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate
+         $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions_resources,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate
     ) {
 		
 
- 
 
-
-
- }
+  }
   
 
   

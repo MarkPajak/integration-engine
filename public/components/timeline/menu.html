@@ -41,7 +41,7 @@ SVG Icons - svgicons.sparkk.fr
          <i class="material-icons">face</i>
       </md-button>
       <md-menu-content width="4">
-	  	 <md-menu-item  ng-show="isloggedin">
+	  	 <md-menu-item  ng-show="isloggedin && haspermissions">
           <md-button ng-click="">
          <md-icon md-svg-icon="social:notifications-{{ctrl.notificationsEnabled ? 'off' : 'on'}}"></md-icon>
          <label class=" switch checkbox checkbox-inline">

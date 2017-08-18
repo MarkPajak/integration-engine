@@ -10,7 +10,8 @@ var TimelineSchema = new mongoose.Schema({
 		  content: { type: String, required: true },
 		  name: { type: String, required: true },
 		  notes:{ type: String},
-		  days:{ type: Number }
+		  days:{ type: Number },
+		  install_features:{type: Object}
 });
 
 

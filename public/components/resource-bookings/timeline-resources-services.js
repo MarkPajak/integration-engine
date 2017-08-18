@@ -1,16 +1,12 @@
 
 
-exports.timeline_functions = function ( $templateCache,$compile,$http,Timeline,Bookings,$rootScope,$timeout) {
+exports.timeline_functions_resources = function ( $templateCache,$compile,$http,Bookings,$rootScope,$timeout) {
 	
 
   
   return {
   
-  timeline_track: Timeline,
-  
-  
-  		
-
+  timeline_track: Bookings,
   
 		  loadgroups: function(items){
 	
@@ -42,7 +38,7 @@ exports.timeline_functions = function ( $templateCache,$compile,$http,Timeline,B
 				}
 			})
 
-			console.log(_groups)
+		
 			return _groups		
 
 		},
@@ -51,12 +47,13 @@ exports.timeline_functions = function ( $templateCache,$compile,$http,Timeline,B
 			
 			var self = this
 			
-			$compile($("timeline-databar"))($rootScope);
-			console.log('update_andCompile') //MEMORY LEAK WARNING
-			
+				setTimeout(function() {
+			 	$compile($("timeline-databar"))($rootScope);
+			 }, 1700);
 			setTimeout(function() {
 			
-						
+				
+		
 						unique_groups=[]
 						added_ids=[]
 						_.each($rootScope.groups, function(group){
@@ -77,7 +74,7 @@ exports.timeline_functions = function ( $templateCache,$compile,$http,Timeline,B
 						self.enable_event_drop(timeline_track,timeline_track)
 						$rootScope.timeline.redraw()
 			
-             }, 1500);
+            }, 2000);
 			 
 			
 		},	
@@ -279,7 +276,7 @@ exports.timeline_functions = function ( $templateCache,$compile,$http,Timeline,B
 							}
 							else
 							{
-								add_item(group,$rootScope.filter_pieSelected,time,"placeholder","orange",1,"PROVISIONAL DATE")
+								add_item(group,$rootScope.filter_pieSelected,time,ui.draggable[0].innerHTML,"orange",1,"PROVISIONAL DATE")
 							}
 							
 							function add_item(dropped_group,group,time,value,colour,days,type)
@@ -314,7 +311,7 @@ exports.timeline_functions = function ( $templateCache,$compile,$http,Timeline,B
 									
 															content: self.event_html(event_to_add),
 															name:value,
-															group: group,
+															group: dropped_group,
 															dropped_group:dropped_group,
 															date_logged: new Date(),	
 															className:colour||"",
@@ -329,8 +326,9 @@ exports.timeline_functions = function ( $templateCache,$compile,$http,Timeline,B
 									
 								
 									
-									var _timeline = new Timeline(new_date)
-										.$save(function(_item) {
+									var _timeline = new Bookings(new_date)
+										.$save(function(_item) 
+										{
 										
 
 											new_date.start =_item.start_date
@@ -340,11 +338,13 @@ exports.timeline_functions = function ( $templateCache,$compile,$http,Timeline,B
 											timeline.itemsData.getDataSet().add(new_date)
 											
 											setTimeout(function() {
-												$(ui.draggable[0]).show()
-												
-											self.add_group_to_timeline(new_date)
+											
+													$(ui.draggable[0]).show()
+													self.add_group_to_timeline(new_date)
+											
 											}, 1 * 1000);
 
+											
 										});
 							
 							
@@ -461,30 +461,13 @@ console.log('changeTracks selection',selection)
 		 	var  notes  = event_to_add.notes ||""
 		 	var  days = event_to_add.days
 			var  description =event_to_add.description ||""
-
-			 var  av=false,build=false,painting=false,objects =false,graphics =false
-			 
-			 _.each(event_to_add.install_features, function(feature){
-			 
-						if(feature.selected==true){
-						
-								if(feature.name=="av"){av=true}
-								if(feature.name=="build"){build=true}
-								if(feature.name=="painting"){painting=true}
-								if(feature.name=="graphics"){graphics=true}
-								if(feature.name=="objects"){objects=true}
-					
-						}
-			 })
-		 
-
 		 
 			var notes=notes ||""
 			var image=image ||""
 	
 			var showimage=showimage ||""
 			
-			var htmlContent= "<timeline-databar     graphics='" + graphics + "' objects='" + objects + "'  painting='" + painting + "' build='" + build + "'  av='" + av + "'  description='" + description + "' description='" + description + "' id='" + id + "' name='" + name + "' image='" + image + "' showimage='" + showimage + "' startdate='" + start_date + "' enddate='" + end_date + "' notes='" + notes + "' days='" + days + "'></timeline-databar>"; //'<timeline-databar></timeline-databar>'
+			var htmlContent= "<timeline-databar    description='" + description + "' description='" + description + "' id='" + id + "' name='" + name + "' image='" + image + "' showimage='" + showimage + "' startdate='" + start_date + "' enddate='" + end_date + "' notes='" + notes + "' days='" + days + "'></timeline-databar>"; //'<timeline-databar></timeline-databar>'
 		
 			return htmlContent
 
@@ -501,35 +484,6 @@ console.log('changeTracks selection',selection)
 										$rootScope.selected_timeline_id=selected_timeline_id
 										$rootScope.selected_item=selected_item.name
 										$rootScope.selected_type=selected_item._type
-										
-									
-										
-										
-										_.each($rootScope.installmodels,  function(feature,i){
-												$rootScope.installmodels[i].selected=false
-										})
-											
-										if(selected_item.install_features){
-										_.each(selected_item.install_features,  function(feature){
-										if (feature.selected==true){
-											console.log(feature.name + " is selected in the model")
-												_.each($rootScope.installmodels,  function(_feature,i){
-												console.log("checking " + _feature)
-														if (_feature.name==feature.name){
-															console.log($rootScope.installmodels[i].name + " is selected on the info box" +_feature.name)
-															console.log("switching on " +$rootScope.installmodels[i] )
-															$rootScope.installmodels[i].selected=true
-														}
-												})
-										}
-										})
-										}
-									
-										
-										
-										
-										
-										
 										if(selected_item.days>0)
 										{
 												$rootScope.selected_days=" - " +selected_item.days + " days"
@@ -555,7 +509,7 @@ console.log('changeTracks selection',selection)
 				
 	},
 	
-	event_edited: function(scope){
+	event_edited: function(scope,selected_note){
 
 	console.log('event_edited')
 	
@@ -570,7 +524,6 @@ console.log('changeTracks selection',selection)
 					days=self.days(moment(date.startDate),moment(date.endDate))
 					scope.selected_start = moment(date.startDate ).format("MMM Do")
 					scope.selected_end = moment(date.endDate).format("MMM Do")
-
 					if(moment(date.startDate).isValid()){ //true
 								
 									var event_to_add=	{
@@ -581,14 +534,13 @@ console.log('changeTracks selection',selection)
 														  start_date :moment(date.startDate).format("MMM Do"),
 														  end_date : moment(date.endDate).format("MMM Do")|| "",
 														  notes  :$rootScope.selected_notes ,
-														  days :days,
-														  install_features:scope.installmodels
+														  days :days
 														}
 				
 					
 					//THIS CAUSES A REFRESH OF THE TIMELINE DIRECTIVE (GOOD)
 					html=self.event_html(event_to_add)
-					var options={id:scope.selected_timeline_id,content:html,notes:$rootScope.selected_note,start:moment(date.startDate)._d,end:moment(date.endDate)._d, install_features:scope.installmodels}
+					var options={id:scope.selected_timeline_id,content:html,notes:selected_note,start:moment(date.startDate)._d,end:moment(date.endDate)._d}
 					self.timeline_track.update({
 								id: scope.selected_id			
 								}, options, function(){self.updateItem(options) });
@@ -664,8 +616,7 @@ console.log('changeTracks selection',selection)
 															  start_date : moment(item.start).startOf('day').format("MMM Do"),
 															  end_date : moment(item.end).startOf('day').format("MMM Do"),
 															  notes  :item.notes ,
-															  days :days,
-															   install_features:$rootScope.installmodels
+															  days :days
 															
 														}
 									
@@ -679,8 +630,7 @@ console.log('changeTracks selection',selection)
 												start:moment(item.start)._d,
 												end:moment(item.end)._d,
 												start_date:moment(item.start)._d,
-												end_date:moment(item.end)._d,
-												install_features:$rootScope.installmodels
+												end_date:moment(item.end)._d
 												}
 								self.timeline_track.update({
 								id:  item._id				
@@ -716,46 +666,42 @@ console.log('changeTracks selection',selection)
 									days=self.days(item.start, item.end)
 									if(moment(item.start).isValid()){ //true
 										
-									var event_to_add=	{
-														  id : item.id,
-														  name :value,
-														  showimage :"",
-														  image :"",
-														  start_date :item.start,
-														  end_date : item.end,
-														  notes  :item.notes,
-														  days :days													  
-														}
-										
-										
-									var _timeline = new self.timeline_tracktimeline_track({
-										content:  self.event_html(event_to_add),
-										name: item.name,
-										group: item.group,
-										start_date: item.start,
-										end_date: item.end,
-										days:self.days(item.start,item.end)
+								var event_to_add=	{
+								
+													  id : item.id,
+													  name :value,
+													  showimage :"",
+													  image :"",
+													  start_date :item.start,
+													  end_date : item.end,
+													  notes  :item.notes ,
+													  days :days
+													  
+													}
+									
+									
+                                var _timeline = new self.timeline_track({
+                                    content:  self.event_html(event_to_add),
+									name: item.name,
+                                    group: item.group,
+                                    start_date: item.start,
+                                    end_date: item.end,
+									days:self.days(item.start,item.end)
 
-									})
-								   
-								   self.timeline_tracktimeline_track.update({
-										id: item._id
-									}, _timeline);
-								   
-									
-										//$rootScope.timeline.itemsData.on("update", function(){
-										
-										var _options={id:item._id,content:self.event_html(event_to_add),start:moment(event_to_add.startDate)._d,end:moment(event_to_add.endDate)._d,start_date:moment(event_to_add.startDate)._d,end_date:moment(event_to_add.endDate)._d}
-							
-										self.updateItem(_options, function(){
-											self.update_andCompile()
-										})									
-										
-										//})
-										
-									
-									
-									 callback(item);
+                                })
+                               
+                               self.timeline_track.update({
+                                    id: item._id
+                                }, _timeline);
+                               
+				
+									var _options={id:item._id,content:self.event_html(event_to_add),start:moment(event_to_add.startDate)._d,end:moment(event_to_add.endDate)._d,start_date:moment(event_to_add.startDate)._d,end_date:moment(event_to_add.endDate)._d}
+						
+									self.updateItem(_options, function(){
+										self.update_andCompile()
+									})									
+
+								 callback(item);
 							}
 										else
 										{
@@ -827,7 +773,7 @@ console.log('changeTracks selection',selection)
                     onRemove: function(item, callback) {
 
                         if (item._id) {
-                            self.timeline_tracktimeline_track.remove({
+                            self.timeline_track.remove({
                                 id: item._id
                             })
                             callback(item);

@@ -4,6 +4,16 @@
     templateUrl: './components/timeline/timeline-page.html'
   }
 	}
+
+
+	exports.timelineBookings = function() {
+  return {
+ controller: 'timeline_resources_controller',
+   templateUrl: './components/timeline/timeline-page.html'
+  }
+  }
+
+
 	
 		exports.timelineMenu = function() {
   return {
@@ -60,16 +70,21 @@ exports.timelineInfobox = function() {
 
       templateUrl: './components/timeline/timeline-item.html',
 	  scope: {
-		  startdate: "@",
-		  id: "@",
-		  enddate: "@",
-		  name: "@",
-		  description: "@",
-		  image: "@",
-		  showimage: "@",
-		  notes: "@",		 
-		  days: "@"
-		
+					startdate: "@",
+					id: "@",
+					enddate: "@",
+					name: "@",
+					description: "@",
+					image: "@",
+					showimage: "@",
+					notes: "@",		 
+					days: "@",
+					painting:"@",
+					av:"@",
+					build:"@",
+					objects:"@",
+					graphics:"@"
+
 		}
     }
 	}

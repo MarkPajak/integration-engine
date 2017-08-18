@@ -1,5 +1,40 @@
 
 
+<style>
+md-menu-item > .md-button md-icon {
+    margin: auto -34px auto 0;
+}
+
+md-menu-item{
+height:60px;
+}
+.menudemoBasicUsage .md-menu-demo {
+  padding: 24px; }
+.menudemoBasicUsage .menu-demo-container {
+  min-height: 100px; }
+  
+  /* -----
+SVG Icons - svgicons.sparkk.fr
+----- */
+
+.svg-icon {
+  width: 1em;
+  height: 1em;
+}
+
+.svg-icon path,
+.svg-icon polygon,
+.svg-icon rect {
+  fill: #4691f6;
+}
+
+.svg-icon circle {
+  stroke: #4691f6;
+  stroke-width: 1;
+}
+</style>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
 
 
 
@@ -40,13 +75,80 @@
 	<dd class="col-sm-9"  ng-show="!locked.add_item">{{$root.selected_notes}}</dd>
 	<dd class="col-sm-9"  ng-show="locked.add_item"> 
 		<textarea ng-disabled="!locked.add_item" type="text" lines="5" ng-data="{{selected_id}}" ng-model="$root.selected_notes" ng-model-options="{ debounce: 1000 }" ></textarea>
-	</dd> 
+	</dd>
+<dt class="col-sm-3">Activity: </dt> 
 
-</dl>
-				
+</dl> 
+  
+ 
+<div ng-show="!locked.add_item && track.selected" ng-repeat="track in installmodels track by $index" >
+	 <dl class="row"  >  
+	<dt  class="col-sm-3">{{track.name}}</dt>
+	<dd class="col-sm-4">	
+		<span title="{{track.name}}"  ng-class="{{track.selected}}  ? 'glyphicon glyphicon-{{track.icon}}' : 'glyphicon glyphicon glyphicon glyphicon-{{track.icon}}'" aria-hidden="true"></span>
+	</dd>
+		</dl>
+</div>
 
-	
+
+	   <md-menu-item ng-repeat="track in installmodels" ng-show="locked.add_item">
+          
+		  <md-button ng-click="ctrl.redial($event)">
+            <md-icon md-svg-icon="call:dialpad" md-menu-align-target=""></md-icon>
+				<label class="switch">
+		<div class="settings_locklabel" >{{track.name}}  <span title="{{track.name}}"  ng-class="{{track.selected}}  ? 'glyphicon glyphicon glyphicon glyphicon-{{track.icon}}' : 'glyphicon glyphicon glyphicon glyphicon-{{track.icon}}'" aria-hidden="true"></span></div>
 		
+			<input ng-disabled="!locked.add_item" 
+					type="checkbox"
+					name="selectedFruits[]"
+					value="{{track.name}}"
+					ng-model="track.selected"
+					ng-click="toggleSelection(track)"
+				  > 
+				   <div class="slider round"></div>
+			</label>
+            
+          </md-button>
+		  
+        </md-menu-item>
+
+
+
+
+
+
+
+
+
+
+
+<!--
+
+
+	<span title="painting" id="painting_checked{{id}}" ng-class=" painting_checked  ? 'glyphicon glyphicon glyphicon-tint' : 'glyphicon glyphicon glyphicon-tint'" aria-hidden="true"></span>			
+<label>painting: 
+    <input ng-model-options="{ debounce: 1000 }" ng-change="changedinstallmodel($root.installmodel)" ng-disabled="!locked.add_item" type="checkbox" ng-model="$root.installmodel.painting_checked"   ng-true-value="true" ng-false-value="false" ng-data="{{selected_id}}">
+ </label>
+ <span title="graphics" id="graphics_checked{{id}}" ng-class=" graphics_checked  ? 'glyphicon glyphicon glyphicon-picture' : 'glyphicon glyphicon-picture'" aria-hidden="true"></span>
+<label>graphics:
+    <input  ng-model-options="{ debounce: 1000 }" ng-change="changedinstallmodel($root.installmodel)" ng-disabled="!locked.add_item" type="checkbox" ng-model="$root.installmodel.graphics_checked"    ng-true-value="true" ng-false-value="false"  ng-data="{{selected_id}}">
+ </label>
+ <span title="AV" id="av_checked{{id}}" ng-class=" av_checked  ? 'glyphicon glyphicon glyphicon-volume-up' : 'glyphicon glyphicon glyphicon-volume-up'" aria-hidden="true"></span>
+   <label>AV:
+    <input  ng-model-options="{ debounce: 1000 }" ng-change="changedinstallmodel($root.installmodel)" ng-disabled="!locked.add_item" type="checkbox" ng-model="$root.installmodel.av_checked"   ng-model="$root.installmodel.av_checked"  ng-true-value="true" ng-false-value="false"  ng-data="{{selected_id}}">
+ </label>
+ <span  title="build" id="build_checked{{id}}" ng-class=" build_checked  ? 'glyphicon glyphicon glyphicon-wrench' : 'glyphicon glyphicon glyphicon-wrench'" aria-hidden="true"></span>
+    <label>build:
+
+    <input ng-model-options="{ debounce: 1000 }" ng-change="changedinstallmodel($root.installmodel)" ng-disabled="!locked.add_item" type="checkbox" ng-model="$root.installmodel.build"    ng-true-value="true" ng-false-value="false"  ng-data="{{selected_id}}">
+ </label>
+ <span title="objects" id="objects_checked{{id}}" ng-class=" objects_checked  ? 'glyphicon glyphicon glyphicon glyphicon-tower' : 'glyphicon glyphicon glyphicon glyphicon-tower'" aria-hidden="true"></span>
+     <label>objects:
+    <input ng-model-options="{ debounce: 1000 }" ng-change="changedinstallmodel($root.installmodel)" ng-disabled="!locked.add_item" type="checkbox" ng-model="$root.installmodel.objects_checked"    ng-true-value="true" ng-false-value="false"  ng-data="{{selected_id}}">
+ </label>
+ 
+
+-->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

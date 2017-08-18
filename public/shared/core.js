@@ -23,8 +23,11 @@ var  record_equipment_controller = require('../components/resource-bookings/equi
 var  record_bookings_controller = require('../components/resource-bookings/bookings/form-controller');
 var  bookings_controller = require('../components/resource-bookings/bookings/raw-bookings-controller');
 var  timeline_bookings_services = require('../components/timeline/timeline-bookings-services');
+var  timeline_functions_resources = require('../components/resource-bookings/timeline-resources-services');
+var  timeline_resources_controller = require('../components/resource-bookings/timeline-resources-controller');
 
-var resources_directives = require('../components/resource-bookings/directive');
+
+
 
 
 
@@ -128,7 +131,7 @@ var shopify_directives = require('../components/shopify/shopify-directive');
 var performance_directives = require('../components/performance/performance-directive');
 var iframe_directives = require('../components/iframe/iframe-directive');
 var turnstiles_directives = require('../components/turnstiles/turnstiles-directive');
-
+var resources_directives = require('../components/resource-bookings/directive');
 
 
 
@@ -156,6 +159,7 @@ var feedback_services = require('../components/machine-monitor/feedback-services
 
 	var app =  angular.module('app', [
 		'ng',
+	
 		'ngRoute',
 		'ngAnimate',		
 		'ngResource',
@@ -569,6 +573,15 @@ _.each(timeline_exhibitions_functions, function(factory, name) {
 });
 
 
+_.each(timeline_resources_controller, function(factory, name) {
+  app.controller(name, factory);
+});
+
+
+
+_.each(timeline_functions_resources, function(factory, name) {
+  app.factory(name, factory);
+});
 
 _.each(timeline_bookings_services, function(factory, name) {
   app.factory(name, factory);
@@ -733,7 +746,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
               controller: 'form_to_trellox'
            })
 		     .when('/timeline', {
-              template: '<time-line ng-init="init(\'timeline\')"  ></time-line>'
+              template: '<time-line  timeline_mode="Timeline" ng-init="init(\'timeline\')"  ></time-line>'
 			  
            })
 		    .when('/timeline_settings', {
@@ -741,7 +754,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
               controller: 'timeline_settings_controller'
            })
 		    .when('/room-hire', {
-              template: '<time-line ng-init="init(\'room-hire\')"  ></time-line>'
+              template: '<timeline-bookings timeline_mode="Bookings" ng-init="init(\'room-hire\')"  ></timeline-bookings>'
 			  
            })
 		   
@@ -902,12 +915,12 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
            })
 		   
 		   
-		   	    	   .when('/record-welcomedesk', {
+		   	.when('/record-welcomedesk', {
                template: '<welcomedesk-Formdata></welcomedesk-Formdata>'
            })
 		   
 		   
-		   	   .when('/raw-welcomedesk', {
+		   .when('/raw-welcomedesk', {
                template: '<raw-welcomedesk></raw-welcomedesk>'
            })
 		   
@@ -920,12 +933,12 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
                template: '<teg-dashboard></teg-dashboard>'
            })
 		   
-		   	    	   .when('/record-teg', {
+		   	 .when('/record-teg', {
                template: '<teg-Formdata></teg-Formdata>'
            })
 		   
 		   
-		   	   .when('/raw-teg', {
+		   	.when('/raw-teg', {
                template: '<raw-teg></raw-teg>'
            })
 		   
@@ -938,10 +951,8 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
                template: '<analyser-dashboard></analyser-dashboard>'
            })
 		   
-		   
-		   
-		   
-		      .when('/raw-turnstiles', {
+
+		    .when('/raw-turnstiles', {
                template: '<raw-turnstiles></raw-turnstiles>'
            })
 		   
@@ -954,13 +965,14 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
 		  .when('/rooms', {
                template: '<rooms-Formdata></rooms-Formdata>'
            })
+		   
 			.when('/equipment', {
                template: '<equipment-Formdata></equipment-Formdata>'
            })
 		   
 		.when('/bookings', {
                template: '<bookings-Formdata></bookings-Formdata>'
-           })
+          })
 
 
 		    .when('/turnstiles/:venue', {

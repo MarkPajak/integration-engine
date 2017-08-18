@@ -13898,7 +13898,7 @@ exports.yearly_welcomedesk_controller = function($route,$scope, $http, $q, $rout
 },{"b55mWE":4,"buffer":3}],65:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.record_bookings_controller =  function($scope, $http, $q,  
-          Resources,Bookings,data_table_reload,get_table_data
+          Resources,Bookings,data_table_reload,get_table_data,timeline_functions
     ) {
 
 //$scope.setDate = data_table_reload.setDate;
@@ -13913,57 +13913,69 @@ exports.record_bookings_controller =  function($scope, $http, $q,
 			Resources.query(query, function(rooms) {
 						
 					
-					  _.each(rooms, function(room){
-					  
+					  _.each(rooms, function(room){					  
 					  var _room = []
 					  _room.name=room.name
-					  
 						$scope.rooms.push(_room)
 					  })
 			
 			})	
+			
+$scope.selected_room=""			
+$scope.room_change = function(room) {
+    //Your logic
+  $scope.selected_room=room.name
+}
 	 
  $scope.onSubmit=function() {
 		
-		/*
-		  start_date: { type: Date, required: true },
-		  end_date: { type: Date},
-		  group: { type: String, required: true },
-		  _type: { type: String, required: true },
-		  className:{ type: String, required: true },
-		  content: { type: String, required: true },
-		  name: { type: String, required: true },
-		  notes:{ type: String},
-		  days:{ type: Number }
-*/
-		var type = "ROOM BOOKING"
+			
+
+var event_to_add=	{
+													  id : new Date().getUTCMilliseconds(),
+													  name :visit_form.name.value,		
+													  showimage :"",
+													  image :"",
+													  start_date : new Date(visit_form.start_date.value),
+													  end_date :  new Date(visit_form.end_date.value),	
+													  notes  :visit_form.comments.value,	
+													 }
+			var type = "ROOM BOOKING"
 		    var kpis = new Bookings({
 					
-				//DEPARTMENTAL VARIABLES	
-				start_date: new Date(visit_form.start_date.value),	
-				end_date: new Date(visit_form.end_date.value),	
-				group: visit_form.room.value,	
-				_type: type,	
-				//className:visit_form.className.value,	
-				 // content: visit_form.comments.value,	
-				name: visit_form.name.value,	
-				notes:visit_form.comments.value,	
-				
-					
-					
-					
-					
+					//DEPARTMENTAL VARIABLES	
+					start_date: new Date(visit_form.start_date.value),	
+					end_date: new Date(visit_form.end_date.value),	
+					group:$scope.selected_room,	
+					_type: type,	
+					className:"GREEN",	
+					// content: visit_form.comments.value,	
+					name:visit_form.name.value,		
+					notes:visit_form.comments.value,	
+					showimage :"",
+					content: timeline_functions.event_html(event_to_add),	
+					image :"",
+
 					date_logged:new Date(),	
 					//date_value:visit_form.date_value.value,
 					comments:visit_form.comments.value,			
 					logger_user_name: $scope.user.username
+					
             });
 			
-			var query = {'name': visit_form.name.value,
+				
+													
+                          
+			
+			var query = {
+			
+						'name': visit_form.name.value,	
 						'_type':type,
 						'group':visit_form.room.value,
 						'start_date':visit_form.start_date.value,
-						'end_date':visit_form.end_date.value};
+						'end_date':visit_form.end_date.value
+						
+						};
 			
 			Bookings.query(query, function(visits) {
 				  $scope.$emit('form_submit');
@@ -13992,7 +14004,7 @@ exports.record_bookings_controller =  function($scope, $http, $q,
 							  alert(message);
 							  get_table_data.getData(moment(new Date()).subtract({'months':1})._d,$scope)			
 							$scope.message="data saved successfully";
-			
+							visit_form.name.value=""
 							visit_form.group.value=""
 							visit_form.start_date.value=""
 							visit_form.end_date.value=""
@@ -14072,6 +14084,10 @@ exports.raw_bookings_controller = function($route,$scope, $http, $q, $routeParam
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/resource-bookings/bookings/raw-bookings-controller.js","/../components/resource-bookings/bookings")
 },{"b55mWE":4,"buffer":3}],67:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+
+
+
+
 
 
 	exports.roomsFormdata = function() {
@@ -14396,6 +14412,1434 @@ exports.raw_rooms_controller = function($route,$scope, $http, $q, $routeParams, 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/resource-bookings/rooms/raw-rooms-controller.js","/../components/resource-bookings/rooms")
 },{"b55mWE":4,"buffer":3}],72:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+exports.timeline_resources_controller=     function($compile,  $scope, $http, $q, $routeParams, $location,
+         $location, $rootScope, trello,timeline_bookings_functions, get_trello_board, date_calc, Todos, Timeline, Bookings,Team, kiosk_activity,timeline_functions_resources,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate,Raw_visits,timeline_visitor_figures_functions,timeline_install_functions, $timeout,timeline_exhibitions_functions
+    ) {
+		
+		$scope.locked=[]
+		$scope.locked.add_item = false
+		$scope.locked['true']={status:" locked",value:false}
+		$scope.locked['false']={status:" unlocked",value:true}
+		$scope.average_install_length = 0
+		$scope.password=false
+		$scope.lockstatus=false
+		$scope.average_derig_length = 0
+		$rootScope.addednames=[]
+		$rootScope.track_groups=[]
+		$rootScope.added_track_groups=[]
+		$rootScope.datePicker=[];
+		$scope.isloggedin=false	
+		$scope.isloggedin=false	
+	    $scope.timeline_track = Timeline 
+
+		
+	 $scope.init = function(timeline_mode)
+  {
+	 setTimeout(function() {
+	 
+				$scope.timeline_track = Bookings 
+			
+			
+				  AuthService.isLoggedIn().then(function(user){
+		
+			
+			$scope.user=user
+			$scope.isloggedin=true	
+			main_function(timeline_mode)
+			
+	  })
+	   
+	  	setTimeout(function() {
+		
+			if($scope.isloggedin==false){
+				main_function(timeline_mode)
+			} 
+		
+        }, 1500);
+
+  })
+}
+
+	  
+
+main_function = function(timeline_mode){
+
+
+
+	 timeline_track = Bookings 
+			$scope.filter_pie=[]
+			$scope.filter_pie.push({value:"2017 total_children",name:"No. children"})
+			$scope.filter_pie.push({value:"2017 total_sessions",name:"No. sessions"})
+			$scope.filter_pie.push({value:"2017 total_teachers",name:"No. teachers"})
+			$scope.filter_pieSelected = $scope.filter_pie[0].name; 
+			$scope.plot_graph =null;
+			$rootScope.datePicker.date = {startDate:null, endDate: null};
+			
+			$scope.dateRangeOptions = {
+				
+				
+					locale : {
+						format : 'DD/MM/YYYY'
+					},
+					//TIMELINE EVENT HANDLERS					
+					eventHandlers : {
+						
+										'apply.daterangepicker' : function() {  
+										   date=$rootScope.datePicker.date
+											days=timeline_functions_resources.days(moment(date.startDate),moment(date.endDate))
+											
+											
+										 
+										   	if(moment(date.startDate).isValid()){ //true
+										
+										var event_to_add=	{id :  $scope.selected_id,
+																				  name :$scope.selected_item,
+																				  showimage :"",
+																				  image :"",
+																				  start_date :moment(date.startDate).format("MMM Do"),
+																				  end_date : moment(date.endDate).format("MMM Do")|| "",
+																				  notes  :$rootScope.selected_notes + "(" +days+" days)" ,
+																				 days :days}
+										
+										
+										html=timeline_functions_resources.event_html(event_to_add)
+												
+										var options={id:$scope.selected_timeline_id,content:html,start:moment(date.startDate)._d,end:moment(date.endDate)._d,start_date:moment(date.startDate)._d,end_date:moment(date.endDate)._d}
+												
+										timeline_track.update({
+												id: $scope.selected_id,				
+												}, options);				
+												console.log('updatedItem',options)
+												timeline_functions_resources.updateItem(options)
+												
+								
+									
+										}}				
+						}
+        }
+
+				$scope.$watch('selected_notes', function(selected_note) {
+				
+					timeline_functions_resources.event_edited($scope,selected_note)
+				
+				})
+			
+		
+			
+			$scope.$watch('selected_item', function(selected_item) {
+
+			//if( !$scope.locked.add_item){	
+			
+			date=$rootScope.datePicker.date
+			days=timeline_functions_resources.days(moment(date.startDate),moment(date.endDate))
+			$scope.selected_start = moment(date.startDate ).format("MMM Do")
+					$scope.selected_end = moment(date.endDate).format("MMM Do")
+					
+			if(moment(date.startDate).isValid()){ //true
+											
+			var event_to_add=	{
+									id :  $scope.selected_id,
+									name :$scope.selected_item,
+									showimage :"",
+									image :"",
+									start_date :moment(date.startDate).format("MMM Do"),
+									end_date : moment(date.endDate).format("MMM Do")|| "",
+									notes  :$rootScope.selected_notes ,
+									days :days
+								}
+			
+					html=timeline_functions_resources.event_html(event_to_add)
+					var options={id:$scope.selected_timeline_id,content:html,name:selected_item,start:moment(date.startDate)._d,end:moment(date.endDate)._d,}
+					timeline_track.update({
+					id: $scope.selected_id,				
+					}, options);				
+					
+					timeline_functions_resources.updateItem(options)
+			}
+			
+			//}
+		//	else
+			//{
+			//	console.log('not logged in')
+			//}
+			
+			})
+	 
+			$scope.$watch('stack', function(stack) {
+		
+		
+					 if(typeof(stack)!="undefined"){
+						 
+						   options={stack:stack}
+							timeline_functions_resources.updateOptions(options)
+					  }
+		  
+		
+		  
+			})
+
+		
+		
+			//END EVENT HANDLERS
+
+		
+			$scope.editing = [];
+			$scope.timeline = Timeline.query();
+
+
+			
+			
+			$scope.removeTimeline = function(id) {
+				timeline_track .remove({
+					id: id
+				})
+			}
+	
+		
+				
+				
+		   timeline_track.query({}, function(team) {
+				_.each(team, function(row,index) {
+			
+			 
+			 var timeline = $scope.timeline[index];
+			 if(timeline.group=="Bristol Archives"){
+				 timeline_track .remove({
+					id: timeline._id
+				}, function() {
+				   // $scope.timeline.splice(index, 1);
+				});
+				}
+				
+				})
+			})
+		
+	
+        $scope.save = function() {
+		
+            if (!$scope.newTimeline || $scope.newTimeline.length < 1) return;
+            var timeline = new timeline_track({
+                name: $scope.newTimeline,
+                completed: false
+            });
+
+            timeline.$save(function() {
+		
+                $scope.timeline.push(timeline);
+                $scope.newTimeline = ''; // clear textbox
+            });
+        }
+
+        $scope.update = function(index) {
+            var timeline = $scope.timeline[index];
+            timeline_track.update({
+                id: timeline._id
+            }, timeline);
+            $scope.editing[index] = false;
+        }
+
+        $scope.edit = function(index) {
+            $scope.editing[index] = angular.copy($scope.timeline[index]);
+        }
+
+        $scope.cancel = function(index) {
+            $scope.timeline[index] = angular.copy($scope.editing[index]);
+            $scope.editing[index] = false;
+        }
+
+        $scope.remove = function(index) {
+            var timeline = $scope.timeline[index];
+            timeline_track.remove({
+                id: timeline._id
+            }, function() {
+                $scope.timeline.splice(index, 1);
+            });
+        }
+
+        $scope.datePicker = "";
+        $scope.datePicker.date = {
+            startDate: null,
+            endDate: null
+        };
+        $scope.machine_types = [];
+        $scope.type = "all";
+
+
+		$scope.changedValue = function(place) {
+        
+		 $rootScope.filter_pieSelected=place
+       
+	   }
+
+        $scope.machinesx = ["all"]
+        $scope.filterCondition = {
+            machine: 'neq'
+        }
+        $scope.$watch('type', function(type) {
+            $scope.machinesx = ["all"]
+
+
+        })
+
+  
+
+            // selected fruits
+        $scope.machine_types_selection = [];
+
+
+
+        $scope.categories = [];
+
+        // selected fruits
+        $scope.category_selection = [];
+
+
+
+/*
+        var _data = [];
+        $scope.data = []
+        $scope.day_data = []
+        $scope.team = [];
+        $scope.labels = $scope.team
+        $scope.chart_title = "Machine activity"
+*/
+
+            var groups = new vis.DataSet();
+            var dates = new vis.DataSet();
+			var second_dates = new vis.DataSet();
+            var all_groups = []
+            var i = 0
+
+      
+
+			install_days_tally = 0
+			install_instance_tally=0 
+			derig_tally = 0
+			derig_days_tally=0
+			$scope.total_install_derig=install_days_tally+derig_days_tally
+			$scope.average_install_length=Math.round(install_days_tally/install_instance_tally)
+			$scope.average_derig_length=Math.round(derig_days_tally/derig_tally)
+			
+			var container = document.getElementById('example-timeline');
+            timeline = new vis.Timeline(container);
+			 $rootScope.timeline=	timeline
+			
+			date={content:"STARTER"  ,
+					group:"STARTER",
+					group_id:"STARTER",
+					id:"STARTER",
+					name:"STARTER"  ,
+					event_type:"STARTER",
+					track:"STARTER",
+					order: "STARTER",
+					subgroup: "STARTER",
+					start:new Date(),
+					end:new Date(),
+					//className 	:	"orange"
+					}
+	
+			//VIS ERRORS IF INITIALISED WITH AN EMPTY START DATE
+			timeline_functions_resources.setup( $scope.timeline_track ,$rootScope.groups, new vis.DataSet(date))
+			
+			
+			
+			$scope.add_exhibitions= function(){						
+					timeline_functions_resources.populate_timeline_track_method_b($rootScope,timeline_exhibitions_functions,timeline_track)
+			}
+			
+			$scope.add_installs_derigs= function(){				
+					timeline_functions_resources.populate_timeline_track($rootScope,Timeline,timeline_install_functions,timeline_track)	
+			}
+			
+			$scope.team_leave= function(){
+					timeline_functions_resources.populate_timeline_track_method_b($rootScope,timeline_leave_functions,timeline_track)				
+			}
+			
+			$scope.visitor_figures= function(){							
+					timeline_functions_resources.populate_timeline_track($rootScope,Raw_visits,timeline_visitor_figures_functions,timeline_track)
+			}
+			
+			
+			$scope.Resources= function(){							
+					timeline_functions_resources.populate_timeline_track($rootScope,Bookings,timeline_bookings_functions,timeline_track)
+			}
+			
+			
+			$scope.shopify= function(){							
+					timeline_functions_resources.populate_timeline_track($rootScope,Shopify_aggregate,timeline_shopify_functions,timeline_track)
+			}
+				
+			$scope.loans= function(){							
+					timeline_functions_resources.populate_timeline_track_method_b($rootScope,timeline_loans_functions,timeline_track)
+			}
+			
+			$scope.learning_bookings= function(){							
+					timeline_functions_resources.populate_timeline_track_method_b($rootScope,timeline_learning_functions,timeline_track)
+			}
+			
+			
+			$scope.timeline_googlesheets_functions= function(data_settings){
+			
+					var groups =$rootScope.groups
+					$rootScope.timeline.setGroups(groups);
+					timeline_googlesheets_functions.get_events(data_settings)
+				  		  
+			}
+			
+			
+			$scope.shopify() //NB for some reason need this to appear for unlogged in users otherwise text wont load in directives
+
+			
+					timeline_track = Bookings
+					$scope.Resources()
+
+	
+	var checked_event_types=[]
+											checked_event_types.push('Tour')
+											checked_event_types.push('Walk')
+											checked_event_types.push('Rides')
+											checked_event_types.push('Tours')
+											checked_event_types.push('Talk')
+											checked_event_types.push('Lecture')
+											checked_event_types.push('Special Event')
+											checked_event_types.push('Event')
+											checked_event_types.push('Family')
+
+	   Timeline_data.query({}, function(data) {
+				
+				_.each(data, function(data_settings) {
+					console.log('data_settings',data_settings)
+					$scope.timeline_googlesheets_functions(data_settings)
+				})
+		
+		timeline_functions_resources.update_andCompile()	
+		
+		})
+
+	
+
+		
+
+    // check if there is query in url
+    // and fire search in case its value is not empty
+
+	$scope.$watch('track_groups|filter:{selected:true}', function (nv) {
+		
+					var selection = nv.map(function (track_groups) {
+					
+					  return track_groups.track;
+					});
+					$scope.selected_tracks=selection
+					timeline_functions_resources.changeTracks(selection)
+					//$( ".draggable,.iconbar" ).css({ 'top':'0px' });
+  }, true);
+  
+	
+$scope.$watch('groups|filter:{selected:true}', function (nv) {
+	
+					var selection = nv.map(function (group) {
+					  return group.content;
+					});
+					timeline_functions_resources.changeGroups(selection)
+					$( ".draggable,.iconbar" ).css({ 'top':'0px' });
+	
+  }, true);
+
+	
+	
+
+			
+	
+      
+			
+		$scope.exportCSV= function(){
+			
+				data_to_export=$rootScope.timeline.itemsData.getDataSet()
+				
+				visibles=$rootScope.timeline.getVisibleItems()
+				events=[]
+				
+				  _.each(data_to_export._data, function(event,index) {
+				
+				  if(visibles.indexOf(event.id)!=-1){
+				  console.log("in")
+				  var _event ={  
+								 id			:event.id,
+								 name		:event.name,
+								 start_date	:moment(event.start).format("DD/MM/YYYY"),
+								 end_date	:moment(event.end).format("DD/MM/YYYY"),
+								 event_type	:event.track
+							   
+								}
+					 events.push(_event)
+						}
+				  
+				   
+				  
+				  })
+						
+				timeline_functions_resources.export_JSON_to_CSV(events, "Timeline dates", true)
+	}
+	
+
+				
+			
+			
+			
+		
+		
+			
+		
+
+		       
+            $scope.list1 = {
+                title: 'PROVISIONAL DATE'
+            };
+            $scope.list2 = {
+                title: 'Meeting'
+            };
+            $scope.list3 = {
+                title: 'Event'
+            };
+
+            $scope.onDropComplete = function(data, evt) {
+                // console.log("drop success, data:", data);
+            }
+			
+		
+
+
+       // })
+
+    };
+	
+	
+	} 
+ 
+exports.BasicDemoCtrl=   function ($mdDialog,$scope, $http, $q, $routeParams, $location
+
+    ) {
+	
+
+
+ var originatorEv;
+
+    this.openMenu = function($mdMenu, ev) {
+      originatorEv = ev;
+      $mdMenu.open(ev);
+    };
+
+    this.notificationsEnabled = false;
+    this.toggleNotifications = function() {
+      this.notificationsEnabled = !this.notificationsEnabled;
+    };
+
+    this.redial = function() {
+    };
+
+    this.checkVoicemail = function() {
+      // This never happens.
+    };
+  }
+  
+  
+
+exports.add_timeline_items_controller=    function($scope, $http, $q, $routeParams, $location,
+         $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions_resources,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate
+    ) {
+	
+	$scope.unlocked=false
+	$scope.$watch('locked', function (locked) {
+		
+		$scope.locked=locked
+  })
+  }
+  
+  exports.add_timeline_info_box=    function($scope, $http, $q, $routeParams, $location,
+         $location, $rootScope, trello, get_trello_board, date_calc, Todos, Timeline, Team, kiosk_activity,timeline_functions_resources,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate
+    ) {
+		
+
+
+  }
+  
+
+  
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/resource-bookings/timeline-resources-controller.js","/../components/resource-bookings")
+},{"b55mWE":4,"buffer":3}],73:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+
+
+exports.timeline_functions_resources = function ( $templateCache,$compile,$http,Bookings,$rootScope,$timeout) {
+	
+
+  
+  return {
+  
+  timeline_track: Bookings,
+  
+		  loadgroups: function(items){
+	
+			var _groups=[]
+			var addednames=[]
+			
+			 _.each(items._data, function(value) {
+			
+			if(value.start_date!="0000-00-00" && value.end_date!="0000-00-00"&& value.start_date!="" &&value.end_date!=""&&value.project_name!=""){
+				
+				if($.inArray(value.group, $rootScope.addednames)==-1 ){
+					$rootScope.addednames.push(value.group)
+					//n.b. may be able to order groups when locatiobn hierarchy given in emu
+					content=value.group ||"NA"
+	
+					 
+					 _groups.push({
+										id				:	value.group,
+										//display		:	'shown',
+										track			:    value.track,
+										order		    :    value.order,
+										event_type		:	 value.event_type,
+										content			:    value.group_name,
+										event_typeSORT	:    content,
+										selected         : value.select_group 
+									})
+					console.log(_groups)
+				}
+				}
+			})
+
+		
+			return _groups		
+
+		},
+	
+		update_andCompile: function(item) {
+			
+			var self = this
+			
+				setTimeout(function() {
+			 	$compile($("timeline-databar"))($rootScope);
+			 }, 1700);
+			setTimeout(function() {
+			
+				
+		
+						unique_groups=[]
+						added_ids=[]
+						_.each($rootScope.groups, function(group){
+							if(added_ids.indexOf(group.id)==-1){
+							added_ids.push(group.id)
+							unique_groups.push(group)
+							}
+						})
+						
+						var groups = new vis.DataSet(unique_groups);
+	
+						var list = groups.get({
+								filter: function(item) {								
+									return (item.selected == true);
+								}
+						})	
+						
+						self.enable_event_drop(timeline_track,timeline_track)
+						$rootScope.timeline.redraw()
+			
+            }, 2000);
+			 
+			
+		},	
+		
+		populate_timeline_track: function(rootScope,dataset,dataset_functions,timeline_track) {
+			 
+				 var self = this
+				 $rootScope.groups = $rootScope.groups || []
+				 var groups =rootScope.groups
+				  rootScope.timeline.setGroups(groups);
+				  
+					dataset.query({}, function(datax) {
+						self.add_events_loop(rootScope,datax,dataset_functions,timeline_track)
+						self.update_andCompile()
+					})
+					
+		},
+		
+	
+
+
+		populate_timeline_track_method_b: function(rootScope,data_functions,timeline_track) {
+			
+				 var self = this
+				 $rootScope.groups = $rootScope.groups || []
+				 var groups =rootScope.groups
+				  rootScope.timeline.setGroups(groups);
+			  
+				  data_functions.get_events().then(function(datax) {					  
+					self.add_events_loop(rootScope,datax,data_functions,timeline_track)
+					})
+		
+		},
+		 
+		add_events_loop: function(rootScope,datax,dataset_functions,timeline_track) {
+	
+				var self = this
+				dataset_functions.add_events(datax, function(public_dates){
+							 rootScope.leave_groups = self.loadgroups(public_dates)
+							_.each(rootScope.leave_groups, function(_group) {
+								rootScope.groups.push(_group)
+							})
+							 _.each(public_dates._data, function(date) {
+								if($rootScope.timeline.itemsData){
+								rootScope.timeline.itemsData.getDataSet().add(date)
+								}
+							})
+							//rootScope.timeline.itemsData.on("update", function(){self.update_andCompile()})
+							rootScope.timeline.fit({},function(){
+										self.update_andCompile()
+							})//needed due to angular wierdness with directives
+				})
+	
+	
+		},
+		 
+		 
+		
+			
+		export_JSON_to_CSV: function(JSONData, ReportTitle, ShowLabel){
+  
+					  
+						//If JSONData is not an object then JSON.parse will parse the JSON string in an Object
+						var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+						//console.log('arrData',arrData)
+						var CSV = '';    
+						//Set Report title in first row or line
+						
+						CSV += ReportTitle + '\r\n\n';
+
+						//This condition will generate the Label/Header
+						if (ShowLabel) {
+							var row = "";
+							
+							//This loop will extract the label from 1st index of on array
+							for (var index in arrData[0]) {
+								// console.log('row += index',row += index)
+								//Now convert each value to string and comma-seprated
+								row += index + ',';
+							}
+
+							row = row.slice(0, -1);
+							
+							//append Label row with line break
+							CSV += row + '\r\n';
+						}
+						
+						//1st loop is to extract each row
+						for (var i = 0; i < arrData.length; i++) {
+							var row = "";
+							
+							//2nd loop will extract each column and convert it in string comma-seprated
+							for (var index in arrData[i]) {
+								row += '"' + arrData[i][index] + '",';
+							}
+
+							row.slice(0, row.length - 1);
+							
+							//add a line break after each row
+							CSV += row + '\r\n';
+						}
+
+						if (CSV == '') {        
+							alert("Invalid data");
+							return;
+						}   
+						
+						//Generate a file name
+						var fileName = "MyReport_";
+						//this will remove the blank-spaces from the title and replace it with an underscore
+						fileName += ReportTitle.replace(/ /g,"_");   
+						
+						//Initialize file format you want csv or xls
+						var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+						
+						// Now the little tricky part.
+						// you can use either>> window.open(uri);
+						// but this will not work in some browsers
+						// or you will not get the correct file extension    
+						
+						//this trick will generate a temp <a /> tag
+						var link = document.createElement("a");    
+						link.href = uri;
+						
+						//set the visibility hidden so it will not effect on your web-layout
+						link.style = "visibility:hidden";
+						link.download = fileName + ".csv";
+						
+						//this part will append the anchor tag and remove it after automatic click
+						document.body.appendChild(link);
+						link.click();
+						document.body.removeChild(link);
+
+
+},
+  
+  
+     prettyConfirm: function (title, text, callback) {
+                swal({
+                    title: title,
+                    text: text,
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55"
+                }, callback);
+            },
+
+           prettyPrompt: function (title, text, inputValue, callback) {
+                swal({
+                    title: title,
+                    text: text,
+                    type: 'input',
+                    showCancelButton: true,
+                    inputValue: inputValue
+                }, callback);
+            },
+			
+			
+	
+
+            logEvent:function(event, properties) {
+                var log = document.getElementById('log');
+                var msg = document.createElement('div');
+                //msg.innerHTML = 'event=' + JSON.stringify(event) + ', ' +
+                  //  'properties=' + JSON.stringify(properties);
+               // log.firstChild ? log.insertBefore(msg, log.firstChild) : log.appendChild(msg);
+            },
+  
+  enable_event_drop:function(event){
+		var self = this
+                $(".vis-group").droppable({
+                    accept: '.date_add',
+                    drop: function(event, ui) {
+					
+							event.preventDefault()
+
+                        if (!$('.already-dropped').length) {
+                            $('body').addClass('already-dropped');
+                            setTimeout(function() {
+                                $('.already-dropped').removeClass('already-dropped');
+                            }, 100);
+                          
+                            time=(timeline.getEventProperties(event).time)
+							group=(timeline.getEventProperties(event).group)
+							
+							//type=(timeline.getEventProperties(event).type)
+                            $(ui.draggable[0]).hide()
+							
+							if(ui.draggable[0].innerHTML=="PROVISIONAL DATE"){
+                            self.prettyPrompt('Add a provisional date', 'Name:',"", function(value) {
+                            if (value) {
+                               	add_item(group,group,time,value,"blue",30,ui.draggable[0].innerHTML)
+							}
+							})
+							}
+							else if(ui.draggable[0].innerHTML=="INSTALL" ||ui.draggable[0].innerHTML=="DERIG" )
+							{
+								add_item(group,group,time,ui.draggable[0].innerHTML,"red",7,ui.draggable[0].innerHTML)
+							}
+							else
+							{
+								add_item(group,$rootScope.filter_pieSelected,time,ui.draggable[0].innerHTML,"orange",1,"PROVISIONAL DATE")
+							}
+							
+							function add_item(dropped_group,group,time,value,colour,days,type)
+							{
+									
+									
+									 console.log('add_item')
+									 date_dropped=(moment(time).startOf('day')._d)
+									
+									 
+									
+									var id = ui.draggable[0].id
+									var dateDroppedOn =time
+									target_date = time
+									_days=self.days(moment(time).startOf('day')._d,moment(time).add(days, 'days')._d)
+									
+									var event_to_add=	
+									{
+															id : id,
+															name : value,
+															showimage :"",
+															image :"",
+															start_date :moment(time).startOf('day').format("MMM Do"),
+															end_date :moment(time).add(days, 'days').format("MMM Do"),
+															notes  :"",
+															days :_days
+									}
+									
+									
+									var new_date = 
+									{
+									
+															content: self.event_html(event_to_add),
+															name:value,
+															group: dropped_group,
+															dropped_group:dropped_group,
+															date_logged: new Date(),	
+															className:colour||"",
+															_type:type,
+															start_date: new Date(moment(date_dropped).startOf('day')._d),
+															end_date: new Date (moment(date_dropped).add(days, 'days')._d),
+															days:_days
+
+									}
+									
+									console.log('save')
+									
+								
+									
+									var _timeline = new Bookings(new_date)
+										.$save(function(_item) 
+										{
+										
+
+											new_date.start =_item.start_date
+											new_date.end = _item.end_date
+											new_date._id = _item._id
+											new_date._type=_item._type,
+											timeline.itemsData.getDataSet().add(new_date)
+											
+											setTimeout(function() {
+											
+													$(ui.draggable[0]).show()
+													self.add_group_to_timeline(new_date)
+											
+											}, 1 * 1000);
+
+											
+										});
+							
+							
+							}
+                        }
+
+
+
+                    }
+                })
+				},
+	  
+	  unlock: function(unlock){
+		
+                        
+								timeline.setOptions({'editable':unlock,'selectable': unlock });
+								timeline.options.editable=true
+			
+							
+		  	
+	  
+	  },
+	
+	   
+
+
+
+   add_group_to_timeline: function(new_group){
+//TO DO
+console.log('add_group_to_timeline')
+				var groups = new vis.DataSet($rootScope.groups);
+				var group = new vis.DataSet( $rootScope.leave_groups);
+					var list =groups.get()
+				
+				_.some(list, function(lookup_group){
+			
+					if(new_group.dropped_group==lookup_group.id){
+						console.log('copy this ',lookup_group)
+						var _new_group=lookup_group
+						_new_group.track=new_group.track
+						//_new_group.id=new_group.group
+						_new_group.content=new_group.content
+						//list=list.concat(_new_group)
+				
+									
+						return true;
+					}
+				})
+			//timeline.setGroups(list);
+			//this.enable_event_drop()	
+			
+				this.update_andCompile()
+			
+		
+				},  
+				
+			   changeTracks: function(selection)
+			   {
+console.log('changeTracks selection',selection)
+						var groups = new vis.DataSet($rootScope.groups);
+						var group = new vis.DataSet( $rootScope.leave_groups);
+						var list =groups.get({
+								filter: function(item) {
+									
+									return (  selection.indexOf(item.track)!=-1);
+								}
+							})
+							
+						timeline.setGroups(list);
+						this.update_andCompile()					
+						this.enable_event_drop()
+				
+				},  
+				
+				changeGroups: function(selection)
+				{
+
+					var groups = new vis.DataSet($rootScope.groups);
+					//var group = new vis.DataSet( $rootScope.leave_groups);
+					var list =groups.get({
+						filter: function(item) {
+							
+							return (  selection.indexOf(item.content)!=-1);
+						}
+					})
+					
+						timeline.setGroups(list);
+						
+					
+						this.enable_event_drop()
+		
+				},
+  
+  
+  days: function (start,end){
+  
+				var a = moment(start);
+				var b = moment(end);
+				return b.diff(a,'days');
+  
+  },
+  
+  	
+  
+   		 event_html: function(event_to_add){
+		 
+		 
+			var  id = event_to_add.id
+		 	var  name = event_to_add.name
+		 	var  showimage = event_to_add.showimage
+		 	var  image = event_to_add.image
+		 	var  start_date = event_to_add.start_date
+		 	var  end_date = event_to_add.end_date
+		 	var  notes  = event_to_add.notes ||""
+		 	var  days = event_to_add.days
+			var  description =event_to_add.description ||""
+		 
+			var notes=notes ||""
+			var image=image ||""
+	
+			var showimage=showimage ||""
+			
+			var htmlContent= "<timeline-databar    description='" + description + "' description='" + description + "' id='" + id + "' name='" + name + "' image='" + image + "' showimage='" + showimage + "' startdate='" + start_date + "' enddate='" + end_date + "' notes='" + notes + "' days='" + days + "'></timeline-databar>"; //'<timeline-databar></timeline-databar>'
+		
+			return htmlContent
+
+			},
+			
+		selected_data:	 function (event) {
+				
+							var self=this
+							selected_timeline_id=event.items[0]
+							 if(selected_timeline_id)
+							 {
+							 
+										selected_item =	timeline.itemsData.getDataSet().get(selected_timeline_id)
+										$rootScope.selected_timeline_id=selected_timeline_id
+										$rootScope.selected_item=selected_item.name
+										$rootScope.selected_type=selected_item._type
+										if(selected_item.days>0)
+										{
+												$rootScope.selected_days=" - " +selected_item.days + " days"
+										}
+										$rootScope.selected_id=selected_item._id
+										$rootScope.selected_notes=selected_item.notes
+										$rootScope.datePicker.date={startDate:new Date(selected_item.start),endDate:new Date (selected_item.end)}
+							
+							
+							}
+					
+
+           },
+		   
+   get_events: function() {
+      return $http.get('http://museums.bristol.gov.uk/sync/data/events.JSON');  //1. this returns promise
+    },
+	
+	updateOptions: function(options){
+
+		$rootScope.timeline.setOptions(options)
+			
+				
+	},
+	
+	event_edited: function(scope,selected_note){
+
+	console.log('event_edited')
+	
+	//latest attempt to fix mem leak 
+	//mooved from controller
+	
+	
+			var self = this
+	
+			if( scope.locked.add_item){	
+					date=$rootScope.datePicker.date
+					days=self.days(moment(date.startDate),moment(date.endDate))
+					scope.selected_start = moment(date.startDate ).format("MMM Do")
+					scope.selected_end = moment(date.endDate).format("MMM Do")
+					if(moment(date.startDate).isValid()){ //true
+								
+									var event_to_add=	{
+														  id :  scope.selected_id,
+														  name :scope.selected_item,
+														  showimage :"",
+														  image :"",
+														  start_date :moment(date.startDate).format("MMM Do"),
+														  end_date : moment(date.endDate).format("MMM Do")|| "",
+														  notes  :$rootScope.selected_notes ,
+														  days :days
+														}
+				
+					
+					//THIS CAUSES A REFRESH OF THE TIMELINE DIRECTIVE (GOOD)
+					html=self.event_html(event_to_add)
+					var options={id:scope.selected_timeline_id,content:html,notes:selected_note,start:moment(date.startDate)._d,end:moment(date.endDate)._d}
+					self.timeline_track.update({
+								id: scope.selected_id			
+								}, options, function(){self.updateItem(options) });
+				
+				}
+				}
+				else
+				{
+				console.log('timeline locked')
+				}
+	
+	
+	
+	
+	},
+	
+	
+	
+	
+	
+	updateItem: function(options){
+		if(typeof(timeline)!="undefined"){
+			if(timeline.itemsData){
+				timeline.itemsData.getDataSet().update(options)
+				
+				this.update_andCompile()
+				
+			}
+		
+		}
+	
+			
+	},
+	
+    setup: function( Timeline,groups,dates,isloggedin) {
+		
+		var self=this
+		
+
+         var options = {
+					min: new Date(2014, 0, 1),                // lower limit of visible range
+					max: new Date(2022, 0, 1),                // upper limit of visible range
+					zoomMin: 1000 * 60 * 60 * 24,             // one day in milliseconds
+					zoomMax: 1000 * 60 * 60 * 24 * 31 * 500 ,    // about six months in milliseconds
+                    width: '100%',
+					maxHeight:"900px",
+					moveable:true,
+					itemsAlwaysDraggable:true,
+					snap: function (date, scale, step) {
+						return date;
+							},
+					stack:false,
+					orientation:{"axis":"top"},
+					selectable: true,  
+                    editable: false,  
+					groupOrder:'order',					
+                    onMove: function(item, callback) {
+					
+							$rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (item.end)}
+
+							days=self.days(moment(item.start),moment(item.end))
+							$rootScope.selected_days = days
+							if(moment(item.start).isValid()){ //true
+							
+									
+									var event_to_add=	{
+									
+															  id : item._id,
+															  name : item.name,
+															  showimage :"",
+															  image :"",
+															  group: item.group,
+															  start_date : moment(item.start).startOf('day').format("MMM Do"),
+															  end_date : moment(item.end).startOf('day').format("MMM Do"),
+															  notes  :item.notes ,
+															  days :days
+															
+														}
+									
+
+								//NB DIFFERENT IDS FOR Timeline and Timeline vis vs mongo
+								html=self.event_html(event_to_add)
+								var options={ id:item.id,
+												group: item.group,
+												content:html,
+												notes:event_to_add.notes,
+												start:moment(item.start)._d,
+												end:moment(item.end)._d,
+												start_date:moment(item.start)._d,
+												end_date:moment(item.end)._d
+												}
+								self.timeline_track.update({
+								id:  item._id				
+								}, options, function(){self.updateItem(options) });
+								
+								
+								
+								
+								
+								
+								
+									
+								callback(item);
+								
+							}
+							else
+							{
+							console.log('invalid date')
+									callback(item);
+								
+							}
+									
+								
+
+                    },
+                    onUpdate: function(item, callback) {
+
+                        self.prettyPrompt('Update item', 'Edit items text:', item.content, function(value) {
+                            if (value) {
+                                item.content = value;
+                                //callback(item); // send back adjusted item
+
+									days=self.days(item.start, item.end)
+									if(moment(item.start).isValid()){ //true
+										
+								var event_to_add=	{
+								
+													  id : item.id,
+													  name :value,
+													  showimage :"",
+													  image :"",
+													  start_date :item.start,
+													  end_date : item.end,
+													  notes  :item.notes ,
+													  days :days
+													  
+													}
+									
+									
+                                var _timeline = new self.timeline_track({
+                                    content:  self.event_html(event_to_add),
+									name: item.name,
+                                    group: item.group,
+                                    start_date: item.start,
+                                    end_date: item.end,
+									days:self.days(item.start,item.end)
+
+                                })
+                               
+                               self.timeline_track.update({
+                                    id: item._id
+                                }, _timeline);
+                               
+				
+									var _options={id:item._id,content:self.event_html(event_to_add),start:moment(event_to_add.startDate)._d,end:moment(event_to_add.endDate)._d,start_date:moment(event_to_add.startDate)._d,end_date:moment(event_to_add.endDate)._d}
+						
+									self.updateItem(_options, function(){
+										self.update_andCompile()
+									})									
+
+								 callback(item);
+							}
+										else
+										{
+										console.log('invalid date')
+										}							
+                            } else {
+                                callback(null); // cancel updating the item
+                            }
+                        });
+
+                    },
+                    onAdd: function(item, callback) {
+
+
+                        self.prettyPrompt('Add note', 'Add some notes to this date:', item.content, function(value) {
+                            if (value) {
+                                item.content = value;
+                                callback(item); // send back adjusted new item
+								
+								days=self.days(item.start, moment(item.start).add(5, 'days'))
+							
+
+
+								
+								var event_to_add=	{id : item.id,
+													  name :value,
+													  showimage :"",
+													  image :"",
+													  start_date :item.start,
+													  end_date :  moment(item.start).add(5, 'days'),
+													  notes  :"" ,
+													 days :days}
+													
+                                var _timeline = new self.timeline_track({
+                                        content: self.event_html(event_to_add),
+										name:value,
+										date_logged: new Date(),	
+                                        group: item.group,
+										_type:"note",
+                                        start_date: item.start,
+										 end_date:   moment(item.start).add(1, 'days'),
+										className:"green"
+                                       // end_date: moment(item.start).add(5, 'days'),
+										//days:self.days(item.start, moment(item.start).add(5, 'days'))
+
+                                    })
+									    .$save(function(_item) {
+                                    new_date.start =_item.start_date
+                                    new_date.end = _item.end_date
+                                    new_date._id = _item._id
+									new_date._type=ui.draggable[0].innerHTML,
+                                    timeline.itemsData.getDataSet().add(new_date)
+									
+                                    setTimeout(function() {
+                                        $(ui.draggable[0]).show()
+										console.log('bread')
+										
+                                    }, 1 * 1000);
+
+                                });
+					
+                            } else {
+                                callback(null); // cancel item creation
+                            }
+                        })
+
+
+                    },
+                    onRemove: function(item, callback) {
+
+                        if (item._id) {
+                            self.timeline_track.remove({
+                                id: item._id
+                            })
+                            callback(item);
+                        } else {
+                            sweetAlert('you can\'t remove this item from here, sorry :)')
+                            return false;
+
+                        }
+                    }
+                };
+
+
+  
+  
+		var self = this
+		
+			$("body").keydown(function(e) {
+			 // e.preventDefault();
+        //e.returnValue = false;
+				  if(e.keyCode == 37) { // left
+					move( 0.2);
+				  }
+				  else if(e.keyCode == 39) { // right
+					move(-0.2); 
+				  }
+				  else if(e.keyCode == 38) { // right
+					zoom(-0.2); 
+				  }
+				  else if(e.keyCode == 40) { // right
+					zoom(0.2); 
+					
+					    return false;
+				  }
+				});
+				
+				
+
+				 $rootScope.timeline.setOptions(options);
+				 
+				 $rootScope.timeline.on('select', function (properties) {
+						console.log('timeline selected')
+						self.selected_data( properties)
+
+				});
+				
+			   $rootScope.timeline.setItems(dates);
+				$rootScope.timeline.fit()
+				
+				
+				
+							
+			move=function(percentage) {
+				var range = this.timeline.getWindow();
+				var interval = range.end - range.start;
+				this.timeline.setWindow({
+					start: range.start.valueOf() - interval * percentage,
+					end:   range.end.valueOf()   - interval * percentage
+				});
+			}
+
+  
+			zoom=function(percentage) {
+				var range = this.timeline.getWindow();
+				var interval = range.end - range.start;
+				this.timeline.setWindow({
+					start: range.start.valueOf() - interval * percentage,
+					end:   range.end.valueOf()   + interval * percentage
+				});
+			}
+
+			// attach events to the navigation buttons
+			zoomIn=function () { this.zoom(-0.2); }
+			zoomOut=function () {  this.zoom( 0.2); }
+			moveLeft=function () {  this.move( 0.2); }
+			moveRight=function () {  this.move(-0.2); }
+
+                dates.on('*', function(event, properties) {
+				//event.preventDefault()
+                   // self.logEvent(event, properties);
+                });
+
+			
+			self.enable_event_drop()
+			$compile($("timeline-databar"))($rootScope);
+
+			
+              
+    }
+	 
+  };
+}
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/resource-bookings/timeline-resources-services.js","/../components/resource-bookings")
+},{"b55mWE":4,"buffer":3}],74:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.shopify_controller = function(log_messages,$scope, AuthService,$http, $q, $routeParams, $location,$rootScope, shopify_app
     ) {
 	
@@ -14564,7 +16008,7 @@ Use of this source code is governed by an MIT-style license that can be foundin 
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/shopify/shopify-controller.js","/../components/shopify")
-},{"b55mWE":4,"buffer":3}],73:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],75:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	exports.shopifyStatus = function() {
   return {
@@ -14585,7 +16029,7 @@ Use of this source code is governed by an MIT-style license that can be foundin 
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/shopify/shopify-directive.js","/../components/shopify")
-},{"b55mWE":4,"buffer":3}],74:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],76:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.TallyController =  function($scope, Tallys) {
 
@@ -14812,7 +16256,7 @@ exports.trello =   function($scope, $http, $q, $routeParams, $location,
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/team/app-controllers.js","/../components/team")
-},{"b55mWE":4,"buffer":3}],75:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],77:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.form_to_trellox =  function($scope, $http, $q, $routeParams, $location,
         screen_saver_loop,  $rootScope, detect_dragging, trello, get_trello_board, date_calc, Todos, Tallys,Team
@@ -15073,7 +16517,7 @@ var trelloroken=formData.token
 	}
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/team/form-controller.js","/../components/team")
-},{"b55mWE":4,"buffer":3}],76:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],78:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.leave_controller =  function($scope, $http, $q, $routeParams, $location,
           $rootScope, date_calc, Tallys,Team,Timeline
@@ -15360,7 +16804,7 @@ $scope.overlapalert=[]
 	}
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/team/leave-controller.js","/../components/team")
-},{"b55mWE":4,"buffer":3}],77:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],79:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.timeline_settings_controller =  function($scope, $http, $q, $routeParams, $location,
         screen_saver_loop,  $rootScope, detect_dragging, trello, get_trello_board, date_calc, Todos, Tallys,Team,Timeline,$mdEditDialog
@@ -15460,7 +16904,7 @@ myArray.push(obj);
   
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/team/team-controller.js","/../components/team")
-},{"b55mWE":4,"buffer":3}],78:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],80:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var async = require('async')
 
@@ -15670,7 +17114,7 @@ console.log(team)
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/tech-support/tech-support-controller.js","/../components/tech-support")
-},{"async":1,"b55mWE":4,"buffer":3}],79:[function(require,module,exports){
+},{"async":1,"b55mWE":4,"buffer":3}],81:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	exports.techSupport = function() {
   return {
@@ -15682,7 +17126,7 @@ console.log(team)
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/tech-support/tech-support-directive.js","/../components/tech-support")
-},{"b55mWE":4,"buffer":3}],80:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],82:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 var async = require('async')
@@ -15764,7 +17208,7 @@ console.log('trello card',card)
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/tech-support/trello-services.js","/../components/tech-support")
-},{"async":1,"b55mWE":4,"buffer":3}],81:[function(require,module,exports){
+},{"async":1,"b55mWE":4,"buffer":3}],83:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.timeline_settings_controller =  function($scope, $http, $q, $routeParams, $location,
         screen_saver_loop,  $rootScope, detect_dragging, trello, get_trello_board, date_calc, Todos, Tallys,Team,Timeline,$mdEditDialog,Timeline_data
@@ -15966,17 +17410,19 @@ myArray.push(obj);
   
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline-settings/timeline-settings-controller.js","/../components/timeline-settings")
-},{"b55mWE":4,"buffer":3}],82:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],84:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
-exports.timeline_bookings_functions =  function ($http,Timeline,$rootScope) {
+exports.timeline_bookings_functions  =  function (timeline_functions,$http,Timeline,$rootScope) {
 
 
   return {
   
      get_events: function() {
 		 
-	
+		 /*
+		 'https://www.googleapis.com/calendar/v3/calendars/en.uk#holiday@group.v.calendar.google.com/events?key=AIzaSyDi8arJr4JvnETpZVylXUVpxZDyBHNkQyk';
+				  */
 				  
 		 	 var SheetToJSONServiceURL = "http://emudev-app1/team/digital/projects/scripts/php/emu/loans.php?start_date=2014-01-01"
 			 
@@ -15996,62 +17442,72 @@ exports.timeline_bookings_functions =  function ($http,Timeline,$rootScope) {
 										
 												
 												tempdates=[]
-											if( 	$rootScope.added_track_groups.indexOf("bookings")==-1){
-												$rootScope.added_track_groups.push("bookings")														
-													$rootScope.track_groups.push({"track":"bookings"})
-													}
-												//console.log('visitor figures',eventss)
-												$.each(eventss, function( index, event ) {	
-													console.log('bookings',event)
-												
-															scale_class="";	
-												
-										
-												var val_1 = 0
-												var val_2 =100
-												var val_3 =200
-												var val_4 =300
-												var val_5 =400
-												var val_6  = 500
-												var val_7 = 1000
-												var val_8 = 2000
-												var val_9 = 3000												
-												var val_10 = 4000
-												
-												var count = "value"
-												
-
-												if(event[count] >val_1 && event[count]<=val_2){scale_class="scale_01"}												
-												if(event[count] >val_2 && event[count]<=val_3){scale_class="scale_02"}												
-												if(event[count] >val_3 && event[count]<=val_4){scale_class="scale_03"}											
-												if(event[count] >val_4 && event[count]<=val_5){scale_class="scale_05"}
-												if(event[count] >val_5 && event[count]<=val_6){scale_class="scale_06"}												
-												if(event[count] >val_6 && event[count]<=val_7){scale_class="scale_07"}												
-												if(event[count] >val_7 &&event[count]<=val_8){scale_class="scale_08"}
-												if(event[count] >val_8 && event[count]<=val_9){scale_class="scale_09"}
-												if(event[count] >val_9 && event[count]<=val_10){scale_class="scale_09"}
-												if(event[count] >val_10){scale_class="scale_10"}
-																						
+											if( $rootScope.added_track_groups.indexOf("ROOM BOOKING")==-1)
+											{
+													$rootScope.added_track_groups.push("ROOM BOOKING")														
+													$rootScope.track_groups.push({"track":"ROOM BOOKING","selected":true})
+											}
 													
 													
+												console.log('BOOKINGS EVENTS',eventss)
+												$.each(eventss, function( index, data ) {
 													
-																
-																	var start_date=new Date(event.start_date)
-																	var end_date=new Date(event.end_date)
-																	end_date.setDate( end_date.getDate() + 1);
-																
-											
-																var shopEvent =  {		content:"",																						
-																						name:event.group ,
-																						group:event.group,
-																						track:"bookings",
-																						//order: "museum",
-																						className:"GREEN",
-																						start:start_date,
-																						end:end_date
-																				}
-												//console.log('shopEvent',shopEvent)																		
-												visevents.add( shopEvent)
+																data.days=timeline_functions.days(data.start_date,data.end_date)
+																var end_date
+																if ( data.group != "") {
+																	if( data.start_date!=""){
+																	if(typeof(data.end_date)!="undefined"){
+																			end_date=(moment(data.end_date).format("MMM Do YY"))
+																	}
+																	if(data._type=="ROOM BOOKING"){
+																			install_instance_tally++
+																			install_days_tally +=data.days
+																	}
+																	else if(data._type=="DERIG"){
+																			derig_tally++						
+																			derig_days_tally +=data.days
+																	  }
+																	if($rootScope.added_track_groups.indexOf(data._type)==-1){	
+																	
+																			$rootScope.added_track_groups.push(data._type)
+																	
+																	}
+																		
+																		var event_to_add=	{
+																								  id : data._id,
+																								  name :data.name,
+																								  showimage :"",
+																								  image :"",
+																								  start_date :moment(data.start_date).format("MMM Do"),
+																								  end_date :end_date ||"",
+																								  notes  :data.notes ,
+																								  days :data.days
+																							}
+																							
+																							console.log('event_to_add',event_to_add)
+																								 
+																			 //if($rootScope.isloggedin==true){
+																		visevents.add({
+																						_id: data._id,
+																						className:data.className,
+																						select_group :false,
+																						name:data.name,
+																						_type:data._type,
+																						track:data._type,
+																						content: timeline_functions.event_html(event_to_add),
+																						group: data.group,
+																						order:data._type,
+																						notes: data.notes,
+																						//title:data.notes,
+																						start: data.start_date,
+																						days:data.days,
+																						end: data.end_date 
+																					})
+																			//}
+																	}
+																}
+																							
+														
 																		
 															
 																	
@@ -16061,7 +17517,7 @@ exports.timeline_bookings_functions =  function ($http,Timeline,$rootScope) {
 													
 													
 										  					
-										
+										console.log('visevents',visevents)
 										return	fn(visevents)
 
 		},
@@ -16097,7 +17553,7 @@ exports.timeline_bookings_functions =  function ($http,Timeline,$rootScope) {
 	},
 	updateItem: function(options){
 		options.id=$rootScope.selected_t_id
-		//timeline.itemsData.getDataSet().update(options)
+		timeline.itemsData.getDataSet().update(options)
 		
 				
 	},
@@ -16106,7 +17562,7 @@ exports.timeline_bookings_functions =  function ($http,Timeline,$rootScope) {
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-bookings-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],83:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],85:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.timeline_controller=     function($compile,  $scope, $http, $q, $routeParams, $location,
          $location, $rootScope, trello,timeline_bookings_functions, get_trello_board, date_calc, Todos, Timeline, Bookings,Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate,Raw_visits,timeline_visitor_figures_functions,timeline_install_functions, $timeout,timeline_exhibitions_functions
@@ -16126,20 +17582,33 @@ exports.timeline_controller=     function($compile,  $scope, $http, $q, $routePa
 		$rootScope.datePicker=[];
 		$scope.isloggedin=false	
 		$scope.isloggedin=false	
-	   $scope.timeline_track = Timeline 
-
+	    $scope.timeline_track = Timeline 
 		
+		
+		$rootScope.installmodels=[]				
+		$rootScope.installmodels.push({"name":"painting","selected":false,"icon":"picture"})
+		$rootScope.installmodels.push({"name":"graphics","selected":false,"icon":"tint"})
+		$rootScope.installmodels.push({"name":"av","selected":false,"icon":"volume-up"})
+		$rootScope.installmodels.push({"name":"build","selected":false,"icon":"wrench"})
+		$rootScope.installmodels.push({"name":"objects","selected":false,"icon":"tower"})
+		$scope.haspermissions=false
+	
 	 $scope.init = function(timeline_mode)
   {
-	 	  	setTimeout(function() {
+	 setTimeout(function() {
+	 
 			(timeline_mode=="room-hire")	? $scope.timeline_track = Bookings :  $scope.timeline_track = Timeline 
 			
 			
-				  AuthService.isLoggedIn().then(function(user){
+			 AuthService.isLoggedIn().then(function(user){
 		
 			
-			$scope.user=user
-			$scope.isloggedin=true	
+						$scope.user=user
+						$scope.isloggedin=true			
+						if(	user.data.group=="ADMIN"){$scope.haspermissions=true}
+						if(	user.data.group=="EXHIBITIONS"){$scope.haspermissions=true}
+						if(	user.data.group=="DIGITAL"){$scope.haspermissions=true}
+
 			main_function(timeline_mode)
 			
 	  })
@@ -16150,9 +17619,7 @@ exports.timeline_controller=     function($compile,  $scope, $http, $q, $routePa
 				main_function(timeline_mode)
 			} 
 		
-        }, 1500);
-		
- 
+        }, 2000);
 
   })
 }
@@ -16161,8 +17628,9 @@ exports.timeline_controller=     function($compile,  $scope, $http, $q, $routePa
 
 main_function = function(timeline_mode){
 
-console.log('timeline_mode',timeline_mode)
 
+
+	if(timeline_mode=="room-hire" ){ timeline_track = Bookings } else{  timeline_track = Timeline }
 
 			$scope.filter_pie=[]
 			$scope.filter_pie.push({value:"2017 total_children",name:"No. children"})
@@ -16178,7 +17646,7 @@ console.log('timeline_mode',timeline_mode)
 					locale : {
 						format : 'DD/MM/YYYY'
 					},
-//TIMELINE EVENT HANDLERS					
+					//TIMELINE EVENT HANDLERS					
 					eventHandlers : {
 						
 										'apply.daterangepicker' : function() {  
@@ -16195,15 +17663,16 @@ console.log('timeline_mode',timeline_mode)
 																				  image :"",
 																				  start_date :moment(date.startDate).format("MMM Do"),
 																				  end_date : moment(date.endDate).format("MMM Do")|| "",
-																				  notes  :$rootScope.selected_notes + "(" +days+" days)" ,
+																				  notes  :$rootScope.selected_notes + "(" +days+" days)" ,			
+																				 install_features:$rootScope.installmodels,
 																				 days :days}
 										
 										
 										html=timeline_functions.event_html(event_to_add)
 												
-										var options={id:$scope.selected_timeline_id,content:html,start:moment(date.startDate)._d,end:moment(date.endDate)._d,start_date:moment(date.startDate)._d,end_date:moment(date.endDate)._d}
+										var options={id:$scope.selected_timeline_id,content:html,install_features:$rootScope.installmodels, start:moment(date.startDate)._d,end:moment(date.endDate)._d,start_date:moment(date.startDate)._d,end_date:moment(date.endDate)._d}
 												
-										$scope.timeline_track.update({
+										timeline_track.update({
 												id: $scope.selected_id,				
 												}, options);				
 												console.log('updatedItem',options)
@@ -16216,12 +17685,14 @@ console.log('timeline_mode',timeline_mode)
         }
 
 				$scope.$watch('selected_notes', function(selected_note) {
-				
-					timeline_functions.event_edited($scope,selected_note)
+				console.log('selected_notes edited',selected_note)
+						timeline_functions.event_edited($scope,selected_note)
 				
 				})
-			
+				
 		
+				
+
 			
 			$scope.$watch('selected_item', function(selected_item) {
 
@@ -16230,7 +17701,7 @@ console.log('timeline_mode',timeline_mode)
 			date=$rootScope.datePicker.date
 			days=timeline_functions.days(moment(date.startDate),moment(date.endDate))
 			$scope.selected_start = moment(date.startDate ).format("MMM Do")
-					$scope.selected_end = moment(date.endDate).format("MMM Do")
+			$scope.selected_end = moment(date.endDate).format("MMM Do")
 					
 			if(moment(date.startDate).isValid()){ //true
 											
@@ -16241,11 +17712,12 @@ console.log('timeline_mode',timeline_mode)
 													  start_date :moment(date.startDate).format("MMM Do"),
 													  end_date : moment(date.endDate).format("MMM Do")|| "",
 													  notes  :$rootScope.selected_notes ,
+													  
 													 days :days}
 			
 					html=timeline_functions.event_html(event_to_add)
 					var options={id:$scope.selected_timeline_id,content:html,name:selected_item,start:moment(date.startDate)._d,end:moment(date.endDate)._d,}
-					$scope.timeline_track.update({
+					timeline_track.update({
 					id: $scope.selected_id,				
 					}, options);				
 					
@@ -16260,60 +17732,60 @@ console.log('timeline_mode',timeline_mode)
 			
 			})
 	 
-	$scope.$watch('stack', function(stack) {
+			$scope.$watch('stack', function(stack) {
 		
 		
-		 if(typeof(stack)!="undefined"){
-			 
-			   options={stack:stack}
-				timeline_functions.updateOptions(options)
-		  }
+					 if(typeof(stack)!="undefined"){
+						 
+						   options={stack:stack}
+							timeline_functions.updateOptions(options)
+					  }
 		  
 		
 		  
-        })
+			})
 
 		
 		
-//END EVENT HANDLERS
+			//END EVENT HANDLERS
 
 		
-        $scope.editing = [];
-        $scope.timeline = Timeline.query();
+			$scope.editing = [];
+			$scope.timeline = Timeline.query();
 
 
-		
-		
-        $scope.removeTimeline = function(id) {
-            Timeline.remove({
-                id: id
-            })
-        }
+			
+			
+			$scope.removeTimeline = function(id) {
+				timeline_track .remove({
+					id: id
+				})
+			}
 	
 		
 				
 				
-        $scope.timeline_track.query({}, function(team) {
-            _.each(team, function(row,index) {
-		
-		 
-		 var timeline = $scope.timeline[index];
-		 if(timeline.group=="Bristol Archives"){
-            Timeline.remove({
-                id: timeline._id
-            }, function() {
-               // $scope.timeline.splice(index, 1);
-            });
-			}
+		   timeline_track.query({}, function(team) {
+				_.each(team, function(row,index) {
 			
-            })
-        })
+			 
+			 var timeline = $scope.timeline[index];
+			 if(timeline.group=="Bristol Archives"){
+				 timeline_track .remove({
+					id: timeline._id
+				}, function() {
+				   // $scope.timeline.splice(index, 1);
+				});
+				}
+				
+				})
+			})
 		
 	
         $scope.save = function() {
 		
             if (!$scope.newTimeline || $scope.newTimeline.length < 1) return;
-            var timeline = new $scope.timeline_track({
+            var timeline = new timeline_track({
                 name: $scope.newTimeline,
                 completed: false
             });
@@ -16327,7 +17799,7 @@ console.log('timeline_mode',timeline_mode)
 
         $scope.update = function(index) {
             var timeline = $scope.timeline[index];
-            $scope.timeline_track.update({
+            timeline_track.update({
                 id: timeline._id
             }, timeline);
             $scope.editing[index] = false;
@@ -16344,7 +17816,7 @@ console.log('timeline_mode',timeline_mode)
 
         $scope.remove = function(index) {
             var timeline = $scope.timeline[index];
-            $scope.timeline_track.remove({
+            timeline_track.remove({
                 id: timeline._id
             }, function() {
                 $scope.timeline.splice(index, 1);
@@ -16358,20 +17830,13 @@ console.log('timeline_mode',timeline_mode)
         };
         $scope.machine_types = [];
         $scope.type = "all";
-		/*
-        $scope.changedValue = function(type) {
-            $scope.data = []
-            $scope.series = []
-            $scope.category = []
-            $scope.type = type
-            plot_graph()
-        }
-*/
+
 
 		$scope.changedValue = function(place) {
-       
+        
 		 $rootScope.filter_pieSelected=place
-        }
+       
+	   }
 
         $scope.machinesx = ["all"]
         $scope.filterCondition = {
@@ -16441,42 +17906,42 @@ console.log('timeline_mode',timeline_mode)
 					}
 	
 			//VIS ERRORS IF INITIALISED WITH AN EMPTY START DATE
-			timeline_functions.setup(Timeline,$rootScope.groups, new vis.DataSet(date))
+			timeline_functions.setup( $scope.timeline_track ,$rootScope.groups, new vis.DataSet(date))
 			
 			
 			
 			$scope.add_exhibitions= function(){						
-					timeline_functions.populate_timeline_track_method_b($rootScope,timeline_exhibitions_functions)
+					timeline_functions.populate_timeline_track_method_b($rootScope,timeline_exhibitions_functions,timeline_track)
 			}
 			
 			$scope.add_installs_derigs= function(){				
-					timeline_functions.populate_timeline_track($rootScope,Timeline,timeline_install_functions)	
+					timeline_functions.populate_timeline_track($rootScope,Timeline,timeline_install_functions,timeline_track)	
 			}
 			
 			$scope.team_leave= function(){
-					timeline_functions.populate_timeline_track_method_b($rootScope,timeline_leave_functions)				
+					timeline_functions.populate_timeline_track_method_b($rootScope,timeline_leave_functions,timeline_track)				
 			}
 			
 			$scope.visitor_figures= function(){							
-					timeline_functions.populate_timeline_track($rootScope,Raw_visits,timeline_visitor_figures_functions)
+					timeline_functions.populate_timeline_track($rootScope,Raw_visits,timeline_visitor_figures_functions,timeline_track)
 			}
 			
 			
 				$scope.bookings= function(){							
-					timeline_functions.populate_timeline_track($rootScope,Bookings,timeline_bookings_functions)
+					timeline_functions.populate_timeline_track($rootScope,Bookings,timeline_bookings_functions,timeline_track)
 			}
 			
 			
 			$scope.shopify= function(){							
-					timeline_functions.populate_timeline_track($rootScope,Shopify_aggregate,timeline_shopify_functions)
+					timeline_functions.populate_timeline_track($rootScope,Shopify_aggregate,timeline_shopify_functions,timeline_track)
 			}
 				
 			$scope.loans= function(){							
-					timeline_functions.populate_timeline_track_method_b($rootScope,timeline_loans_functions)
+					timeline_functions.populate_timeline_track_method_b($rootScope,timeline_loans_functions,timeline_track)
 			}
 			
 			$scope.learning_bookings= function(){							
-					timeline_functions.populate_timeline_track_method_b($rootScope,timeline_learning_functions)
+					timeline_functions.populate_timeline_track_method_b($rootScope,timeline_learning_functions,timeline_track)
 			}
 			
 			
@@ -16496,15 +17961,16 @@ console.log('timeline_mode',timeline_mode)
 			
 			
 			if(timeline_mode=="room-hire"){
-				$scope.timeline_track = Bookings
+				
+		
+			
+					timeline_track = Bookings
 					$scope.bookings()
-				
-				
-				
+			
 			}
 			else
 			{
-			$scope.timeline_track = Timeline
+			timeline_track = Timeline
 			if( $scope.isloggedin){	
 			
 			
@@ -16533,19 +17999,27 @@ console.log('timeline_mode',timeline_mode)
 											checked_event_types.push('Family')
 
 	   Timeline_data.query({}, function(data) {
-	_.each(data, function(data_settings) {
-		console.log('data_settings',data_settings)
-		$scope.timeline_googlesheets_functions(data_settings)
-	})	
-	   })
+				
+				_.each(data, function(data_settings) {
+					console.log('data_settings',data_settings)
+					$scope.timeline_googlesheets_functions(data_settings)
+				})
+		
+		timeline_functions.update_andCompile()	
+		
+		})
 
 	
 
-		$timeout(timeline_functions.update_andCompile(),500) //needed due to angular wierdness with directives
-
     // check if there is query in url
     // and fire search in case its value is not empty
+		 $scope.$watch('installmodels|filter:{selected:true}', function (nv) {
+						timeline_functions.event_edited($scope)
 
+		}, true);
+	
+	
+	
 	$scope.$watch('track_groups|filter:{selected:true}', function (nv) {
 		
 					var selection = nv.map(function (track_groups) {
@@ -16566,10 +18040,10 @@ $scope.$watch('groups|filter:{selected:true}', function (nv) {
 					timeline_functions.changeGroups(selection)
 					$( ".draggable,.iconbar" ).css({ 'top':'0px' });
 	
-  }, true);
+}, true);
 
 	
-	
+
 
 			
 	
@@ -16683,14 +18157,17 @@ exports.add_timeline_items_controller=    function($scope, $http, $q, $routePara
     ) {
 		
 
+ 
 
-  }
+
+
+ }
   
 
   
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-controller.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],84:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],86:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	exports.timeLine = function() {
   return {
@@ -16698,6 +18175,16 @@ exports.add_timeline_items_controller=    function($scope, $http, $q, $routePara
     templateUrl: './components/timeline/timeline-page.html'
   }
 	}
+
+
+	exports.timelineBookings = function() {
+  return {
+ controller: 'timeline_resources_controller',
+   templateUrl: './components/timeline/timeline-page.html'
+  }
+  }
+
+
 	
 		exports.timelineMenu = function() {
   return {
@@ -16754,16 +18241,21 @@ exports.timelineInfobox = function() {
 
       templateUrl: './components/timeline/timeline-item.html',
 	  scope: {
-		  startdate: "@",
-		  id: "@",
-		  enddate: "@",
-		  name: "@",
-		  description: "@",
-		  image: "@",
-		  showimage: "@",
-		  notes: "@",		 
-		  days: "@"
-		
+					startdate: "@",
+					id: "@",
+					enddate: "@",
+					name: "@",
+					description: "@",
+					image: "@",
+					showimage: "@",
+					notes: "@",		 
+					days: "@",
+					painting:"@",
+					av:"@",
+					build:"@",
+					objects:"@",
+					graphics:"@"
+
 		}
     }
 	}
@@ -16774,7 +18266,7 @@ exports.timelineInfobox = function() {
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-directive.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],85:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],87:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_exhibitions_functions =  function (timeline_functions,$http,Timeline,$rootScope,$routeParams) {
@@ -16961,7 +18453,7 @@ exports.timeline_exhibitions_functions =  function (timeline_functions,$http,Tim
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-exhibitions-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],86:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],88:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_googlesheets_functions =  function (timeline_functions,$http,Timeline,$rootScope,$routeParams) {
@@ -17217,7 +18709,7 @@ exports.timeline_googlesheets_functions =  function (timeline_functions,$http,Ti
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-googlesheets-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],87:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],89:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_install_functions =  function (timeline_functions,$http,Timeline,$rootScope) {
@@ -17285,11 +18777,14 @@ exports.timeline_install_functions =  function (timeline_functions,$http,Timelin
 																								  start_date :moment(data.start_date).format("MMM Do"),
 																								  end_date :end_date ||"",
 																								  notes  :data.notes ,
-																								  days :data.days
+																								  days :data.days,
+																								  install_features:data.install_features		
 																							}
 																								 
-																			 //if($rootScope.isloggedin==true){
-																				 visevents.add({
+																	
+
+
+																				visevents.add({
 																						_id: data._id,
 																						className:data.className,
 																						select_group :false,
@@ -17303,6 +18798,7 @@ exports.timeline_install_functions =  function (timeline_functions,$http,Timelin
 																						//title:data.notes,
 																						start: data.start_date,
 																						days:data.days,
+																						install_features:data.install_features,																					
 																						end: data.end_date 
 																					})
 																			//}
@@ -17364,7 +18860,7 @@ exports.timeline_install_functions =  function (timeline_functions,$http,Timelin
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-installs-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],88:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],90:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_learning_functions = function ($http,Timeline,$rootScope) {
@@ -17484,7 +18980,7 @@ exports.timeline_learning_functions = function ($http,Timeline,$rootScope) {
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-learning-bookings-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],89:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],91:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_leave_functions =  function ($http,Timeline,$rootScope) {
@@ -17915,7 +19411,7 @@ exports.timeline_leave_functions =  function ($http,Timeline,$rootScope) {
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-leave-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],90:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],92:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_loans_functions =  function ($http,Timeline,$rootScope) {
@@ -18034,18 +19530,22 @@ exports.timeline_loans_functions =  function ($http,Timeline,$rootScope) {
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-loans-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],91:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],93:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 
-exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,Bookings,$rootScope,$timeout) {
+exports.timeline_functions = function ( $templateCache,$compile,$http,Timeline,Bookings,$rootScope,$timeout) {
 	
 
   
   return {
   
-		timeline_track : Timeline,
- 
+  timeline_track: Timeline,
+  
+  
+  		
+
+  
 		  loadgroups: function(items){
 	
 			var _groups=[]
@@ -18071,6 +19571,7 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,Bo
 										event_typeSORT	:    content,
 										selected         : value.select_group 
 									})
+					console.log(_groups)
 				}
 				}
 			})
@@ -18080,7 +19581,7 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,Bo
 
 		},
 	
-  update_andCompile: function(item) {
+		update_andCompile: function(item) {
 			
 			var self = this
 			
@@ -18089,25 +19590,33 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,Bo
 			
 			setTimeout(function() {
 			
-						var groups = new vis.DataSet($rootScope.groups);		
+						
+						unique_groups=[]
+						added_ids=[]
+						_.each($rootScope.groups, function(group){
+							if(added_ids.indexOf(group.id)==-1){
+							added_ids.push(group.id)
+							unique_groups.push(group)
+							}
+						})
+						
+						var groups = new vis.DataSet(unique_groups);
+	
 						var list = groups.get({
-								filter: function(item) {
-								
+								filter: function(item) {								
 									return (item.selected == true);
 								}
-								})
-								
-						$rootScope.timeline.setGroups(list);
-						self.enable_event_drop()
-						//$rootScope.timeline.redraw()
+						})	
+						
+						self.enable_event_drop(timeline_track,timeline_track)
+						$rootScope.timeline.redraw()
 			
-                            }, 1500);
+             }, 1500);
 			 
-		
 			
 		},	
 		
-		populate_timeline_track: function(rootScope,dataset,dataset_functions) {
+		populate_timeline_track: function(rootScope,dataset,dataset_functions,timeline_track) {
 			 
 				 var self = this
 				 $rootScope.groups = $rootScope.groups || []
@@ -18115,7 +19624,8 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,Bo
 				  rootScope.timeline.setGroups(groups);
 				  
 					dataset.query({}, function(datax) {
-						self.add_events_loop(rootScope,datax,dataset_functions)
+						self.add_events_loop(rootScope,datax,dataset_functions,timeline_track)
+						self.update_andCompile()
 					})
 					
 		},
@@ -18123,7 +19633,7 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,Bo
 	
 
 
-		populate_timeline_track_method_b: function(rootScope,data_functions) {
+		populate_timeline_track_method_b: function(rootScope,data_functions,timeline_track) {
 			
 				 var self = this
 				 $rootScope.groups = $rootScope.groups || []
@@ -18131,12 +19641,12 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,Bo
 				  rootScope.timeline.setGroups(groups);
 			  
 				  data_functions.get_events().then(function(datax) {					  
-					self.add_events_loop(rootScope,datax,data_functions)
+					self.add_events_loop(rootScope,datax,data_functions,timeline_track)
 					})
 		
 		},
 		 
-		add_events_loop: function(rootScope,datax,dataset_functions) {
+		add_events_loop: function(rootScope,datax,dataset_functions,timeline_track) {
 	
 				var self = this
 				dataset_functions.add_events(datax, function(public_dates){
@@ -18150,8 +19660,9 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,Bo
 								}
 							})
 							//rootScope.timeline.itemsData.on("update", function(){self.update_andCompile()})
-							rootScope.timeline.fit()
-							$timeout(self.update_andCompile(),500) //needed due to angular wierdness with directives
+							rootScope.timeline.fit({},function(){
+										self.update_andCompile()
+							})//needed due to angular wierdness with directives
 				})
 	
 	
@@ -18162,77 +19673,77 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,Bo
 			
 		export_JSON_to_CSV: function(JSONData, ReportTitle, ShowLabel){
   
-  
-    //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
-    var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
-    //console.log('arrData',arrData)
-    var CSV = '';    
-    //Set Report title in first row or line
-    
-    CSV += ReportTitle + '\r\n\n';
+					  
+						//If JSONData is not an object then JSON.parse will parse the JSON string in an Object
+						var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+						//console.log('arrData',arrData)
+						var CSV = '';    
+						//Set Report title in first row or line
+						
+						CSV += ReportTitle + '\r\n\n';
 
-    //This condition will generate the Label/Header
-    if (ShowLabel) {
-        var row = "";
-        
-        //This loop will extract the label from 1st index of on array
-        for (var index in arrData[0]) {
-            // console.log('row += index',row += index)
-            //Now convert each value to string and comma-seprated
-            row += index + ',';
-        }
+						//This condition will generate the Label/Header
+						if (ShowLabel) {
+							var row = "";
+							
+							//This loop will extract the label from 1st index of on array
+							for (var index in arrData[0]) {
+								// console.log('row += index',row += index)
+								//Now convert each value to string and comma-seprated
+								row += index + ',';
+							}
 
-        row = row.slice(0, -1);
-        
-        //append Label row with line break
-        CSV += row + '\r\n';
-    }
-    
-    //1st loop is to extract each row
-    for (var i = 0; i < arrData.length; i++) {
-        var row = "";
-        
-        //2nd loop will extract each column and convert it in string comma-seprated
-        for (var index in arrData[i]) {
-            row += '"' + arrData[i][index] + '",';
-        }
+							row = row.slice(0, -1);
+							
+							//append Label row with line break
+							CSV += row + '\r\n';
+						}
+						
+						//1st loop is to extract each row
+						for (var i = 0; i < arrData.length; i++) {
+							var row = "";
+							
+							//2nd loop will extract each column and convert it in string comma-seprated
+							for (var index in arrData[i]) {
+								row += '"' + arrData[i][index] + '",';
+							}
 
-        row.slice(0, row.length - 1);
-        
-        //add a line break after each row
-        CSV += row + '\r\n';
-    }
+							row.slice(0, row.length - 1);
+							
+							//add a line break after each row
+							CSV += row + '\r\n';
+						}
 
-    if (CSV == '') {        
-        alert("Invalid data");
-        return;
-    }   
-    
-    //Generate a file name
-    var fileName = "MyReport_";
-    //this will remove the blank-spaces from the title and replace it with an underscore
-    fileName += ReportTitle.replace(/ /g,"_");   
-    
-    //Initialize file format you want csv or xls
-    var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
-    
-    // Now the little tricky part.
-    // you can use either>> window.open(uri);
-    // but this will not work in some browsers
-    // or you will not get the correct file extension    
-    
-    //this trick will generate a temp <a /> tag
-    var link = document.createElement("a");    
-    link.href = uri;
-    
-    //set the visibility hidden so it will not effect on your web-layout
-    link.style = "visibility:hidden";
-    link.download = fileName + ".csv";
-    
-    //this part will append the anchor tag and remove it after automatic click
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+						if (CSV == '') {        
+							alert("Invalid data");
+							return;
+						}   
+						
+						//Generate a file name
+						var fileName = "MyReport_";
+						//this will remove the blank-spaces from the title and replace it with an underscore
+						fileName += ReportTitle.replace(/ /g,"_");   
+						
+						//Initialize file format you want csv or xls
+						var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+						
+						// Now the little tricky part.
+						// you can use either>> window.open(uri);
+						// but this will not work in some browsers
+						// or you will not get the correct file extension    
+						
+						//this trick will generate a temp <a /> tag
+						var link = document.createElement("a");    
+						link.href = uri;
+						
+						//set the visibility hidden so it will not effect on your web-layout
+						link.style = "visibility:hidden";
+						link.download = fileName + ".csv";
+						
+						//this part will append the anchor tag and remove it after automatic click
+						document.body.appendChild(link);
+						link.click();
+						document.body.removeChild(link);
 
 
 },
@@ -18274,8 +19785,9 @@ exports.timeline_functions = function ($templateCache,$compile,$http,Timeline,Bo
                 $(".vis-group").droppable({
                     accept: '.date_add',
                     drop: function(event, ui) {
-		event.preventDefault()
-console.log('drop')
+					
+							event.preventDefault()
+
                         if (!$('.already-dropped').length) {
                             $('body').addClass('already-dropped');
                             setTimeout(function() {
@@ -18304,8 +19816,11 @@ console.log('drop')
 								add_item(group,$rootScope.filter_pieSelected,time,"placeholder","orange",1,"PROVISIONAL DATE")
 							}
 							
-							function add_item(dropped_group,group,time,value,colour,days,type){
-console.log('add_item')
+							function add_item(dropped_group,group,time,value,colour,days,type)
+							{
+									
+									
+									 console.log('add_item')
 									 date_dropped=(moment(time).startOf('day')._d)
 									
 									 
@@ -18315,27 +19830,32 @@ console.log('add_item')
 									target_date = time
 									_days=self.days(moment(time).startOf('day')._d,moment(time).add(days, 'days')._d)
 									
-								var event_to_add=	{id : id,
-													  name : value,
-													  showimage :"",
-													  image :"",
-													  start_date :moment(time).startOf('day').format("MMM Do"),
-													  end_date :moment(time).add(days, 'days').format("MMM Do"),
-													  notes  :"",
-														days :_days
-													}
+									var event_to_add=	
+									{
+															id : id,
+															name : value,
+															showimage :"",
+															image :"",
+															start_date :moment(time).startOf('day').format("MMM Do"),
+															end_date :moment(time).add(days, 'days').format("MMM Do"),
+															notes  :"",
+															days :_days
+									}
 									
 									
-									var new_date = {
-										content: self.event_html(event_to_add),
-										name:value,
-										group: group,
-										dropped_group:dropped_group,
-										className:colour||"",
-										_type:type,
-										start_date: new Date(moment(date_dropped).startOf('day')._d),
-										end_date: new Date (moment(date_dropped).add(days, 'days')._d),
-										days:_days
+									var new_date = 
+									{
+									
+															content: self.event_html(event_to_add),
+															name:value,
+															group: group,
+															dropped_group:dropped_group,
+															date_logged: new Date(),	
+															className:colour||"",
+															_type:type,
+															start_date: new Date(moment(date_dropped).startOf('day')._d),
+															end_date: new Date (moment(date_dropped).add(days, 'days')._d),
+															days:_days
 
 									}
 									
@@ -18343,10 +19863,10 @@ console.log('add_item')
 									
 								
 									
-									var _timeline = new self.timeline_track(new_date)
+									var _timeline = new Timeline(new_date)
 										.$save(function(_item) {
 										
-console.log('saved',_item)
+
 											new_date.start =_item.start_date
 											new_date.end = _item.end_date
 											new_date._id = _item._id
@@ -18388,6 +19908,7 @@ console.log('saved',_item)
 
    add_group_to_timeline: function(new_group){
 //TO DO
+console.log('add_group_to_timeline')
 				var groups = new vis.DataSet($rootScope.groups);
 				var group = new vis.DataSet( $rootScope.leave_groups);
 					var list =groups.get()
@@ -18414,28 +19935,30 @@ console.log('saved',_item)
 		
 				},  
 				
-	   changeTracks: function(selection){
-
-				var groups = new vis.DataSet($rootScope.groups);
-				var group = new vis.DataSet( $rootScope.leave_groups);
-				var list =groups.get({
-						filter: function(item) {
+			   changeTracks: function(selection)
+			   {
+console.log('changeTracks selection',selection)
+						var groups = new vis.DataSet($rootScope.groups);
+						var group = new vis.DataSet( $rootScope.leave_groups);
+						var list =groups.get({
+								filter: function(item) {
+									
+									return (  selection.indexOf(item.track)!=-1);
+								}
+							})
 							
-							return (  selection.indexOf(item.track)!=-1);
-						}
-					})
-					
 						timeline.setGroups(list);
-						
-					
+						this.update_andCompile()					
 						this.enable_event_drop()
-		
-			},  
-		changeGroups: function(selection){
+				
+				},  
+				
+				changeGroups: function(selection)
+				{
 
-				var groups = new vis.DataSet($rootScope.groups);
-				//var group = new vis.DataSet( $rootScope.leave_groups);
-				var list =groups.get({
+					var groups = new vis.DataSet($rootScope.groups);
+					//var group = new vis.DataSet( $rootScope.leave_groups);
+					var list =groups.get({
 						filter: function(item) {
 							
 							return (  selection.indexOf(item.content)!=-1);
@@ -18472,13 +19995,30 @@ console.log('saved',_item)
 		 	var  notes  = event_to_add.notes ||""
 		 	var  days = event_to_add.days
 			var  description =event_to_add.description ||""
+
+			 var  av=false,build=false,painting=false,objects =false,graphics =false
+			 
+			 _.each(event_to_add.install_features, function(feature){
+			 
+						if(feature.selected==true){
+						
+								if(feature.name=="av"){av=true}
+								if(feature.name=="build"){build=true}
+								if(feature.name=="painting"){painting=true}
+								if(feature.name=="graphics"){graphics=true}
+								if(feature.name=="objects"){objects=true}
+					
+						}
+			 })
+		 
+
 		 
 			var notes=notes ||""
 			var image=image ||""
 	
 			var showimage=showimage ||""
 			
-			var htmlContent= "<timeline-databar    description='" + description + "' description='" + description + "' id='" + id + "' name='" + name + "' image='" + image + "' showimage='" + showimage + "' startdate='" + start_date + "' enddate='" + end_date + "' notes='" + notes + "' days='" + days + "'></timeline-databar>"; //'<timeline-databar></timeline-databar>'
+			var htmlContent= "<timeline-databar     graphics='" + graphics + "' objects='" + objects + "'  painting='" + painting + "' build='" + build + "'  av='" + av + "'  description='" + description + "' description='" + description + "' id='" + id + "' name='" + name + "' image='" + image + "' showimage='" + showimage + "' startdate='" + start_date + "' enddate='" + end_date + "' notes='" + notes + "' days='" + days + "'></timeline-databar>"; //'<timeline-databar></timeline-databar>'
 		
 			return htmlContent
 
@@ -18486,29 +20026,55 @@ console.log('saved',_item)
 			
 		selected_data:	 function (event) {
 				
-					var self=this
-	
-					//if(timeline.options.editable==true){
-							console.log('get ID to update')
+							var self=this
 							selected_timeline_id=event.items[0]
-							 if(selected_timeline_id){
+							 if(selected_timeline_id)
+							 {
+							 
 										selected_item =	timeline.itemsData.getDataSet().get(selected_timeline_id)
 										$rootScope.selected_timeline_id=selected_timeline_id
 										$rootScope.selected_item=selected_item.name
 										$rootScope.selected_type=selected_item._type
-										if(selected_item.days>0){
+										
+									
+										
+										
+										_.each($rootScope.installmodels,  function(feature,i){
+												$rootScope.installmodels[i].selected=false
+										})
+											
+										if(selected_item.install_features){
+										_.each(selected_item.install_features,  function(feature){
+										if (feature.selected==true){
+											console.log(feature.name + " is selected in the model")
+												_.each($rootScope.installmodels,  function(_feature,i){
+												console.log("checking " + _feature)
+														if (_feature.name==feature.name){
+															console.log($rootScope.installmodels[i].name + " is selected on the info box" +_feature.name)
+															console.log("switching on " +$rootScope.installmodels[i] )
+															$rootScope.installmodels[i].selected=true
+														}
+												})
+										}
+										})
+										}
+									
+										
+										
+										
+										
+										
+										if(selected_item.days>0)
+										{
 												$rootScope.selected_days=" - " +selected_item.days + " days"
 										}
 										$rootScope.selected_id=selected_item._id
 										$rootScope.selected_notes=selected_item.notes
 										$rootScope.datePicker.date={startDate:new Date(selected_item.start),endDate:new Date (selected_item.end)}
 							
+							
 							}
-					//}
-					//else
-					//{
-						//console.log('timeline locked')
-					//}
+					
 
            },
 		   
@@ -18523,7 +20089,7 @@ console.log('saved',_item)
 				
 	},
 	
-	event_edited: function(scope,selected_note){
+	event_edited: function(scope){
 
 	console.log('event_edited')
 	
@@ -18538,21 +20104,25 @@ console.log('saved',_item)
 					days=self.days(moment(date.startDate),moment(date.endDate))
 					scope.selected_start = moment(date.startDate ).format("MMM Do")
 					scope.selected_end = moment(date.endDate).format("MMM Do")
+
 					if(moment(date.startDate).isValid()){ //true
 								
-									var event_to_add=	{id :  scope.selected_id,
-													  name :scope.selected_item,
-													  showimage :"",
-													  image :"",
-													  start_date :moment(date.startDate).format("MMM Do"),
-													  end_date : moment(date.endDate).format("MMM Do")|| "",
-													  notes  :$rootScope.selected_notes ,
-													 days :days}
+									var event_to_add=	{
+														  id :  scope.selected_id,
+														  name :scope.selected_item,
+														  showimage :"",
+														  image :"",
+														  start_date :moment(date.startDate).format("MMM Do"),
+														  end_date : moment(date.endDate).format("MMM Do")|| "",
+														  notes  :$rootScope.selected_notes ,
+														  days :days,
+														  install_features:scope.installmodels
+														}
 				
 					
 					//THIS CAUSES A REFRESH OF THE TIMELINE DIRECTIVE (GOOD)
 					html=self.event_html(event_to_add)
-					var options={id:scope.selected_timeline_id,content:html,notes:selected_note,start:moment(date.startDate)._d,end:moment(date.endDate)._d}
+					var options={id:scope.selected_timeline_id,content:html,notes:$rootScope.selected_note,start:moment(date.startDate)._d,end:moment(date.endDate)._d, install_features:scope.installmodels}
 					self.timeline_track.update({
 								id: scope.selected_id			
 								}, options, function(){self.updateItem(options) });
@@ -18587,10 +20157,10 @@ console.log('saved',_item)
 			
 	},
 	
-    setup: function(Timeline,groups,dates,isloggedin) {
+    setup: function( Timeline,groups,dates,isloggedin) {
 		
 		var self=this
-	
+		
 
          var options = {
 					min: new Date(2014, 0, 1),                // lower limit of visible range
@@ -18601,27 +20171,26 @@ console.log('saved',_item)
 					maxHeight:"900px",
 					moveable:true,
 					itemsAlwaysDraggable:true,
-					
-					 snap: function (date, scale, step) {
-					return date;
-				   },
-						
-					//groupEditable:true,
+					snap: function (date, scale, step) {
+						return date;
+							},
 					stack:false,
 					orientation:{"axis":"top"},
 					selectable: true,  
                     editable: false,  
 					groupOrder:'order',					
                     onMove: function(item, callback) {
-						console.log('onMove')
-						
+					
 							$rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (item.end)}
 
 							days=self.days(moment(item.start),moment(item.end))
 							$rootScope.selected_days = days
 							if(moment(item.start).isValid()){ //true
-							console.log('ok date')
-									var event_to_add=	{id : item._id,
+							
+									
+									var event_to_add=	{
+									
+															  id : item._id,
 															  name : item.name,
 															  showimage :"",
 															  image :"",
@@ -18629,37 +20198,12 @@ console.log('saved',_item)
 															  start_date : moment(item.start).startOf('day').format("MMM Do"),
 															  end_date : moment(item.end).startOf('day').format("MMM Do"),
 															  notes  :item.notes ,
-															days :days}
+															  days :days,
+															   install_features:$rootScope.installmodels
+															
+														}
 									
-									/*
-									var _timeline = new Timeline({
-										content:  self.event_html(event_to_add ),
-										group: item.group,
-										start_date: item.start,
-										end_date: item.end,
-										_id: item._id
-									})
-									
-								   
-									Timeline.update({
-										id: item._id
-									}, _timeline);
-									
-							*/
-								//html=self.event_html(event_to_add)
-								/*
-								var _options={id:item._id,content:html,name: item.name,start:moment(event_to_add.start_date)._d}
-								
-								Timeline.update({
-								id: $rootScope.selected_id,				
-								}, _options);			
-								
-								self.updateItem(_options)	
-								*/
-								
-								console.log(item._id) //TIMELINE
-								console.log(item.id) //timeline
-								
+
 								//NB DIFFERENT IDS FOR Timeline and Timeline vis vs mongo
 								html=self.event_html(event_to_add)
 								var options={ id:item.id,
@@ -18669,7 +20213,8 @@ console.log('saved',_item)
 												start:moment(item.start)._d,
 												end:moment(item.end)._d,
 												start_date:moment(item.start)._d,
-												end_date:moment(item.end)._d
+												end_date:moment(item.end)._d,
+												install_features:$rootScope.installmodels
 												}
 								self.timeline_track.update({
 								id:  item._id				
@@ -18705,44 +20250,46 @@ console.log('saved',_item)
 									days=self.days(item.start, item.end)
 									if(moment(item.start).isValid()){ //true
 										
-								var event_to_add=	{id : item.id,
-													  name :value,
-													  showimage :"",
-													  image :"",
-													  start_date :item.start,
-													  end_date : item.end,
-													  notes  :item.notes ,
-													days :days}
-									
-									
-                                var _timeline = new self.timeline_track({
-                                    content:  self.event_html(event_to_add),
-									name: item.name,
-                                    group: item.group,
-                                    start_date: item.start,
-                                    end_date: item.end,
-									days:self.days(item.start,item.end)
+									var event_to_add=	{
+														  id : item.id,
+														  name :value,
+														  showimage :"",
+														  image :"",
+														  start_date :item.start,
+														  end_date : item.end,
+														  notes  :item.notes,
+														  days :days													  
+														}
+										
+										
+									var _timeline = new self.timeline_tracktimeline_track({
+										content:  self.event_html(event_to_add),
+										name: item.name,
+										group: item.group,
+										start_date: item.start,
+										end_date: item.end,
+										days:self.days(item.start,item.end)
 
-                                })
-                               
-                                self.timeline_track.update({
-                                    id: item._id
-                                }, _timeline);
-                               
-								
-									//$rootScope.timeline.itemsData.on("update", function(){
+									})
+								   
+								   self.timeline_tracktimeline_track.update({
+										id: item._id
+									}, _timeline);
+								   
 									
-									var _options={id:item._id,content:self.event_html(event_to_add),start:moment(event_to_add.startDate)._d,end:moment(event_to_add.endDate)._d,start_date:moment(event_to_add.startDate)._d,end_date:moment(event_to_add.endDate)._d}
-									console.log(_options)
-									console.log('updated',_options)
-									self.updateItem(_options)
-									$timeout(self.update_andCompile(),1000) 
+										//$rootScope.timeline.itemsData.on("update", function(){
+										
+										var _options={id:item._id,content:self.event_html(event_to_add),start:moment(event_to_add.startDate)._d,end:moment(event_to_add.endDate)._d,start_date:moment(event_to_add.startDate)._d,end_date:moment(event_to_add.endDate)._d}
+							
+										self.updateItem(_options, function(){
+											self.update_andCompile()
+										})									
+										
+										//})
+										
 									
-									//})
 									
-								
-								
-								 callback(item);
+									 callback(item);
 							}
 										else
 										{
@@ -18763,7 +20310,10 @@ console.log('saved',_item)
                                 callback(item); // send back adjusted new item
 								
 								days=self.days(item.start, moment(item.start).add(5, 'days'))
-																		
+							
+
+
+								
 								var event_to_add=	{id : item.id,
 													  name :value,
 													  showimage :"",
@@ -18776,6 +20326,7 @@ console.log('saved',_item)
                                 var _timeline = new self.timeline_track({
                                         content: self.event_html(event_to_add),
 										name:value,
+										date_logged: new Date(),	
                                         group: item.group,
 										_type:"note",
                                         start_date: item.start,
@@ -18810,7 +20361,7 @@ console.log('saved',_item)
                     onRemove: function(item, callback) {
 
                         if (item._id) {
-                            self.timeline_track.remove({
+                            self.timeline_tracktimeline_track.remove({
                                 id: item._id
                             })
                             callback(item);
@@ -18848,27 +20399,15 @@ console.log('saved',_item)
 				
 				
 
-				//var container = document.getElementById('example-timeline');
-               // timeline = new vis.Timeline(container);
-				//groups=self.loadgroups(dates)
-				//$rootScope.rawData=dates
-				//$rootScope.groups=groups
-				//var groups = new vis.DataSet(groups);
-
-           
-				//self.changeGroups($rootScope.groups.selected)
 				 $rootScope.timeline.setOptions(options);
 				 
 				 $rootScope.timeline.on('select', function (properties) {
 						console.log('timeline selected')
-						console.log($rootScope.timeline.options)
 						self.selected_data( properties)
 
 				});
 				
 			   $rootScope.timeline.setItems(dates);
-			   console.log('timelineoptions',options)
-              
 				$rootScope.timeline.fit()
 				
 				
@@ -18907,15 +20446,7 @@ console.log('saved',_item)
 			
 			self.enable_event_drop()
 			$compile($("timeline-databar"))($rootScope);
-				/*
-				var list = groups.get({
-						filter: function(item) {
-							return (item);
-						}
-				})
-			*/
-			//timeline.setGroups(list);   
-		
+
 			
               
     }
@@ -18924,7 +20455,7 @@ console.log('saved',_item)
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],92:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],94:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_shopify_functions =  function ($http,Timeline,$rootScope) {
@@ -19067,7 +20598,7 @@ exports.timeline_shopify_functions =  function ($http,Timeline,$rootScope) {
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-shopify-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],93:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],95:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_visitor_figures_functions =  function ($http,Timeline,$rootScope) {
@@ -19208,7 +20739,7 @@ exports.timeline_visitor_figures_functions =  function ($http,Timeline,$rootScop
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-visitor-figures-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],94:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],96:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.turnstiles_controller = function(log_messages,$scope, AuthService,$http, $q, $routeParams, $location,$rootScope, turnstile_app
@@ -19403,7 +20934,7 @@ $scope.settings=[]
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/turnstiles/turnstiles-controller.js","/../components/turnstiles")
-},{"b55mWE":4,"buffer":3}],95:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],97:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	exports.turnstilesController = function() {
   return {
@@ -19431,7 +20962,7 @@ $scope.settings=[]
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/turnstiles/turnstiles-directive.js","/../components/turnstiles")
-},{"b55mWE":4,"buffer":3}],96:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],98:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.users_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Team
     ) {
@@ -19557,7 +21088,7 @@ exports.users_controller = function($route,$scope, $http, $q, $routeParams, $loc
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/user-admin/users-controller.js","/../components/user-admin")
-},{"b55mWE":4,"buffer":3}],97:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],99:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	exports.userAdmin = function() {
   return {
@@ -19569,7 +21100,7 @@ exports.users_controller = function($route,$scope, $http, $q, $routeParams, $loc
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/user-admin/users-directive.js","/../components/user-admin")
-},{"b55mWE":4,"buffer":3}],98:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],100:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.ProductDetailsController = function($location, $scope, $routeParams, $http) {
 
@@ -19595,7 +21126,7 @@ exports.RadioController = function($location, $scope, $routeParams, $http) {
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/controllers/controllers.js","/controllers")
-},{"b55mWE":4,"buffer":3}],99:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],101:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	
 exports.NavController = function($location,AuthService,$scope,$http) {
@@ -20027,7 +21558,7 @@ $scope.user_groups['RETAIL'].performance=performance_data
 };
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/controllers/navbar-controller.js","/controllers")
-},{"b55mWE":4,"buffer":3}],100:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],102:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 	exports.userMenu = function() {
@@ -20073,7 +21604,7 @@ $scope.user_groups['RETAIL'].performance=performance_data
   }
 	}
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/directives/directives.js","/directives")
-},{"b55mWE":4,"buffer":3}],101:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],103:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 /* app */
@@ -20100,8 +21631,11 @@ var  record_equipment_controller = require('../components/resource-bookings/equi
 var  record_bookings_controller = require('../components/resource-bookings/bookings/form-controller');
 var  bookings_controller = require('../components/resource-bookings/bookings/raw-bookings-controller');
 var  timeline_bookings_services = require('../components/timeline/timeline-bookings-services');
+var  timeline_functions_resources = require('../components/resource-bookings/timeline-resources-services');
+var  timeline_resources_controller = require('../components/resource-bookings/timeline-resources-controller');
 
-var resources_directives = require('../components/resource-bookings/directive');
+
+
 
 
 
@@ -20205,7 +21739,7 @@ var shopify_directives = require('../components/shopify/shopify-directive');
 var performance_directives = require('../components/performance/performance-directive');
 var iframe_directives = require('../components/iframe/iframe-directive');
 var turnstiles_directives = require('../components/turnstiles/turnstiles-directive');
-
+var resources_directives = require('../components/resource-bookings/directive');
 
 
 
@@ -20233,6 +21767,7 @@ var feedback_services = require('../components/machine-monitor/feedback-services
 
 	var app =  angular.module('app', [
 		'ng',
+	
 		'ngRoute',
 		'ngAnimate',		
 		'ngResource',
@@ -20646,6 +22181,15 @@ _.each(timeline_exhibitions_functions, function(factory, name) {
 });
 
 
+_.each(timeline_resources_controller, function(factory, name) {
+  app.controller(name, factory);
+});
+
+
+
+_.each(timeline_functions_resources, function(factory, name) {
+  app.factory(name, factory);
+});
 
 _.each(timeline_bookings_services, function(factory, name) {
   app.factory(name, factory);
@@ -20810,7 +22354,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
               controller: 'form_to_trellox'
            })
 		     .when('/timeline', {
-              template: '<time-line ng-init="init(\'timeline\')"  ></time-line>'
+              template: '<time-line  timeline_mode="Timeline" ng-init="init(\'timeline\')"  ></time-line>'
 			  
            })
 		    .when('/timeline_settings', {
@@ -20818,7 +22362,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
               controller: 'timeline_settings_controller'
            })
 		    .when('/room-hire', {
-              template: '<time-line ng-init="init(\'room-hire\')"  ></time-line>'
+              template: '<timeline-bookings timeline_mode="Bookings" ng-init="init(\'room-hire\')"  ></timeline-bookings>'
 			  
            })
 		   
@@ -20979,12 +22523,12 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
            })
 		   
 		   
-		   	    	   .when('/record-welcomedesk', {
+		   	.when('/record-welcomedesk', {
                template: '<welcomedesk-Formdata></welcomedesk-Formdata>'
            })
 		   
 		   
-		   	   .when('/raw-welcomedesk', {
+		   .when('/raw-welcomedesk', {
                template: '<raw-welcomedesk></raw-welcomedesk>'
            })
 		   
@@ -20997,12 +22541,12 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
                template: '<teg-dashboard></teg-dashboard>'
            })
 		   
-		   	    	   .when('/record-teg', {
+		   	 .when('/record-teg', {
                template: '<teg-Formdata></teg-Formdata>'
            })
 		   
 		   
-		   	   .when('/raw-teg', {
+		   	.when('/raw-teg', {
                template: '<raw-teg></raw-teg>'
            })
 		   
@@ -21015,10 +22559,8 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
                template: '<analyser-dashboard></analyser-dashboard>'
            })
 		   
-		   
-		   
-		   
-		      .when('/raw-turnstiles', {
+
+		    .when('/raw-turnstiles', {
                template: '<raw-turnstiles></raw-turnstiles>'
            })
 		   
@@ -21031,13 +22573,14 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
 		  .when('/rooms', {
                template: '<rooms-Formdata></rooms-Formdata>'
            })
+		   
 			.when('/equipment', {
                template: '<equipment-Formdata></equipment-Formdata>'
            })
 		   
 		.when('/bookings', {
                template: '<bookings-Formdata></bookings-Formdata>'
-           })
+          })
 
 
 		    .when('/turnstiles/:venue', {
@@ -21064,8 +22607,8 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
           
         }])
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_b3885150.js","/")
-},{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/performance/analyser/analyser-controller":18,"../components/performance/dashboard-controllers":19,"../components/performance/donations/monthly-donations-controller":20,"../components/performance/donations/performance-form-controller":21,"../components/performance/donations/raw-donations-controller":22,"../components/performance/donations/yearly-donations-controller":23,"../components/performance/events/monthly-events-controller":24,"../components/performance/events/performance-form-controller":25,"../components/performance/events/raw-events-controller":26,"../components/performance/events/yearly-events-controller":27,"../components/performance/exhibitions-pwyt/monthly-donations-controller":28,"../components/performance/exhibitions-pwyt/performance-form-controller":29,"../components/performance/exhibitions-pwyt/raw-donations-controller":30,"../components/performance/exhibitions/exhibitions-summary-controller":31,"../components/performance/gallery-visits/monthly-teg-controller":32,"../components/performance/gallery-visits/performance-form-controller":33,"../components/performance/gallery-visits/raw-teg-controller":34,"../components/performance/gallery-visits/weekly-teg-controller":35,"../components/performance/gallery-visits/yearly-teg-controller":36,"../components/performance/gift-aid/monthly-allgiftaid-controller":37,"../components/performance/gift-aid/monthly-giftaid-controller":38,"../components/performance/gift-aid/performance-form-controller":39,"../components/performance/gift-aid/raw-giftaid-controller":40,"../components/performance/learning/age-learning-controller":41,"../components/performance/learning/monthly-learning-controller":42,"../components/performance/learning/performance-form-controller":43,"../components/performance/learning/raw-learning-controller":44,"../components/performance/learning/yearly-learning-controller":45,"../components/performance/operations/monthly-operations-controller":46,"../components/performance/operations/performance-form-controller":47,"../components/performance/operations/raw-operations-controller":48,"../components/performance/operations/yearly-operations-controller":49,"../components/performance/performance-directive":50,"../components/performance/retail/monthly-retail-sales-controller":51,"../components/performance/retail/performance-form-controller":52,"../components/performance/retail/raw-retail-sales-controller":53,"../components/performance/retail/yearly-retail-sales-controller":54,"../components/performance/turnstiles/monthly-turnstiles-controller":55,"../components/performance/turnstiles/raw-turnstiles-controller":56,"../components/performance/visits/monthly-visits-controller":57,"../components/performance/visits/raw-visits-controller":58,"../components/performance/visits/visits-form-controller":59,"../components/performance/visits/yearly-visits-controller":60,"../components/performance/welcome-desk/monthly-welcomedesk-controller":61,"../components/performance/welcome-desk/performance-form-controller":62,"../components/performance/welcome-desk/raw-welcomedesk-controller":63,"../components/performance/welcome-desk/yearly-welcomedesk-controller":64,"../components/resource-bookings/bookings/form-controller":65,"../components/resource-bookings/bookings/raw-bookings-controller":66,"../components/resource-bookings/directive":67,"../components/resource-bookings/equipment/form-controller":68,"../components/resource-bookings/equipment/raw-equipment-controller":69,"../components/resource-bookings/rooms/form-controller":70,"../components/resource-bookings/rooms/raw-rooms-controller":71,"../components/shopify/shopify-controller":72,"../components/shopify/shopify-directive":73,"../components/team/app-controllers":74,"../components/team/form-controller":75,"../components/team/leave-controller":76,"../components/team/team-controller":77,"../components/tech-support/tech-support-controller":78,"../components/tech-support/tech-support-directive":79,"../components/tech-support/trello-services":80,"../components/timeline-settings/timeline-settings-controller":81,"../components/timeline/timeline-bookings-services":82,"../components/timeline/timeline-controller":83,"../components/timeline/timeline-directive":84,"../components/timeline/timeline-exhibitions-services":85,"../components/timeline/timeline-googlesheets-services":86,"../components/timeline/timeline-installs-services":87,"../components/timeline/timeline-learning-bookings-services":88,"../components/timeline/timeline-leave-services":89,"../components/timeline/timeline-loans-services":90,"../components/timeline/timeline-services":91,"../components/timeline/timeline-shopify-services":92,"../components/timeline/timeline-visitor-figures-services":93,"../components/turnstiles/turnstiles-controller":94,"../components/turnstiles/turnstiles-directive":95,"../components/user-admin/users-controller":96,"../components/user-admin/users-directive":97,"../shared/controllers/controllers":98,"../shared/controllers/navbar-controller":99,"../shared/directives/directives":100,"../shared/services/app-services":102,"../shared/services/data-services":103,"b55mWE":4,"buffer":3,"underscore":7}],102:[function(require,module,exports){
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_59f8b1df.js","/")
+},{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/performance/analyser/analyser-controller":18,"../components/performance/dashboard-controllers":19,"../components/performance/donations/monthly-donations-controller":20,"../components/performance/donations/performance-form-controller":21,"../components/performance/donations/raw-donations-controller":22,"../components/performance/donations/yearly-donations-controller":23,"../components/performance/events/monthly-events-controller":24,"../components/performance/events/performance-form-controller":25,"../components/performance/events/raw-events-controller":26,"../components/performance/events/yearly-events-controller":27,"../components/performance/exhibitions-pwyt/monthly-donations-controller":28,"../components/performance/exhibitions-pwyt/performance-form-controller":29,"../components/performance/exhibitions-pwyt/raw-donations-controller":30,"../components/performance/exhibitions/exhibitions-summary-controller":31,"../components/performance/gallery-visits/monthly-teg-controller":32,"../components/performance/gallery-visits/performance-form-controller":33,"../components/performance/gallery-visits/raw-teg-controller":34,"../components/performance/gallery-visits/weekly-teg-controller":35,"../components/performance/gallery-visits/yearly-teg-controller":36,"../components/performance/gift-aid/monthly-allgiftaid-controller":37,"../components/performance/gift-aid/monthly-giftaid-controller":38,"../components/performance/gift-aid/performance-form-controller":39,"../components/performance/gift-aid/raw-giftaid-controller":40,"../components/performance/learning/age-learning-controller":41,"../components/performance/learning/monthly-learning-controller":42,"../components/performance/learning/performance-form-controller":43,"../components/performance/learning/raw-learning-controller":44,"../components/performance/learning/yearly-learning-controller":45,"../components/performance/operations/monthly-operations-controller":46,"../components/performance/operations/performance-form-controller":47,"../components/performance/operations/raw-operations-controller":48,"../components/performance/operations/yearly-operations-controller":49,"../components/performance/performance-directive":50,"../components/performance/retail/monthly-retail-sales-controller":51,"../components/performance/retail/performance-form-controller":52,"../components/performance/retail/raw-retail-sales-controller":53,"../components/performance/retail/yearly-retail-sales-controller":54,"../components/performance/turnstiles/monthly-turnstiles-controller":55,"../components/performance/turnstiles/raw-turnstiles-controller":56,"../components/performance/visits/monthly-visits-controller":57,"../components/performance/visits/raw-visits-controller":58,"../components/performance/visits/visits-form-controller":59,"../components/performance/visits/yearly-visits-controller":60,"../components/performance/welcome-desk/monthly-welcomedesk-controller":61,"../components/performance/welcome-desk/performance-form-controller":62,"../components/performance/welcome-desk/raw-welcomedesk-controller":63,"../components/performance/welcome-desk/yearly-welcomedesk-controller":64,"../components/resource-bookings/bookings/form-controller":65,"../components/resource-bookings/bookings/raw-bookings-controller":66,"../components/resource-bookings/directive":67,"../components/resource-bookings/equipment/form-controller":68,"../components/resource-bookings/equipment/raw-equipment-controller":69,"../components/resource-bookings/rooms/form-controller":70,"../components/resource-bookings/rooms/raw-rooms-controller":71,"../components/resource-bookings/timeline-resources-controller":72,"../components/resource-bookings/timeline-resources-services":73,"../components/shopify/shopify-controller":74,"../components/shopify/shopify-directive":75,"../components/team/app-controllers":76,"../components/team/form-controller":77,"../components/team/leave-controller":78,"../components/team/team-controller":79,"../components/tech-support/tech-support-controller":80,"../components/tech-support/tech-support-directive":81,"../components/tech-support/trello-services":82,"../components/timeline-settings/timeline-settings-controller":83,"../components/timeline/timeline-bookings-services":84,"../components/timeline/timeline-controller":85,"../components/timeline/timeline-directive":86,"../components/timeline/timeline-exhibitions-services":87,"../components/timeline/timeline-googlesheets-services":88,"../components/timeline/timeline-installs-services":89,"../components/timeline/timeline-learning-bookings-services":90,"../components/timeline/timeline-leave-services":91,"../components/timeline/timeline-loans-services":92,"../components/timeline/timeline-services":93,"../components/timeline/timeline-shopify-services":94,"../components/timeline/timeline-visitor-figures-services":95,"../components/turnstiles/turnstiles-controller":96,"../components/turnstiles/turnstiles-directive":97,"../components/user-admin/users-controller":98,"../components/user-admin/users-directive":99,"../shared/controllers/controllers":100,"../shared/controllers/navbar-controller":101,"../shared/directives/directives":102,"../shared/services/app-services":104,"../shared/services/data-services":105,"b55mWE":4,"buffer":3,"underscore":7}],104:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.data_table_reload = function() {	
 
@@ -21969,7 +23512,7 @@ exports.screen_saver_loop=function($rootScope,$location,$interval,Team) {
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/services/app-services.js","/services")
-},{"b55mWE":4,"buffer":3}],103:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],105:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var status = require('http-status');
          
@@ -22750,4 +24293,4 @@ exports.Tallys = function($resource){
 		
 	
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/services/data-services.js","/services")
-},{"b55mWE":4,"buffer":3,"http-status":5}]},{},[101])
+},{"b55mWE":4,"buffer":3,"http-status":5}]},{},[103])

@@ -3,13 +3,28 @@
 z-index:601;
 
 }
+hidden{
+display:none
+}
 </style>
 <div class="titlediv" >
-	<div id="timeline{{id}}" class="title_heading" style="font-weight:bold;">{{name}}<span  id="miniicon{{id}}" ng-class=" notes  ? 'miniicon{{id}} glyphicon glyphicon-info-sign pull-right' : 'miniicon{{id}}'" aria-hidden="true"></span><span  ng-show="days > 0" style="float:right;display:block;position:relative;" class="days"></span>
-		<button  type="button" id="infobutton{{id}}" class="pull-right infobutton btn btn-info" data-toggle="modal" data-target="#timelineinfobox"><span id="infobutton{{id}}" ng-class=" notes  ? 'glyphicon glyphicon-info-sign' : 'glyphicon glyphicon-pencil'" aria-hidden="true"></span></button>
-		<div class="image_box" ng-show="image" >
-			<img src="http://museums.bristol.gov.uk/multimedia/entry.php?request=resource&irn={{image}}&height=50&format=jpeg" />
-		</div>
+	<div id="timeline{{id}}" class="title_heading" style="font-weight:bold;">{{name}}<span  id="miniicon{{id}}" ng-class=" notes  ? 'miniicon{{id}} glyphicon glyphicon-info-sign pull-right' : 'miniicon{{id}}'" aria-hidden="true"></span>
+	<span  ng-show="days > 0" style="float:right;display:block;position:relative;" class="days"></span>
+	<button  type="button" id="infobutton{{id}}" class="pull-right infobutton btn btn-info" data-toggle="modal" data-target="#timelineinfobox"><span id="infobutton{{id}}" ng-class=" notes  ? 'glyphicon glyphicon-info-sign' : 'glyphicon glyphicon-pencil'" aria-hidden="true"></span></button>
+	
+
+<span>                     </span>
+<span title="painting" id="painting_checked{{id}}" ng-class="{{painting}}  ? 'glyphicon glyphicon glyphicon-tint' : 'hidden'" aria-hidden="true"></span>
+<span title="graphics" id="graphics_checked{{id}}" ng-class="{{graphics}}  ? 	'glyphicon glyphicon glyphicon-picture' : 'hidden'" aria-hidden="true"></span>
+<span title="AV" id="av_checked{{id}}" ng-class="{{av}}? 								'glyphicon glyphicon glyphicon-volume-up' : 'hidden'" aria-hidden="true"></span>
+<span title="build" id="build_checked{{id}}" ng-class="{{build}}  ? 'glyphicon glyphicon glyphicon-wrench' : 'hidden'" aria-hidden="true"></span>
+<span title="objects" id="objects_checked{{id}}" ng-class="{{objects}}  ? 'glyphicon glyphicon glyphicon glyphicon-tower' : 'hidden'" aria-hidden="true"></span>
+
+	
+	
+	<div class="image_box" ng-show="image" >
+		<img src="http://museums.bristol.gov.uk/multimedia/entry.php?request=resource&irn={{image}}&height=50&format=jpeg" />
+	</div>
 	</div>
 	<span >{{startdate}}-{{enddate}}</span>
 </div>

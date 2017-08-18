@@ -1,12 +1,14 @@
 
-exports.timeline_bookings_functions =  function ($http,Timeline,$rootScope) {
+exports.timeline_bookings_functions  =  function (timeline_functions,$http,Timeline,$rootScope) {
 
 
   return {
   
      get_events: function() {
 		 
-	
+		 /*
+		 'https://www.googleapis.com/calendar/v3/calendars/en.uk#holiday@group.v.calendar.google.com/events?key=AIzaSyDi8arJr4JvnETpZVylXUVpxZDyBHNkQyk';
+				  */
 				  
 		 	 var SheetToJSONServiceURL = "http://emudev-app1/team/digital/projects/scripts/php/emu/loans.php?start_date=2014-01-01"
 			 
@@ -26,62 +28,72 @@ exports.timeline_bookings_functions =  function ($http,Timeline,$rootScope) {
 										
 												
 												tempdates=[]
-											if( 	$rootScope.added_track_groups.indexOf("bookings")==-1){
-												$rootScope.added_track_groups.push("bookings")														
-													$rootScope.track_groups.push({"track":"bookings"})
-													}
-												//console.log('visitor figures',eventss)
-												$.each(eventss, function( index, event ) {	
-													console.log('bookings',event)
-												
-															scale_class="";	
-												
-										
-												var val_1 = 0
-												var val_2 =100
-												var val_3 =200
-												var val_4 =300
-												var val_5 =400
-												var val_6  = 500
-												var val_7 = 1000
-												var val_8 = 2000
-												var val_9 = 3000												
-												var val_10 = 4000
-												
-												var count = "value"
-												
-
-												if(event[count] >val_1 && event[count]<=val_2){scale_class="scale_01"}												
-												if(event[count] >val_2 && event[count]<=val_3){scale_class="scale_02"}												
-												if(event[count] >val_3 && event[count]<=val_4){scale_class="scale_03"}											
-												if(event[count] >val_4 && event[count]<=val_5){scale_class="scale_05"}
-												if(event[count] >val_5 && event[count]<=val_6){scale_class="scale_06"}												
-												if(event[count] >val_6 && event[count]<=val_7){scale_class="scale_07"}												
-												if(event[count] >val_7 &&event[count]<=val_8){scale_class="scale_08"}
-												if(event[count] >val_8 && event[count]<=val_9){scale_class="scale_09"}
-												if(event[count] >val_9 && event[count]<=val_10){scale_class="scale_09"}
-												if(event[count] >val_10){scale_class="scale_10"}
-																						
+											if( $rootScope.added_track_groups.indexOf("ROOM BOOKING")==-1)
+											{
+													$rootScope.added_track_groups.push("ROOM BOOKING")														
+													$rootScope.track_groups.push({"track":"ROOM BOOKING","selected":true})
+											}
 													
 													
+												console.log('BOOKINGS EVENTS',eventss)
+												$.each(eventss, function( index, data ) {
 													
-																
-																	var start_date=new Date(event.start_date)
-																	var end_date=new Date(event.end_date)
-																	end_date.setDate( end_date.getDate() + 1);
-																
-											
-																var shopEvent =  {		content:"",																						
-																						name:event.group ,
-																						group:event.group,
-																						track:"bookings",
-																						//order: "museum",
-																						className:"GREEN",
-																						start:start_date,
-																						end:end_date
-																				}
-												//console.log('shopEvent',shopEvent)																		
-												visevents.add( shopEvent)
+																data.days=timeline_functions.days(data.start_date,data.end_date)
+																var end_date
+																if ( data.group != "") {
+																	if( data.start_date!=""){
+																	if(typeof(data.end_date)!="undefined"){
+																			end_date=(moment(data.end_date).format("MMM Do YY"))
+																	}
+																	if(data._type=="ROOM BOOKING"){
+																			install_instance_tally++
+																			install_days_tally +=data.days
+																	}
+																	else if(data._type=="DERIG"){
+																			derig_tally++						
+																			derig_days_tally +=data.days
+																	  }
+																	if($rootScope.added_track_groups.indexOf(data._type)==-1){	
+																	
+																			$rootScope.added_track_groups.push(data._type)
+																	
+																	}
+																		
+																		var event_to_add=	{
+																								  id : data._id,
+																								  name :data.name,
+																								  showimage :"",
+																								  image :"",
+																								  start_date :moment(data.start_date).format("MMM Do"),
+																								  end_date :end_date ||"",
+																								  notes  :data.notes ,
+																								  days :data.days
+																							}
+																							
+																							console.log('event_to_add',event_to_add)
+																								 
+																			 //if($rootScope.isloggedin==true){
+																		visevents.add({
+																						_id: data._id,
+																						className:data.className,
+																						select_group :false,
+																						name:data.name,
+																						_type:data._type,
+																						track:data._type,
+																						content: timeline_functions.event_html(event_to_add),
+																						group: data.group,
+																						order:data._type,
+																						notes: data.notes,
+																						//title:data.notes,
+																						start: data.start_date,
+																						days:data.days,
+																						end: data.end_date 
+																					})
+																			//}
+																	}
+																}
+																							
+														
 																		
 															
 																	
@@ -91,7 +103,7 @@ exports.timeline_bookings_functions =  function ($http,Timeline,$rootScope) {
 													
 													
 										  					
-										
+										console.log('visevents',visevents)
 										return	fn(visevents)
 
 		},
@@ -127,7 +139,7 @@ exports.timeline_bookings_functions =  function ($http,Timeline,$rootScope) {
 	},
 	updateItem: function(options){
 		options.id=$rootScope.selected_t_id
-		//timeline.itemsData.getDataSet().update(options)
+		timeline.itemsData.getDataSet().update(options)
 		
 				
 	},
