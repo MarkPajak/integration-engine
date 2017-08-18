@@ -14,7 +14,7 @@ exports.record_bookings_controller =  function($scope, $http, $q,
 	{
 		var mode = "equipment"
 		var mode_name = "EQUIPMENT BOOKING"
-		$scope.name_of_form = mode_name = "Select Equipment"
+		$scope.name_of_form = "Select Equipment"
 
 	}
 
@@ -58,14 +58,14 @@ var event_to_add=	{
 													  end_date :  new Date(visit_form.end_date.value),	
 													  notes  :visit_form.comments.value,	
 													 }
-			var type = mode_name
+			
 		    var kpis = new Bookings({
 					
 					//DEPARTMENTAL VARIABLES	
 					start_date: new Date(visit_form.start_date.value),	
 					end_date: new Date(visit_form.end_date.value),	
 					group:$scope.selected_room,	
-					_type: type,	
+					_type: mode_name,	
 					className:"GREEN",	
 					// content: visit_form.comments.value,	
 					name:visit_form.name.value,		
@@ -88,7 +88,7 @@ var event_to_add=	{
 			var query = {
 			
 						'name': visit_form.name.value,	
-						'_type':type,
+						'_type':mode_name,
 						'group':visit_form.room.value,
 						'start_date':visit_form.start_date.value,
 						'end_date':visit_form.end_date.value

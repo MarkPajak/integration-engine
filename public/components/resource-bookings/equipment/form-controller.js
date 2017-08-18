@@ -11,6 +11,7 @@ $scope.haspermissions=false
 						$scope.user=user
 						$scope.isloggedin=true			
 						if(	user.data.group=="ADMIN"){$scope.haspermissions=true}
+						if(	user.data.group=="AV"){$scope.haspermissions=true}
 						if(	user.data.group=="EXHIBITIONS"){$scope.haspermissions=true}
 						if(	user.data.group=="DIGITAL"){$scope.haspermissions=true}
 

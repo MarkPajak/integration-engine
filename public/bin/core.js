@@ -13913,7 +13913,7 @@ exports.record_bookings_controller =  function($scope, $http, $q,
 	{
 		var mode = "equipment"
 		var mode_name = "EQUIPMENT BOOKING"
-		$scope.name_of_form = mode_name = "Select Equipment"
+		$scope.name_of_form = "Select Equipment"
 
 	}
 
@@ -13957,14 +13957,14 @@ var event_to_add=	{
 													  end_date :  new Date(visit_form.end_date.value),	
 													  notes  :visit_form.comments.value,	
 													 }
-			var type = mode_name
+			
 		    var kpis = new Bookings({
 					
 					//DEPARTMENTAL VARIABLES	
 					start_date: new Date(visit_form.start_date.value),	
 					end_date: new Date(visit_form.end_date.value),	
 					group:$scope.selected_room,	
-					_type: type,	
+					_type: mode_name,	
 					className:"GREEN",	
 					// content: visit_form.comments.value,	
 					name:visit_form.name.value,		
@@ -13987,7 +13987,7 @@ var event_to_add=	{
 			var query = {
 			
 						'name': visit_form.name.value,	
-						'_type':type,
+						'_type':mode_name,
 						'group':visit_form.room.value,
 						'start_date':visit_form.start_date.value,
 						'end_date':visit_form.end_date.value
@@ -14198,6 +14198,7 @@ $scope.haspermissions=false
 						$scope.user=user
 						$scope.isloggedin=true			
 						if(	user.data.group=="ADMIN"){$scope.haspermissions=true}
+						if(	user.data.group=="AV"){$scope.haspermissions=true}
 						if(	user.data.group=="EXHIBITIONS"){$scope.haspermissions=true}
 						if(	user.data.group=="DIGITAL"){$scope.haspermissions=true}
 
@@ -21307,19 +21308,22 @@ var monthly_welcomedesk = {link:"monthly-welcomedesk",value:"DONATIONS: Monthly 
 
 
 
-var enter_data=[]
-//enter_data.push(performance)
-//enter_data.push(record_retail_sales)
-enter_data.push(rooms)
-enter_data.push(equipment)
-enter_data.push(equipment_bookings)
-enter_data.push(room_bookings)
 
+
+
+var resources=[]
+
+resources.push(rooms)
+resources.push(equipment)
+resources.push(equipment_bookings)
+resources.push(room_bookings)
+resources.push(room_hire)
 
 var performance_data=[]
 performance_data.push(room_hire)
 
-$scope.user_groups['COMMERCIAL'].enter_data=enter_data
+$scope.user_groups['COMMERCIAL'].resources=[]
+$scope.user_groups['COMMERCIAL'].resources=resources
 $scope.user_groups['COMMERCIAL'].performance=performance_data
 
 
@@ -21338,10 +21342,7 @@ enter_data.push(record_donations)
 enter_data.push(record_giftaid)
 enter_data.push(record_welcomedesk)
 enter_data.push(record_events)
-enter_data.push(rooms)
-enter_data.push(equipment)
-enter_data.push(equipment_bookings)
-enter_data.push(room_bookings)
+
 
 
 
@@ -21388,10 +21389,7 @@ enter_data.push(record_exhibitions_pwyt)
 enter_data.push(record_teg)
 enter_data.push(record_events)
 enter_data.push(record_operations)
-enter_data.push(rooms)
-enter_data.push(equipment_bookings)
-enter_data.push(room_bookings)
-enter_data.push(equipment)
+
 
 enter_data=enter_data.sort()
 
@@ -21430,7 +21428,7 @@ performance_data=performance_data.sort()
 
 $scope.user_groups['ADMIN'].views=[]
 $scope.user_groups['ADMIN'].enter_data=[]
-
+$scope.user_groups['ADMIN'].resources=[]
 
 $scope.user_groups['ADMIN'].views.push(room_hire)
 $scope.user_groups['ADMIN'].views.push(timeline)
@@ -21444,7 +21442,7 @@ $scope.user_groups['ADMIN'].views.push(users)
 
 $scope.user_groups['ADMIN'].enter_data=enter_data
 $scope.user_groups['ADMIN'].performance=performance_data
-
+$scope.user_groups['ADMIN'].resources=resources
 
 var enter_data=[]
 
@@ -21469,11 +21467,14 @@ performance_data.push(monthly_events)
 
 $scope.user_groups['EXHIBITIONS'].views=[]
 $scope.user_groups['EXHIBITIONS'].enter_data=[]
+$scope.user_groups['EXHIBITIONS'].resources=[]
 
 $scope.user_groups['EXHIBITIONS'].views.push(timeline)
 $scope.user_groups['EXHIBITIONS'].views.push(analyser)
 $scope.user_groups['EXHIBITIONS'].performance=performance_data
 $scope.user_groups['EXHIBITIONS'].views.push(room_hire)
+$scope.user_groups['EXHIBITIONS'].resources=resources
+
 
 var enter_data=[]
 enter_data.push(record_learning)
@@ -21500,22 +21501,49 @@ $scope.user_groups['LEARNING'].performance=performance_data
 $scope.user_groups['LEARNING'].views.push(room_hire)
 
 var enter_data=[]
-enter_data.push(equipment)
-enter_data.push(equipment_bookings)
-enter_data.push(room_bookings)
+enter_data.push(performance)
+enter_data.push(record_retail_sales)
+enter_data.push(record_donations)
+enter_data.push(record_giftaid)
+enter_data.push(record_welcomedesk)
+enter_data.push(record_learning)
+enter_data.push(record_exhibitions_pwyt)
+enter_data.push(record_teg)
+enter_data.push(record_events)
+enter_data.push(record_operations)
 
-$scope.user_groups['AV'].enter_data=enter_data
-	
+
+enter_data=enter_data.sort()
+
+var performance_data=[]
+performance_data.push(raw_visits)
+performance_data.push(monthly_visits)
+
+performance_data.push(teg)
+performance_data.push(monthly_teg)
+performance_data.push(events)
+
+performance_data=performance_data.sort()
+
+
 $scope.user_groups['AV'].views=[]
+$scope.user_groups['AV'].enter_data=[]
+$scope.user_groups['AV'].resources=[]
+
+$scope.user_groups['AV'].views.push(room_hire)
 $scope.user_groups['AV'].views.push(timeline)
 $scope.user_groups['AV'].views.push(analyser)
 $scope.user_groups['AV'].views.push(dead)
 $scope.user_groups['AV'].views.push(activity)
 $scope.user_groups['AV'].views.push(feedback)
 $scope.user_groups['AV'].views.push(tech_support)
-$scope.user_groups['AV'].views.push(raw_turnstiles) 
-$scope.user_groups['AV'].views.push(monthly_turnstiles) 
-$scope.user_groups['AV'].views.push(room_hire)
+
+
+$scope.user_groups['AV'].enter_data=enter_data
+$scope.user_groups['AV'].performance=performance_data
+$scope.user_groups['AV'].resources=resources
+
+
 
 var enter_data=[]
 enter_data.push(performance)
@@ -21523,10 +21551,6 @@ enter_data.push(record_retail_sales)
 enter_data.push(record_donations)
 enter_data.push(record_giftaid)
 enter_data.push(record_events)
-enter_data.push(rooms)
-enter_data.push(equipment)
-enter_data.push(equipment_bookings)
-enter_data.push(room_bookings)
 
 
 var performance_data=[]
@@ -21548,7 +21572,6 @@ performance_data.push(monthly_events)
 
 $scope.user_groups['DIGITAL'].views=[]
 $scope.user_groups['DIGITAL'].views.push(timeline)
-$scope.user_groups['DIGITAL'].views.push(room_hire)
 $scope.user_groups['DIGITAL'].views.push(analyser)
 $scope.user_groups['DIGITAL'].views.push(dead)
 $scope.user_groups['DIGITAL'].views.push(activity)
@@ -21557,6 +21580,8 @@ $scope.user_groups['DIGITAL'].views.push(shopify)
 
 $scope.user_groups['DIGITAL'].enter_data=enter_data
 $scope.user_groups['DIGITAL'].performance=performance_data
+$scope.user_groups['DIGITAL'].resources=[]
+$scope.user_groups['DIGITAL'].resources=resources
 
 var performance_data=[]
  var enter_data=[]
@@ -21631,7 +21656,8 @@ $scope.user_groups['OPERATIONS'].views.push(analyser)
 $scope.user_groups['OPERATIONS'].enter_data=enter_data
 $scope.user_groups['OPERATIONS'].performance=performance_data
 
-
+$scope.user_groups['OPERATIONS'].resources=[]
+$scope.user_groups['OPERATIONS'].resources=resources
 
 
 
@@ -21660,15 +21686,20 @@ $scope.user_groups['RETAIL'].performance=performance_data
   AuthService.isLoggedIn().then(function(user){
 	 
 	  if(user.data.group){
-		  console.log("user",user.data)
+		 // console.log("user",user.data)
 		  
 		user.data.views= $scope.user_groups[user.data.group].views
 		user.data.views=user.data.views.sort(sortFunction);
 		
+		user.data.resources= $scope.user_groups[user.data.group].resources
+	   user.data.resources= user.data.resources.sort(sortFunction);
+	   
+	   
+		
 	   user.data.performance= $scope.user_groups[user.data.group].performance
 	   user.data.performance= user.data.performance.sort(sortFunction);
-	   user.data.enter_data= $scope.user_groups[user.data.group].enter_data
 	   
+	  user.data.enter_data= $scope.user_groups[user.data.group].enter_data	   
 	   user.data.enter_data=user.data.enter_data.sort(sortFunction);
 	  
 	  if(user.data.lastName.toLowerCase()=="pace"){
@@ -21681,7 +21712,7 @@ $scope.user_groups['RETAIL'].performance=performance_data
 		user.data.views= $scope.user_groups['DEFAULT'].views  
 		  
 	  }
-	  console.log(user)
+	//  console.log(user)
 	  $scope.user=(user.data)
   
   })
@@ -22743,7 +22774,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
           
         }])
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_b0b43d2.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_69087d1.js","/")
 },{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/performance/analyser/analyser-controller":18,"../components/performance/dashboard-controllers":19,"../components/performance/donations/monthly-donations-controller":20,"../components/performance/donations/performance-form-controller":21,"../components/performance/donations/raw-donations-controller":22,"../components/performance/donations/yearly-donations-controller":23,"../components/performance/events/monthly-events-controller":24,"../components/performance/events/performance-form-controller":25,"../components/performance/events/raw-events-controller":26,"../components/performance/events/yearly-events-controller":27,"../components/performance/exhibitions-pwyt/monthly-donations-controller":28,"../components/performance/exhibitions-pwyt/performance-form-controller":29,"../components/performance/exhibitions-pwyt/raw-donations-controller":30,"../components/performance/exhibitions/exhibitions-summary-controller":31,"../components/performance/gallery-visits/monthly-teg-controller":32,"../components/performance/gallery-visits/performance-form-controller":33,"../components/performance/gallery-visits/raw-teg-controller":34,"../components/performance/gallery-visits/weekly-teg-controller":35,"../components/performance/gallery-visits/yearly-teg-controller":36,"../components/performance/gift-aid/monthly-allgiftaid-controller":37,"../components/performance/gift-aid/monthly-giftaid-controller":38,"../components/performance/gift-aid/performance-form-controller":39,"../components/performance/gift-aid/raw-giftaid-controller":40,"../components/performance/learning/age-learning-controller":41,"../components/performance/learning/monthly-learning-controller":42,"../components/performance/learning/performance-form-controller":43,"../components/performance/learning/raw-learning-controller":44,"../components/performance/learning/yearly-learning-controller":45,"../components/performance/operations/monthly-operations-controller":46,"../components/performance/operations/performance-form-controller":47,"../components/performance/operations/raw-operations-controller":48,"../components/performance/operations/yearly-operations-controller":49,"../components/performance/performance-directive":50,"../components/performance/retail/monthly-retail-sales-controller":51,"../components/performance/retail/performance-form-controller":52,"../components/performance/retail/raw-retail-sales-controller":53,"../components/performance/retail/yearly-retail-sales-controller":54,"../components/performance/turnstiles/monthly-turnstiles-controller":55,"../components/performance/turnstiles/raw-turnstiles-controller":56,"../components/performance/visits/monthly-visits-controller":57,"../components/performance/visits/raw-visits-controller":58,"../components/performance/visits/visits-form-controller":59,"../components/performance/visits/yearly-visits-controller":60,"../components/performance/welcome-desk/monthly-welcomedesk-controller":61,"../components/performance/welcome-desk/performance-form-controller":62,"../components/performance/welcome-desk/raw-welcomedesk-controller":63,"../components/performance/welcome-desk/yearly-welcomedesk-controller":64,"../components/resource-bookings/bookings/form-controller":65,"../components/resource-bookings/bookings/raw-bookings-controller":66,"../components/resource-bookings/directive":67,"../components/resource-bookings/equipment/form-controller":68,"../components/resource-bookings/equipment/raw-equipment-controller":69,"../components/resource-bookings/rooms/form-controller":70,"../components/resource-bookings/rooms/raw-rooms-controller":71,"../components/resource-bookings/timeline-resources-controller":72,"../components/resource-bookings/timeline-resources-services":73,"../components/shopify/shopify-controller":74,"../components/shopify/shopify-directive":75,"../components/team/app-controllers":76,"../components/team/form-controller":77,"../components/team/leave-controller":78,"../components/team/team-controller":79,"../components/tech-support/tech-support-controller":80,"../components/tech-support/tech-support-directive":81,"../components/tech-support/trello-services":82,"../components/timeline-settings/timeline-settings-controller":83,"../components/timeline/timeline-bookings-services":84,"../components/timeline/timeline-controller":85,"../components/timeline/timeline-directive":86,"../components/timeline/timeline-exhibitions-services":87,"../components/timeline/timeline-googlesheets-services":88,"../components/timeline/timeline-installs-services":89,"../components/timeline/timeline-learning-bookings-services":90,"../components/timeline/timeline-leave-services":91,"../components/timeline/timeline-loans-services":92,"../components/timeline/timeline-services":93,"../components/timeline/timeline-shopify-services":94,"../components/timeline/timeline-visitor-figures-services":95,"../components/turnstiles/turnstiles-controller":96,"../components/turnstiles/turnstiles-directive":97,"../components/user-admin/users-controller":98,"../components/user-admin/users-directive":99,"../shared/controllers/controllers":100,"../shared/controllers/navbar-controller":101,"../shared/directives/directives":102,"../shared/services/app-services":104,"../shared/services/data-services":105,"b55mWE":4,"buffer":3,"underscore":7}],104:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.data_table_reload = function() {	

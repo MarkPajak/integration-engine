@@ -27,6 +27,8 @@ color:#9d9d9d;
 	<li class="divider"></li> 
 	<li   ng-repeat="view in user.performance track by $index"  ><a href="/#{{view.link}}">{{view.value}}</a></li>
 	<li class="divider"></li> 
+	<li   ng-repeat="view in user.resources track by $index"  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+	<li class="divider"></li> 
 	<li   ng-repeat="view in user.enter_data  track by $index"  ><a href="/#{{view.link}}">{{view.value}}</a></li>
 	</ul>
 </li>

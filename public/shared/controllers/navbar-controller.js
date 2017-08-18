@@ -97,19 +97,22 @@ var monthly_welcomedesk = {link:"monthly-welcomedesk",value:"DONATIONS: Monthly 
 
 
 
-var enter_data=[]
-//enter_data.push(performance)
-//enter_data.push(record_retail_sales)
-enter_data.push(rooms)
-enter_data.push(equipment)
-enter_data.push(equipment_bookings)
-enter_data.push(room_bookings)
 
+
+
+var resources=[]
+
+resources.push(rooms)
+resources.push(equipment)
+resources.push(equipment_bookings)
+resources.push(room_bookings)
+resources.push(room_hire)
 
 var performance_data=[]
 performance_data.push(room_hire)
 
-$scope.user_groups['COMMERCIAL'].enter_data=enter_data
+$scope.user_groups['COMMERCIAL'].resources=[]
+$scope.user_groups['COMMERCIAL'].resources=resources
 $scope.user_groups['COMMERCIAL'].performance=performance_data
 
 
@@ -128,10 +131,7 @@ enter_data.push(record_donations)
 enter_data.push(record_giftaid)
 enter_data.push(record_welcomedesk)
 enter_data.push(record_events)
-enter_data.push(rooms)
-enter_data.push(equipment)
-enter_data.push(equipment_bookings)
-enter_data.push(room_bookings)
+
 
 
 
@@ -178,10 +178,7 @@ enter_data.push(record_exhibitions_pwyt)
 enter_data.push(record_teg)
 enter_data.push(record_events)
 enter_data.push(record_operations)
-enter_data.push(rooms)
-enter_data.push(equipment_bookings)
-enter_data.push(room_bookings)
-enter_data.push(equipment)
+
 
 enter_data=enter_data.sort()
 
@@ -220,7 +217,7 @@ performance_data=performance_data.sort()
 
 $scope.user_groups['ADMIN'].views=[]
 $scope.user_groups['ADMIN'].enter_data=[]
-
+$scope.user_groups['ADMIN'].resources=[]
 
 $scope.user_groups['ADMIN'].views.push(room_hire)
 $scope.user_groups['ADMIN'].views.push(timeline)
@@ -234,7 +231,7 @@ $scope.user_groups['ADMIN'].views.push(users)
 
 $scope.user_groups['ADMIN'].enter_data=enter_data
 $scope.user_groups['ADMIN'].performance=performance_data
-
+$scope.user_groups['ADMIN'].resources=resources
 
 var enter_data=[]
 
@@ -259,11 +256,14 @@ performance_data.push(monthly_events)
 
 $scope.user_groups['EXHIBITIONS'].views=[]
 $scope.user_groups['EXHIBITIONS'].enter_data=[]
+$scope.user_groups['EXHIBITIONS'].resources=[]
 
 $scope.user_groups['EXHIBITIONS'].views.push(timeline)
 $scope.user_groups['EXHIBITIONS'].views.push(analyser)
 $scope.user_groups['EXHIBITIONS'].performance=performance_data
 $scope.user_groups['EXHIBITIONS'].views.push(room_hire)
+$scope.user_groups['EXHIBITIONS'].resources=resources
+
 
 var enter_data=[]
 enter_data.push(record_learning)
@@ -290,22 +290,49 @@ $scope.user_groups['LEARNING'].performance=performance_data
 $scope.user_groups['LEARNING'].views.push(room_hire)
 
 var enter_data=[]
-enter_data.push(equipment)
-enter_data.push(equipment_bookings)
-enter_data.push(room_bookings)
+enter_data.push(performance)
+enter_data.push(record_retail_sales)
+enter_data.push(record_donations)
+enter_data.push(record_giftaid)
+enter_data.push(record_welcomedesk)
+enter_data.push(record_learning)
+enter_data.push(record_exhibitions_pwyt)
+enter_data.push(record_teg)
+enter_data.push(record_events)
+enter_data.push(record_operations)
 
-$scope.user_groups['AV'].enter_data=enter_data
-	
+
+enter_data=enter_data.sort()
+
+var performance_data=[]
+performance_data.push(raw_visits)
+performance_data.push(monthly_visits)
+
+performance_data.push(teg)
+performance_data.push(monthly_teg)
+performance_data.push(events)
+
+performance_data=performance_data.sort()
+
+
 $scope.user_groups['AV'].views=[]
+$scope.user_groups['AV'].enter_data=[]
+$scope.user_groups['AV'].resources=[]
+
+$scope.user_groups['AV'].views.push(room_hire)
 $scope.user_groups['AV'].views.push(timeline)
 $scope.user_groups['AV'].views.push(analyser)
 $scope.user_groups['AV'].views.push(dead)
 $scope.user_groups['AV'].views.push(activity)
 $scope.user_groups['AV'].views.push(feedback)
 $scope.user_groups['AV'].views.push(tech_support)
-$scope.user_groups['AV'].views.push(raw_turnstiles) 
-$scope.user_groups['AV'].views.push(monthly_turnstiles) 
-$scope.user_groups['AV'].views.push(room_hire)
+
+
+$scope.user_groups['AV'].enter_data=enter_data
+$scope.user_groups['AV'].performance=performance_data
+$scope.user_groups['AV'].resources=resources
+
+
 
 var enter_data=[]
 enter_data.push(performance)
@@ -313,10 +340,6 @@ enter_data.push(record_retail_sales)
 enter_data.push(record_donations)
 enter_data.push(record_giftaid)
 enter_data.push(record_events)
-enter_data.push(rooms)
-enter_data.push(equipment)
-enter_data.push(equipment_bookings)
-enter_data.push(room_bookings)
 
 
 var performance_data=[]
@@ -338,7 +361,6 @@ performance_data.push(monthly_events)
 
 $scope.user_groups['DIGITAL'].views=[]
 $scope.user_groups['DIGITAL'].views.push(timeline)
-$scope.user_groups['DIGITAL'].views.push(room_hire)
 $scope.user_groups['DIGITAL'].views.push(analyser)
 $scope.user_groups['DIGITAL'].views.push(dead)
 $scope.user_groups['DIGITAL'].views.push(activity)
@@ -347,6 +369,8 @@ $scope.user_groups['DIGITAL'].views.push(shopify)
 
 $scope.user_groups['DIGITAL'].enter_data=enter_data
 $scope.user_groups['DIGITAL'].performance=performance_data
+$scope.user_groups['DIGITAL'].resources=[]
+$scope.user_groups['DIGITAL'].resources=resources
 
 var performance_data=[]
  var enter_data=[]
@@ -421,7 +445,8 @@ $scope.user_groups['OPERATIONS'].views.push(analyser)
 $scope.user_groups['OPERATIONS'].enter_data=enter_data
 $scope.user_groups['OPERATIONS'].performance=performance_data
 
-
+$scope.user_groups['OPERATIONS'].resources=[]
+$scope.user_groups['OPERATIONS'].resources=resources
 
 
 
@@ -450,15 +475,20 @@ $scope.user_groups['RETAIL'].performance=performance_data
   AuthService.isLoggedIn().then(function(user){
 	 
 	  if(user.data.group){
-		  console.log("user",user.data)
+		 // console.log("user",user.data)
 		  
 		user.data.views= $scope.user_groups[user.data.group].views
 		user.data.views=user.data.views.sort(sortFunction);
 		
+		user.data.resources= $scope.user_groups[user.data.group].resources
+	   user.data.resources= user.data.resources.sort(sortFunction);
+	   
+	   
+		
 	   user.data.performance= $scope.user_groups[user.data.group].performance
 	   user.data.performance= user.data.performance.sort(sortFunction);
-	   user.data.enter_data= $scope.user_groups[user.data.group].enter_data
 	   
+	  user.data.enter_data= $scope.user_groups[user.data.group].enter_data	   
 	   user.data.enter_data=user.data.enter_data.sort(sortFunction);
 	  
 	  if(user.data.lastName.toLowerCase()=="pace"){
@@ -471,7 +501,7 @@ $scope.user_groups['RETAIL'].performance=performance_data
 		user.data.views= $scope.user_groups['DEFAULT'].views  
 		  
 	  }
-	  console.log(user)
+	//  console.log(user)
 	  $scope.user=(user.data)
   
   })
