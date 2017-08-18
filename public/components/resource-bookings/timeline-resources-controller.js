@@ -17,7 +17,7 @@ exports.timeline_resources_controller=     function($compile,  $scope, $http, $q
 		$scope.isloggedin=false	
 		$scope.isloggedin=false	
 	    $scope.timeline_track = Timeline 
-
+		$scope.haspermissions=false
 		
 	 $scope.init = function(timeline_mode)
   {
@@ -30,7 +30,10 @@ exports.timeline_resources_controller=     function($compile,  $scope, $http, $q
 		
 			
 			$scope.user=user
-			$scope.isloggedin=true	
+			$scope.isloggedin=true			
+			if(	user.data.group=="ADMIN"){$scope.haspermissions=true}
+			if(	user.data.group=="COMMERCIAL"){$scope.haspermissions=true}
+			if(	user.data.group=="DIGITAL"){$scope.haspermissions=true}
 			main_function(timeline_mode)
 			
 	  })
@@ -373,7 +376,7 @@ main_function = function(timeline_mode){
 			}
 			
 			
-			$scope.shopify() //NB for some reason need this to appear for unlogged in users otherwise text wont load in directives
+			//$scope.shopify() //NB for some reason need this to appear for unlogged in users otherwise text wont load in directives
 
 			
 					timeline_track = Bookings

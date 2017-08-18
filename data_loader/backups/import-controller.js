@@ -15,7 +15,7 @@ var Import_file=require('./load-csv.js');
 	
 
 		import_file= new Import_file('./data_loader/backups/imports/fix.csv')
-		mongoose.connect(dbConfig.url);
+		mongoose.connect(dbConfig.test);
 		import_file.load_import_file(function (csv_tickets){
 				async.eachSeries(csv_tickets, function (row, cxcx){ 
 					var visits = row[1]

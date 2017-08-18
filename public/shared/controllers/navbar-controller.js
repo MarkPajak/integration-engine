@@ -24,6 +24,7 @@ $scope.user_groups['DEVELOPMENT']=[]
 $scope.user_groups['LEARNING']=[]	
 $scope.user_groups['EXHIBITIONS']=[]	
 $scope.user_groups['OPERATIONS']=[]
+$scope.user_groups['COMMERCIAL']=[]
 	
 var timeline = {link:"timeline",value:"Timeline"}
 var dead ={link:"dead",value:"Downtime"}
@@ -36,6 +37,12 @@ var doom = {link:"doom",value:"DOOM!"}
 
 var analyser = {link:"analyser",value:"Performance analyser (BETA)"}
 
+
+var rooms = {link:"rooms",value:"Add rooms"}
+var equipment = {link:"equipment",value:"Add equipment"}
+var equipment_bookings = {link:"bookings/equipment",value:"Equipment booking"}
+var room_bookings = {link:"bookings/rooms",value:"Room booking"}
+var room_hire = {link:"room-hire",value:"Room booking timeline"}
 
 var performance = {link:"record-visitor-numbers",value:"VISITS: Record visitor figures"}
 var record_retail_sales = {link:"record-retail-sales",value:"RETAIL:Record retail sales"}
@@ -87,6 +94,33 @@ var record_welcomedesk = {link:"record-welcomedesk",value:"DONATIONS: Record Wel
 var raw_welcomedesk = {link:"raw-welcomedesk",value:"DONATIONS: Raw Welcome desk"}
 var monthly_welcomedesk = {link:"monthly-welcomedesk",value:"DONATIONS: Monthly Welcome desk"}
 
+
+
+
+var enter_data=[]
+//enter_data.push(performance)
+//enter_data.push(record_retail_sales)
+enter_data.push(rooms)
+enter_data.push(equipment)
+enter_data.push(equipment_bookings)
+enter_data.push(room_bookings)
+
+
+var performance_data=[]
+performance_data.push(room_hire)
+
+$scope.user_groups['COMMERCIAL'].enter_data=enter_data
+$scope.user_groups['COMMERCIAL'].performance=performance_data
+
+
+
+
+
+
+
+
+
+
 var enter_data=[]
 //enter_data.push(performance)
 //enter_data.push(record_retail_sales)
@@ -94,6 +128,10 @@ enter_data.push(record_donations)
 enter_data.push(record_giftaid)
 enter_data.push(record_welcomedesk)
 enter_data.push(record_events)
+enter_data.push(rooms)
+enter_data.push(equipment)
+enter_data.push(equipment_bookings)
+enter_data.push(room_bookings)
 
 
 
@@ -140,6 +178,10 @@ enter_data.push(record_exhibitions_pwyt)
 enter_data.push(record_teg)
 enter_data.push(record_events)
 enter_data.push(record_operations)
+enter_data.push(rooms)
+enter_data.push(equipment_bookings)
+enter_data.push(room_bookings)
+enter_data.push(equipment)
 
 enter_data=enter_data.sort()
 
@@ -180,6 +222,7 @@ $scope.user_groups['ADMIN'].views=[]
 $scope.user_groups['ADMIN'].enter_data=[]
 
 
+$scope.user_groups['ADMIN'].views.push(room_hire)
 $scope.user_groups['ADMIN'].views.push(timeline)
 $scope.user_groups['ADMIN'].views.push(analyser)
 $scope.user_groups['ADMIN'].views.push(dead)
@@ -220,7 +263,7 @@ $scope.user_groups['EXHIBITIONS'].enter_data=[]
 $scope.user_groups['EXHIBITIONS'].views.push(timeline)
 $scope.user_groups['EXHIBITIONS'].views.push(analyser)
 $scope.user_groups['EXHIBITIONS'].performance=performance_data
-
+$scope.user_groups['EXHIBITIONS'].views.push(room_hire)
 
 var enter_data=[]
 enter_data.push(record_learning)
@@ -244,8 +287,14 @@ $scope.user_groups['LEARNING'].views.push(analyser)
 
 $scope.user_groups['LEARNING'].enter_data=enter_data
 $scope.user_groups['LEARNING'].performance=performance_data
+$scope.user_groups['LEARNING'].views.push(room_hire)
 
+var enter_data=[]
+enter_data.push(equipment)
+enter_data.push(equipment_bookings)
+enter_data.push(room_bookings)
 
+$scope.user_groups['AV'].enter_data=enter_data
 	
 $scope.user_groups['AV'].views=[]
 $scope.user_groups['AV'].views.push(timeline)
@@ -256,7 +305,7 @@ $scope.user_groups['AV'].views.push(feedback)
 $scope.user_groups['AV'].views.push(tech_support)
 $scope.user_groups['AV'].views.push(raw_turnstiles) 
 $scope.user_groups['AV'].views.push(monthly_turnstiles) 
-
+$scope.user_groups['AV'].views.push(room_hire)
 
 var enter_data=[]
 enter_data.push(performance)
@@ -264,6 +313,11 @@ enter_data.push(record_retail_sales)
 enter_data.push(record_donations)
 enter_data.push(record_giftaid)
 enter_data.push(record_events)
+enter_data.push(rooms)
+enter_data.push(equipment)
+enter_data.push(equipment_bookings)
+enter_data.push(room_bookings)
+
 
 var performance_data=[]
 performance_data.push(raw_visits)
@@ -284,6 +338,7 @@ performance_data.push(monthly_events)
 
 $scope.user_groups['DIGITAL'].views=[]
 $scope.user_groups['DIGITAL'].views.push(timeline)
+$scope.user_groups['DIGITAL'].views.push(room_hire)
 $scope.user_groups['DIGITAL'].views.push(analyser)
 $scope.user_groups['DIGITAL'].views.push(dead)
 $scope.user_groups['DIGITAL'].views.push(activity)
@@ -360,6 +415,7 @@ enter_data.push(record_exhibitions_pwyt)
 
 $scope.user_groups['OPERATIONS'].views=[]
 $scope.user_groups['OPERATIONS'].views.push(timeline) 
+$scope.user_groups['OPERATIONS'].views.push(room_hire) 
 $scope.user_groups['OPERATIONS'].views.push(analyser) 
 
 $scope.user_groups['OPERATIONS'].enter_data=enter_data

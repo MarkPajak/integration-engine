@@ -1,20 +1,43 @@
 exports.record_equipment_controller =  function($scope, $http, $q,  
-          Resources,data_table_reload,get_table_data
+          Resources,data_table_reload,get_table_data,AuthService
     ) {
 
 //$scope.setDate = data_table_reload.setDate;
 			$scope.extraQuery = { "museum_id":"#",'type':"equipment"}
+$scope.haspermissions=false
+   			 AuthService.isLoggedIn().then(function(user){
+		
+			
+						$scope.user=user
+						$scope.isloggedin=true			
+						if(	user.data.group=="ADMIN"){$scope.haspermissions=true}
+						if(	user.data.group=="EXHIBITIONS"){$scope.haspermissions=true}
+						if(	user.data.group=="DIGITAL"){$scope.haspermissions=true}
 
-    // function definition
+						main_function(timeline_mode)
+			
+	  })
 	
 	  $scope.Resources=Resources
 	 
  $scope.onSubmit=function() {
 		
 
+
 		
 		    var kpis = new Resources({
-					name:visit_form.room_name.value,				  
+					name:visit_form.asset_name.value+ " ("+ visit_form.asset_type.value+") " + visit_form.asset_no.value,
+					asset_name:visit_form.asset_name.value,	
+					asset_type:visit_form.asset_type.value,
+					asset_no:visit_form.asset_no.value,
+					label_location:visit_form.label_location.value,	
+					label_notes:visit_form.label_notes.value,
+					serial_no:visit_form.serial_no.value,
+					model_no:visit_form.model_no.value,	
+					location:visit_form.location.value,	
+					description:visit_form.description.value,						
+
+					
 					type: "equipment",	
 				//DEPARTMENTAL VARIABLES	
 					//donation_box_amount: visit_form.donation_box_amount.value,
@@ -57,7 +80,14 @@ exports.record_equipment_controller =  function($scope, $http, $q,
 							  get_table_data.getData(moment(new Date()).subtract({'months':1})._d,$scope)			
 							$scope.message="data saved successfully";
 			
-							visit_form.room_name.value=""
+									visit_form.room_name.value=""
+									visit_form.asset_no.value=""
+									visit_form.label_location.value=""	
+									visit_form.label_notes.value=""
+									visit_form.serial_no.value=""
+									visit_form.model_no.value=""	
+									visit_form.location.value=""
+									visit_form.description.value=""		
 							
 							 
 							 

@@ -16,11 +16,25 @@ exports.raw_equipment_controller = function($route,$scope, $http, $q, $routePara
 
 		$rootScope.canEdit_table=true
 		 columnDefs.push(
-			{ field: 'name' ,name: "Device",resizable: true,width:"150"},			
+		 
+		 	{ field: 'asset_no' ,name: "asset_no",resizable: true,width:"150"},	
+			{ field: 'asset_type' ,name: "Type",resizable: true,width:"150"},	
+			{ field: 'asset_name' ,name: "Device",resizable: true,width:"150"},			
+			{ field: 'description' ,name: "description",resizable: true,width:"150"},	
+			{ field: 'location' ,name: "location",resizable: true,width:"150"},
 			
-			{ field: 'comments' ,value: "comments",resizable: true,visible:true},
+			{ field: 'model_no' ,name: "model_no",resizable: true,width:"150"},
+			{ field: 'serial_no' ,name: "serial_no",resizable: true,width:"150"},
+			{ field: 'label_location' ,name: "label_location",resizable: true,width:"150"},
+			{ field: 'label_notes' ,name: "label_notes",resizable: true,width:"150"},
+
+			{ field: 'comments' ,value: "comments",resizable: true,visible:false},
 			{ field: 'logger_user_name' ,value: "Logged by",resizable: true,visible:false},
 			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',visible:false}
+			
+			
+			
+			
 			)
 			
 			$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);

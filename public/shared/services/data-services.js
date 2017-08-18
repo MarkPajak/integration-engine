@@ -331,7 +331,7 @@ exports.Monthly_visits =  function($resource){
 			  'save':   {method:'POST'}, // create record
 			  'query':  {method:'GET', isArray:true}, // get list all records
 			  'remove': {method:'DELETE'}, // remove record
-			    'update': { method:'PUT' },
+			  'update': { method:'PUT' },
 			  'delete': {method:'DELETE'} // same, remove record
           });
  }
@@ -341,11 +341,12 @@ exports.Monthly_visits =  function($resource){
 
 		 
             return $resource('/bookings/:id/:group/:start_date/:end_date/:_type', null,
-			{ 'get':    {method:'GET'},  // get individual record
+			{ 
+			  'get':    {method:'GET'},  // get individual record
 			  'save':   {method:'POST'}, // create record
 			  'query':  {method:'GET', isArray:true}, // get list all records
 			  'remove': {method:'DELETE'}, // remove record
-			    'update': { method:'PUT' },
+			  'update': { method:'PUT' },
 			  'delete': {method:'DELETE'} // same, remove record
           });
  }

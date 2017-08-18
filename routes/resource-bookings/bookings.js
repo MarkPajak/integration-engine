@@ -21,7 +21,18 @@ router.get('/',route_permissions.isAuthenticated, function(req, res, next) {
 });
 
 
+router.get('/:type',route_permissions.isAuthenticated, function(req, res, next) {
 
+
+ type =decodeURI(req.params.type)
+console.log(type)
+  Collection.find({"_type":type})
+	   .populate('leave_taken')
+	   .exec (  function (err, todos) {
+    if (err) return next(err);
+    res.json(todos);
+  })
+});
 
 router.get('/calendar/:room', function(req, res, next) {
 

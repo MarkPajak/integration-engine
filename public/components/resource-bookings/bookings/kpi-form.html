@@ -22,7 +22,7 @@
 				<input  step="any" placeholder="booking" type = "text" class="form-control input-lg" id="name" rows="3"></input>
 			  </div>
 			  <div class="form-group">
-					<label for="name">Room Name</label>
+					<label for="name">{{name_of_form}} Name</label>
 					<select  id="room" class="form-control input-lg" ng-model="room" ng-options="c.name for c in rooms" ng-change="room_change(room)">
 								<option value="">-- choose room or select add new --</option>
 					</select>

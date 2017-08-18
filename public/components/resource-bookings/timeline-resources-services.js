@@ -259,6 +259,7 @@ exports.timeline_functions_resources = function ( $templateCache,$compile,$http,
                           
                             time=(timeline.getEventProperties(event).time)
 							group=(timeline.getEventProperties(event).group)
+							track=(timeline.getEventProperties(event).track)
 							
 							//type=(timeline.getEventProperties(event).type)
                             $(ui.draggable[0]).hide()
@@ -266,20 +267,20 @@ exports.timeline_functions_resources = function ( $templateCache,$compile,$http,
 							if(ui.draggable[0].innerHTML=="PROVISIONAL DATE"){
                             self.prettyPrompt('Add a provisional date', 'Name:',"", function(value) {
                             if (value) {
-                               	add_item(group,group,time,value,"blue",30,ui.draggable[0].innerHTML)
+                               	add_item(group,group,time,value,"blue",30,ui.draggable[0].innerHTML,track)
 							}
 							})
 							}
 							else if(ui.draggable[0].innerHTML=="INSTALL" ||ui.draggable[0].innerHTML=="DERIG" )
 							{
-								add_item(group,group,time,ui.draggable[0].innerHTML,"red",7,ui.draggable[0].innerHTML)
+								add_item(group,group,time,ui.draggable[0].innerHTML,"red",7,ui.draggable[0].innerHTML,track)
 							}
 							else
 							{
-								add_item(group,$rootScope.filter_pieSelected,time,ui.draggable[0].innerHTML,"orange",1,"PROVISIONAL DATE")
+								add_item(group,$rootScope.filter_pieSelected,time,ui.draggable[0].innerHTML,"orange",1,"PROVISIONAL DATE",track)
 							}
 							
-							function add_item(dropped_group,group,time,value,colour,days,type)
+							function add_item(dropped_group,group,time,value,colour,days,type,track)
 							{
 									
 									
@@ -315,7 +316,7 @@ exports.timeline_functions_resources = function ( $templateCache,$compile,$http,
 															dropped_group:dropped_group,
 															date_logged: new Date(),	
 															className:colour||"",
-															_type:type,
+															_type:track,
 															start_date: new Date(moment(date_dropped).startOf('day')._d),
 															end_date: new Date (moment(date_dropped).add(days, 'days')._d),
 															days:_days

@@ -20,7 +20,7 @@ var route_permissions = function (options){
 	}
 	else
 	{
-		   res.json("NOT LOGGED IN");
+		   res.json("¯\_(?)_/¯");
 		
 	}
 

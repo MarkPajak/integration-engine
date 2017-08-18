@@ -970,7 +970,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
                template: '<equipment-Formdata></equipment-Formdata>'
            })
 		   
-		.when('/bookings', {
+			.when('/bookings/:mode', {
                template: '<bookings-Formdata></bookings-Formdata>'
           })
 

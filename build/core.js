@@ -11816,7 +11816,7 @@ exports.record_learning_controller =  function($scope, $http, $q, $routeParams, 
 								visit_form.total_teachers.value=""
 								visit_form.total_income.value=""
 								visit_form.age_group.value=""
-								visit_form.session_type.value=""
+								//visit_form.session_type.value=""
 								visit_form.session_type.comments.value=""
 			
 	
@@ -13898,35 +13898,52 @@ exports.yearly_welcomedesk_controller = function($route,$scope, $http, $q, $rout
 },{"b55mWE":4,"buffer":3}],65:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.record_bookings_controller =  function($scope, $http, $q,  
-          Resources,Bookings,data_table_reload,get_table_data,timeline_functions
+          Resources,Bookings,data_table_reload,get_table_data,timeline_functions,$routeParams
     ) {
 
 //$scope.setDate = data_table_reload.setDate;
+
+	if($routeParams.mode=="rooms")
+	{
+		var mode = "room"
+		var mode_name = "ROOM BOOKING"
+		$scope.name_of_form = mode_name = "Select Room"
+	}
+	else
+	{
+		var mode = "equipment"
+		var mode_name = "EQUIPMENT BOOKING"
+		$scope.name_of_form = mode_name = "Select Equipment"
+
+	}
+
+
+
+
 			$scope.extraQuery = { "museum_id":"#"}
 
-    $scope.rooms=[]
-	
+	  $scope.rooms=[]
 	  $scope.Resources=Resources
 	  
-	var query = {'name':"#",'type':"room",'exact':false};
-			
-			Resources.query(query, function(rooms) {
-						
+		var query = {'name':"#",'type':mode,'exact':false};
+				
+		Resources.query(query, function(rooms) {
 					
-					  _.each(rooms, function(room){					  
-					  var _room = []
-					  _room.name=room.name
-						$scope.rooms.push(_room)
-					  })
+				
+				  _.each(rooms, function(room){					  
+				  var _room = []
+				  _room.name=room.name
+					$scope.rooms.push(_room)
+				  })
+
+		})	
 			
-			})	
-			
-$scope.selected_room=""			
-$scope.room_change = function(room) {
-    //Your logic
-  $scope.selected_room=room.name
-}
-	 
+			$scope.selected_room=""			
+			$scope.room_change = function(room) {
+				//Your logic
+			  $scope.selected_room=room.name
+			}
+				 
  $scope.onSubmit=function() {
 		
 			
@@ -13940,7 +13957,7 @@ var event_to_add=	{
 													  end_date :  new Date(visit_form.end_date.value),	
 													  notes  :visit_form.comments.value,	
 													 }
-			var type = "ROOM BOOKING"
+			var type = mode_name
 		    var kpis = new Bookings({
 					
 					//DEPARTMENTAL VARIABLES	
@@ -14042,14 +14059,24 @@ exports.raw_bookings_controller = function($route,$scope, $http, $q, $routeParam
     ) {
 		
 
+if($routeParams.mode=="rooms"){
+var mode = "room"
+var mode_name = "ROOM BOOKING"
+}
+else
+{
+var mode = "equipment"
+var mode_name = "EQUIPMENT BOOKING"
 
+
+}
 		  
 		$scope.show_all_Button=true
 		$scope.featured_collection=Bookings
 		$rootScope.featured_collection=Bookings
 		$scope.gridOptions=[]
 		$scope.gridOptions.data=[]
-		$scope.extraQuery = { "museum_id":"#","type":"room"}
+		$scope.extraQuery = { "museum_id":"#","_type":mode_name}
 		$scope.rooms=[]
 		
 		
@@ -14060,7 +14087,7 @@ exports.raw_bookings_controller = function($route,$scope, $http, $q, $routeParam
 
 		$rootScope.canEdit_table=true
 		 columnDefs.push(
-			{ field: 'group' ,name: "Room",resizable: true,width:"150"},
+			{ field: 'group' ,name: mode,resizable: true,width:"150"},
 			{ field: 'start_date' ,name: "From",type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',resizable: true,width:"150"},	
 			{ field: 'end_date' ,name: "Until",resizable: true,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',width:"150"},
 			{ field: 'comments' ,value: "comments",resizable: true,visible:true},
@@ -14159,22 +14186,45 @@ exports.raw_bookings_controller = function($route,$scope, $http, $q, $routeParam
 },{"b55mWE":4,"buffer":3}],68:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.record_equipment_controller =  function($scope, $http, $q,  
-          Resources,data_table_reload,get_table_data
+          Resources,data_table_reload,get_table_data,AuthService
     ) {
 
 //$scope.setDate = data_table_reload.setDate;
 			$scope.extraQuery = { "museum_id":"#",'type':"equipment"}
+$scope.haspermissions=false
+   			 AuthService.isLoggedIn().then(function(user){
+		
+			
+						$scope.user=user
+						$scope.isloggedin=true			
+						if(	user.data.group=="ADMIN"){$scope.haspermissions=true}
+						if(	user.data.group=="EXHIBITIONS"){$scope.haspermissions=true}
+						if(	user.data.group=="DIGITAL"){$scope.haspermissions=true}
 
-    // function definition
+						main_function(timeline_mode)
+			
+	  })
 	
 	  $scope.Resources=Resources
 	 
  $scope.onSubmit=function() {
 		
 
+
 		
 		    var kpis = new Resources({
-					name:visit_form.room_name.value,				  
+					name:visit_form.asset_name.value+ " ("+ visit_form.asset_type.value+") " + visit_form.asset_no.value,
+					asset_name:visit_form.asset_name.value,	
+					asset_type:visit_form.asset_type.value,
+					asset_no:visit_form.asset_no.value,
+					label_location:visit_form.label_location.value,	
+					label_notes:visit_form.label_notes.value,
+					serial_no:visit_form.serial_no.value,
+					model_no:visit_form.model_no.value,	
+					location:visit_form.location.value,	
+					description:visit_form.description.value,						
+
+					
 					type: "equipment",	
 				//DEPARTMENTAL VARIABLES	
 					//donation_box_amount: visit_form.donation_box_amount.value,
@@ -14217,7 +14267,14 @@ exports.record_equipment_controller =  function($scope, $http, $q,
 							  get_table_data.getData(moment(new Date()).subtract({'months':1})._d,$scope)			
 							$scope.message="data saved successfully";
 			
-							visit_form.room_name.value=""
+									visit_form.room_name.value=""
+									visit_form.asset_no.value=""
+									visit_form.label_location.value=""	
+									visit_form.label_notes.value=""
+									visit_form.serial_no.value=""
+									visit_form.model_no.value=""	
+									visit_form.location.value=""
+									visit_form.description.value=""		
 							
 							 
 							 
@@ -14260,11 +14317,25 @@ exports.raw_equipment_controller = function($route,$scope, $http, $q, $routePara
 
 		$rootScope.canEdit_table=true
 		 columnDefs.push(
-			{ field: 'name' ,name: "Device",resizable: true,width:"150"},			
+		 
+		 	{ field: 'asset_no' ,name: "asset_no",resizable: true,width:"150"},	
+			{ field: 'asset_type' ,name: "Type",resizable: true,width:"150"},	
+			{ field: 'asset_name' ,name: "Device",resizable: true,width:"150"},			
+			{ field: 'description' ,name: "description",resizable: true,width:"150"},	
+			{ field: 'location' ,name: "location",resizable: true,width:"150"},
 			
-			{ field: 'comments' ,value: "comments",resizable: true,visible:true},
+			{ field: 'model_no' ,name: "model_no",resizable: true,width:"150"},
+			{ field: 'serial_no' ,name: "serial_no",resizable: true,width:"150"},
+			{ field: 'label_location' ,name: "label_location",resizable: true,width:"150"},
+			{ field: 'label_notes' ,name: "label_notes",resizable: true,width:"150"},
+
+			{ field: 'comments' ,value: "comments",resizable: true,visible:false},
 			{ field: 'logger_user_name' ,value: "Logged by",resizable: true,visible:false},
 			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',visible:false}
+			
+			
+			
+			
 			)
 			
 			$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
@@ -14431,7 +14502,7 @@ exports.timeline_resources_controller=     function($compile,  $scope, $http, $q
 		$scope.isloggedin=false	
 		$scope.isloggedin=false	
 	    $scope.timeline_track = Timeline 
-
+		$scope.haspermissions=false
 		
 	 $scope.init = function(timeline_mode)
   {
@@ -14444,7 +14515,10 @@ exports.timeline_resources_controller=     function($compile,  $scope, $http, $q
 		
 			
 			$scope.user=user
-			$scope.isloggedin=true	
+			$scope.isloggedin=true			
+			if(	user.data.group=="ADMIN"){$scope.haspermissions=true}
+			if(	user.data.group=="COMMERCIAL"){$scope.haspermissions=true}
+			if(	user.data.group=="DIGITAL"){$scope.haspermissions=true}
 			main_function(timeline_mode)
 			
 	  })
@@ -14787,7 +14861,7 @@ main_function = function(timeline_mode){
 			}
 			
 			
-			$scope.shopify() //NB for some reason need this to appear for unlogged in users otherwise text wont load in directives
+			//$scope.shopify() //NB for some reason need this to appear for unlogged in users otherwise text wont load in directives
 
 			
 					timeline_track = Bookings
@@ -15230,6 +15304,7 @@ exports.timeline_functions_resources = function ( $templateCache,$compile,$http,
                           
                             time=(timeline.getEventProperties(event).time)
 							group=(timeline.getEventProperties(event).group)
+							track=(timeline.getEventProperties(event).track)
 							
 							//type=(timeline.getEventProperties(event).type)
                             $(ui.draggable[0]).hide()
@@ -15237,20 +15312,20 @@ exports.timeline_functions_resources = function ( $templateCache,$compile,$http,
 							if(ui.draggable[0].innerHTML=="PROVISIONAL DATE"){
                             self.prettyPrompt('Add a provisional date', 'Name:',"", function(value) {
                             if (value) {
-                               	add_item(group,group,time,value,"blue",30,ui.draggable[0].innerHTML)
+                               	add_item(group,group,time,value,"blue",30,ui.draggable[0].innerHTML,track)
 							}
 							})
 							}
 							else if(ui.draggable[0].innerHTML=="INSTALL" ||ui.draggable[0].innerHTML=="DERIG" )
 							{
-								add_item(group,group,time,ui.draggable[0].innerHTML,"red",7,ui.draggable[0].innerHTML)
+								add_item(group,group,time,ui.draggable[0].innerHTML,"red",7,ui.draggable[0].innerHTML,track)
 							}
 							else
 							{
-								add_item(group,$rootScope.filter_pieSelected,time,ui.draggable[0].innerHTML,"orange",1,"PROVISIONAL DATE")
+								add_item(group,$rootScope.filter_pieSelected,time,ui.draggable[0].innerHTML,"orange",1,"PROVISIONAL DATE",track)
 							}
 							
-							function add_item(dropped_group,group,time,value,colour,days,type)
+							function add_item(dropped_group,group,time,value,colour,days,type,track)
 							{
 									
 									
@@ -15286,7 +15361,7 @@ exports.timeline_functions_resources = function ( $templateCache,$compile,$http,
 															dropped_group:dropped_group,
 															date_logged: new Date(),	
 															className:colour||"",
-															_type:type,
+															_type:track,
 															start_date: new Date(moment(date_dropped).startOf('day')._d),
 															end_date: new Date (moment(date_dropped).add(days, 'days')._d),
 															days:_days
@@ -17446,6 +17521,11 @@ exports.timeline_bookings_functions  =  function (timeline_functions,$http,Timel
 											{
 													$rootScope.added_track_groups.push("ROOM BOOKING")														
 													$rootScope.track_groups.push({"track":"ROOM BOOKING","selected":true})
+											}
+											if( $rootScope.added_track_groups.indexOf("EQUIPMENT BOOKING")==-1)
+											{
+													$rootScope.added_track_groups.push("EQUIPMENT BOOKING")														
+													$rootScope.track_groups.push({"track":"EQUIPMENT BOOKING","selected":true})
 											}
 													
 													
@@ -21154,6 +21234,7 @@ $scope.user_groups['DEVELOPMENT']=[]
 $scope.user_groups['LEARNING']=[]	
 $scope.user_groups['EXHIBITIONS']=[]	
 $scope.user_groups['OPERATIONS']=[]
+$scope.user_groups['COMMERCIAL']=[]
 	
 var timeline = {link:"timeline",value:"Timeline"}
 var dead ={link:"dead",value:"Downtime"}
@@ -21166,6 +21247,12 @@ var doom = {link:"doom",value:"DOOM!"}
 
 var analyser = {link:"analyser",value:"Performance analyser (BETA)"}
 
+
+var rooms = {link:"rooms",value:"Add rooms"}
+var equipment = {link:"equipment",value:"Add equipment"}
+var equipment_bookings = {link:"bookings/equipment",value:"Equipment booking"}
+var room_bookings = {link:"bookings/rooms",value:"Room booking"}
+var room_hire = {link:"room-hire",value:"Room booking timeline"}
 
 var performance = {link:"record-visitor-numbers",value:"VISITS: Record visitor figures"}
 var record_retail_sales = {link:"record-retail-sales",value:"RETAIL:Record retail sales"}
@@ -21217,6 +21304,33 @@ var record_welcomedesk = {link:"record-welcomedesk",value:"DONATIONS: Record Wel
 var raw_welcomedesk = {link:"raw-welcomedesk",value:"DONATIONS: Raw Welcome desk"}
 var monthly_welcomedesk = {link:"monthly-welcomedesk",value:"DONATIONS: Monthly Welcome desk"}
 
+
+
+
+var enter_data=[]
+//enter_data.push(performance)
+//enter_data.push(record_retail_sales)
+enter_data.push(rooms)
+enter_data.push(equipment)
+enter_data.push(equipment_bookings)
+enter_data.push(room_bookings)
+
+
+var performance_data=[]
+performance_data.push(room_hire)
+
+$scope.user_groups['COMMERCIAL'].enter_data=enter_data
+$scope.user_groups['COMMERCIAL'].performance=performance_data
+
+
+
+
+
+
+
+
+
+
 var enter_data=[]
 //enter_data.push(performance)
 //enter_data.push(record_retail_sales)
@@ -21224,6 +21338,10 @@ enter_data.push(record_donations)
 enter_data.push(record_giftaid)
 enter_data.push(record_welcomedesk)
 enter_data.push(record_events)
+enter_data.push(rooms)
+enter_data.push(equipment)
+enter_data.push(equipment_bookings)
+enter_data.push(room_bookings)
 
 
 
@@ -21270,6 +21388,10 @@ enter_data.push(record_exhibitions_pwyt)
 enter_data.push(record_teg)
 enter_data.push(record_events)
 enter_data.push(record_operations)
+enter_data.push(rooms)
+enter_data.push(equipment_bookings)
+enter_data.push(room_bookings)
+enter_data.push(equipment)
 
 enter_data=enter_data.sort()
 
@@ -21310,6 +21432,7 @@ $scope.user_groups['ADMIN'].views=[]
 $scope.user_groups['ADMIN'].enter_data=[]
 
 
+$scope.user_groups['ADMIN'].views.push(room_hire)
 $scope.user_groups['ADMIN'].views.push(timeline)
 $scope.user_groups['ADMIN'].views.push(analyser)
 $scope.user_groups['ADMIN'].views.push(dead)
@@ -21350,7 +21473,7 @@ $scope.user_groups['EXHIBITIONS'].enter_data=[]
 $scope.user_groups['EXHIBITIONS'].views.push(timeline)
 $scope.user_groups['EXHIBITIONS'].views.push(analyser)
 $scope.user_groups['EXHIBITIONS'].performance=performance_data
-
+$scope.user_groups['EXHIBITIONS'].views.push(room_hire)
 
 var enter_data=[]
 enter_data.push(record_learning)
@@ -21374,8 +21497,14 @@ $scope.user_groups['LEARNING'].views.push(analyser)
 
 $scope.user_groups['LEARNING'].enter_data=enter_data
 $scope.user_groups['LEARNING'].performance=performance_data
+$scope.user_groups['LEARNING'].views.push(room_hire)
 
+var enter_data=[]
+enter_data.push(equipment)
+enter_data.push(equipment_bookings)
+enter_data.push(room_bookings)
 
+$scope.user_groups['AV'].enter_data=enter_data
 	
 $scope.user_groups['AV'].views=[]
 $scope.user_groups['AV'].views.push(timeline)
@@ -21386,7 +21515,7 @@ $scope.user_groups['AV'].views.push(feedback)
 $scope.user_groups['AV'].views.push(tech_support)
 $scope.user_groups['AV'].views.push(raw_turnstiles) 
 $scope.user_groups['AV'].views.push(monthly_turnstiles) 
-
+$scope.user_groups['AV'].views.push(room_hire)
 
 var enter_data=[]
 enter_data.push(performance)
@@ -21394,6 +21523,11 @@ enter_data.push(record_retail_sales)
 enter_data.push(record_donations)
 enter_data.push(record_giftaid)
 enter_data.push(record_events)
+enter_data.push(rooms)
+enter_data.push(equipment)
+enter_data.push(equipment_bookings)
+enter_data.push(room_bookings)
+
 
 var performance_data=[]
 performance_data.push(raw_visits)
@@ -21414,6 +21548,7 @@ performance_data.push(monthly_events)
 
 $scope.user_groups['DIGITAL'].views=[]
 $scope.user_groups['DIGITAL'].views.push(timeline)
+$scope.user_groups['DIGITAL'].views.push(room_hire)
 $scope.user_groups['DIGITAL'].views.push(analyser)
 $scope.user_groups['DIGITAL'].views.push(dead)
 $scope.user_groups['DIGITAL'].views.push(activity)
@@ -21490,6 +21625,7 @@ enter_data.push(record_exhibitions_pwyt)
 
 $scope.user_groups['OPERATIONS'].views=[]
 $scope.user_groups['OPERATIONS'].views.push(timeline) 
+$scope.user_groups['OPERATIONS'].views.push(room_hire) 
 $scope.user_groups['OPERATIONS'].views.push(analyser) 
 
 $scope.user_groups['OPERATIONS'].enter_data=enter_data
@@ -22578,7 +22714,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
                template: '<equipment-Formdata></equipment-Formdata>'
            })
 		   
-		.when('/bookings', {
+			.when('/bookings/:mode', {
                template: '<bookings-Formdata></bookings-Formdata>'
           })
 
@@ -22607,7 +22743,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
           
         }])
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_8e9ad88.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_b0b43d2.js","/")
 },{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/performance/analyser/analyser-controller":18,"../components/performance/dashboard-controllers":19,"../components/performance/donations/monthly-donations-controller":20,"../components/performance/donations/performance-form-controller":21,"../components/performance/donations/raw-donations-controller":22,"../components/performance/donations/yearly-donations-controller":23,"../components/performance/events/monthly-events-controller":24,"../components/performance/events/performance-form-controller":25,"../components/performance/events/raw-events-controller":26,"../components/performance/events/yearly-events-controller":27,"../components/performance/exhibitions-pwyt/monthly-donations-controller":28,"../components/performance/exhibitions-pwyt/performance-form-controller":29,"../components/performance/exhibitions-pwyt/raw-donations-controller":30,"../components/performance/exhibitions/exhibitions-summary-controller":31,"../components/performance/gallery-visits/monthly-teg-controller":32,"../components/performance/gallery-visits/performance-form-controller":33,"../components/performance/gallery-visits/raw-teg-controller":34,"../components/performance/gallery-visits/weekly-teg-controller":35,"../components/performance/gallery-visits/yearly-teg-controller":36,"../components/performance/gift-aid/monthly-allgiftaid-controller":37,"../components/performance/gift-aid/monthly-giftaid-controller":38,"../components/performance/gift-aid/performance-form-controller":39,"../components/performance/gift-aid/raw-giftaid-controller":40,"../components/performance/learning/age-learning-controller":41,"../components/performance/learning/monthly-learning-controller":42,"../components/performance/learning/performance-form-controller":43,"../components/performance/learning/raw-learning-controller":44,"../components/performance/learning/yearly-learning-controller":45,"../components/performance/operations/monthly-operations-controller":46,"../components/performance/operations/performance-form-controller":47,"../components/performance/operations/raw-operations-controller":48,"../components/performance/operations/yearly-operations-controller":49,"../components/performance/performance-directive":50,"../components/performance/retail/monthly-retail-sales-controller":51,"../components/performance/retail/performance-form-controller":52,"../components/performance/retail/raw-retail-sales-controller":53,"../components/performance/retail/yearly-retail-sales-controller":54,"../components/performance/turnstiles/monthly-turnstiles-controller":55,"../components/performance/turnstiles/raw-turnstiles-controller":56,"../components/performance/visits/monthly-visits-controller":57,"../components/performance/visits/raw-visits-controller":58,"../components/performance/visits/visits-form-controller":59,"../components/performance/visits/yearly-visits-controller":60,"../components/performance/welcome-desk/monthly-welcomedesk-controller":61,"../components/performance/welcome-desk/performance-form-controller":62,"../components/performance/welcome-desk/raw-welcomedesk-controller":63,"../components/performance/welcome-desk/yearly-welcomedesk-controller":64,"../components/resource-bookings/bookings/form-controller":65,"../components/resource-bookings/bookings/raw-bookings-controller":66,"../components/resource-bookings/directive":67,"../components/resource-bookings/equipment/form-controller":68,"../components/resource-bookings/equipment/raw-equipment-controller":69,"../components/resource-bookings/rooms/form-controller":70,"../components/resource-bookings/rooms/raw-rooms-controller":71,"../components/resource-bookings/timeline-resources-controller":72,"../components/resource-bookings/timeline-resources-services":73,"../components/shopify/shopify-controller":74,"../components/shopify/shopify-directive":75,"../components/team/app-controllers":76,"../components/team/form-controller":77,"../components/team/leave-controller":78,"../components/team/team-controller":79,"../components/tech-support/tech-support-controller":80,"../components/tech-support/tech-support-directive":81,"../components/tech-support/trello-services":82,"../components/timeline-settings/timeline-settings-controller":83,"../components/timeline/timeline-bookings-services":84,"../components/timeline/timeline-controller":85,"../components/timeline/timeline-directive":86,"../components/timeline/timeline-exhibitions-services":87,"../components/timeline/timeline-googlesheets-services":88,"../components/timeline/timeline-installs-services":89,"../components/timeline/timeline-learning-bookings-services":90,"../components/timeline/timeline-leave-services":91,"../components/timeline/timeline-loans-services":92,"../components/timeline/timeline-services":93,"../components/timeline/timeline-shopify-services":94,"../components/timeline/timeline-visitor-figures-services":95,"../components/turnstiles/turnstiles-controller":96,"../components/turnstiles/turnstiles-directive":97,"../components/user-admin/users-controller":98,"../components/user-admin/users-directive":99,"../shared/controllers/controllers":100,"../shared/controllers/navbar-controller":101,"../shared/directives/directives":102,"../shared/services/app-services":104,"../shared/services/data-services":105,"b55mWE":4,"buffer":3,"underscore":7}],104:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.data_table_reload = function() {	
@@ -23847,7 +23983,7 @@ exports.Monthly_visits =  function($resource){
 			  'save':   {method:'POST'}, // create record
 			  'query':  {method:'GET', isArray:true}, // get list all records
 			  'remove': {method:'DELETE'}, // remove record
-			    'update': { method:'PUT' },
+			  'update': { method:'PUT' },
 			  'delete': {method:'DELETE'} // same, remove record
           });
  }
@@ -23857,11 +23993,12 @@ exports.Monthly_visits =  function($resource){
 
 		 
             return $resource('/bookings/:id/:group/:start_date/:end_date/:_type', null,
-			{ 'get':    {method:'GET'},  // get individual record
+			{ 
+			  'get':    {method:'GET'},  // get individual record
 			  'save':   {method:'POST'}, // create record
 			  'query':  {method:'GET', isArray:true}, // get list all records
 			  'remove': {method:'DELETE'}, // remove record
-			    'update': { method:'PUT' },
+			  'update': { method:'PUT' },
 			  'delete': {method:'DELETE'} // same, remove record
           });
  }

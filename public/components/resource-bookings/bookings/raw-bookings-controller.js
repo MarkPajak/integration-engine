@@ -4,14 +4,24 @@ exports.raw_bookings_controller = function($route,$scope, $http, $q, $routeParam
     ) {
 		
 
+if($routeParams.mode=="rooms"){
+var mode = "room"
+var mode_name = "ROOM BOOKING"
+}
+else
+{
+var mode = "equipment"
+var mode_name = "EQUIPMENT BOOKING"
 
+
+}
 		  
 		$scope.show_all_Button=true
 		$scope.featured_collection=Bookings
 		$rootScope.featured_collection=Bookings
 		$scope.gridOptions=[]
 		$scope.gridOptions.data=[]
-		$scope.extraQuery = { "museum_id":"#","type":"room"}
+		$scope.extraQuery = { "museum_id":"#","_type":mode_name}
 		$scope.rooms=[]
 		
 		
@@ -22,7 +32,7 @@ exports.raw_bookings_controller = function($route,$scope, $http, $q, $routeParam
 
 		$rootScope.canEdit_table=true
 		 columnDefs.push(
-			{ field: 'group' ,name: "Room",resizable: true,width:"150"},
+			{ field: 'group' ,name: mode,resizable: true,width:"150"},
 			{ field: 'start_date' ,name: "From",type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',resizable: true,width:"150"},	
 			{ field: 'end_date' ,name: "Until",resizable: true,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',width:"150"},
 			{ field: 'comments' ,value: "comments",resizable: true,visible:true},

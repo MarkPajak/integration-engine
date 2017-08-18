@@ -1,33 +1,50 @@
 exports.record_bookings_controller =  function($scope, $http, $q,  
-          Resources,Bookings,data_table_reload,get_table_data,timeline_functions
+          Resources,Bookings,data_table_reload,get_table_data,timeline_functions,$routeParams
     ) {
 
 //$scope.setDate = data_table_reload.setDate;
+
+	if($routeParams.mode=="rooms")
+	{
+		var mode = "room"
+		var mode_name = "ROOM BOOKING"
+		$scope.name_of_form = mode_name = "Select Room"
+	}
+	else
+	{
+		var mode = "equipment"
+		var mode_name = "EQUIPMENT BOOKING"
+		$scope.name_of_form = mode_name = "Select Equipment"
+
+	}
+
+
+
+
 			$scope.extraQuery = { "museum_id":"#"}
 
-    $scope.rooms=[]
-	
+	  $scope.rooms=[]
 	  $scope.Resources=Resources
 	  
-	var query = {'name':"#",'type':"room",'exact':false};
-			
-			Resources.query(query, function(rooms) {
-						
+		var query = {'name':"#",'type':mode,'exact':false};
+				
+		Resources.query(query, function(rooms) {
 					
-					  _.each(rooms, function(room){					  
-					  var _room = []
-					  _room.name=room.name
-						$scope.rooms.push(_room)
-					  })
+				
+				  _.each(rooms, function(room){					  
+				  var _room = []
+				  _room.name=room.name
+					$scope.rooms.push(_room)
+				  })
+
+		})	
 			
-			})	
-			
-$scope.selected_room=""			
-$scope.room_change = function(room) {
-    //Your logic
-  $scope.selected_room=room.name
-}
-	 
+			$scope.selected_room=""			
+			$scope.room_change = function(room) {
+				//Your logic
+			  $scope.selected_room=room.name
+			}
+				 
  $scope.onSubmit=function() {
 		
 			
@@ -41,7 +58,7 @@ var event_to_add=	{
 													  end_date :  new Date(visit_form.end_date.value),	
 													  notes  :visit_form.comments.value,	
 													 }
-			var type = "ROOM BOOKING"
+			var type = mode_name
 		    var kpis = new Bookings({
 					
 					//DEPARTMENTAL VARIABLES	

@@ -33,6 +33,11 @@ exports.timeline_bookings_functions  =  function (timeline_functions,$http,Timel
 													$rootScope.added_track_groups.push("ROOM BOOKING")														
 													$rootScope.track_groups.push({"track":"ROOM BOOKING","selected":true})
 											}
+											if( $rootScope.added_track_groups.indexOf("EQUIPMENT BOOKING")==-1)
+											{
+													$rootScope.added_track_groups.push("EQUIPMENT BOOKING")														
+													$rootScope.track_groups.push({"track":"EQUIPMENT BOOKING","selected":true})
+											}
 													
 													
 												console.log('BOOKINGS EVENTS',eventss)

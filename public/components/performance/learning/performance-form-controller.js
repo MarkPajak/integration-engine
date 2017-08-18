@@ -82,7 +82,7 @@ exports.record_learning_controller =  function($scope, $http, $q, $routeParams, 
 								visit_form.total_teachers.value=""
 								visit_form.total_income.value=""
 								visit_form.age_group.value=""
-								visit_form.session_type.value=""
+								//visit_form.session_type.value=""
 								visit_form.session_type.comments.value=""
 			
 	

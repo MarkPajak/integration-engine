@@ -13,16 +13,66 @@
 }
 </style>
 	  
-<div ng-show="user.username" class="panel panel-default col-xs-5 col-sm-5 col-md-5">
+<div ng-show="haspermissions" class="panel panel-default col-xs-3 col-sm-3 col-md-3">
 <div class="panel-heading">Enter data</div>
 	<div class="panel-body">
 		<form name="visit_form"  id="visit_form">
 
-			  <div class="form-group">
-				<label for="room_name">Device Name</label>
-				<input  step="any" type = "text" class="form-control input-lg" id="room_name" rows="3"></input>
+		
+
+				<div class="form-group">
+				<label for="room_name">Name: </label>
+				<input  step="any" type = "text" class=" pull-right form-control input" id="asset_name" rows="3"></input>
 			  </div>
 			  
+			  <div class="form-group form-inline">
+				<label for="room_name">Type: </label>
+				<input  step="any" type = "text" class=" pull-right form-control input" id="asset_type" rows="3"></input>
+			  </div>
+			  
+			   <div class="form-group form-inline">
+				<label for="room_name">Asset No: </label>
+				<input  step="any" type = "text" class=" pull-right form-control input" id="asset_no" rows="3"></input>
+			  </div>
+
+		 
+			  <div class="form-group">
+				<label for="comments">Description:</label>
+				<textarea class="  form-control input" id="description" rows="3"></textarea>
+			  </div>
+
+				 
+			   <div class="form-group form-inline">
+				<label for="room_name">Location:</label>
+				<input  step="any" type = "text" class=" pull-right form-control input" id="location" rows="3"></input>
+			  </div>
+	
+		   <div class="form-group form-inline">
+				<label for="room_name">Model No:</label>
+				<input  step="any" type = "text" class=" pull-right form-control input" id="model_no" rows="3"></input>
+			  </div>
+	
+	
+			  
+			  <div class="form-group form-inline">
+				<label for="room_name">Serial No:</label>
+				<input  step="any" type = "text" class=" pull-right form-control input" id="serial_no" rows="3"></input>
+			  </div>
+			  
+			<div class="form-group">
+				<label for="room_name">Label location: </label>
+				<input  step="any" type = "text" class=" pull-right form-control input" id="label_location" rows="3"></input>
+			  </div>
+			  
+			  
+			<div class="form-group form-inline">
+				<label for="room_name">Label notes: </label>
+				<input  step="any" type = "text" class=" pull-right form-control input" id="label_notes" rows="3"></input>
+			 </div>
+			  
+			  
+
+			
 			  <div class="form-group">
 				<label for="comments">Comments</label>
 				<textarea class="form-control input-lg" id="comments" rows="3"></textarea>
