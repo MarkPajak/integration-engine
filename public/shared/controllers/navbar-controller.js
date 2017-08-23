@@ -471,8 +471,13 @@ performance_data.push(monthly_retail_sales)
 
 
 $scope.user_groups['RETAIL'].views=[]
+$scope.user_groups['RETAIL'].enter_data=[]
+$scope.user_groups['RETAIL'].resources=[]
+$scope.user_groups['RETAIL'].performance=[]
+
+
 $scope.user_groups['RETAIL'].views.push(timeline)
-//$scope.user_groups['RETAIL'].views.push(shopify)
+
 $scope.user_groups['RETAIL'].enter_data=enter_data
 $scope.user_groups['RETAIL'].performance=performance_data
 	  
