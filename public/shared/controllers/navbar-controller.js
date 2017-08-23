@@ -111,6 +111,8 @@ resources.push(room_hire)
 var performance_data=[]
 performance_data.push(room_hire)
 
+$scope.user_groups['COMMERCIAL'].views=[]
+$scope.user_groups['COMMERCIAL'].enter_data=[]
 $scope.user_groups['COMMERCIAL'].resources=[]
 $scope.user_groups['COMMERCIAL'].resources=resources
 $scope.user_groups['COMMERCIAL'].performance=performance_data
@@ -154,6 +156,9 @@ performance_data.push(monthly_events)
 
 
 $scope.user_groups['DEVELOPMENT'].views=[]
+$scope.user_groups['DEVELOPMENT'].enter_data=[]
+$scope.user_groups['DEVELOPMENT'].resources=[]
+
 
 $scope.user_groups['DEVELOPMENT'].views.push(timeline)
 $scope.user_groups['DEVELOPMENT'].views.push(analyser)
@@ -279,8 +284,10 @@ performance_data.push(events)
 performance_data.push(monthly_events)
 
 
+
 $scope.user_groups['LEARNING'].views=[]
 $scope.user_groups['LEARNING'].enter_data=[]
+$scope.user_groups['LEARNING'].resources=[]
 
 $scope.user_groups['LEARNING'].views.push(timeline)
 $scope.user_groups['LEARNING'].views.push(analyser)
@@ -359,7 +366,13 @@ performance_data.push(monthly_events)
 
 
 
+
+
 $scope.user_groups['DIGITAL'].views=[]
+$scope.user_groups['DIGITAL'].enter_data=[]
+$scope.user_groups['DIGITAL'].resources=[]
+
+
 $scope.user_groups['DIGITAL'].views.push(timeline)
 $scope.user_groups['DIGITAL'].views.push(analyser)
 $scope.user_groups['DIGITAL'].views.push(dead)
@@ -375,7 +388,13 @@ $scope.user_groups['DIGITAL'].resources=resources
 var performance_data=[]
  var enter_data=[]
   
+
+
 $scope.user_groups['DEFAULT'].views=[]
+$scope.user_groups['DEFAULT'].enter_data=[]
+$scope.user_groups['DEFAULT'].resources=[]
+
+
 $scope.user_groups['DEFAULT'].views.push(timeline) 
 $scope.user_groups['DEFAULT'].views.push(analyser)
 $scope.user_groups['DEFAULT'].views.push(monthly_visits)
@@ -443,6 +462,10 @@ enter_data.push(record_operations)
 enter_data.push(record_exhibitions_pwyt)
 
 $scope.user_groups['OPERATIONS'].views=[]
+$scope.user_groups['OPERATIONS'].enter_data=[]
+$scope.user_groups['OPERATIONS'].resources=[]
+
+
 $scope.user_groups['OPERATIONS'].views.push(timeline) 
 $scope.user_groups['OPERATIONS'].views.push(room_hire) 
 $scope.user_groups['OPERATIONS'].views.push(analyser) 
