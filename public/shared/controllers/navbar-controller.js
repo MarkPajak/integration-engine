@@ -387,6 +387,8 @@ var enter_data=[]
 enter_data.push(performance)
 enter_data.push(record_exhibitions_pwyt)
 enter_data.push(record_events)
+enter_data.push(record_teg)
+
 
 performance_data.push(teg)
 
@@ -402,9 +404,13 @@ performance_data.push(monthly_teg)
 performance_data.push(events)
 performance_data.push(monthly_events)
 
-enter_data.push(record_teg)
 
 $scope.user_groups['STAFF'].views=[]
+$scope.user_groups['STAFF'].enter_data=[]
+$scope.user_groups['STAFF'].resources=[]
+
+
+
 $scope.user_groups['STAFF'].views.push(timeline) 
 $scope.user_groups['STAFF'].views.push(analyser) 
 
@@ -412,8 +418,7 @@ $scope.user_groups['STAFF'].views.push(analyser)
 $scope.user_groups['STAFF'].enter_data=enter_data
 $scope.user_groups['STAFF'].performance=performance_data
 
-$scope.user_groups['STAFF'].enter_data=enter_data
-$scope.user_groups['STAFF'].performance=performance_data
+
 
 
 

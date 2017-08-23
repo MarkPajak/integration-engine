@@ -20,7 +20,7 @@ var route_permissions = function (options){
 	}
 	else
 	{
-		   res.json("¯\_(?)_/¯");
+		   res.json("NOT ENOUGH PRIVELIGES");
 		
 	}
 
