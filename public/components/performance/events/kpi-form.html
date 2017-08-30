@@ -16,7 +16,7 @@
 You'll probably need to log in to be able to enter data
 </div>
 	  
-<div ng-show="user.username" class="panel panel-default col-xs-6 col-sm-6  col-md-6 ">
+<div ng-show="user.username" class="panel panel-default col-xs-4 col-sm-4  col-md-4 ">
 <div class="panel-heading">Enter data for {{form_name}}</div>
 	<div class="panel-body">
 		<form name="visit_form" id="visit_form">
@@ -33,7 +33,7 @@ You'll probably need to log in to be able to enter data
 						</select>
 						<div class="col-md-4" ng-show="event.name == 'add new event'">
 							<input class="text-box" type="text" name="NewValue" ng-model="newValue" />
-							<button ng-click="add(newValue)">Add</button>
+							<button ng-click="add(newValue)">Click add to save event name</button>
 						</div>
 					</div>
 					

@@ -119,7 +119,9 @@ $scope.museums.push({value:"ROMAN-VILLA",name:'Kings Weston Roman Villas'});
 		 var age_group={ name: visit_form.age_group.value,
 					count: visit_form.count.value
 		}
-		console.log(age_group)
+		console.log("clear age group")
+		visit_form.age_group.value=""
+		visit_form.count.value=""
 		$scope.age_groups.push(age_group)
 	 }
 	 
@@ -128,8 +130,11 @@ $scope.museums.push({value:"ROMAN-VILLA",name:'Kings Weston Roman Villas'});
 		 var target_groups={ name: visit_form.target_group.value
 					
 		}
-		console.log(target_groups)
+	
 		$scope.target_groups.push(target_groups)
+		visit_form.age_group.value=""
+		visit_form.count.value=""
+		 $scope.$apply()
 	 }
 	
 	
@@ -214,7 +219,7 @@ $scope.museums.push({value:"ROMAN-VILLA",name:'Kings Weston Roman Villas'});
 							$scope.age_groups=[]
 							$scope.selection=[]
 							visit_form.event_name.value=""
-							visit_form.age_group.value=""
+							
 							visit_form.count.value=""
 							visit_form.age_group.value=""
 							visit_form.comments.value=""
