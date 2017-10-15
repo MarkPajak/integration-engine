@@ -2,6 +2,7 @@ node_modules/
 secret/
 dump/
 test/
+log/
 npm-debug.log
 .env
 db.js
