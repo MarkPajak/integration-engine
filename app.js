@@ -18,6 +18,7 @@ var async = require('async');
 
 var winston = require('winston');
 
+
 // Connect to DB
 if(process.env.test){
 var config = require('./test/Config-debug');
@@ -43,7 +44,7 @@ var check_ticket_file = require('./routes/check_csv_ticket_file')
 var check_ticket_database = require('./routes/check_ticket_database')
 var turnstiles_logging = require('./routes/remote/turnstiles_logging')
 var kpi_aggregate = require('./routes/kpi_aggregate')	
-	
+var community_group = require('./routes/participation/groups')	
 
 //RESOURCE BOOKING
 var resources = require('./routes/resource-bookings/resource')	
@@ -126,6 +127,8 @@ app.use('/check_ticket_database', check_ticket_database);
 
 app.use('/raw_visits', raw_visits);
 app.use('/kpi_aggregate', kpi_aggregate);
+app.use('/community_group', community_group);
+
 
 app.use('/retail_sales', retail_sales);
 app.use('/donations', donations);
@@ -210,6 +213,8 @@ app.use(function(req, res, next) {
     err.status = 404;
     next(err);
 });
+
+
 
 // development error handler
 // will print stacktrace

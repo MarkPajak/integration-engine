@@ -11,6 +11,23 @@
     background-color: white;
 
 }
+
+.radio-toolbar input[type="radio"] {
+  display: none;
+}
+
+.radio-toolbar label {
+  display: inline-block;
+  background-color: #ddd;
+  padding: 4px 11px;
+  font-family: Arial;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.radio-toolbar input[type="radio"]:checked+label {
+  background-color: #bbb;
+}
 </style>
 	  
 <div ng-show="user.username" class="panel panel-default col-xs-5 col-sm-5 col-md-5">
@@ -18,18 +35,28 @@
 	<div class="panel-body">
 		<form name="visit_form"  id="visit_form">
   <div class="form-group">
-				<label for="name" required>Booking Name</label>
+	  
+  
+				<label for="name" required>Booking Name:</label>
 				<input  step="any" placeholder="booking" type = "text" class="form-control input-lg" id="name" rows="3"></input>
 			  </div>
 			  <div class="form-group">
-					<label for="name">{{name_of_form}} Name</label>
+					<label for="name">{{name_of_form}}:</label>
 					<select  id="room" class="form-control input-lg" ng-model="room" ng-options="c.name for c in rooms" ng-change="room_change(room)">
 								<option value="">-- choose room or select add new --</option>
 					</select>
 			  </div>
-			  
-		
-			<div class="form-group">
+  
+<div class="radio-toolbar">
+  <input type="radio" id="radio1" name="type_radios" value="internal" checked>
+  <label for="radio1">internal</label>
+  <input type="radio" id="radio2" name="type_radios" value="external">
+  <label for="radio2">external</label>
+</div>
+
+
+
+			  <div class="form-group">
 
 			<label for="start_date">Date from:</label>
 			
@@ -38,8 +65,12 @@
 						   ng-model="ctrl.input_start"
 						   ng-model-options="{ updateOn: 'blur' }"
 						   placeholder="Select a date..."
+						   max-view="minute"
+						   minutesStep:   "15",
+						    format="LL LT"
 						   moment-picker="ctrl.input_start">
-			
+
+
 			<label for="end_date">Date to:</label>
 		
 
@@ -47,16 +78,18 @@
 							   ng-model="ctrl.input_end"
 							   ng-model-options="{ updateOn: 'blur' }"
 							   placeholder="Select a date..."
-							   moment-picker="ctrl.input_end">
+							   moment-picker="ctrl.input_end"
+							     max-view="minute"
+						   minutesStep:   "15",
+						    format="LL LT"
+							   >
 			
 			</div>
-					
-			  
-			  <div class="form-group">
-				<label for="comments">Comments</label>
+			
+		 <div class="form-group">
+				<label for="comments">Comments:</label>
 				<textarea class="form-control input-lg" id="comments" rows="3"></textarea>
-			  </div>
-		
+		</div>
 			   <button id="form_submit_button" name="form_submit_button" ng-click="onSubmit()" type="button" class="btn btn-primary submit-button" ng-disabled="vm.form.$invalid">Submit</button>
 			   <button type="button" class="btn btn-lg input-lg btn-default input-lg" ng-click="vm.options.resetModel()">Reset</button>
 		</form>

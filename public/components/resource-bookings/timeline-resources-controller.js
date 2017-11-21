@@ -19,8 +19,12 @@ exports.timeline_resources_controller=     function($compile,  $scope, $http, $q
 	    $scope.timeline_track = Timeline 
 		$scope.haspermissions=false
 		
+		
+		
 	 $scope.init = function(timeline_mode)
+	
   {
+   console.log('timeline_mode',timeline_mode)
 	 setTimeout(function() {
 	 
 				$scope.timeline_track = Bookings 
@@ -76,24 +80,26 @@ main_function = function(timeline_mode){
 										'apply.daterangepicker' : function() {  
 										   date=$rootScope.datePicker.date
 											days=timeline_functions_resources.days(moment(date.startDate),moment(date.endDate))
-											
+							colour="red"				
 											
 										 
 										   	if(moment(date.startDate).isValid()){ //true
 										
-										var event_to_add=	{id :  $scope.selected_id,
-																				  name :$scope.selected_item,
-																				  showimage :"",
-																				  image :"",
-																				  start_date :moment(date.startDate).format("MMM Do"),
-																				  end_date : moment(date.endDate).format("MMM Do")|| "",
-																				  notes  :$rootScope.selected_notes + "(" +days+" days)" ,
-																				 days :days}
+										var event_to_add=	{		  id :  $scope.selected_id,
+																	  name :$scope.selected_item,
+																	  showimage :"",
+																	  image :"",
+																	  className:colour||"",
+																	  start_date :moment(date.startDate).format("MMM Do"),
+																	  end_date : moment(date.endDate).format("MMM Do")|| "",
+																	  notes  :$rootScope.selected_notes + "(" +days+" days)" ,
+																	  days :days
+															}
 										
 										
 										html=timeline_functions_resources.event_html(event_to_add)
 												
-										var options={id:$scope.selected_timeline_id,content:html,start:moment(date.startDate)._d,end:moment(date.endDate)._d,start_date:moment(date.startDate)._d,end_date:moment(date.endDate)._d}
+										var options={id:$scope.selected_timeline_id,className:colour||"",content:html,start:moment(date.startDate)._d,end:moment(date.endDate)._d,start_date:moment(date.startDate)._d,end_date:moment(date.endDate)._d}
 												
 										timeline_track.update({
 												id: $scope.selected_id,				
@@ -354,7 +360,9 @@ main_function = function(timeline_mode){
 			}
 			
 			
-			$scope.shopify= function(){							
+			$scope.shopify= function(){	
+
+					$rootScope.timeline_mode=timeline_mode			
 					timeline_functions_resources.populate_timeline_track($rootScope,Shopify_aggregate,timeline_shopify_functions,timeline_track)
 			}
 				

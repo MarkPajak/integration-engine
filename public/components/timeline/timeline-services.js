@@ -52,6 +52,7 @@ exports.timeline_functions = function ( $templateCache,$compile,$http,Timeline,B
 			var self = this
 			
 			$compile($("timeline-databar"))($rootScope);
+			
 			console.log('update_andCompile') //MEMORY LEAK WARNING
 			
 			setTimeout(function() {
@@ -77,7 +78,7 @@ exports.timeline_functions = function ( $templateCache,$compile,$http,Timeline,B
 						self.enable_event_drop(timeline_track,timeline_track)
 						$rootScope.timeline.redraw()
 			
-             }, 1500);
+             }, 500);
 			 
 			
 		},	
@@ -91,6 +92,7 @@ exports.timeline_functions = function ( $templateCache,$compile,$http,Timeline,B
 				  
 					dataset.query({}, function(datax) {
 						self.add_events_loop(rootScope,datax,dataset_functions,timeline_track)
+						console.log('called by populate_timeline_track')
 						self.update_andCompile()
 					})
 					
@@ -127,6 +129,7 @@ exports.timeline_functions = function ( $templateCache,$compile,$http,Timeline,B
 							})
 							//rootScope.timeline.itemsData.on("update", function(){self.update_andCompile()})
 							rootScope.timeline.fit({},function(){
+										console.log('called by add_events_loop')
 										self.update_andCompile()
 							})//needed due to angular wierdness with directives
 				})
@@ -258,7 +261,7 @@ exports.timeline_functions = function ( $templateCache,$compile,$http,Timeline,B
                             $('body').addClass('already-dropped');
                             setTimeout(function() {
                                 $('.already-dropped').removeClass('already-dropped');
-                            }, 100);
+                            }, 50);
                           
                             time=(timeline.getEventProperties(event).time)
 							group=(timeline.getEventProperties(event).group)
@@ -343,7 +346,7 @@ exports.timeline_functions = function ( $templateCache,$compile,$http,Timeline,B
 												$(ui.draggable[0]).show()
 												
 											self.add_group_to_timeline(new_date)
-											}, 1 * 1000);
+											}, 1 * 500);
 
 										});
 							
@@ -374,7 +377,7 @@ exports.timeline_functions = function ( $templateCache,$compile,$http,Timeline,B
 
    add_group_to_timeline: function(new_group){
 //TO DO
-console.log('add_group_to_timeline')
+
 				var groups = new vis.DataSet($rootScope.groups);
 				var group = new vis.DataSet( $rootScope.leave_groups);
 					var list =groups.get()
@@ -395,7 +398,7 @@ console.log('add_group_to_timeline')
 				})
 			//timeline.setGroups(list);
 			//this.enable_event_drop()	
-			
+			console.log('called by add_group_to_timeline')
 				this.update_andCompile()
 			
 		
@@ -414,6 +417,7 @@ console.log('changeTracks selection',selection)
 							})
 							
 						timeline.setGroups(list);
+						console.log('called by changeTracks')
 						this.update_andCompile()					
 						this.enable_event_drop()
 				
@@ -536,6 +540,7 @@ console.log('changeTracks selection',selection)
 										}
 										$rootScope.selected_id=selected_item._id
 										$rootScope.selected_notes=selected_item.notes
+										$rootScope.selected_approved=selected_item.approved
 										$rootScope.datePicker.date={startDate:new Date(selected_item.start),endDate:new Date (selected_item.end)}
 							
 							
@@ -545,7 +550,7 @@ console.log('changeTracks selection',selection)
            },
 		   
    get_events: function() {
-      return $http.get('http://museums.bristol.gov.uk/sync/data/events.JSON');  //1. this returns promise
+      return $http.get('/assets/data/events.JSON');  //1. this returns promise
     },
 	
 	updateOptions: function(options){
@@ -581,6 +586,7 @@ console.log('changeTracks selection',selection)
 														  start_date :moment(date.startDate).format("MMM Do"),
 														  end_date : moment(date.endDate).format("MMM Do")|| "",
 														  notes  :$rootScope.selected_notes ,
+														  approved  :$rootScope.selected_approved ,
 														  days :days,
 														  install_features:scope.installmodels
 														}
@@ -588,10 +594,14 @@ console.log('changeTracks selection',selection)
 					
 					//THIS CAUSES A REFRESH OF THE TIMELINE DIRECTIVE (GOOD)
 					html=self.event_html(event_to_add)
-					var options={id:scope.selected_timeline_id,content:html,notes:$rootScope.selected_note,start:moment(date.startDate)._d,end:moment(date.endDate)._d, install_features:scope.installmodels}
+					var options={id:scope.selected_timeline_id,content:html,approved:$rootScope.selected_approved,notes:$rootScope.selected_note,start:moment(date.startDate)._d,end:moment(date.endDate)._d, install_features:scope.installmodels}
 					self.timeline_track.update({
 								id: scope.selected_id			
-								}, options, function(){self.updateItem(options) });
+								}, options, function(){
+								console.log('called by event_edited')
+								self.updateItem(options)
+
+								});
 				
 				}
 				}
@@ -613,7 +623,7 @@ console.log('changeTracks selection',selection)
 		if(typeof(timeline)!="undefined"){
 			if(timeline.itemsData){
 				timeline.itemsData.getDataSet().update(options)
-				
+					console.log('called by updateItem')
 				this.update_andCompile()
 				
 			}
@@ -646,7 +656,7 @@ console.log('changeTracks selection',selection)
                     editable: false,  
 					groupOrder:'order',					
                     onMove: function(item, callback) {
-					
+					console.log('onmove called')
 							$rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (item.end)}
 
 							days=self.days(moment(item.start),moment(item.end))
@@ -684,7 +694,9 @@ console.log('changeTracks selection',selection)
 												}
 								self.timeline_track.update({
 								id:  item._id				
-								}, options, function(){self.updateItem(options) });
+								}, options, function(){
+								console.log('called by setup') 
+								self.updateItem(options) });
 								
 								
 								
@@ -707,7 +719,7 @@ console.log('changeTracks selection',selection)
 
                     },
                     onUpdate: function(item, callback) {
-
+					console.log('on update called')
                         self.prettyPrompt('Update item', 'Edit items text:', item.content, function(value) {
                             if (value) {
                                 item.content = value;
@@ -728,7 +740,7 @@ console.log('changeTracks selection',selection)
 														}
 										
 										
-									var _timeline = new self.timeline_tracktimeline_track({
+									var _timeline = new self.timeline_track({
 										content:  self.event_html(event_to_add),
 										name: item.name,
 										group: item.group,
@@ -738,7 +750,7 @@ console.log('changeTracks selection',selection)
 
 									})
 								   
-								   self.timeline_tracktimeline_track.update({
+								   self.timeline_track.update({
 										id: item._id
 									}, _timeline);
 								   
@@ -746,8 +758,9 @@ console.log('changeTracks selection',selection)
 										//$rootScope.timeline.itemsData.on("update", function(){
 										
 										var _options={id:item._id,content:self.event_html(event_to_add),start:moment(event_to_add.startDate)._d,end:moment(event_to_add.endDate)._d,start_date:moment(event_to_add.startDate)._d,end_date:moment(event_to_add.endDate)._d}
-							
+							console.log('called by event_edited')
 										self.updateItem(_options, function(){
+												console.log('called by onUpdate')
 											self.update_andCompile()
 										})									
 										
@@ -768,7 +781,7 @@ console.log('changeTracks selection',selection)
 
                     },
                     onAdd: function(item, callback) {
-
+console.log('on add called')
 
                         self.prettyPrompt('Add note', 'Add some notes to this date:', item.content, function(value) {
                             if (value) {
@@ -813,7 +826,7 @@ console.log('changeTracks selection',selection)
                                         $(ui.draggable[0]).show()
 										console.log('bread')
 										
-                                    }, 1 * 1000);
+                                    }, 1 * 500);
 
                                 });
 					
@@ -827,7 +840,7 @@ console.log('changeTracks selection',selection)
                     onRemove: function(item, callback) {
 
                         if (item._id) {
-                            self.timeline_tracktimeline_track.remove({
+                            self.timeline_track.remove({
                                 id: item._id
                             })
                             callback(item);
@@ -866,15 +879,15 @@ console.log('changeTracks selection',selection)
 				
 
 				 $rootScope.timeline.setOptions(options);
-				 
-				 $rootScope.timeline.on('select', function (properties) {
+				 console.log('adding select event handler')
+				 $rootScope.timeline.off('select').on('select', function (properties) {
 						console.log('timeline selected')
 						self.selected_data( properties)
 
 				});
 				
 			   $rootScope.timeline.setItems(dates);
-				$rootScope.timeline.fit()
+				//$rootScope.timeline.fit()
 				
 				
 				

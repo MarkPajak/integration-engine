@@ -98,6 +98,7 @@ main_function = function(timeline_mode){
 																				  start_date :moment(date.startDate).format("MMM Do"),
 																				  end_date : moment(date.endDate).format("MMM Do")|| "",
 																				  notes  :$rootScope.selected_notes + "(" +days+" days)" ,			
+																				 
 																				 install_features:$rootScope.installmodels,
 																				 days :days}
 										
@@ -123,14 +124,18 @@ main_function = function(timeline_mode){
 						timeline_functions.event_edited($scope,selected_note)
 				
 				})
+				$scope.$watch('selected_approved', function(selected_approved) {
+				console.log('selected_approved edited',selected_approved)
+						timeline_functions.event_edited($scope,selected_approved)
 				
+				})
 		
 				
 
 			
 			$scope.$watch('selected_item', function(selected_item) {
 
-			//if( !$scope.locked.add_item){	
+			if(timeline.options.editable==true){	
 			
 			date=$rootScope.datePicker.date
 			days=timeline_functions.days(moment(date.startDate),moment(date.endDate))
@@ -150,15 +155,18 @@ main_function = function(timeline_mode){
 													 days :days}
 			
 					html=timeline_functions.event_html(event_to_add)
+					
 					var options={id:$scope.selected_timeline_id,content:html,name:selected_item,start:moment(date.startDate)._d,end:moment(date.endDate)._d,}
 					timeline_track.update({
 					id: $scope.selected_id,				
-					}, options);				
+					}, options);	
+					
+					console.log('called by selected_item') 
 					
 					timeline_functions.updateItem(options)
 			}
 			
-			//}
+			}
 		//	else
 			//{
 			//	console.log('not logged in')

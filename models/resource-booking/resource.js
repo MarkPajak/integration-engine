@@ -4,7 +4,7 @@ var Resource = new mongoose.Schema({
 		
 		name: { type: String, required: true,unique:true },
 		type: { type: String, required: true},
-		
+		permission_category: { type: String, required: true},
 		date_logged: { type: Date, required: true},
 		comments: { type: String},
 		logger_user_name: { type: String},

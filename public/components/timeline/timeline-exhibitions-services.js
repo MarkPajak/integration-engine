@@ -5,7 +5,7 @@ exports.timeline_exhibitions_functions =  function (timeline_functions,$http,Tim
   return {
   
  get_events: function() {
-      return $http.get('http://museums.bristol.gov.uk/sync/data/events.JSON');  //1. this returns promise
+      return $http.get('/assets/data/events.JSON');  //1. this returns promise
     },
   
   

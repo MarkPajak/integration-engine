@@ -1,5 +1,5 @@
 
-exports.timeline_bookings_functions  =  function (timeline_functions,$http,Timeline,$rootScope) {
+exports.timeline_bookings_functions  =  function (timeline_functions,$http,Timeline,$rootScope,$location) {
 
 
   return {
@@ -22,18 +22,20 @@ exports.timeline_bookings_functions  =  function (timeline_functions,$http,Timel
   
   	add_events: function (eventss, fn){
 	
-								
+						
+console.log('Current route name: ' + $location.path());
+					
 									var visevents = new vis.DataSet();
 									var self=this
 										
 												
 												tempdates=[]
-											if( $rootScope.added_track_groups.indexOf("ROOM BOOKING")==-1)
+											if( $rootScope.added_track_groups.indexOf("ROOM BOOKING")==-1 &&  $location.path()=="/room-hire")
 											{
 													$rootScope.added_track_groups.push("ROOM BOOKING")														
 													$rootScope.track_groups.push({"track":"ROOM BOOKING","selected":true})
 											}
-											if( $rootScope.added_track_groups.indexOf("EQUIPMENT BOOKING")==-1)
+											if( $rootScope.added_track_groups.indexOf("EQUIPMENT BOOKING")==-1&&  $location.path()=="/equipment-timeline")
 											{
 													$rootScope.added_track_groups.push("EQUIPMENT BOOKING")														
 													$rootScope.track_groups.push({"track":"EQUIPMENT BOOKING","selected":true})
@@ -69,9 +71,11 @@ exports.timeline_bookings_functions  =  function (timeline_functions,$http,Timel
 																								  name :data.name,
 																								  showimage :"",
 																								  image :"",
+																								  className		:	 data.approved == false ? "red" : "blue",
 																								  start_date :moment(data.start_date).format("MMM Do"),
 																								  end_date :end_date ||"",
 																								  notes  :data.notes ,
+																								  approved  :data.approved ,
 																								  days :data.days
 																							}
 																							
@@ -80,15 +84,17 @@ exports.timeline_bookings_functions  =  function (timeline_functions,$http,Timel
 																			 //if($rootScope.isloggedin==true){
 																		visevents.add({
 																						_id: data._id,
-																						className:data.className,
+																						className:event_to_add.className,
 																						select_group :false,
 																						name:data.name,
+																						
 																						_type:data._type,
 																						track:data._type,
 																						content: timeline_functions.event_html(event_to_add),
 																						group: data.group,
 																						order:data._type,
 																						notes: data.notes,
+																						approved: data.approved,
 																						//title:data.notes,
 																						start: data.start_date,
 																						days:data.days,

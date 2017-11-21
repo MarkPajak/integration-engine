@@ -46,7 +46,16 @@ You'll probably need to log in to be able to enter data
 						</select>
 					</div>
 					
-					
+					<div class="form-group">
+						<label for="comments">Community group:</label>
+						<select  id="community_group" class="form-control input-lg" ng-model="community_group" ng-options="(c.name) for c  in community_groups" ng-change="search_community(community_group)">
+								<option value="">-- choose group or select add new --</option>
+						</select>
+						<div class="col-md-4" ng-show="community_group.name == 'add new group'">
+							<input class="text-box" type="text" name="_NewValue" ng-model="_newValue" />
+							<button ng-click="add_community(_newValue)">Clickto save community group name</button>
+						</div>
+					</div>
 
 				
 				
@@ -102,7 +111,7 @@ You'll probably need to log in to be able to enter data
 						  <div class="form-group col-xs-6">
 							<label>Age group:</label>
 							<select class="form-control input-lg" id="age_group" name="age_group">
-								<option value="Under 5s">Under 5s</option>
+								<option value="Under 5s">Under 5s</option> <!-- REMEMBER TO CHANGE site_events.js route if you add or change an age grouop -->
 								<option value="ages 5-15">5-15</option>
 								<option value="Adults 16+">Adults 16+</option>
 							</select>  

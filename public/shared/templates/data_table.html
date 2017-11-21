@@ -3,6 +3,12 @@
   width: 100%;
  position:relative;
  }
+ 
+ .grid-tooltip {
+  overflow: visible;
+  z-index: 9999999;
+  float: left;
+}
 
 .full-height {
   height: 98vh;
@@ -12,8 +18,12 @@
     height: auto !important;
 }
 </style>
-<script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>
+<script src="lib/grunt-script.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.6.0/ui-bootstrap-tpls.min.js"></script>
+ <link data-require="bootstrap-css@*" data-semver="3.3.1" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
 
+
+    <link rel="stylesheet" href="//cdn.rawgit.com/angular-ui/bower-ui-grid/v3.0.6/ui-grid.min.css" type="text/css" />
   
 <div ng-class="table_class ? table_class : 'col-lg-8 col-sm-8 col-md-8 full-height'"  id="data_grid"  >
 	<button class="btn" ng-show="show_all_Button" ng-click="alldata()">show more data</button>

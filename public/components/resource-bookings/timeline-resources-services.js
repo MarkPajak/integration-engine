@@ -27,10 +27,11 @@ exports.timeline_functions_resources = function ( $templateCache,$compile,$http,
 										id				:	value.group,
 										//display		:	'shown',
 										track			:    value.track,
-										order		    :    value.order,
+										order		    :    value.order,										
 										event_type		:	 value.event_type,
 										content			:    value.group_name,
 										event_typeSORT	:    content,
+										
 										selected         : value.select_group 
 									})
 					console.log(_groups)
@@ -455,6 +456,7 @@ console.log('changeTracks selection',selection)
 		 
 			var  id = event_to_add.id
 		 	var  name = event_to_add.name
+			var  className = event_to_add.className
 		 	var  showimage = event_to_add.showimage
 		 	var  image = event_to_add.image
 		 	var  start_date = event_to_add.start_date
@@ -468,7 +470,7 @@ console.log('changeTracks selection',selection)
 	
 			var showimage=showimage ||""
 			
-			var htmlContent= "<timeline-databar    description='" + description + "' description='" + description + "' id='" + id + "' name='" + name + "' image='" + image + "' showimage='" + showimage + "' startdate='" + start_date + "' enddate='" + end_date + "' notes='" + notes + "' days='" + days + "'></timeline-databar>"; //'<timeline-databar></timeline-databar>'
+			var htmlContent= "<timeline-databar     className='" + className + "' description='" + description + "' description='" + description + "' id='" + id + "' name='" + name + "' image='" + image + "' showimage='" + showimage + "' startdate='" + start_date + "' enddate='" + end_date + "' notes='" + notes + "' days='" + days + "'></timeline-databar>"; //'<timeline-databar></timeline-databar>'
 		
 			return htmlContent
 
@@ -613,6 +615,7 @@ console.log('changeTracks selection',selection)
 															  name : item.name,
 															  showimage :"",
 															  image :"",
+															  className		:	item.className,
 															  group: item.group,
 															  start_date : moment(item.start).startOf('day').format("MMM Do"),
 															  end_date : moment(item.end).startOf('day').format("MMM Do"),
@@ -629,6 +632,7 @@ console.log('changeTracks selection',selection)
 												content:html,
 												notes:event_to_add.notes,
 												start:moment(item.start)._d,
+												// className		:	 item.approved == false ? "red" : "blue",
 												end:moment(item.end)._d,
 												start_date:moment(item.start)._d,
 												end_date:moment(item.end)._d

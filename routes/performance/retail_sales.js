@@ -36,7 +36,7 @@ router.get('/total', function(req, res, next) {
 	
 			
 					Team.aggregate([
-								
+					
 					{$project:{"date":1,"non_vat_sales":1,"total_sales":1,"no_transactions":1,"museum_id":1,
 							   "quarter":{$cond:[{$lte:[{$month:route_functions.mongo_aggregator},3]},
 												 "fourth",
@@ -262,7 +262,7 @@ Team.aggregate([
 					   
 					 },  
 				
-               visits: { $sum:  { $sum: [ "$value" ] }} ,
+               visits: { $sum:  "$value" } ,
 			
 		      
             }
@@ -347,12 +347,16 @@ res.json(returned_data)
 
 router.get('/all', function(req, res, next) {
 
+console.log('get all')
+
 function get_kpis(cb){
+
+console.log('get get_kpis')
 
 Team.aggregate([
 			
 
-
+ //{ $match: { $non_vat_sales: },
 		{ $group: {
                 _id: { 
 				
@@ -378,12 +382,17 @@ Team.aggregate([
 		
 
     ], function (err, result) {
+	
+	console.log('err result')
+	
+	
 	if(err) console.log(err)
-	//console.log(result)
+	console.log(result)
+	
 	Kpi_aggregate.aggregate([
 			
 
-
+//{ $match:{   value: { $gt: 0 }  } },	
 		{ $group: {
                 _id: { year : {$year:route_functions.mongo_aggregator},         
 					   month :{$month:route_functions.mongo_aggregator},       
@@ -391,7 +400,7 @@ Team.aggregate([
 					   
 					 },  
 				
-               visits: { $sum:  { $sum: [ "$value" ] }} ,
+               visits: { $sum:  "$value" } ,
 			
 		      
             }
@@ -403,7 +412,7 @@ Team.aggregate([
 	  ], function (err, result2) {
 	
         if (err) {
-           // console.log(err);
+           console.log(err);
         } else {	
 		cb(route_functions.retail_stats_monthly(result,result2))
         }

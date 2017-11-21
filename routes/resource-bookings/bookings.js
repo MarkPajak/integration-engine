@@ -42,7 +42,7 @@ room = decodeURI(req.params.room)
 
 console.log(room)
 
-  Collection.find({"group":room})
+  Collection.find({"group":room,"approved":true})
      .exec(function(err, events) {
 	 
 	 

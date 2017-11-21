@@ -8,6 +8,7 @@ underscore.factory('_', ['$window', function($window) {
   return $window._; // assumes underscore has already been loaded on the page
 }]);
  
+ 
 var controllers = require('../shared/controllers/controllers');
 var dead_controllers = require('../components/machine-monitor/dead-controller');
 
@@ -176,8 +177,8 @@ var feedback_services = require('../components/machine-monitor/feedback-services
 		'daterangepicker',
 		'ngDragDrop',
 		'md.data.table',
-		'ui.router'	,	
-		'ui.grid', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit','ui.grid.resizeColumns','ui.grid.pinning',
+		'ui.router'	,
+		'ui.grid','ui.bootstrap', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit','ui.grid.resizeColumns','ui.grid.pinning',
 		 'ui.grid.autoResize','ngMessages', 'material.svgAssetsCache',	'moment-picker'
 		])
 		
@@ -758,6 +759,10 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
 			  
            })
 		   
+		     .when('/equipment-timeline', {
+              template: '<timeline-bookings timeline_mode="Bookings" ng-init="init(\'equipment-booking\')"  ></timeline-bookings>'
+			  
+           })
 		   
 		   .when('/timeline/:track', {
               template: '<time-line></time-line>'

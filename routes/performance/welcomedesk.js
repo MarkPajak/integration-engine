@@ -234,8 +234,8 @@ Team.aggregate([
 					   venue:'$museum_id',
 					   
 					 },  
-				
-               visits: { $sum:  { $sum: [ "$value" ] }} ,
+				  visits: { $sum:  "$value" } , 
+              // visits: { $sum:  { $sum: [ "$value" ] }} ,//not sure why this broke whyen moved to ubuntu
 			
 		      
             }
@@ -399,7 +399,7 @@ Team.aggregate([
 					   
 					 },  
 				
-               visits: { $sum:  { $sum: [ "$value" ] }} ,
+                 visits: { $sum:  "$value" } , 
 			
 		      
             }

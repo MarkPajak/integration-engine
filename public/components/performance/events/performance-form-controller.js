@@ -1,5 +1,5 @@
 exports.record_events_controller =  function($scope, $http, $q, $routeParams, $location,
-          $rootScope,Raw_events,data_table_reload,Emu_events,get_table_data
+          $rootScope,Raw_events,data_table_reload,Emu_events,get_table_data,Community_groups
     ) {
 
 $scope.scope = $scope;
@@ -44,31 +44,65 @@ $scope.museums.push({value:"BRISTOL-ARCHIVES",name:'Bristol Archives'});
 $scope.museums.push({value:"ROMAN-VILLA",name:'Kings Weston Roman Villas'});	
 		
 
-		
- Emu_events.getData().then(function(response){
+	 Community_groups.query({}, function(groups) {
  
-		past_events=[]
-		_.each(response,function(event){
-
-				if(new Date(event.startDate)<=new Date() && event.type!="Facilities"  && event.type!="Poster - Digital Signage" ){
-					past_events.push(event)
-					console.log('past event',event)
-				}
+		past_community=[]
+		_.each(	groups	, function(group) {
+			
+			_group=[]
+			_group.name=group
+			_group.value=group
+			past_community.push(_group)
+			
 		})
-		$scope.events =past_events
-		 $scope.events.push({name:'add new event'})
+		
+		$scope.community_groups =past_community
+		$scope.community_groups.push({name:'add new group'})
 	
- });
+	});
+
+ 
+	 Emu_events.getData().then(function(response){
+	 
+			past_events=[]
+			_.each(response,function(event){
+
+					if(new Date(event.startDate)<=new Date() && event.type!="Facilities"  && event.type!="Poster - Digital Signage" ){
+						past_events.push(event)
+						console.log('past event',event)
+					}
+			})
+			$scope.events =past_events
+			$scope.events.push({name:'add new event'})
+		
+	 });
 
  
     $scope.add = function (newValue) {
+		
         var obj = {};
         obj.name = newValue;
         obj.value = newValue.name;
         $scope.events.push(obj);
         $scope.event = obj;
         $scope.newValue = '';
+		
     }
+	 $scope.add_community = function (newValue) {
+		  
+      
+         var obj = {};
+        obj.name = newValue;
+        obj.value = newValue.name;
+        $scope.community_groups.push(obj);
+        $scope.community_group = obj;
+        $scope.newValue = '';
+     
+		
+    }
+	
+	
+	
  
     // function definition
 	 $scope.form_name="Bristol Culture activities"
@@ -156,7 +190,7 @@ $scope.museums.push({value:"ROMAN-VILLA",name:'Kings Weston Roman Villas'});
 			event_name: $('#event_name').find("option:selected").text(),
 			age_group: visit_form.age_group.value,
 			event_lead: visit_form.event_lead.value,
-		
+			community_group: $('#community_group').find("option:selected").text(),
 		
 
 			date_logged:new Date(),	
@@ -219,7 +253,7 @@ $scope.museums.push({value:"ROMAN-VILLA",name:'Kings Weston Roman Villas'});
 							$scope.age_groups=[]
 							$scope.selection=[]
 							visit_form.event_name.value=""
-							
+							visit_form.community_group=""
 							visit_form.count.value=""
 							visit_form.age_group.value=""
 							visit_form.comments.value=""

@@ -21,13 +21,15 @@ exports.users_controller = function($route,$scope, $http, $q, $routeParams, $loc
 			{ field: 'firstName' ,resizable: true},
 			{ field: 'lastName' ,resizable: true},
 			{ field: 'team' ,resizable: true},
-			{ field: 'group' ,resizable: true}
-			//{ field: 'trello_doing_id' ,resizable: true},
-			//{ field: 'score' ,resizable: true},
-			//{ field: 'bonus' ,resizable: true},
-			//{ field: 'leave_start' ,resizable: true},
-			//{ field: 'leave_taken' ,resizable: true},
-			//{ field: 'number_days_leave' ,resizable: true}
+			{ field: 'group' ,resizable: true},
+			{ field: 'add_rooms' ,  allowCellFocus: true, type: 'boolean',value: "add_rooms",resizable: true,visible:true,width:"100"},
+			{ field: 'add_equipment' ,  allowCellFocus: true, type: 'boolean',value: "add_equipment",resizable: true,visible:true,width:"100"},
+			{ field: 'add_room_bookings' ,  allowCellFocus: true, type: 'boolean',value: "add_room_bookings",resizable: true,visible:true,width:"100"},
+			
+			{ field: 'approve_room_bookings' ,  allowCellFocus: true, type: 'boolean',value: "approve_room_bookings",resizable: true,visible:true,width:"100"},
+			{ field: 'approve_equipment_bookings' ,  allowCellFocus: true, type: 'boolean',value: "approve_equipment_bookings",resizable: true,visible:true,width:"100"},
+			{ field: 'add_equipment_bookings' ,  allowCellFocus: true, type: 'boolean',value: "add_equipment_bookings",resizable: true,visible:true,width:"100"}
+	
 			)
 			
 			$scope.gridOptions = {

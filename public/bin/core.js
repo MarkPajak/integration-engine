@@ -10206,7 +10206,7 @@ exports.monthly_events_controller = function($route,$scope, $http, $q, $routePar
 },{"b55mWE":4,"buffer":3}],25:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.record_events_controller =  function($scope, $http, $q, $routeParams, $location,
-          $rootScope,Raw_events,data_table_reload,Emu_events,get_table_data
+          $rootScope,Raw_events,data_table_reload,Emu_events,get_table_data,Community_groups
     ) {
 
 $scope.scope = $scope;
@@ -10251,31 +10251,65 @@ $scope.museums.push({value:"BRISTOL-ARCHIVES",name:'Bristol Archives'});
 $scope.museums.push({value:"ROMAN-VILLA",name:'Kings Weston Roman Villas'});	
 		
 
-		
- Emu_events.getData().then(function(response){
+	 Community_groups.query({}, function(groups) {
  
-		past_events=[]
-		_.each(response,function(event){
-
-				if(new Date(event.startDate)<=new Date() && event.type!="Facilities"  && event.type!="Poster - Digital Signage" ){
-					past_events.push(event)
-					console.log('past event',event)
-				}
+		past_community=[]
+		_.each(	groups	, function(group) {
+			
+			_group=[]
+			_group.name=group
+			_group.value=group
+			past_community.push(_group)
+			
 		})
-		$scope.events =past_events
-		 $scope.events.push({name:'add new event'})
+		
+		$scope.community_groups =past_community
+		$scope.community_groups.push({name:'add new group'})
 	
- });
+	});
+
+ 
+	 Emu_events.getData().then(function(response){
+	 
+			past_events=[]
+			_.each(response,function(event){
+
+					if(new Date(event.startDate)<=new Date() && event.type!="Facilities"  && event.type!="Poster - Digital Signage" ){
+						past_events.push(event)
+						console.log('past event',event)
+					}
+			})
+			$scope.events =past_events
+			$scope.events.push({name:'add new event'})
+		
+	 });
 
  
     $scope.add = function (newValue) {
+		
         var obj = {};
         obj.name = newValue;
         obj.value = newValue.name;
         $scope.events.push(obj);
         $scope.event = obj;
         $scope.newValue = '';
+		
     }
+	 $scope.add_community = function (newValue) {
+		  
+      
+         var obj = {};
+        obj.name = newValue;
+        obj.value = newValue.name;
+        $scope.community_groups.push(obj);
+        $scope.community_group = obj;
+        $scope.newValue = '';
+     
+		
+    }
+	
+	
+	
  
     // function definition
 	 $scope.form_name="Bristol Culture activities"
@@ -10363,7 +10397,7 @@ $scope.museums.push({value:"ROMAN-VILLA",name:'Kings Weston Roman Villas'});
 			event_name: $('#event_name').find("option:selected").text(),
 			age_group: visit_form.age_group.value,
 			event_lead: visit_form.event_lead.value,
-		
+			community_group: $('#community_group').find("option:selected").text(),
 		
 
 			date_logged:new Date(),	
@@ -10426,7 +10460,7 @@ $scope.museums.push({value:"ROMAN-VILLA",name:'Kings Weston Roman Villas'});
 							$scope.age_groups=[]
 							$scope.selection=[]
 							visit_form.event_name.value=""
-							
+							visit_form.community_group=""
 							visit_form.count.value=""
 							visit_form.age_group.value=""
 							visit_form.comments.value=""
@@ -10467,17 +10501,23 @@ exports.raw_events_controller = function($route,$scope, $http, $q, $routeParams,
 		$scope.gridOptions.data=[]
 		$scope.extraQuery = { "on_site_off_site":"#"}
 		var columnDefs= []
-	
+	  $scope.moused = function(){console.log("moused over");}
 
 		 columnDefs.push(
 			{ field: 'museum_id' ,name: "Museum",resizable: true,width:100},
 			{ field: 'date_value' ,name: "Week beginning",resizable: true ,type: 'date', cellFilter: 'date:\'dd/MM/yy\'',width:90},
 			{ field: 'on_site_off_site',name: "Site" ,resizable: true,width:100},
-			{ field: 'event_lead',name: "Event Lead" ,resizable: true,width:140},
-			//{ field: 'age_groups',name: "Age Groups" ,resizable: true,width:200},
-			//{ field: 'target_groups',name: "Target Groups" ,resizable: true,width:200},
-			{ field: 'event_name',name: "Name of Event" ,resizable: true,width:250},			
-			//{ field: 'comments' ,value: "comments",resizable: true,visible:true,width:250},
+			{ field: 'event_lead',name: "Event Lead" ,resizable: true,width:140},		
+			{ field: 'event_name',name: "Name of Event" ,resizable: true,width:250},	
+			{ field: 'community_group',name: "Community Group" ,resizable: true,width:250},	
+			
+			
+			{ field: 'under_5',name: "Under 5s" ,resizable: true,width:100,Editable:false},	
+			{ field: '_5_15',name: "5 - 15" ,resizable: true,width:100,Editable:false},	
+			{ field: '_16_over',name: "Adults 16+" ,resizable: true,width:100,Editable:false},	
+			
+			
+			{ field: 'count',name: "Total" ,resizable: true,width:100,Editable:false},	
 			{ field: 'logger_user_name' ,value: "Logged by",resizable: true,visible:false},
 			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',visible:false}
 			)
@@ -13912,7 +13952,7 @@ exports.record_bookings_controller =  function($scope, $http, $q,
 	{
 		var mode = "room"
 		var mode_name = "ROOM BOOKING"
-		$scope.name_of_form = mode_name = "Select Room"
+		$scope.name_of_form = mode_name 
 	}
 	else
 	{
@@ -13929,7 +13969,7 @@ exports.record_bookings_controller =  function($scope, $http, $q,
 
 	  $scope.rooms=[]
 	  $scope.Resources=Resources
-	  
+	  console.log('user', $scope.user)
 		var query = {'name':"#",'type':mode,'exact':false};
 				
 		Resources.query(query, function(rooms) {
@@ -13955,7 +13995,8 @@ exports.record_bookings_controller =  function($scope, $http, $q,
 
 var event_to_add=	{
 													  id : new Date().getUTCMilliseconds(),
-													  name :visit_form.name.value,		
+													  name :visit_form.name.value,
+													 internal_external :visit_form.type_radios.value,														  
 													  showimage :"",
 													  image :"",
 													  start_date : new Date(visit_form.start_date.value),
@@ -13971,7 +14012,7 @@ var event_to_add=	{
 					group:$scope.selected_room,	
 					_type: mode_name,	
 					className:"GREEN",	
-					// content: visit_form.comments.value,	
+					 internal_external :visit_form.type_radios.value,	
 					name:visit_form.name.value,		
 					notes:visit_form.comments.value,	
 					showimage :"",
@@ -14077,6 +14118,7 @@ var mode_name = "EQUIPMENT BOOKING"
 }
 		  
 		$scope.show_all_Button=true
+		$scope.table_class = "col-md-12 col-lg-12 col-sm-5"
 		$scope.featured_collection=Bookings
 		$rootScope.featured_collection=Bookings
 		$scope.gridOptions=[]
@@ -14089,15 +14131,32 @@ var mode_name = "EQUIPMENT BOOKING"
 		
 		var columnDefs= []
 		
-
+console.log('$location.path',$location.path())
 		$rootScope.canEdit_table=true
-		 columnDefs.push(
+		
+		if(	$scope.user.approve_room_bookings==true && $location.path()=="/bookings/rooms"	||  $scope.user.approve_equipment_bookings==true && $location.path()=="/bookings/equipment"
+		) 
+		{
+			columnDefs.push(
+								{ field: 'approved' ,  allowCellFocus: true, type: 'boolean',value: "Approved",resizable: true,visible:true,width:"80",cellTemplate: "<div class='ui-grid-cell-contents'>{{row.entity.approved==true ? 'approved' : 'pending'}}</div>"}
+							)
+							
+		}
+
+		columnDefs.push(
 			{ field: 'group' ,name: mode,resizable: true,width:"150"},
+			{ field: 'name' ,name: "Name",resizable: true,width:"150"},
+			{ field: 'internal_external' ,name: "Type",resizable: true,width:"150"},
 			{ field: 'start_date' ,name: "From",type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',resizable: true,width:"150"},	
 			{ field: 'end_date' ,name: "Until",resizable: true,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',width:"150"},
-			{ field: 'comments' ,value: "comments",resizable: true,visible:true},
-			{ field: 'booked by' ,value: "Logged by",resizable: true,visible:true},
-			{ field: 'date_booked', value: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'', cellFilter: 'date:\'dd/MM/yy HH:mm\'',visible:true}
+			
+
+		  
+		  
+		  
+			{ field: 'comments' ,value: "comments",resizable: true,visible:true,width:"150"},
+			{ field: 'logger_user_name' ,value: "Logged by",resizable: true,visible:true,width:"150"},
+			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'', cellFilter: 'date:\'dd/MM/yy HH:mm\'',visible:true}
 			)
 			
 			$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
@@ -14243,7 +14302,7 @@ $scope.haspermissions=false
 					logger_user_name: $scope.user.username
             });
 			
-			var query = {'name':visit_form.room_name.value,'type':"equipment",'exact':false};
+			var query = {'name':visit_form.asset_name.value,'type':"equipment",'exact':false};
 			
 			Resources.query(query, function(visits) {
 				  $scope.$emit('form_submit');
@@ -14377,11 +14436,20 @@ exports.record_rooms_controller =  function($scope, $http, $q,
 	 
  $scope.onSubmit=function() {
 		
-
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
 		
 		    var kpis = new Resources({
 					name:visit_form.room_name.value,				  
 					type: "room",	
+					asset_no: guid(),
 				//DEPARTMENTAL VARIABLES	
 					//donation_box_amount: visit_form.donation_box_amount.value,
 					//donation_box_no: visit_form.donation_box_no.value,
@@ -14510,8 +14578,12 @@ exports.timeline_resources_controller=     function($compile,  $scope, $http, $q
 	    $scope.timeline_track = Timeline 
 		$scope.haspermissions=false
 		
+		
+		
 	 $scope.init = function(timeline_mode)
+	
   {
+   console.log('timeline_mode',timeline_mode)
 	 setTimeout(function() {
 	 
 				$scope.timeline_track = Bookings 
@@ -14567,24 +14639,26 @@ main_function = function(timeline_mode){
 										'apply.daterangepicker' : function() {  
 										   date=$rootScope.datePicker.date
 											days=timeline_functions_resources.days(moment(date.startDate),moment(date.endDate))
-											
+							colour="red"				
 											
 										 
 										   	if(moment(date.startDate).isValid()){ //true
 										
-										var event_to_add=	{id :  $scope.selected_id,
-																				  name :$scope.selected_item,
-																				  showimage :"",
-																				  image :"",
-																				  start_date :moment(date.startDate).format("MMM Do"),
-																				  end_date : moment(date.endDate).format("MMM Do")|| "",
-																				  notes  :$rootScope.selected_notes + "(" +days+" days)" ,
-																				 days :days}
+										var event_to_add=	{		  id :  $scope.selected_id,
+																	  name :$scope.selected_item,
+																	  showimage :"",
+																	  image :"",
+																	  className:colour||"",
+																	  start_date :moment(date.startDate).format("MMM Do"),
+																	  end_date : moment(date.endDate).format("MMM Do")|| "",
+																	  notes  :$rootScope.selected_notes + "(" +days+" days)" ,
+																	  days :days
+															}
 										
 										
 										html=timeline_functions_resources.event_html(event_to_add)
 												
-										var options={id:$scope.selected_timeline_id,content:html,start:moment(date.startDate)._d,end:moment(date.endDate)._d,start_date:moment(date.startDate)._d,end_date:moment(date.endDate)._d}
+										var options={id:$scope.selected_timeline_id,className:colour||"",content:html,start:moment(date.startDate)._d,end:moment(date.endDate)._d,start_date:moment(date.startDate)._d,end_date:moment(date.endDate)._d}
 												
 										timeline_track.update({
 												id: $scope.selected_id,				
@@ -14845,7 +14919,9 @@ main_function = function(timeline_mode){
 			}
 			
 			
-			$scope.shopify= function(){							
+			$scope.shopify= function(){	
+
+					$rootScope.timeline_mode=timeline_mode			
 					timeline_functions_resources.populate_timeline_track($rootScope,Shopify_aggregate,timeline_shopify_functions,timeline_track)
 			}
 				
@@ -15078,10 +15154,11 @@ exports.timeline_functions_resources = function ( $templateCache,$compile,$http,
 										id				:	value.group,
 										//display		:	'shown',
 										track			:    value.track,
-										order		    :    value.order,
+										order		    :    value.order,										
 										event_type		:	 value.event_type,
 										content			:    value.group_name,
 										event_typeSORT	:    content,
+										
 										selected         : value.select_group 
 									})
 					console.log(_groups)
@@ -15506,6 +15583,7 @@ console.log('changeTracks selection',selection)
 		 
 			var  id = event_to_add.id
 		 	var  name = event_to_add.name
+			var  className = event_to_add.className
 		 	var  showimage = event_to_add.showimage
 		 	var  image = event_to_add.image
 		 	var  start_date = event_to_add.start_date
@@ -15519,7 +15597,7 @@ console.log('changeTracks selection',selection)
 	
 			var showimage=showimage ||""
 			
-			var htmlContent= "<timeline-databar    description='" + description + "' description='" + description + "' id='" + id + "' name='" + name + "' image='" + image + "' showimage='" + showimage + "' startdate='" + start_date + "' enddate='" + end_date + "' notes='" + notes + "' days='" + days + "'></timeline-databar>"; //'<timeline-databar></timeline-databar>'
+			var htmlContent= "<timeline-databar     className='" + className + "' description='" + description + "' description='" + description + "' id='" + id + "' name='" + name + "' image='" + image + "' showimage='" + showimage + "' startdate='" + start_date + "' enddate='" + end_date + "' notes='" + notes + "' days='" + days + "'></timeline-databar>"; //'<timeline-databar></timeline-databar>'
 		
 			return htmlContent
 
@@ -15664,6 +15742,7 @@ console.log('changeTracks selection',selection)
 															  name : item.name,
 															  showimage :"",
 															  image :"",
+															  className		:	item.className,
 															  group: item.group,
 															  start_date : moment(item.start).startOf('day').format("MMM Do"),
 															  end_date : moment(item.end).startOf('day').format("MMM Do"),
@@ -15680,6 +15759,7 @@ console.log('changeTracks selection',selection)
 												content:html,
 												notes:event_to_add.notes,
 												start:moment(item.start)._d,
+												// className		:	 item.approved == false ? "red" : "blue",
 												end:moment(item.end)._d,
 												start_date:moment(item.start)._d,
 												end_date:moment(item.end)._d
@@ -17494,7 +17574,7 @@ myArray.push(obj);
 },{"b55mWE":4,"buffer":3}],84:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
-exports.timeline_bookings_functions  =  function (timeline_functions,$http,Timeline,$rootScope) {
+exports.timeline_bookings_functions  =  function (timeline_functions,$http,Timeline,$rootScope,$location) {
 
 
   return {
@@ -17517,18 +17597,20 @@ exports.timeline_bookings_functions  =  function (timeline_functions,$http,Timel
   
   	add_events: function (eventss, fn){
 	
-								
+						
+console.log('Current route name: ' + $location.path());
+					
 									var visevents = new vis.DataSet();
 									var self=this
 										
 												
 												tempdates=[]
-											if( $rootScope.added_track_groups.indexOf("ROOM BOOKING")==-1)
+											if( $rootScope.added_track_groups.indexOf("ROOM BOOKING")==-1 &&  $location.path()=="/room-hire")
 											{
 													$rootScope.added_track_groups.push("ROOM BOOKING")														
 													$rootScope.track_groups.push({"track":"ROOM BOOKING","selected":true})
 											}
-											if( $rootScope.added_track_groups.indexOf("EQUIPMENT BOOKING")==-1)
+											if( $rootScope.added_track_groups.indexOf("EQUIPMENT BOOKING")==-1&&  $location.path()=="/equipment-timeline")
 											{
 													$rootScope.added_track_groups.push("EQUIPMENT BOOKING")														
 													$rootScope.track_groups.push({"track":"EQUIPMENT BOOKING","selected":true})
@@ -17564,9 +17646,11 @@ exports.timeline_bookings_functions  =  function (timeline_functions,$http,Timel
 																								  name :data.name,
 																								  showimage :"",
 																								  image :"",
+																								  className		:	 data.approved == false ? "red" : "blue",
 																								  start_date :moment(data.start_date).format("MMM Do"),
 																								  end_date :end_date ||"",
 																								  notes  :data.notes ,
+																								  approved  :data.approved ,
 																								  days :data.days
 																							}
 																							
@@ -17575,15 +17659,17 @@ exports.timeline_bookings_functions  =  function (timeline_functions,$http,Timel
 																			 //if($rootScope.isloggedin==true){
 																		visevents.add({
 																						_id: data._id,
-																						className:data.className,
+																						className:event_to_add.className,
 																						select_group :false,
 																						name:data.name,
+																						
 																						_type:data._type,
 																						track:data._type,
 																						content: timeline_functions.event_html(event_to_add),
 																						group: data.group,
 																						order:data._type,
 																						notes: data.notes,
+																						approved: data.approved,
 																						//title:data.notes,
 																						start: data.start_date,
 																						days:data.days,
@@ -17750,6 +17836,7 @@ main_function = function(timeline_mode){
 																				  start_date :moment(date.startDate).format("MMM Do"),
 																				  end_date : moment(date.endDate).format("MMM Do")|| "",
 																				  notes  :$rootScope.selected_notes + "(" +days+" days)" ,			
+																				 
 																				 install_features:$rootScope.installmodels,
 																				 days :days}
 										
@@ -17775,14 +17862,18 @@ main_function = function(timeline_mode){
 						timeline_functions.event_edited($scope,selected_note)
 				
 				})
+				$scope.$watch('selected_approved', function(selected_approved) {
+				console.log('selected_approved edited',selected_approved)
+						timeline_functions.event_edited($scope,selected_approved)
 				
+				})
 		
 				
 
 			
 			$scope.$watch('selected_item', function(selected_item) {
 
-			//if( !$scope.locked.add_item){	
+			if(timeline.options.editable==true){	
 			
 			date=$rootScope.datePicker.date
 			days=timeline_functions.days(moment(date.startDate),moment(date.endDate))
@@ -17802,15 +17893,18 @@ main_function = function(timeline_mode){
 													 days :days}
 			
 					html=timeline_functions.event_html(event_to_add)
+					
 					var options={id:$scope.selected_timeline_id,content:html,name:selected_item,start:moment(date.startDate)._d,end:moment(date.endDate)._d,}
 					timeline_track.update({
 					id: $scope.selected_id,				
-					}, options);				
+					}, options);	
+					
+					console.log('called by selected_item') 
 					
 					timeline_functions.updateItem(options)
 			}
 			
-			//}
+			}
 		//	else
 			//{
 			//	console.log('not logged in')
@@ -18361,7 +18455,7 @@ exports.timeline_exhibitions_functions =  function (timeline_functions,$http,Tim
   return {
   
  get_events: function() {
-      return $http.get('http://museums.bristol.gov.uk/sync/data/events.JSON');  //1. this returns promise
+      return $http.get('/assets/data/events.JSON');  //1. this returns promise
     },
   
   
@@ -19231,7 +19325,7 @@ exports.timeline_leave_functions =  function ($http,Timeline,$rootScope) {
 
 			},
    get_events: function() {
-      return $http.get('http://museums.bristol.gov.uk/sync/data/events.JSON');  //1. this returns promise
+      return $http.get('/data/events.JSON');  //1. this returns promise
     },
 	
 	updateOptions: function(options){
@@ -19672,6 +19766,7 @@ exports.timeline_functions = function ( $templateCache,$compile,$http,Timeline,B
 			var self = this
 			
 			$compile($("timeline-databar"))($rootScope);
+			
 			console.log('update_andCompile') //MEMORY LEAK WARNING
 			
 			setTimeout(function() {
@@ -19697,7 +19792,7 @@ exports.timeline_functions = function ( $templateCache,$compile,$http,Timeline,B
 						self.enable_event_drop(timeline_track,timeline_track)
 						$rootScope.timeline.redraw()
 			
-             }, 1500);
+             }, 500);
 			 
 			
 		},	
@@ -19711,6 +19806,7 @@ exports.timeline_functions = function ( $templateCache,$compile,$http,Timeline,B
 				  
 					dataset.query({}, function(datax) {
 						self.add_events_loop(rootScope,datax,dataset_functions,timeline_track)
+						console.log('called by populate_timeline_track')
 						self.update_andCompile()
 					})
 					
@@ -19747,6 +19843,7 @@ exports.timeline_functions = function ( $templateCache,$compile,$http,Timeline,B
 							})
 							//rootScope.timeline.itemsData.on("update", function(){self.update_andCompile()})
 							rootScope.timeline.fit({},function(){
+										console.log('called by add_events_loop')
 										self.update_andCompile()
 							})//needed due to angular wierdness with directives
 				})
@@ -19878,7 +19975,7 @@ exports.timeline_functions = function ( $templateCache,$compile,$http,Timeline,B
                             $('body').addClass('already-dropped');
                             setTimeout(function() {
                                 $('.already-dropped').removeClass('already-dropped');
-                            }, 100);
+                            }, 50);
                           
                             time=(timeline.getEventProperties(event).time)
 							group=(timeline.getEventProperties(event).group)
@@ -19963,7 +20060,7 @@ exports.timeline_functions = function ( $templateCache,$compile,$http,Timeline,B
 												$(ui.draggable[0]).show()
 												
 											self.add_group_to_timeline(new_date)
-											}, 1 * 1000);
+											}, 1 * 500);
 
 										});
 							
@@ -19994,7 +20091,7 @@ exports.timeline_functions = function ( $templateCache,$compile,$http,Timeline,B
 
    add_group_to_timeline: function(new_group){
 //TO DO
-console.log('add_group_to_timeline')
+
 				var groups = new vis.DataSet($rootScope.groups);
 				var group = new vis.DataSet( $rootScope.leave_groups);
 					var list =groups.get()
@@ -20015,7 +20112,7 @@ console.log('add_group_to_timeline')
 				})
 			//timeline.setGroups(list);
 			//this.enable_event_drop()	
-			
+			console.log('called by add_group_to_timeline')
 				this.update_andCompile()
 			
 		
@@ -20034,6 +20131,7 @@ console.log('changeTracks selection',selection)
 							})
 							
 						timeline.setGroups(list);
+						console.log('called by changeTracks')
 						this.update_andCompile()					
 						this.enable_event_drop()
 				
@@ -20156,6 +20254,7 @@ console.log('changeTracks selection',selection)
 										}
 										$rootScope.selected_id=selected_item._id
 										$rootScope.selected_notes=selected_item.notes
+										$rootScope.selected_approved=selected_item.approved
 										$rootScope.datePicker.date={startDate:new Date(selected_item.start),endDate:new Date (selected_item.end)}
 							
 							
@@ -20165,7 +20264,7 @@ console.log('changeTracks selection',selection)
            },
 		   
    get_events: function() {
-      return $http.get('http://museums.bristol.gov.uk/sync/data/events.JSON');  //1. this returns promise
+      return $http.get('/assets/data/events.JSON');  //1. this returns promise
     },
 	
 	updateOptions: function(options){
@@ -20201,6 +20300,7 @@ console.log('changeTracks selection',selection)
 														  start_date :moment(date.startDate).format("MMM Do"),
 														  end_date : moment(date.endDate).format("MMM Do")|| "",
 														  notes  :$rootScope.selected_notes ,
+														  approved  :$rootScope.selected_approved ,
 														  days :days,
 														  install_features:scope.installmodels
 														}
@@ -20208,10 +20308,14 @@ console.log('changeTracks selection',selection)
 					
 					//THIS CAUSES A REFRESH OF THE TIMELINE DIRECTIVE (GOOD)
 					html=self.event_html(event_to_add)
-					var options={id:scope.selected_timeline_id,content:html,notes:$rootScope.selected_note,start:moment(date.startDate)._d,end:moment(date.endDate)._d, install_features:scope.installmodels}
+					var options={id:scope.selected_timeline_id,content:html,approved:$rootScope.selected_approved,notes:$rootScope.selected_note,start:moment(date.startDate)._d,end:moment(date.endDate)._d, install_features:scope.installmodels}
 					self.timeline_track.update({
 								id: scope.selected_id			
-								}, options, function(){self.updateItem(options) });
+								}, options, function(){
+								console.log('called by event_edited')
+								self.updateItem(options)
+
+								});
 				
 				}
 				}
@@ -20233,7 +20337,7 @@ console.log('changeTracks selection',selection)
 		if(typeof(timeline)!="undefined"){
 			if(timeline.itemsData){
 				timeline.itemsData.getDataSet().update(options)
-				
+					console.log('called by updateItem')
 				this.update_andCompile()
 				
 			}
@@ -20266,7 +20370,7 @@ console.log('changeTracks selection',selection)
                     editable: false,  
 					groupOrder:'order',					
                     onMove: function(item, callback) {
-					
+					console.log('onmove called')
 							$rootScope.datePicker.date={startDate:new Date(item.start),endDate:new Date (item.end)}
 
 							days=self.days(moment(item.start),moment(item.end))
@@ -20304,7 +20408,9 @@ console.log('changeTracks selection',selection)
 												}
 								self.timeline_track.update({
 								id:  item._id				
-								}, options, function(){self.updateItem(options) });
+								}, options, function(){
+								console.log('called by setup') 
+								self.updateItem(options) });
 								
 								
 								
@@ -20327,7 +20433,7 @@ console.log('changeTracks selection',selection)
 
                     },
                     onUpdate: function(item, callback) {
-
+					console.log('on update called')
                         self.prettyPrompt('Update item', 'Edit items text:', item.content, function(value) {
                             if (value) {
                                 item.content = value;
@@ -20348,7 +20454,7 @@ console.log('changeTracks selection',selection)
 														}
 										
 										
-									var _timeline = new self.timeline_tracktimeline_track({
+									var _timeline = new self.timeline_track({
 										content:  self.event_html(event_to_add),
 										name: item.name,
 										group: item.group,
@@ -20358,7 +20464,7 @@ console.log('changeTracks selection',selection)
 
 									})
 								   
-								   self.timeline_tracktimeline_track.update({
+								   self.timeline_track.update({
 										id: item._id
 									}, _timeline);
 								   
@@ -20366,8 +20472,9 @@ console.log('changeTracks selection',selection)
 										//$rootScope.timeline.itemsData.on("update", function(){
 										
 										var _options={id:item._id,content:self.event_html(event_to_add),start:moment(event_to_add.startDate)._d,end:moment(event_to_add.endDate)._d,start_date:moment(event_to_add.startDate)._d,end_date:moment(event_to_add.endDate)._d}
-							
+							console.log('called by event_edited')
 										self.updateItem(_options, function(){
+												console.log('called by onUpdate')
 											self.update_andCompile()
 										})									
 										
@@ -20388,7 +20495,7 @@ console.log('changeTracks selection',selection)
 
                     },
                     onAdd: function(item, callback) {
-
+console.log('on add called')
 
                         self.prettyPrompt('Add note', 'Add some notes to this date:', item.content, function(value) {
                             if (value) {
@@ -20433,7 +20540,7 @@ console.log('changeTracks selection',selection)
                                         $(ui.draggable[0]).show()
 										console.log('bread')
 										
-                                    }, 1 * 1000);
+                                    }, 1 * 500);
 
                                 });
 					
@@ -20447,7 +20554,7 @@ console.log('changeTracks selection',selection)
                     onRemove: function(item, callback) {
 
                         if (item._id) {
-                            self.timeline_tracktimeline_track.remove({
+                            self.timeline_track.remove({
                                 id: item._id
                             })
                             callback(item);
@@ -20486,15 +20593,15 @@ console.log('changeTracks selection',selection)
 				
 
 				 $rootScope.timeline.setOptions(options);
-				 
-				 $rootScope.timeline.on('select', function (properties) {
+				 console.log('adding select event handler')
+				 $rootScope.timeline.off('select').on('select', function (properties) {
 						console.log('timeline selected')
 						self.selected_data( properties)
 
 				});
 				
 			   $rootScope.timeline.setItems(dates);
-				$rootScope.timeline.fit()
+				//$rootScope.timeline.fit()
 				
 				
 				
@@ -21073,13 +21180,15 @@ exports.users_controller = function($route,$scope, $http, $q, $routeParams, $loc
 			{ field: 'firstName' ,resizable: true},
 			{ field: 'lastName' ,resizable: true},
 			{ field: 'team' ,resizable: true},
-			{ field: 'group' ,resizable: true}
-			//{ field: 'trello_doing_id' ,resizable: true},
-			//{ field: 'score' ,resizable: true},
-			//{ field: 'bonus' ,resizable: true},
-			//{ field: 'leave_start' ,resizable: true},
-			//{ field: 'leave_taken' ,resizable: true},
-			//{ field: 'number_days_leave' ,resizable: true}
+			{ field: 'group' ,resizable: true},
+			{ field: 'add_rooms' ,  allowCellFocus: true, type: 'boolean',value: "add_rooms",resizable: true,visible:true,width:"100"},
+			{ field: 'add_equipment' ,  allowCellFocus: true, type: 'boolean',value: "add_equipment",resizable: true,visible:true,width:"100"},
+			{ field: 'add_room_bookings' ,  allowCellFocus: true, type: 'boolean',value: "add_room_bookings",resizable: true,visible:true,width:"100"},
+			
+			{ field: 'approve_room_bookings' ,  allowCellFocus: true, type: 'boolean',value: "approve_room_bookings",resizable: true,visible:true,width:"100"},
+			{ field: 'approve_equipment_bookings' ,  allowCellFocus: true, type: 'boolean',value: "approve_equipment_bookings",resizable: true,visible:true,width:"100"},
+			{ field: 'add_equipment_bookings' ,  allowCellFocus: true, type: 'boolean',value: "add_equipment_bookings",resizable: true,visible:true,width:"100"}
+	
 			)
 			
 			$scope.gridOptions = {
@@ -21228,7 +21337,21 @@ exports.NavController = function($location,AuthService,$scope,$http) {
     }
 }
 
-$scope.permissions = []
+default_permissions = [{
+						add_rooms:false,
+						add_equipment:false,
+						approve_room_bookings:false,
+						approve_equipment_bookings:false
+						
+						}
+						]
+
+
+
+
+
+
+
 $scope.user_groups = []
 $scope.user_groups['AV']=[]
 $scope.user_groups['ADMIN']=[]
@@ -21259,6 +21382,9 @@ var equipment = {link:"equipment",value:"Add equipment"}
 var equipment_bookings = {link:"bookings/equipment",value:"Equipment booking"}
 var room_bookings = {link:"bookings/rooms",value:"Room booking"}
 var room_hire = {link:"room-hire",value:"Room booking timeline"}
+var equipment_booking_timeline = {link:"equipment-timeline",value:"Equipment booking timeline"}
+
+
 
 var performance = {link:"record-visitor-numbers",value:"VISITS: Record visitor figures"}
 var record_retail_sales = {link:"record-retail-sales",value:"RETAIL:Record retail sales"}
@@ -21323,6 +21449,9 @@ resources.push(equipment)
 resources.push(equipment_bookings)
 resources.push(room_bookings)
 resources.push(room_hire)
+resources.push(equipment_booking_timeline)
+
+
 
 var performance_data=[]
 performance_data.push(room_hire)
@@ -21330,14 +21459,10 @@ performance_data.push(room_hire)
 $scope.user_groups['COMMERCIAL'].views=[]
 $scope.user_groups['COMMERCIAL'].enter_data=[]
 $scope.user_groups['COMMERCIAL'].resources=[]
+$scope.user_groups['COMMERCIAL'].permissions=default_permissions
+
 $scope.user_groups['COMMERCIAL'].resources=resources
 $scope.user_groups['COMMERCIAL'].performance=performance_data
-
-
-
-
-
-
 
 
 
@@ -21370,7 +21495,7 @@ performance_data.push(raw_welcomedesk)
 performance_data.push(events)
 performance_data.push(monthly_events)
 
-
+$scope.user_groups['DEVELOPMENT'].permissions=default_permissions
 $scope.user_groups['DEVELOPMENT'].views=[]
 $scope.user_groups['DEVELOPMENT'].enter_data=[]
 $scope.user_groups['DEVELOPMENT'].resources=[]
@@ -21439,6 +21564,9 @@ performance_data=performance_data.sort()
 $scope.user_groups['ADMIN'].views=[]
 $scope.user_groups['ADMIN'].enter_data=[]
 $scope.user_groups['ADMIN'].resources=[]
+$scope.user_groups['ADMIN'].permissions=default_permissions
+
+
 
 $scope.user_groups['ADMIN'].views.push(room_hire)
 $scope.user_groups['ADMIN'].views.push(timeline)
@@ -21478,6 +21606,9 @@ performance_data.push(monthly_events)
 $scope.user_groups['EXHIBITIONS'].views=[]
 $scope.user_groups['EXHIBITIONS'].enter_data=[]
 $scope.user_groups['EXHIBITIONS'].resources=[]
+$scope.user_groups['EXHIBITIONS'].permissions=default_permissions
+
+
 
 $scope.user_groups['EXHIBITIONS'].views.push(timeline)
 $scope.user_groups['EXHIBITIONS'].views.push(analyser)
@@ -21504,6 +21635,7 @@ performance_data.push(monthly_events)
 $scope.user_groups['LEARNING'].views=[]
 $scope.user_groups['LEARNING'].enter_data=[]
 $scope.user_groups['LEARNING'].resources=[]
+$scope.user_groups['LEARNING'].permissions=default_permissions
 
 $scope.user_groups['LEARNING'].views.push(timeline)
 $scope.user_groups['LEARNING'].views.push(analyser)
@@ -21554,7 +21686,7 @@ $scope.user_groups['AV'].views.push(tech_support)
 $scope.user_groups['AV'].enter_data=enter_data
 $scope.user_groups['AV'].performance=performance_data
 $scope.user_groups['AV'].resources=resources
-
+$scope.user_groups['AV'].permissions= [	]
 
 
 var enter_data=[]
@@ -21587,7 +21719,7 @@ performance_data.push(monthly_events)
 $scope.user_groups['DIGITAL'].views=[]
 $scope.user_groups['DIGITAL'].enter_data=[]
 $scope.user_groups['DIGITAL'].resources=[]
-
+$scope.user_groups['DIGITAL'].permissions=default_permissions
 
 $scope.user_groups['DIGITAL'].views.push(timeline)
 $scope.user_groups['DIGITAL'].views.push(analyser)
@@ -21609,7 +21741,7 @@ var performance_data=[]
 $scope.user_groups['DEFAULT'].views=[]
 $scope.user_groups['DEFAULT'].enter_data=[]
 $scope.user_groups['DEFAULT'].resources=[]
-
+$scope.user_groups['DEFAULT'].permissions=default_permissions
 
 $scope.user_groups['DEFAULT'].views.push(timeline) 
 $scope.user_groups['DEFAULT'].views.push(analyser)
@@ -21643,7 +21775,7 @@ performance_data.push(monthly_events)
 $scope.user_groups['STAFF'].views=[]
 $scope.user_groups['STAFF'].enter_data=[]
 $scope.user_groups['STAFF'].resources=[]
-
+$scope.user_groups['STAFF'].permissions=default_permissions
 
 
 $scope.user_groups['STAFF'].views.push(timeline) 
@@ -21680,7 +21812,7 @@ enter_data.push(record_exhibitions_pwyt)
 $scope.user_groups['OPERATIONS'].views=[]
 $scope.user_groups['OPERATIONS'].enter_data=[]
 $scope.user_groups['OPERATIONS'].resources=[]
-
+$scope.user_groups['OPERATIONS'].permissions=default_permissions
 
 $scope.user_groups['OPERATIONS'].views.push(timeline) 
 $scope.user_groups['OPERATIONS'].views.push(room_hire) 
@@ -21713,7 +21845,7 @@ $scope.user_groups['RETAIL'].views=[]
 $scope.user_groups['RETAIL'].enter_data=[]
 $scope.user_groups['RETAIL'].resources=[]
 $scope.user_groups['RETAIL'].performance=[]
-
+$scope.user_groups['RETAIL'].permissions=default_permissions
 
 $scope.user_groups['RETAIL'].views.push(timeline)
 
@@ -21725,19 +21857,21 @@ $scope.user_groups['RETAIL'].performance=performance_data
 	 
 	  if(user.data.group){
 		 // console.log("user",user.data)
-		  
+		
+		
+		user.data.permissions= $scope.user_groups[user.data.group].permissions  
 		user.data.views= $scope.user_groups[user.data.group].views
 		user.data.views=user.data.views.sort(sortFunction);
 		
 		user.data.resources= $scope.user_groups[user.data.group].resources
-	   user.data.resources= user.data.resources.sort(sortFunction);
+	    user.data.resources= user.data.resources.sort(sortFunction);
 	   
 	   
 		
 	   user.data.performance= $scope.user_groups[user.data.group].performance
 	   user.data.performance= user.data.performance.sort(sortFunction);
 	   
-	  user.data.enter_data= $scope.user_groups[user.data.group].enter_data	   
+	   user.data.enter_data= $scope.user_groups[user.data.group].enter_data	   
 	   user.data.enter_data=user.data.enter_data.sort(sortFunction);
 	  
 	  if(user.data.lastName.toLowerCase()=="pace"){
@@ -21820,6 +21954,7 @@ var _ = require('underscore');
 underscore.factory('_', ['$window', function($window) {
   return $window._; // assumes underscore has already been loaded on the page
 }]);
+ 
  
 var controllers = require('../shared/controllers/controllers');
 var dead_controllers = require('../components/machine-monitor/dead-controller');
@@ -21989,8 +22124,8 @@ var feedback_services = require('../components/machine-monitor/feedback-services
 		'daterangepicker',
 		'ngDragDrop',
 		'md.data.table',
-		'ui.router'	,	
-		'ui.grid', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit','ui.grid.resizeColumns','ui.grid.pinning',
+		'ui.router'	,
+		'ui.grid','ui.bootstrap', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit','ui.grid.resizeColumns','ui.grid.pinning',
 		 'ui.grid.autoResize','ngMessages', 'material.svgAssetsCache',	'moment-picker'
 		])
 		
@@ -22571,6 +22706,10 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
 			  
            })
 		   
+		     .when('/equipment-timeline', {
+              template: '<timeline-bookings timeline_mode="Bookings" ng-init="init(\'equipment-booking\')"  ></timeline-bookings>'
+			  
+           })
 		   
 		   .when('/timeline/:track', {
               template: '<time-line></time-line>'
@@ -22812,7 +22951,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
           
         }])
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_1125fe68.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_7e76be69.js","/")
 },{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/performance/analyser/analyser-controller":18,"../components/performance/dashboard-controllers":19,"../components/performance/donations/monthly-donations-controller":20,"../components/performance/donations/performance-form-controller":21,"../components/performance/donations/raw-donations-controller":22,"../components/performance/donations/yearly-donations-controller":23,"../components/performance/events/monthly-events-controller":24,"../components/performance/events/performance-form-controller":25,"../components/performance/events/raw-events-controller":26,"../components/performance/events/yearly-events-controller":27,"../components/performance/exhibitions-pwyt/monthly-donations-controller":28,"../components/performance/exhibitions-pwyt/performance-form-controller":29,"../components/performance/exhibitions-pwyt/raw-donations-controller":30,"../components/performance/exhibitions/exhibitions-summary-controller":31,"../components/performance/gallery-visits/monthly-teg-controller":32,"../components/performance/gallery-visits/performance-form-controller":33,"../components/performance/gallery-visits/raw-teg-controller":34,"../components/performance/gallery-visits/weekly-teg-controller":35,"../components/performance/gallery-visits/yearly-teg-controller":36,"../components/performance/gift-aid/monthly-allgiftaid-controller":37,"../components/performance/gift-aid/monthly-giftaid-controller":38,"../components/performance/gift-aid/performance-form-controller":39,"../components/performance/gift-aid/raw-giftaid-controller":40,"../components/performance/learning/age-learning-controller":41,"../components/performance/learning/monthly-learning-controller":42,"../components/performance/learning/performance-form-controller":43,"../components/performance/learning/raw-learning-controller":44,"../components/performance/learning/yearly-learning-controller":45,"../components/performance/operations/monthly-operations-controller":46,"../components/performance/operations/performance-form-controller":47,"../components/performance/operations/raw-operations-controller":48,"../components/performance/operations/yearly-operations-controller":49,"../components/performance/performance-directive":50,"../components/performance/retail/monthly-retail-sales-controller":51,"../components/performance/retail/performance-form-controller":52,"../components/performance/retail/raw-retail-sales-controller":53,"../components/performance/retail/yearly-retail-sales-controller":54,"../components/performance/turnstiles/monthly-turnstiles-controller":55,"../components/performance/turnstiles/raw-turnstiles-controller":56,"../components/performance/visits/monthly-visits-controller":57,"../components/performance/visits/raw-visits-controller":58,"../components/performance/visits/visits-form-controller":59,"../components/performance/visits/yearly-visits-controller":60,"../components/performance/welcome-desk/monthly-welcomedesk-controller":61,"../components/performance/welcome-desk/performance-form-controller":62,"../components/performance/welcome-desk/raw-welcomedesk-controller":63,"../components/performance/welcome-desk/yearly-welcomedesk-controller":64,"../components/resource-bookings/bookings/form-controller":65,"../components/resource-bookings/bookings/raw-bookings-controller":66,"../components/resource-bookings/directive":67,"../components/resource-bookings/equipment/form-controller":68,"../components/resource-bookings/equipment/raw-equipment-controller":69,"../components/resource-bookings/rooms/form-controller":70,"../components/resource-bookings/rooms/raw-rooms-controller":71,"../components/resource-bookings/timeline-resources-controller":72,"../components/resource-bookings/timeline-resources-services":73,"../components/shopify/shopify-controller":74,"../components/shopify/shopify-directive":75,"../components/team/app-controllers":76,"../components/team/form-controller":77,"../components/team/leave-controller":78,"../components/team/team-controller":79,"../components/tech-support/tech-support-controller":80,"../components/tech-support/tech-support-directive":81,"../components/tech-support/trello-services":82,"../components/timeline-settings/timeline-settings-controller":83,"../components/timeline/timeline-bookings-services":84,"../components/timeline/timeline-controller":85,"../components/timeline/timeline-directive":86,"../components/timeline/timeline-exhibitions-services":87,"../components/timeline/timeline-googlesheets-services":88,"../components/timeline/timeline-installs-services":89,"../components/timeline/timeline-learning-bookings-services":90,"../components/timeline/timeline-leave-services":91,"../components/timeline/timeline-loans-services":92,"../components/timeline/timeline-services":93,"../components/timeline/timeline-shopify-services":94,"../components/timeline/timeline-visitor-figures-services":95,"../components/turnstiles/turnstiles-controller":96,"../components/turnstiles/turnstiles-directive":97,"../components/user-admin/users-controller":98,"../components/user-admin/users-directive":99,"../shared/controllers/controllers":100,"../shared/controllers/navbar-controller":101,"../shared/directives/directives":102,"../shared/services/app-services":104,"../shared/services/data-services":105,"b55mWE":4,"buffer":3,"underscore":7}],104:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.data_table_reload = function() {	
@@ -24369,6 +24508,20 @@ exports.Tallys = function($resource){
   return delete_leave_by_id;
  }
  
+   exports.Community_groups =  function($resource){
+	  
+		 
+          return $resource('/events/community_groups', null,
+		  { 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray:true}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+
+  }
+ 
   exports.Tech_support =  function($resource){
 	  
 		 
@@ -24454,7 +24607,7 @@ exports.Tallys = function($resource){
 		   var  all,events = [];
     var getData = function() {
 	console.log('getting events')
-        return $http.get('http://museums.bristol.gov.uk/sync/data/events.JSON')
+        return $http.get('/assets/data/events.JSON')
         .then(function(response) {
           return response.data.events
         });
@@ -24466,7 +24619,7 @@ exports.Tallys = function($resource){
 		  
 		  var events = [];
 			
-	$http.get('http://museums.bristol.gov.uk/sync/data/events.JSON')
+	$http.get('/assets/data/events.JSON')
     .then(function(response) {
       events = response;
     }); 

@@ -23,8 +23,8 @@ var Events_kpi = new mongoose.Schema({
 			event_lead: { type: String},				
 			age_groups:  [age_groupDoc],
 			target_groups:  [target_groupDoc],
+			community_group:  { type: String},
 			event_name: { type: String, required: true},
-
 
 			date_value: { type: Date},	
 			date_value_end: { type: Date},

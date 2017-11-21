@@ -648,6 +648,20 @@ exports.Tallys = function($resource){
   return delete_leave_by_id;
  }
  
+   exports.Community_groups =  function($resource){
+	  
+		 
+          return $resource('/events/community_groups', null,
+		  { 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray:true}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+
+  }
+ 
   exports.Tech_support =  function($resource){
 	  
 		 
@@ -733,7 +747,7 @@ exports.Tallys = function($resource){
 		   var  all,events = [];
     var getData = function() {
 	console.log('getting events')
-        return $http.get('http://museums.bristol.gov.uk/sync/data/events.JSON')
+        return $http.get('/assets/data/events.JSON')
         .then(function(response) {
           return response.data.events
         });
@@ -745,7 +759,7 @@ exports.Tallys = function($resource){
 		  
 		  var events = [];
 			
-	$http.get('http://museums.bristol.gov.uk/sync/data/events.JSON')
+	$http.get('/assets/data/events.JSON')
     .then(function(response) {
       events = response;
     }); 

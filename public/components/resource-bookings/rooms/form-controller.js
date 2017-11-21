@@ -15,11 +15,20 @@ exports.record_rooms_controller =  function($scope, $http, $q,
 	 
  $scope.onSubmit=function() {
 		
-
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
 		
 		    var kpis = new Resources({
 					name:visit_form.room_name.value,				  
 					type: "room",	
+					asset_no: guid(),
 				//DEPARTMENTAL VARIABLES	
 					//donation_box_amount: visit_form.donation_box_amount.value,
 					//donation_box_no: visit_form.donation_box_no.value,

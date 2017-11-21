@@ -51,7 +51,7 @@ $scope.haspermissions=false
 					logger_user_name: $scope.user.username
             });
 			
-			var query = {'name':visit_form.room_name.value,'type':"equipment",'exact':false};
+			var query = {'name':visit_form.asset_name.value,'type':"equipment",'exact':false};
 			
 			Resources.query(query, function(visits) {
 				  $scope.$emit('form_submit');

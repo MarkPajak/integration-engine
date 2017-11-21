@@ -161,7 +161,7 @@ exports.timeline_leave_functions =  function ($http,Timeline,$rootScope) {
 
 			},
    get_events: function() {
-      return $http.get('http://museums.bristol.gov.uk/sync/data/events.JSON');  //1. this returns promise
+      return $http.get('/data/events.JSON');  //1. this returns promise
     },
 	
 	updateOptions: function(options){

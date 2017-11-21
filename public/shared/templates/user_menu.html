@@ -20,16 +20,37 @@ color:#9d9d9d;
 	<input type="hidden" id="hashval" name="redirect" value="">
 	<li  ng-hide="user.firstName"><a href="/signup">Register</a></li>
     <li ng-show="user.firstName" class="pull-right" ><a  href='/signout'  > Sign Out</a></li>	
-	<li  ng-show="user.firstName" > <button class="btn btn-primary dropdown-toggle"  data-toggle="dropdown">Menu
+	<li  ng-show="user.firstName" > 
+	<button class="btn btn-primary dropdown-toggle"  data-toggle="dropdown">View Data
 	 <span class="caret"></span></button>
 	 <ul class="dropdown-menu">
 	<li   ng-repeat="view in user.views  track by $index"  ><a href="/#{{view.link}}">{{view.value}}</a></li>
 	<li class="divider"></li> 
 	<li   ng-repeat="view in user.performance track by $index"  ><a href="/#{{view.link}}">{{view.value}}</a></li>
 	<li class="divider"></li> 
-	<li   ng-repeat="view in user.resources track by $index"  ><a href="/#{{view.link}}">{{view.value}}</a></li>
-	<li class="divider"></li> 
+	
+	</ul>
+	
+</li>
+	<li  ng-show="user.firstName" > 
+	<button class="btn btn-primary dropdown-toggle"  data-toggle="dropdown">Record Data
+	 <span class="caret"></span></button>
+	 <ul class="dropdown-menu" style="floaf:left;">
 	<li   ng-repeat="view in user.enter_data  track by $index"  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+
+	</ul>
+	
+</li>
+	<li  ng-show="user.firstName" > 
+	<button class="btn btn-primary dropdown-toggle"  data-toggle="dropdown">Bookings
+	 <span class="caret"></span></button>
+	 <ul class="dropdown-menu" style="floaf:left;">
+	<li   ng-repeat="view in user.resources track by $index"  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+
+	</ul>
+	 <ul class="dropdown-menu" style="floaf:left;">
+	<li   ng-repeat="view in user.resources track by $index"  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+
 	</ul>
 </li>
 	<li ng-show="user.firstName" ng-controller="NavController"   role="navigation" class="pull-right">

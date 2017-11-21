@@ -8,6 +8,8 @@ var BookingsSchema = new mongoose.Schema({
 		  _type: { type: String, required: true },
 		  className:{ type: String, required: true },
 		  content: { type: String, required: true },
+		  internal_external:{ type: String},
+		  approved:{ type: Boolean, default: false },
 		  name: { type: String, required: true },
 		  notes:{ type: String},
 		  days:{ type: Number },

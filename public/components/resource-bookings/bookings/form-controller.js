@@ -8,7 +8,7 @@ exports.record_bookings_controller =  function($scope, $http, $q,
 	{
 		var mode = "room"
 		var mode_name = "ROOM BOOKING"
-		$scope.name_of_form = mode_name = "Select Room"
+		$scope.name_of_form = mode_name 
 	}
 	else
 	{
@@ -25,7 +25,7 @@ exports.record_bookings_controller =  function($scope, $http, $q,
 
 	  $scope.rooms=[]
 	  $scope.Resources=Resources
-	  
+	  console.log('user', $scope.user)
 		var query = {'name':"#",'type':mode,'exact':false};
 				
 		Resources.query(query, function(rooms) {
@@ -51,7 +51,8 @@ exports.record_bookings_controller =  function($scope, $http, $q,
 
 var event_to_add=	{
 													  id : new Date().getUTCMilliseconds(),
-													  name :visit_form.name.value,		
+													  name :visit_form.name.value,
+													 internal_external :visit_form.type_radios.value,														  
 													  showimage :"",
 													  image :"",
 													  start_date : new Date(visit_form.start_date.value),
@@ -67,7 +68,7 @@ var event_to_add=	{
 					group:$scope.selected_room,	
 					_type: mode_name,	
 					className:"GREEN",	
-					// content: visit_form.comments.value,	
+					 internal_external :visit_form.type_radios.value,	
 					name:visit_form.name.value,		
 					notes:visit_form.comments.value,	
 					showimage :"",
