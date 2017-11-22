@@ -53,6 +53,9 @@ var raw_turnstiles_controller = require('../components/performance/turnstiles/ra
 var monthly_turnstiles_controller = require('../components/performance/turnstiles/monthly-turnstiles-controller');
 
 
+
+var kpi_home_controller = require('../components/performance/home/kpi-home-controller');
+
 var yearly_retail_sales_controller = require('../components/performance/retail/yearly-retail-sales-controller');
 var monthly_retail_sales_controller = require('../components/performance/retail/monthly-retail-sales-controller');
 var raw_retail_sales_controller = require('../components/performance/retail/raw-retail-sales-controller');
@@ -433,6 +436,12 @@ _.each(events_performance_form, function(controller, name) {
 
 
 
+_.each(kpi_home_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+
+
 
 _.each(monthly_turnstiles_controller, function(controller, name) {
   app.controller(name, controller);
@@ -694,7 +703,16 @@ app.config(['$qProvider', function ($qProvider) {
 app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routeProvider) {
          
 
-             $routeProvider.when('/-:view', {
+			$routeProvider.when('/', {
+               template: '<kpihome-dashboard></kpihome-dashboard>',
+             // controller: 'kpi_home_controller'
+           })            
+
+	.when('/home', {
+                template: '<kpihome-dashboard></kpihome-dashboard>',
+              controller: 'kpi_home_controller'
+            })
+			.when('/-:view', {
               templateUrl: '../components/team/trello.html',
               controller: 'trello'
             })

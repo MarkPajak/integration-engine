@@ -25,10 +25,11 @@ router.get('/total', function(req, res, next) {
 	
 		function get_kpis(cb){	
 			
-			
+		 
 					Kpi_aggregate.aggregate([
-								
-					{$project:{"date":1,"value":1,"museum_id":1,
+					
+					
+					{$project:{"date":1,"value":1,"museum_id": 1,
 							  
 								"financial_yer":{$cond:[{$lte:[{$month:route_functions.mongo_aggregator},3]},
 												"last",
@@ -176,7 +177,119 @@ get_kpis( function ( result) {
 })
 });
 
+/* GET /todos listing. */
+router.get('/kpis', function(req, res, next) {
 
+function get_kpis(cb){
+
+Kpi_aggregate.aggregate([
+ //HOLY CRAP ITS NOT FUN WHEN YOUR AGGREGATION PIPELINE GETS THE MONTH WRONG
+ 
+	{$project:{"date":1,
+					"value":1,
+					"museum_id":1,
+			
+			
+							   "quarter":{$cond:[{$lte:[{$month:route_functions.mongo_aggregator},3]},
+												 "fourth",
+												 {$cond:[{$lte:[{$month:route_functions.mongo_aggregator},6]},
+														 "first",
+														 {$cond:[{$lte:[{$month:route_functions.mongo_aggregator},9]},
+																 "second",
+										"third"]}]}]},
+								"financial_yer":{$cond:[{$lte:[{$month:route_functions.mongo_aggregator},3]},
+												"last",
+										"this"]
+										
+								},
+								"year":{$cond:[{$lte:[{$month:route_functions.mongo_aggregator},3]},
+												{$year:route_functions.mongo_aggregator},
+										{$year:route_functions.mongo_aggregator}]
+										
+					}}
+			
+					},
+					{$group:{"_id":{"year":"$year" ,"financial_yer":"$financial_yer"}, 
+					total_sessions: {$sum: '$value' },
+			
+					
+					}}	
+
+    ], function (err, result) {
+	var d = new Date();
+d.setFullYear(d.getFullYear() - 1);
+
+	console.log(d)
+Kpi_aggregate.aggregate([
+ //HOLY CRAP ITS NOT FUN WHEN YOUR AGGREGATION PIPELINE GETS THE MONTH WRONG
+ 
+ 
+    { $match:  { "date_value": { '$lte':d } }   },
+	{$project:{"date_value":1,
+					"value":1,
+					"museum_id":1,
+			
+			
+							   "quarter":{$cond:[{$lte:[{$month:route_functions.mongo_aggregator},3]},
+												 "fourth",
+												 {$cond:[{$lte:[{$month:route_functions.mongo_aggregator},6]},
+														 "first",
+														 {$cond:[{$lte:[{$month:route_functions.mongo_aggregator},9]},
+																 "second",
+										"third"]}]}]},
+								"financial_yer":{$cond:[{$lte:[{$month:route_functions.mongo_aggregator},3]},
+												"last",
+										"this"]
+										
+								},
+								"year":{$cond:[{$lte:[{$month:route_functions.mongo_aggregator},3]},
+												{$year:route_functions.mongo_aggregator},
+										{$year:route_functions.mongo_aggregator}]
+										
+					}}
+			
+					},
+					{$group:{"_id":{"ltd_year":"$year" ,"ltd_financial_yer":"$financial_yer"}, 
+					total_sessions: {$sum: '$value' },
+			
+					
+					}}	
+
+    ], function (err, result2) {
+	console.log(result2)
+	
+        if (err) {
+            console.log(err);
+        } else {
+
+		cb(result.concat(result2))
+		   	//mongoose.connection.close()	
+        }
+		
+    });
+	    });
+}
+
+get_kpis( function ( result) {
+	
+	//load venues
+	var venues=[]
+	_.each(result,function(row){
+		if(venues.indexOf(row._id.venue)==-1){
+			console.log('adding venue ',row._id.venue)
+			venues.push(row._id.venue)
+		}
+	})
+	
+	
+//returned_data=route_functions.wind_up_Stats_monthly(result,venues)
+res.json(result)
+	
+})
+
+
+
+});
 
 
 /* GET /todos listing. */
@@ -275,6 +388,7 @@ Kpi_aggregate.aggregate([
                visits: {$sum: '$value' }
             }
         }
+		
     ], function (err, result) {
         if (err) {
             next(err);

@@ -1,5 +1,19 @@
-		
-				exports.dateSelect = function() {
+
+
+
+
+exports.kpihomeDashboard = function() {
+
+  return {
+	  
+	  controller: 'kpi_home_controller',
+   templateUrl: './components/performance/home/kpi_dashboard.html'
+  }
+  }
+  
+  
+exports.dateSelect = function() {
+
   return {
 	  
   // controller: 'giftaid_performance_form',

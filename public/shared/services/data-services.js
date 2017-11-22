@@ -307,20 +307,30 @@ exports.Monthly_visits =  function($resource){
 			  'delete': {method:'DELETE'} // same, remove record
           });
  }
+ 
+    exports.get_kpis =  function($resource){
+	 
+            return $resource('kpi_aggregate/kpis', null,
+			{ 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray:true}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			  'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+			});
+ }
+ 
   
    exports.Raw_welcomedesk =  function($resource){
 	 
-	
-	
-		
             return $resource('/welcomedesk/:id/:museum_id/:date_value/:exact', null,
 			{ 'get':    {method:'GET'},  // get individual record
 			  'save':   {method:'POST'}, // create record
 			  'query':  {method:'GET', isArray:true}, // get list all records
 			  'remove': {method:'DELETE'}, // remove record
-			    'update': { method:'PUT' },
+			  'update': { method:'PUT' },
 			  'delete': {method:'DELETE'} // same, remove record
-          });
+			});
  }
  
        exports.Resources =  function($resource){
