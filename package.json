@@ -8,6 +8,7 @@
     "go": "gulp go",
     "watch": "gulp watch",
     "build": "gulp build",
+	"x": "gulp uglify",
     "test": "gulp server_test",
     "test_route": "mocha ./test/routes.js",
     "test_account": "mocha ./test/account.js",
