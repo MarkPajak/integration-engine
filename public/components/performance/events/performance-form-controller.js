@@ -176,7 +176,7 @@ $scope.museums.push({value:"ROMAN-VILLA",name:'Kings Weston Roman Villas'});
 	
  $scope.onSubmit=function() {
 		
-
+ $scope.addCount()
 		
 		    var kpis = new Raw_events({
             museum_id:visit_form.museum.value,				  
