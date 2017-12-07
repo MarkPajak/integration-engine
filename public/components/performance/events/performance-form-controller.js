@@ -203,17 +203,19 @@ $scope.museums.push({value:"ROMAN-VILLA",name:'Kings Weston Roman Villas'});
 			
 			
 			var query = {'museum_id':visit_form.museum.value,
-				         "date_value":visit_form.date_value.value,
-						 "on_site_off_site": visit_form.on_site_off_site.value,
-						  "exact":true
+							"event_lead":visit_form.event_lead.value,
+							"event_name": $('#event_name').find("option:selected").text(),
+							"date_value":visit_form.date_value.value,
+							"on_site_off_site": visit_form.on_site_off_site.value,
+							"exact":true
 						};
 			
 			Raw_events.query(query, function(visits) {
 				console.log('Raw_visits',visits.length)
-			if(visits.length>0) {
+			//if(visits.length>0) {
 			
-			
-			if (confirm("we already have a figure for that date - are you sure you want to overwrite it ?")) {
+			/*
+			if (confirm("we already have a figure for that event on that date  - are you sure you want to overwrite it ?")) {
 			
 				_.each(	visits	, function(visit) {
 				
@@ -228,13 +230,13 @@ $scope.museums.push({value:"ROMAN-VILLA",name:'Kings Weston Roman Villas'});
 			} else {
 				// Do nothing!
 			}
+			*/
 			
-			
-			}
-			else
-			{			
+			//}
+			//else
+			//{			
 						save(kpis)
-			}
+			//}
 			})	
 			
             
