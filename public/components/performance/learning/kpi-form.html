@@ -11,17 +11,20 @@
     background-color: white;
 
 }
+.form-group {
+    margin-bottom: 0px;
+}
 </style>
 <div ng-hide="user.username">
 You'll probably need to log in to be able to enter data
 </div>
 	  
-<div ng-show="user.username" class="panel panel-default col-xs-3 col-sm-3 col-md-3">
+<div ng-show="user.username" class="panel panel-default col-xs-6 col-sm-6 col-md-6">
 <div class="panel-heading">Enter data</div>
 	<div class="panel-body">
 		<form name="visit_form" >
 
-			  <div class="form-group form-inline">
+			  <div class="form-group form">
 				<label for="exampleSelect1">Museum  select:</label>
 				<select class=" pull-right form-control input" id="museum">
 					<option value="BMAG">Bristol Museum</option>
@@ -104,7 +107,7 @@ You'll probably need to log in to be able to enter data
 			  </div>
 			
 
-			  <div class="form-group form-inline">
+			  <div class="form-group form">
 				<label for="comments">Comments:</label>
 				<textarea class="form-control input pull-right" id="comments" rows="3"></textarea>
 			  </div>
