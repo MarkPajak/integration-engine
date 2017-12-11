@@ -11,12 +11,26 @@
     background-color: white;
 
 }
+
+.radioinput_fx{
+left: 20px;    top: -3px;
+}
+
+.add_box{
+padding:20px;
+z-index:1000;
+width:500px;
+height:200px;
+    height: 200px;
+    background-colo:white;
+	posiition:relative;
+}
 </style>
 <div ng-hide="user.username">
 You'll probably need to log in to be able to enter data
 </div>
 	  
-<div ng-show="user.username" class="panel panel-default col-xs-4 col-sm-4  col-md-4 ">
+<div ng-show="user.username" class="panel panel-default col-xs-5 col-sm-5  col-md-5 ">
 <div class="panel-heading">Enter data for {{form_name}}</div>
 	<div class="panel-body">
 		<form name="visit_form" id="visit_form">
@@ -51,9 +65,11 @@ You'll probably need to log in to be able to enter data
 						<select  id="community_group" class="form-control input-lg" ng-model="community_group" ng-options="(c.name) for c  in community_groups" ng-change="search_community(community_group)">
 								<option value="">-- choose group or select add new --</option>
 						</select>
-						<div class="col-md-4" ng-show="community_group.name == 'add new group'">
-							<input class="text-box" type="text" name="_NewValue" ng-model="_newValue" />
-							<button ng-click="add_community(_newValue)">Clickto save community group name</button>
+						<div class="container" ng-show="community_group.name == 'add new group'">
+							<div class=" form-group ">
+								<input class="text-box" type="text" name="_NewValue" ng-model="_newValue" />
+								<button ng-click="add_community(_newValue)">Clickto save community group name</button>
+							</div>
 						</div>
 					</div>
 
@@ -64,13 +80,13 @@ You'll probably need to log in to be able to enter data
 				<div class="form-group">
 					<div class="radio">
 						<label>
-							<input type="radio" name="on_site_off_site" value="OFF SITE" ng-model="on_site_off_site">
+							<input class="radioinput_fx" type="radio" name="on_site_off_site" value="OFF SITE" ng-model="on_site_off_site">
 						   Off site
 						</label>
 					</div>
 					<div class="radio">
 						<label>
-							<input type="radio" name="on_site_off_site" value="ON SITE" ng-model="on_site_off_site">
+							<input class="radioinput_fx" type="radio" name="on_site_off_site" value="ON SITE" ng-model="on_site_off_site">
 						   On site
 						</label>
 					</div>
@@ -134,7 +150,7 @@ You'll probably need to log in to be able to enter data
 	<div class="checkbox" ng-repeat="group_name in target_groups">
 		<div class="form-inline">
 		<label>
-		  <input
+		  <input class="radioinput_fx"
 			type="checkbox"
 			name="target_groups[]"
 			value="{{group_name}}"
