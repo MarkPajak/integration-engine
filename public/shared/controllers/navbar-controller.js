@@ -279,7 +279,7 @@ performance_data.push(events)
 performance_data.push(monthly_events)
 
 $scope.user_groups['EXHIBITIONS'].views=[]
-$scope.user_groups['EXHIBITIONS'].enter_data=[]
+$scope.user_groups['EXHIBITIONS'].enter_data=enter_data
 $scope.user_groups['EXHIBITIONS'].resources=[]
 $scope.user_groups['EXHIBITIONS'].permissions=default_permissions
 
