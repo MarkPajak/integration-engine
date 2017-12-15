@@ -70,9 +70,10 @@ exports.visits_form =  function($scope, $http, $q, $routeParams, $location
 						id: visit._id
 					}, function() {
 					  console.log('removed old data')
+					  save(kpis)
 					});
 					})
-						save(kpis)
+						
 				// Save it!
 			} else {
 				// Do nothing!
