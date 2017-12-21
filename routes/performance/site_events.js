@@ -22,6 +22,323 @@ var isAuthenticated = function (req, res, next) {
 var Team = require('../../models/performance/Events.js');
 
 
+router.get('/priority_groups', function(req, res, next) {
+
+function get_kpis(cb){
+
+
+		Team.aggregate([
+								
+					{$project:{ //museum_id : 1 ,
+								target_groups : 1 ,
+								//age_groups : 1,
+								//event_name:1,
+								//session_type:1,
+							   "quarter":{$cond:[{$lte:[{$month:route_functions.mongo_aggregator},3]},
+												 "fourth",
+												 {$cond:[{$lte:[{$month:route_functions.mongo_aggregator},6]},
+														 "first",
+														 {$cond:[{$lte:[{$month:route_functions.mongo_aggregator},9]},
+																 "second",
+										"third"]}]}]},
+										"financial_yer":{$cond:[{$lte:[{$month:route_functions.mongo_aggregator},3]},
+										"last",
+										"this"]
+										
+								},
+								"year":{$cond:[{$lte:[{$month:route_functions.mongo_aggregator},3]},
+												{$year:route_functions.mongo_aggregator},
+										{$year:route_functions.mongo_aggregator}]
+										
+					}}
+			
+					},
+					
+					{ $unwind : "$target_groups" },
+					{$group:{"_id":{"year":"$year" ,"financial_yer":"$financial_yer" , 
+						 target_groups:'$target_groups.name'
+					    },  "count": { "$sum": 1 }}
+					}
+
+
+    ], function (err, result) {
+
+        if (err) {
+            console.log(err);
+        } else {
+		
+	console.log(result)
+			cb(result)
+			
+        }
+		
+    });
+	
+}
+
+get_kpis( function ( result) {
+	
+
+	//load venues
+	var venues=[]
+	//var age_groups=[]
+	//var on_site_off_site=[]
+	var target_groups=[]
+	
+	_.each(result,function(row){
+	/*
+	if(venues.indexOf(row._id.venue)==-1){
+			console.log('adding venue ',row._id.venue)
+			venues.push(row._id.venue)
+		}
+		
+		if(age_groups.indexOf(row._id.age_groups)==-1){
+			console.log('adding age_groups ',row._id.age_groups)
+			age_groups.push(row._id.age_groups)
+		}
+*/		
+		if(target_groups.indexOf(row._id.target_groups)==-1){
+		
+		if(row._id.target_groups){
+			console.log('adding community_groups ',row._id.target_groups)
+			target_groups.push(row._id.target_groups)
+			}
+		}
+	})
+	
+	function wind_up_Stats(	result,returned_row,analysis_field,target_groups){
+		
+		
+				var years = [2014,2015,2016,2017,2018]
+								_.each(years,function(year){
+									var financial_yesr_text = ["last","this"]
+									_.each(financial_yesr_text,function(financial_yer_text){
+									
+										_.each(result,function(row){
+											if(target_groups==row._id.target_groups  &&row._id.financial_yer==financial_yer_text&&row._id.year==year){
+												
+												var financial_year_display=""
+												if(financial_yer_text=="this"){
+													financial_year_display=	year+"-"+((year+1).toString().substring(2))
+														console.log('financial_year_display this',financial_year_display)
+													returned_row[financial_year_display]=row[analysis_field]
+													}
+													else
+													{
+													financial_year_display=	(year-1)+"-"+(year.toString().substring(2))	
+														console.log('financial_year_display',financial_year_display)
+													returned_row[financial_year_display]+=row[analysis_field]
+												}
+
+												
+												
+											}
+										})
+									})
+									
+								})
+								//console.log(returned_rows)
+							return(returned_row)
+	}
+	
+	
+	
+	var returned_data=[]
+
+	//_.each(venues,function(venue){
+	//_.each(on_site_off_site,function(on_off_site){			
+		_.each(target_groups,function(target_group){	
+		
+		var returned_row={}
+			//returned_row.museum=venue
+			//returned_row.age_group=age_group
+			//returned_row.on_off_site=on_off_site
+			console.log('Target audience',target_group)
+			returned_row.stat="Target audience"
+			returned_data.push(	 wind_up_Stats(	result,returned_row,"target_groups",target_group))
+			
+			var returned_row={}
+		//	returned_row.museum=venue
+			returned_row.target_groups=target_group
+			//returned_row.on_off_site=on_off_site
+			returned_row.stat="count"
+			returned_data.push(	 wind_up_Stats(	result,returned_row,"count",target_group))
+		
+
+
+		})
+	//})
+//})
+
+res.json(returned_data)
+	
+})
+
+
+
+});
+
+router.get('/community_groups', function(req, res, next) {
+
+function get_kpis(cb){
+
+
+		Team.aggregate([
+								
+					{$project:{ //museum_id : 1 ,
+								community_group : 1 ,
+								age_groups : 1,
+								//event_name:1,
+								//session_type:1,
+							   "quarter":{$cond:[{$lte:[{$month:route_functions.mongo_aggregator},3]},
+												 "fourth",
+												 {$cond:[{$lte:[{$month:route_functions.mongo_aggregator},6]},
+														 "first",
+														 {$cond:[{$lte:[{$month:route_functions.mongo_aggregator},9]},
+																 "second",
+										"third"]}]}]},
+										"financial_yer":{$cond:[{$lte:[{$month:route_functions.mongo_aggregator},3]},
+										"last",
+										"this"]
+										
+								},
+								"year":{$cond:[{$lte:[{$month:route_functions.mongo_aggregator},3]},
+												{$year:route_functions.mongo_aggregator},
+										{$year:route_functions.mongo_aggregator}]
+										
+					}}
+			
+					},
+					{ 
+						$match: { 
+							community_group: {"$ne":null}
+						
+						}
+					},
+					{ $unwind : "$age_groups" },
+					//{ $unwind : "$target_groups" },
+					{$group:{"_id":{"year":"$year" ,"financial_yer":"$financial_yer" , 
+						 community_groups:'$community_group'
+					    }, count: {$sum: '$age_groups.count' }}
+					}
+
+
+    ], function (err, result) {
+
+        if (err) {
+            console.log(err);
+        } else {
+		
+	console.log(result)
+			cb(result)
+			
+        }
+		
+    });
+	
+}
+
+get_kpis( function ( result) {
+	
+
+	//load venues
+	var venues=[]
+	//var age_groups=[]
+	//var on_site_off_site=[]
+	var community_groups=[]
+	
+	_.each(result,function(row){
+	/*
+	if(venues.indexOf(row._id.venue)==-1){
+			console.log('adding venue ',row._id.venue)
+			venues.push(row._id.venue)
+		}
+		
+		if(age_groups.indexOf(row._id.age_groups)==-1){
+			console.log('adding age_groups ',row._id.age_groups)
+			age_groups.push(row._id.age_groups)
+		}
+*/		
+		if(community_groups.indexOf(row._id.community_groups)==-1){
+		
+		if(row._id.community_groups){
+			console.log('adding community_groups ',row._id.community_groups)
+			community_groups.push(row._id.community_groups)
+			}
+		}
+	})
+	
+	function wind_up_Stats(	result,returned_row,analysis_field,community_group){
+		
+		
+				var years = [2014,2015,2016,2017,2018]
+								_.each(years,function(year){
+									var financial_yesr_text = ["last","this"]
+									_.each(financial_yesr_text,function(financial_yer_text){
+									
+										_.each(result,function(row){
+											if(community_group==row._id.community_groups  &&row._id.financial_yer==financial_yer_text&&row._id.year==year){
+												
+												var financial_year_display=""
+												if(financial_yer_text=="this"){
+													financial_year_display=	year+"-"+((year+1).toString().substring(2))
+														console.log('financial_year_display this',financial_year_display)
+													returned_row[financial_year_display]=row[analysis_field]
+													}
+													else
+													{
+													financial_year_display=	(year-1)+"-"+(year.toString().substring(2))	
+														console.log('financial_year_display',financial_year_display)
+													returned_row[financial_year_display]+=row[analysis_field]
+												}
+
+												
+												
+											}
+										})
+									})
+									
+								})
+								//console.log(returned_rows)
+							return(returned_row)
+	}
+	
+	
+	
+	var returned_data=[]
+
+	//_.each(venues,function(venue){
+	//_.each(on_site_off_site,function(on_off_site){			
+		_.each(community_groups,function(community_group){	
+		
+		var returned_row={}
+			//returned_row.museum=venue
+			//returned_row.age_group=age_group
+			//returned_row.on_off_site=on_off_site
+			console.log('community_group',community_group)
+			returned_row.stat="Community Group"
+			returned_data.push(	 wind_up_Stats(	result,returned_row,"community_group",community_group))
+			
+			var returned_row={}
+		//	returned_row.museum=venue
+			returned_row.community_group=community_group
+			//returned_row.on_off_site=on_off_site
+			returned_row.stat="count"
+			returned_data.push(	 wind_up_Stats(	result,returned_row,"count",community_group))
+		
+
+
+		})
+	//})
+//})
+
+res.json(returned_data)
+	
+})
+
+
+
+});
 
 router.get('/total', function(req, res, next) {
 
@@ -174,6 +491,9 @@ res.json(returned_data)
 
 
 });
+
+
+
 router.get('/all/:event_type', function(req, res, next) {
 
 function get_kpis(cb){

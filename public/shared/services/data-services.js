@@ -105,7 +105,33 @@ exports.Monthly_visits =  function($resource){
   });
        
 
-  } 
+  }
+  
+  
+    exports.Target_audience_event_count =  function($resource){
+	  
+	return $resource('/events/priority_groups',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+    
+
+	
+
+  }   
+  
+
+  exports.Yearly_community_groups =  function($resource){
+	  
+	return $resource('/events/community_groups',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+    
+
+	
+
+  }   
   
   exports.Yearly_welcomedesk =  function($resource){
 	  

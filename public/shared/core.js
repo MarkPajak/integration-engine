@@ -92,6 +92,14 @@ var monthly_events_controller = require('../components/performance/events/monthl
 var raw_events_controller = require('../components/performance/events/raw-events-controller');
 var events_performance_form = require('../components/performance/events/performance-form-controller');
 
+var yearly_participation_controller = require('../components/performance/participation/yearly-participation-controller');
+var monthly_participation_controller = require('../components/performance/participation/monthly-participation-controller');
+var raw_participation_controller = require('../components/performance/participation/raw-participation-controller');
+var participation_performance_form = require('../components/performance/participation/performance-form-controller');
+
+var target_audience_controller = require('../components/performance/participation/target-audience-controller');
+
+
 
 var yearly_teg_controller = require('../components/performance/gallery-visits/yearly-teg-controller');
 var weekly_teg_controller = require('../components/performance/gallery-visits/weekly-teg-controller');
@@ -205,6 +213,25 @@ _.each(events_performance_form, function(controller, name) {
 
 
 
+_.each(yearly_participation_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(monthly_participation_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(raw_participation_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(participation_performance_form, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(target_audience_controller, function(controller, name) {
+  app.controller(name, controller);
+});
 
 
 
@@ -937,6 +964,9 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
                template: '<events-dashboard></events-dashboard>'
            })
 		   
+		    	   .when('/participation-dashboard', {
+               template: '<participation-Dashboard></participation-Dashboard>'
+           })
 		   
 		   	.when('/record-welcomedesk', {
                template: '<welcomedesk-Formdata></welcomedesk-Formdata>'

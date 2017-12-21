@@ -336,7 +336,7 @@ exports.retailKpiform = function() {
   }
 	}
 	
-		exports.monthlyRetailsales = function() {
+exports.monthlyRetailsales = function() {
   return {
    controller: 'monthly_retail_sales_controller',
    templateUrl: './shared/templates/data_table.html'
@@ -464,6 +464,26 @@ exports.recordTeg  = function() {
   }
 	}
 	
+exports.communityEvents = function() {
+
+  return {
+  	    restrict: "E",
+    scope: {},
+   controller: 'yearly_participation_controller',
+     templateUrl: './shared/templates/data_table.html'
+  }
+  
+}
+exports.targetAudience = function() {
+
+  return {
+  	    restrict: "E",
+    scope: {},
+   controller: 'target_audience_controller',
+     templateUrl: './shared/templates/data_table.html'
+  }
+  
+}	
 		
 		exports.recordEvents = function() {
   return {
@@ -478,6 +498,14 @@ exports.recordTeg  = function() {
     templateUrl: './components/performance/events/dashboard.html'
   }
 	}
+	
+		exports.participationDashboard = function() {
+  return {
+     controller: 'dashboard_controller',
+    templateUrl: './components/performance/participation/dashboard.html'
+  }
+	}
+	
 	
 	
 		exports.monthlyOperations = function() {

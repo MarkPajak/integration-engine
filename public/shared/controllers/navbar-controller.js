@@ -41,6 +41,7 @@ $scope.user_groups['OPERATIONS']=[]
 $scope.user_groups['COMMERCIAL']=[]
 	
 var timeline = {link:"timeline",value:"Timeline"}
+
 var dead ={link:"dead",value:"Downtime"}
 var activity = {link:"activity",value:"Machine Activity"}
 var feedback = {link:"feedback",value:"Kiosk feedback"}
@@ -58,7 +59,7 @@ var equipment_bookings = {link:"bookings/equipment",value:"Equipment booking"}
 var room_bookings = {link:"bookings/rooms",value:"Room booking"}
 var room_hire = {link:"room-hire",value:"Room booking timeline"}
 var equipment_booking_timeline = {link:"equipment-timeline",value:"Equipment booking timeline"}
-
+var participation = {link:"participation-dashboard",value:"Participation dashboard"}
 
 
 var performance = {link:"record-visitor-numbers",value:"VISITS: Record visitor figures"}
@@ -167,6 +168,7 @@ performance_data.push(donations)
 performance_data.push(monthly_welcomedesk)
 performance_data.push(raw_welcomedesk)
 
+performance_data.push(participation)
 performance_data.push(events)
 performance_data.push(monthly_events)
 
@@ -216,7 +218,7 @@ performance_data.push(monthly_donations)
 performance_data.push(donations)
 performance_data.push(raw_welcomedesk)
 performance_data.push(monthly_welcomedesk)
-
+performance_data.push(participation)
 performance_data.push(learning)
 performance_data.push(monthly_learning)
 
@@ -277,7 +279,7 @@ performance_data.push(teg)
 performance_data.push(monthly_teg)
 performance_data.push(events)
 performance_data.push(monthly_events)
-
+performance_data.push(participation)
 $scope.user_groups['EXHIBITIONS'].views=[]
 $scope.user_groups['EXHIBITIONS'].enter_data=enter_data
 $scope.user_groups['EXHIBITIONS'].resources=[]
@@ -305,7 +307,7 @@ performance_data.push(monthly_learning)
 performance_data.push(events)
 performance_data.push(monthly_events)
 
-
+performance_data.push(participation)
 
 $scope.user_groups['LEARNING'].views=[]
 $scope.user_groups['LEARNING'].enter_data=[]
@@ -341,7 +343,7 @@ performance_data.push(monthly_visits)
 performance_data.push(teg)
 performance_data.push(monthly_teg)
 performance_data.push(events)
-
+performance_data.push(participation)
 performance_data=performance_data.sort()
 
 
@@ -386,7 +388,7 @@ performance_data.push(donations)
 performance_data.push(monthly_welcomedesk)
 performance_data.push(events)
 performance_data.push(monthly_events)
-
+performance_data.push(participation)
 
 
 
@@ -445,7 +447,7 @@ performance_data.push(exhibitions_pwyt_monthly)
 performance_data.push(monthly_teg)
 performance_data.push(events)
 performance_data.push(monthly_events)
-
+performance_data.push(participation)
 
 $scope.user_groups['STAFF'].views=[]
 $scope.user_groups['STAFF'].enter_data=[]
@@ -478,7 +480,7 @@ performance_data.push(monthly_events)
 performance_data.push(operations)
 performance_data.push(monthly_operations)
 performance_data.push(monthly_welcomedesk)
-
+performance_data.push(participation)
 
 enter_data.push(record_teg)
 enter_data.push(record_operations)
@@ -513,7 +515,7 @@ var performance_data=[]
 performance_data.push(monthly_visits)
 performance_data.push(raw_retail_sales)
 performance_data.push(monthly_retail_sales)
-
+performance_data.push(participation)
 
 
 $scope.user_groups['RETAIL'].views=[]
