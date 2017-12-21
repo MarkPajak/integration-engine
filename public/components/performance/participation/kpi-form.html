@@ -1,0 +1,185 @@
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> 
+ <style>
+  .panel > .panel-heading {
+    background-image: none;
+    background-color: red;
+    color: white;
+
+}
+  .panel > .panel-body {
+ 
+    background-color: white;
+
+}
+
+.radioinput_fx{
+left: 20px;    top: -3px;
+}
+
+.add_box{
+padding:20px;
+z-index:1000;
+width:500px;
+height:200px;
+    height: 200px;
+    background-colo:white;
+	posiition:relative;
+}
+</style>
+<div ng-hide="user.username">
+You'll probably need to log in to be able to enter data
+</div>
+	  
+<div ng-show="user.username" class="panel panel-default col-xs-5 col-sm-5  col-md-5 ">
+<div class="panel-heading">Enter data for {{form_name}}</div>
+	<div class="panel-body">
+		<form name="visit_form" id="visit_form">
+		
+       
+				<label for="exampleSelect1">Name of event lead:</label>
+                <input type="text" name="event_lead" E" ng-model="event_lead">
+				<br>
+					
+			 	    <div class="form-group">
+						<label for="comments">Event name:</label>
+						<select  id="event_name" class="form-control input-lg" ng-model="event" ng-options="(c.type+' '+c.name) for c in events" ng-change="search2(event)">
+								<option value="">-- choose event or select add new --</option>
+						</select>
+						<div class="col-md-4" ng-show="event.name == 'add new event'">
+							<input class="text-box" type="text" name="NewValue" ng-model="newValue" />
+							<button ng-click="add(newValue)">Click add to save event name</button>
+						</div>
+					</div>
+					
+
+					 <div class="form-group">
+						<label for="comments">Associated museum:</label>
+						  <select  id="museum" class="form-control input-lg" ng-model="selected_museum">
+							  <option></option>
+							  <option ng-repeat="i in museums" value="{{ i.value }}" ng-selelected="{{ selected_museum == i.value }}">{{ i.value }}</option>
+						</select>
+					</div>
+					
+					<div class="form-group">
+						<label for="comments">Community group:</label>
+						<select  id="community_group" class="form-control input-lg" ng-model="community_group" ng-options="(c.name) for c  in community_groups" ng-change="search_community(community_group)">
+								<option value="">-- choose group or select add new --</option>
+						</select>
+						<div class="container" ng-show="community_group.name == 'add new group'">
+							<div class=" form-group ">
+								<input class="text-box" type="text" name="_NewValue" ng-model="_newValue" />
+								<button ng-click="add_community(_newValue)">Clickto save community group name</button>
+							</div>
+						</div>
+					</div>
+
+				
+				
+				
+			  	 <!-- RADIO BUTTONS -->
+				<div class="form-group">
+					<div class="radio">
+						<label>
+							<input class="radioinput_fx" type="radio" name="on_site_off_site" value="OFF SITE" ng-model="on_site_off_site">
+						   Off site
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input class="radioinput_fx" type="radio" name="on_site_off_site" value="ON SITE" ng-model="on_site_off_site">
+						   On site
+						</label>
+					</div>
+				</div>
+				
+				
+			
+	
+     
+
+			  	
+			  <div class="form-group">
+					
+						<label for="comments">Date from:</label>
+						<input type = "date" class="form-control input-lg" id="date_value" rows="3">
+				
+					<label for="comments">Date to:</label>
+					<input type = "date" class="form-control input-lg" id="date_value_end" rows="3">
+				
+			  </div>
+		
+	
+
+				<div class="panel-body">
+					<div class="panel-heading">visitor numbers</div>
+						<div ng-repeat="age_group in age_groups" >
+							 <div class="form-group col-xs-6">
+								{{age_group.name}}				
+							</div>
+							 <div class="form-group col-xs-6">
+								{{age_group.count}}		 <button class="btn btn-danger" ng-click="deleteUser(age_group)"><i class="icon-trash"></i> Delete</button>			
+							</div>
+						</div>
+			
+			 
+			  
+					
+						  <div class="form-group col-xs-6">
+							<label>Age group:</label>
+							<select class="form-control input-lg" id="age_group" name="age_group">
+								<option value="Under 5s">Under 5s</option> <!-- REMEMBER TO CHANGE site_events.js route if you add or change an age grouop -->
+								<option value="ages 5-15">5-15</option>
+								<option value="Adults 16+">Adults 16+</option>
+							</select>  
+						  </div>
+						  <div class="form-group col-xs-6">
+							<label>Count</label>
+							<input type="number" class="form-control" id="count" name="count">
+						  </div>
+					
+					
+						 <div class="margin-20">
+						  <a ng-click="addCount()" style="cursor: default">
+							Add another count +
+						  </a>
+						</div>
+				  </div>
+		 
+		 
+		 
+	<div class="checkbox" ng-repeat="group_name in target_groups">
+		<div class="form-inline">
+		<label>
+		  <input class="radioinput_fx"
+			type="checkbox"
+			name="target_groups[]"
+			value="{{group_name}}"
+			ng-checked="selection.indexOf(group_name) > -1"
+			ng-click="toggleSelection(group_name)"
+		  > {{group_name.name}}
+		</label>
+		</div>
+	</div>
+			  
+	
+			
+			
+			  
+			
+
+			  <div class="form-group">
+				<label for="comments">Comments</label>
+				<textarea class="form-control input-lg" id="comments" rows="3"></textarea>
+			  </div>
+			   <button ng-click="onSubmit()" type="submit" class="input-lg btn btn-primary submit-button" ng-disabled="vm.form.$invalid">Submit</button>
+			   <button type="button" class="input-lg btn btn-default" ng-click="vm.options.resetModel()">Reset</button>
+		</form>
+	</div>
+</div>
+</div>
+  <script>
+  $( function() {
+   if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent))
+    $( "#date_value" ).datepicker();
+  } );
+  </script>
