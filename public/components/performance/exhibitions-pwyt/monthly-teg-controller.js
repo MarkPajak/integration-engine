@@ -17,6 +17,7 @@ exports.exhibitions_summary_controller = function($route,$scope, $http, $q, $rou
 			$scope.filter_pie=[]
 			columnDefs.push(
 			{ field: 'museum',	name: "Museum",width: 80, pinnedLeft:true},
+			{ field: 'exhibition',	name: "Exhibition",width: 200},
 			{ field: 'stat',	name: "Statistic",width: 100}
 					
 			)
@@ -65,7 +66,8 @@ exports.exhibitions_summary_controller = function($route,$scope, $http, $q, $rou
   
 					columnDefs=[]
 					columnDefs.push({ field: 'museum',		name: "Museum",width: 90},
-								{ field: 'stat',		name: "Statistic",width: 90}
+					{ field: 'exhibition',	name: "Exhibition",width: 200},
+								{ field: 'stat',		name: "Statistic",width: 150}
 					)
 					columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
 					columnDefs.enableFiltering=false

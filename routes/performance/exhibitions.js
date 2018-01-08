@@ -401,7 +401,7 @@ get_kpis( function ( result) {
 	var venues=[]
 	_.each(result,function(row){
 		if(venues.indexOf(row.kpi_venue)==-1){
-			console.log('adding venue ',row.kpi_venue)
+			//console.log('adding venue ',row.kpi_venue)
 			if(row.kpi_venue!=""){
 			venues.push(row.kpi_venue)
 			}

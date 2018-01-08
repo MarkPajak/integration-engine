@@ -1,3 +1,14 @@
+fs = require('fs');
+
+data_services=  function(cb){
+	
+		fs.readFile('./public/assets/data/events.JSON', function(err, data){  
+			if (err) console.log( err);		
+			cb(JSON.parse(data));
+		});
+
+ }
+
 var Route_functions = require('../functions/route_functions.js');
 route_functions=new Route_functions()
 var express = require('express');
@@ -7,6 +18,8 @@ var json2csv =  require('json2csv');
 Route_permissions= require('../functions/route_permissions.js');
 route_permissions=new Route_permissions()
 Api_calls= require('../functions/standard_api_calls.js');
+
+ var async = require('async')
 
 var isAuthenticated = function (req, res, next) {
 	console.log('if user is authenticated in the session, call the next() to call the next request handler ')
@@ -263,10 +276,18 @@ res.json(returned_data)
 /* GET /todos listing. */
 router.get('/all', function(req, res, next) {
 
-function get_kpis(cb){
+
+
+function get_kpis(EXHIBITION_NAME,VENUE,start_date,end_date, cb){
 
 Team.aggregate([
-	
+		{ $match: { 
+					  museum_id : VENUE ,					
+					   date_value : { $gte:start_date , $lte: end_date }  
+								
+										 
+		}
+	},
 		{ $group: {
                 _id: { 
 				
@@ -295,7 +316,13 @@ Team.aggregate([
 
 	Kpi_aggregate.aggregate([
 			
-
+	{ $match: { 
+					  museum_id : VENUE ,					
+					   date_value : { $gte:start_date , $lte: end_date }  
+								
+										 
+		}
+	},
 
 		{ $group: {
                 _id: { year :  { "$year": route_functions.mongo_aggregator },        
@@ -304,7 +331,7 @@ Team.aggregate([
 					   //gallery:'$gallery',
 					 },  
 				
-               visits: { $sum:  { $sum: [ "$value" ] }} ,
+               visits:  { $sum:  "$value"  } ,
 			
 		      
             }
@@ -315,9 +342,16 @@ Team.aggregate([
 		
 	  ], function (err, museum_visits) {
 		  
+		  if(err) console.log(err)
  
 	PWYT.aggregate([
-
+	{ $match: { 
+					  museum_id : VENUE ,					
+					   date_value : { $gte:start_date , $lte: end_date }  
+								
+										 
+		}
+	},
 		{ $group: {
                 _id: { 
 
@@ -338,7 +372,7 @@ Team.aggregate([
 
 	 ], function (err, result_pwyt) {
         if (err) {
-            console.log(err);
+           // console.log(err);
         } else {
 		
 		
@@ -347,9 +381,9 @@ Team.aggregate([
 
 			
 			
-			console.log('conversion')
-			console.log(gallery_visits[i].gallery_visits)
-			console.log(gallery_visits[i].conversion)
+			//console.log('conversion')
+			//console.log(gallery_visits[i].gallery_visits)
+			//console.log(gallery_visits[i].conversion)
 			
 			
 			
@@ -366,7 +400,7 @@ Team.aggregate([
 							_.each(gallery_visits,function(previous_data){
 								compare_previous_year = visits.year-compare_previous_years
 								if(previous_data.kpi_venue==visits.venue &&  previous_data.kpi_month==visits.month && previous_data.kpi_year==compare_previous_year){
-									console.log("adding % last year")
+									//console.log("adding % last year")
 									gallery_visits[i]["% net_sales last year"] =((kpi.net_sales/previous_data.net_sales)*100-100).toFixed(2)+"%";
 		
 								}
@@ -383,7 +417,8 @@ Team.aggregate([
 			})
 			
 				_.each(result_pwyt,function(pwyt,iii){
-				console.log(pwyt.pwyt_venue,kpi.kpi_venue, pwyt.pwyt_month,kpi.kpi_month,pwyt.pwyt_year,kpi.kpi_year)
+				//console.log('conversion')
+				//console.log(pwyt.pwyt_venue,kpi.kpi_venue, pwyt.pwyt_month,kpi.kpi_month,pwyt.pwyt_year,kpi.kpi_year)
 					if(pwyt.pwyt_venue==kpi.kpi_venue &&  pwyt.pwyt_month== kpi.kpi_month && pwyt.pwyt_year==kpi.kpi_year){
 						gallery_visits[i].pwyt_income=pwyt.pwyt_income
 					}
@@ -401,77 +436,158 @@ Team.aggregate([
     });
 }
 
-get_kpis( function ( result) {
-	
 
-	//load venues
-	var venues=[]
-	_.each(result,function(row){
-		if(venues.indexOf(row.kpi_venue)==-1){
-			console.log('adding venue ',row.kpi_venue)
-			if(row.kpi_venue!=""){
-			venues.push(row.kpi_venue)
-			}
-		}
-	})
-	
-	function wind_up_Stats(	result,returned_row,analysis_field,venue){
+data_services(function (events) {
+
+
+var exhibitions=[]
+
+
+_.each(events.events,function (event) {
+
+//CHANGES TO EMU GALLERY NAMES WIL MESS THIS UP
+if(event.venue && event.event_space){
+		if(event.venue=="M Shed" && event.event_space.toLowerCase().indexOf("temporary exhibition")!=-1|| 
+		event.venue.toLowerCase().indexOf("bristol museum")!=-1 &&  event.event_space.toLowerCase().indexOf("temporary exhibition gallery 1")!=-1){
 			
-			var years = [2014,2015,2016,2017,2018]
-			_.each(years,function(year){
-				_.each(moment.monthsShort(),function(month){
-				returned_row[month+" "+year]=""
-				_.each(result,function(row){
-					if(month==moment.monthsShort(row.kpi_month-1) &&venue==row.kpi_venue &&row.kpi_year==year){
-						returned_row[month+" "+year]=row[analysis_field]
-					}
-					})
-				})	
-			})
-		
-		return(returned_row)
-	}
-	
-	
-	var returned_data=[]
+			if(event.type=="Exhibition"){
+console.log(event)
+			var exhibition={
+							EXHIBITION_NAME:event.name,
+							VENUE : event.venue=="M Shed" ? "M-SHED" : "BMAG",
+							start_date: moment(event.startDate, 'DD-MMM-YYYY').toDate(),
+							end_date: moment(event.endDate, 'DD-MMM-YYYY').toDate()
+							}
+			console.log('exhibition',exhibition)		
+			exhibitions.push(exhibition)
 
-	_.each(venues,function(venue){
-		
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat="TEG visits"
-		returned_data.push(	 wind_up_Stats(	result,returned_row,"gallery_visits",venue))
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat="Income"
-		returned_data.push(	 wind_up_Stats(	result,returned_row,"pwyt_income",venue))
-	
-	
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat="No. of transactions"
-		//returned_data.push(	 wind_up_Stats(	result,returned_row,"number_transactions",venue))
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat="Average transaction"
-		//returned_data.push(	 wind_up_Stats(	result,returned_row,"ATV",venue))
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat="Visits"
-		returned_data.push(	 wind_up_Stats(	result,returned_row,"visits",venue))
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat="TEG conversion"
-		returned_data.push(	 wind_up_Stats(	result,returned_row,"conversion",venue))
-	
-	})
-
-
-res.json(returned_data)
-	
+			}
+			
+		}
+		}
 })
 
+			
 
+var page = 0
+var result=[]
+async.whilst(function () {
+  
+  return page <exhibitions.length;
+},
+function (next) {
+ 
+ analyse_exhibiton(exhibitions[page], function (data) {
+   console.log('exhibitions',exhibitions[page])
+      result=result.concat(data)
+  
+		page++;
+		next();
+  });
+},
+function (err) {
+
+  res.json(result)
+});
+
+
+function concatenate_exhibiton_kpis(exhibit,cb){
+
+			analyse_exhibiton(exhibit,function(data){
+			//async	
+				cb(data)
+				
+			})
+
+}
+
+});
+
+function analyse_exhibiton(exhibition,cb){
+
+var EXHIBITION_NAME = exhibition.EXHIBITION_NAME
+var VENUE = exhibition.VENUE
+var start_date= exhibition.start_date
+var end_date= exhibition.end_date
+
+					get_kpis(EXHIBITION_NAME,VENUE, start_date,end_date,function ( result) {
+						
+
+						//load venues
+						var venues=[]
+						_.each(result,function(row){
+							if(venues.indexOf(row.kpi_venue)==-1){
+								//console.log('adding venue ',row.kpi_venue)
+								if(row.kpi_venue!=""){
+								venues.push(row.kpi_venue)
+								}
+							}
+						})
+						
+						function wind_up_Stats(	result,returned_row,analysis_field,venue){
+								
+								var years = [2014,2015,2016,2017,2018]
+								_.each(years,function(year){
+									_.each(moment.monthsShort(),function(month){
+									returned_row[month+" "+year]=""
+									_.each(result,function(row){
+										if(month==moment.monthsShort(row.kpi_month-1) &&venue==row.kpi_venue &&row.kpi_year==year){
+											returned_row[month+" "+year]=row[analysis_field]
+										}
+										})
+									})	
+								})
+							
+							return(returned_row)
+						}
+						
+						
+						var returned_data=[]
+
+						_.each(venues,function(venue){
+							
+						var returned_row={}
+							
+							returned_row.exhibition=EXHIBITION_NAME
+							returned_row.museum=venue
+							returned_row.stat="TEG visits"
+							returned_data.push(	 wind_up_Stats(	result,returned_row,"gallery_visits",venue))
+						var returned_row={}
+							returned_row.exhibition=EXHIBITION_NAME
+							returned_row.museum=venue
+							returned_row.stat="Income"
+							returned_data.push(	 wind_up_Stats(	result,returned_row,"pwyt_income",venue))
+						
+						
+						var returned_row={}
+							returned_row.exhibition=EXHIBITION_NAME
+							returned_row.museum=venue
+							returned_row.stat="No. of transactions"
+							//returned_data.push(	 wind_up_Stats(	result,returned_row,"number_transactions",venue))
+						var returned_row={}
+							returned_row.exhibition=EXHIBITION_NAME
+							returned_row.museum=venue
+							returned_row.stat="Average transaction"
+							//returned_data.push(	 wind_up_Stats(	result,returned_row,"ATV",venue))
+						var returned_row={}
+							returned_row.exhibition=EXHIBITION_NAME
+							returned_row.museum=venue
+							returned_row.stat="Visits"
+							returned_data.push(	 wind_up_Stats(	result,returned_row,"visits",venue))
+						var returned_row={}
+							returned_row.exhibition=EXHIBITION_NAME
+							returned_row.museum=venue
+							returned_row.stat="TEG conversion"
+							returned_data.push(	 wind_up_Stats(	result,returned_row,"conversion",venue))
+						//console.log(returned_data)
+						})
+
+
+					//res.json(returned_data)
+						cb(returned_data)
+					})
+
+}
 
 });
 
@@ -575,13 +691,13 @@ router.get('/total', function(req, res, next) {
 												var financial_year_display=""
 												if(financial_yer_text=="this"){
 													financial_year_display=	year+"-"+((year+1).toString().substring(2))
-													console.log('financial_year_display this',financial_year_display)
+													//console.log('financial_year_display this',financial_year_display)
 													returned_row[financial_year_display]=row[analysis_field]
 													}
 													else
 													{
 													financial_year_display=	(year-1)+"-"+(year.toString().substring(2))	
-													console.log('financial_year_display',financial_year_display)
+													//console.log('financial_year_display',financial_year_display)
 													returned_row[financial_year_display]+=row[analysis_field]
 												}
 												
@@ -698,7 +814,7 @@ var query = {}
 
 if( req.params.exact=="false"){
 	 _.extend(query, {date_value: {$gte: req.params.date_value}})
-	 console.log(query)
+	// console.log(query)
 }
 else
 {

@@ -184,7 +184,7 @@ function get_kpis(cb){
 
 Kpi_aggregate.aggregate([
  //HOLY CRAP ITS NOT FUN WHEN YOUR AGGREGATION PIPELINE GETS THE MONTH WRONG
- 
+ //NB the app injesting this needs logic based round the position in the financial year
 	{$project:{"date":1,
 					"value":1,
 					"museum_id":1,

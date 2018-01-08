@@ -16,8 +16,9 @@ exports.monthly_teg_controller = function($route,$scope, $http, $q, $routeParams
 		var columnDefs= []
 			$scope.filter_pie=[]
 			columnDefs.push(
-			{ field: 'museum',	name: "Museum",width: 80, pinnedLeft:true},
-			{ field: 'stat',	name: "Statistic",width: 100}
+			{ field: 'exhibition',	name: "Exhibition",width: 200},
+			{ field: 'museum',	name: "Museum",width: 80, pinnedLeft:true},			
+			{ field: 'stat',	name: "Statistic",width: 100, pinnedLeft:true}
 					
 			)
 		$scope.start_date=new Date("01/04/2017")
@@ -68,8 +69,10 @@ exports.monthly_teg_controller = function($route,$scope, $http, $q, $routeParams
 			$scope.$watchGroup(['end_date','start_date'], function(newValue, oldValue) {
   
 					columnDefs=[]
-					columnDefs.push({ field: 'museum',		name: "Museum",width: 90},
-								{ field: 'stat',		name: "Statistic",width: 90}
+					columnDefs.push(
+					{ field: 'exhibition',	name: "Exhibition",width: 200},
+					{ field: 'museum',		name: "Museum",width: 90},
+								{ field: 'stat',		name: "Statistic",width: 100, pinnedLeft:true}
 					)
 					columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
 					columnDefs.enableFiltering=false
