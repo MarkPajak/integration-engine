@@ -5,6 +5,12 @@
   }
 	}
 	
+			exports.shopifyButtonsmonthly = function() {
+  return {
+   controller: 'shopify_monthly_buttons',
+    templateUrl: './components/shopify/shopify-buttons-monthly.html'
+  }
+	}
 	
 		exports.shopifyButtons = function() {
   return {
@@ -15,3 +21,10 @@
 	
 	
 
+	exports.shopifyMonthly = function() {
+  return {
+   controller: 'shopify_monthly_controller',
+    templateUrl: './components/shopify/shopify-page-monthly.html'
+  }
+	}
+	

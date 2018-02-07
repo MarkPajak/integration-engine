@@ -321,6 +321,25 @@ exports.Monthly_visits =  function($resource){
   }
   
   
+    exports.Shopify_monthly_report =  function($resource){
+	 
+		 
+            return $resource('/shopify_monthy_products/:shop_id/:year/:month', null,
+			{ 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray:true}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+ }
+  
+  
+  
+  
+  
+  
+  
   exports.Raw_events =  function($resource){
 	 
 		 

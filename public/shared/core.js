@@ -123,7 +123,14 @@ var team_controllers = require('../components/team/team-controller');
 var member_controllers = require('../components/member/member-controller');
 var form_controllers = require('../components/team/form-controller');
 var timeline_controllers = require('../components/timeline/timeline-controller');
+
+
+
 var shopify_controllers = require('../components/shopify/shopify-controller');
+var shopify_monthly_controllers = require('../components/shopify/shopify-monthly-controller');
+
+
+
 //var performance_controller = require('../components/performance/performance-controller');
 var performance_form = require('../components/performance/visits/visits-form-controller');
 var retail_performance_form = require('../components/performance/retail/performance-form-controller');
@@ -517,6 +524,12 @@ _.each(shopify_controllers, function(controller, name) {
   app.controller(name, controller);
 });
 
+_.each(shopify_monthly_controllers, function(controller, name) {
+  app.controller(name, controller);
+});
+
+
+
 
 _.each(performance_form, function(controller, name) {
   app.controller(name, controller);
@@ -832,6 +845,12 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
 		     .when('/shopify_app', {
                template: '<shopify-status></shopify-status>'
            })
+		   
+		   
+		   .when('/shopify_monthly', {
+               template: '<shopify-monthly></shopify-monthly>'
+           })
+		   
 		   
 		      .when('/doom', {
                template: '<i-frame></i-frame>'

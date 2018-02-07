@@ -1,0 +1,54 @@
+<style>
+
+.checkbox-inline{
+    
+	}
+	.iconbar{
+	position:fixed;
+	width:25%;
+	float:right;
+	top:0px;
+	left:0px;
+	
+	display:block;
+		position:relative;
+		cursor: all-scroll;
+	    border: #585858;
+		border-style: solid;
+		border-width: 2px;
+		border-radius: 6PX;
+	    background-image: url('assets/img/drag.png');
+		color: black;
+		background-size: 10%;
+		background-repeat: no-repeat;
+		background-position: top right; 
+		background-position-y: 10px;
+		max-height:300px;
+		/*overflow-y:auto;*/
+	}
+	
+	.checkboxList{
+	max-height:1000px;
+	display:block;
+	overflow-y:auto;
+	}
+</style>
+  <div class="alert alert-danger" value="{{message}}" > {{ messages }} </div>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+<div   ng-show="isloggedin" ng-cloak="" class="buttondemoBasicUsage" >
+  <md-content>
+
+     <md-button ng-click="runShopify(0,'BMAG')" class="md-raised">Load data</md-button>
+   
+  
+   </section>
+
+  
+  </md-content>
+</div>
+
+<!--
+Copyright 2016 Google Inc. All Rights Reserved. 
+Use of this source code is governed by an MIT-style license that can be foundin the LICENSE file at http://material.angularjs.org/HEAD/license.
+-->

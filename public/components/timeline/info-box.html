@@ -1,5 +1,8 @@
 
 
+
+
+
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
 
@@ -47,19 +50,7 @@
 
 </dl> 
  
- <div class="form-check">
-  <label class="form-check-label">
-    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" ng-model="$root.selected_approved" value="$root.selected_approved"  >
-    APPROVED
-  </label>
-</div>
-<div class="form-check">
-  <label class="form-check-label">
-    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" ng-model="$root.selected_approved" value="$root.selected_approved">
-   NOT APPROVED
-  </label>
-</div>
- 
+
 <div ng-show="!locked.add_item && track.selected" ng-repeat="track in installmodels track by $index" >
 	 <dl class="row"  >  
 	<dt  class="col-sm-3">{{track.name}}</dt>

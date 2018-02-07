@@ -26,7 +26,8 @@ function guid() {
 }
 		
 		    var kpis = new Resources({
-					name:visit_form.room_name.value,				  
+					name:visit_form.room_name.value,	
+					permission_category:"DEFAULT",					
 					type: "room",	
 					asset_no: guid(),
 				//DEPARTMENTAL VARIABLES	
@@ -44,7 +45,7 @@ function guid() {
 			
 			Resources.query(query, function(visits) {
 				  $scope.$emit('form_submit');
-				console.log('Raw_visits',visits.length)
+				
 				$scope.results=visits
 		
 						save(kpis)

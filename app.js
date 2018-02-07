@@ -66,8 +66,13 @@ var gallery_visits =  require('./routes/performance/gallery_visits')
 var events =  require('./routes/performance/site_events.js')
 var operations =  require('./routes/performance/operations.js')
 
-
+//shopify
 var shopify = require('./routes/shopify')
+var shopify_monthy_products = require('./routes/shopify/monthly_products')
+
+
+
+
 var team = require('./routes/team')
 var leave = require('./routes/leave')
 var timeline_data_settings = require('./routes/timeline_data_settings')
@@ -118,6 +123,10 @@ app.use('/user_data', user_data);
 app.use('/shopify_transactions', shopify_transactions);
 app.use('/shopify_product', shopify_product);
 app.use('/shopify_order', shopify_order);
+app.use('/shopify_monthy_products', shopify_monthy_products);
+
+
+
 
 app.use('/shopify_product_status_app', shopify_product_status_app);
 app.use('/logging_messages', logging_messages);

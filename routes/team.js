@@ -7,7 +7,7 @@ Api_calls= require('./functions/standard_api_calls.js');
 
 
 /* GET /todos listing. */
-router.get('/',route_permissions.isAuthenticated, function(req, res, next) {
+router.get('/',route_permissions.isAdmin, function(req, res, next) {
 
   Team.find()
 	   .populate('leave_taken')
