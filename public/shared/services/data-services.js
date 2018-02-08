@@ -184,6 +184,17 @@ exports.Monthly_visits =  function($resource){
 
   } 
   
+  
+           exports.Exhibitions_teg =  function($resource){
+	  
+	return $resource('/gallery_visits/exhibition',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+       
+
+  }
+  
           exports.Yearly_teg =  function($resource){
 	  
 	return $resource('/gallery_visits/total',{ }, {

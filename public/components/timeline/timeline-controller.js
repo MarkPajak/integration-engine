@@ -369,10 +369,9 @@ main_function = function(timeline_mode){
 			}
 			
 			
-				$scope.bookings= function(){							
+			$scope.bookings= function(){							
 					timeline_functions.populate_timeline_track($rootScope,Bookings,timeline_bookings_functions,timeline_track)
 			}
-			
 			
 			$scope.shopify= function(){							
 					timeline_functions.populate_timeline_track($rootScope,Shopify_aggregate,timeline_shopify_functions,timeline_track)
@@ -394,9 +393,21 @@ main_function = function(timeline_mode){
 					timeline_googlesheets_functions.get_events(data_settings)
 				  		  
 			}
+	//dev		
+			data_settings=[]
+			data_settings.googlesheet_id="1XDUXfrYH8RtyDDaWfKSlosQ3EjatsmC2E8F22O1gkEg"
+			data_settings.googlesheet_name="retail"
+			data_settings.group_column="group"
+			data_settings.type="text"
+			data_settings.use_moment=false
+			data_settings.track="Retail"
+			data_settings.colour="red"
+			data_settings.title_column="name"
+			data_settings.start_column="start_date"
+			data_settings.end_column="end_date"
 			
 			
-			$scope.shopify() //NB for some reason need this to appear for unlogged in users otherwise text wont load in directives
+		//	$scope.shopify() //NB for some reason need this to appear for unlogged in users otherwise text wont load in directives
 			
 			
 			//WE'll do some routing here - might need to put it in a better place one day
@@ -415,12 +426,12 @@ main_function = function(timeline_mode){
 			timeline_track = Timeline
 			if( $scope.isloggedin){	
 			
-			
+					timeline_googlesheets_functions.get_events(data_settings)
 					$scope.add_installs_derigs()
-					$scope.team_leave()
+					//$scope.team_leave()
 					$scope.visitor_figures()
-					$scope.learning_bookings()
-					$scope.loans()
+					//$scope.learning_bookings()
+					//$scope.loans()
 					
 
 			}			

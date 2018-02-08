@@ -100,6 +100,7 @@ var participation_performance_form = require('../components/performance/particip
 var target_audience_controller = require('../components/performance/participation/target-audience-controller');
 
 
+var exhibition_teg_controller = require('../components/performance/gallery-visits/exhibitions-teg-controller');
 
 var yearly_teg_controller = require('../components/performance/gallery-visits/yearly-teg-controller');
 var weekly_teg_controller = require('../components/performance/gallery-visits/weekly-teg-controller');
@@ -326,6 +327,11 @@ _.each(exhibitions_pwyt_performance_form, function(controller, name) {
   app.controller(name, controller);
 });
 
+
+
+_.each(exhibition_teg_controller, function(controller, name) {
+  app.controller(name, controller);
+});
 
 _.each(yearly_teg_controller, function(controller, name) {
   app.controller(name, controller);

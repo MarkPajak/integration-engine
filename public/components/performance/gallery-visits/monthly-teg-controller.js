@@ -6,7 +6,7 @@ exports.monthly_teg_controller = function($route,$scope, $http, $q, $routeParams
 		$scope.show_all_Button=false
 		console.log('controller go')
 		$scope.table_heading = "Monthly TEG stats"
-		$scope.chart_class = "col-md-8 col-lg-8 col-sm-5 pull-right"
+		$scope.chart_class = "col-md-4 col-lg-4 col-sm-4 pull-right"
 		$scope.table_class = "col-md-12 col-lg-12 col-sm-5"
 		$scope.chart_heading= "Gallery visits by month"
 		$scope.pie_date = "Apr 2017"

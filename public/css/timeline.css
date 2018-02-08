@@ -14,6 +14,40 @@ md-menu-item {
     -ms-flex-pack: start;
     justify-content: flex-start;
 }
+.md-button .md-ripple-container {
+ 
+    height: 44px;
+    left: 40px;
+    top: 21px;
+}
+
+md-menu-item > .md-button {
+    border-radius: 0;
+    margin: auto 0;
+    font-size: 15px;
+    text-transform: none;
+    font-weight: 300;
+    text-align: left;
+    text-align: start;
+    height: 100%;
+    padding-left: -4px;
+    padding-right: 16px;
+    display: inline-block;
+    -webkit-align-items: baseline;
+    -ms-flex-align: baseline;
+    align-items: baseline;
+    -webkit-align-content: flex-start;
+    -ms-flex-line-pack: start;
+    align-content: flex-start;
+    width: 100%;
+    left: -40px;
+    height: 69px;
+}
+
+
+
+
+
 md-menu-item > .md-button md-icon {
     margin: auto -34px auto 0;
 }

@@ -409,6 +409,16 @@ exports.recordTeg  = function() {
   }
 	}
 	
+		
+				exports.exhibitionsTeg = function() {
+  return {
+	    restrict: "E",
+    scope: {},
+   controller: 'exhibitions_teg_controller',
+   templateUrl: './shared/templates/data_table.html'
+  }
+	}
+	
 				exports.yearlyTeg = function() {
   return {
 	    restrict: "E",

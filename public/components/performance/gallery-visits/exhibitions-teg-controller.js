@@ -1,13 +1,13 @@
-exports._monthly_teg_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_teg,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security
+exports.exhibitions_teg_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Exhibitions_teg,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security
     ) {
 		
 		
 		$scope.monthWeek='month'
 		$scope.show_all_Button=false
 		console.log('controller go')
-		$scope.table_heading = "Monthly TEG Stats"
-		$scope.chart_class = "col-md-8 col-lg-8 col-sm-8 pull-right"
-		$scope.table_class = "col-md-12 col-lg-12 col-sm-5"
+		$scope.table_heading = "Overall Stats by Exhibition"
+		$scope.chart_class = "col-md-8 col-lg-8 col-sm-6 pull-right"
+		$scope.table_class = "col-md-7 col-lg-7 col-sm-7"
 		$scope.chart_heading= "Gallery visits by month"
 		$scope.pie_date = "Apr 2017"
 		$scope.gridOptions=[]
@@ -16,18 +16,24 @@ exports._monthly_teg_controller = function($route,$scope, $http, $q, $routeParam
 		var columnDefs= []
 			$scope.filter_pie=[]
 			columnDefs.push(
-			{ field: 'museum',	name: "Museum",width: 80, pinnedLeft:true},
-			{{ field: 'stat',		name: "Statistic",width: 90, cellTemplate:  row.entity.stat=="TEG conversion" ? "cheese" + "%" :"bread"}
-			{ field: 'stat',	name: "Statistic",width: 100}		
+		//	{ field: 'exhibition',	name: "Exhibition",width: 200},
+			//{ field: 'museum',	name: "Museum",width: 80},			
+			//{ ield: 'stat',	name: "Statistic",width: 100},
+			{ field: 'total',	name: "Total",width: 100}
+					
 			)
 		$scope.start_date=new Date("01/04/2017")
 			$scope.end_date=new Date("01/04/2018")
-			columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
+			//columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
 			columnDefs.enableFiltering=false
 			console.log('columnDefs',columnDefs)		
 			$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
-		 console.log('getData')	
-			Monthly_teg.query({}, function(team) {
+		
+			$scope.museums  =[]
+			$scope.selected_chart_stats=["TEG visits"]
+		
+		
+			Exhibitions_teg.query({}, function(team) {
 				$scope.rows=[]
 				$scope.data_rows=[]
 				$scope._rows=[]
@@ -35,7 +41,7 @@ exports._monthly_teg_controller = function($route,$scope, $http, $q, $routeParam
 					console.log(row)
 						if(row.museum!=""){
 							$scope._rows.push(row)
-							
+							if($scope.museums.indexOf(row.museum)==-1){$scope.museums.push(row.museum)}
 							if(row.stat=="gallery_visits"){
 							
 								console.log("gallery_visits")
@@ -56,7 +62,7 @@ exports._monthly_teg_controller = function($route,$scope, $http, $q, $routeParam
 				})
 			})
 			make_a_pie.build($scope,"Apr 2017","museum")
-			make_a_line_chart.build($scope,columnDefs,"museum","gallery_visits")
+			make_a_line_chart.build($scope,columnDefs,"museum")
 			$scope.changedValue = function(item){ 
 					$scope.pie_date=item			
 					make_a_pie.build($scope,item,"museum")
@@ -66,13 +72,14 @@ exports._monthly_teg_controller = function($route,$scope, $http, $q, $routeParam
 					columnDefs=[]
 					columnDefs.push(
 					{ field: 'museum',		name: "Museum",width: 90},
-					{ field: 'exhibition',	name: "Exhibition",width: 200},
-					{ field: 'stat',		name: "Statistic",width: 90, cellTemplate:  row.entity.stat=="TEG conversion" ? "cheese" + "%" : "bread"}
+					{ field: 'exhibition',	name: "Exhibition",width: 300},					
+					{ field: 'stat',		name: "Statistic",width: 130},
+					{ field: 'total',	name: "Total",width: 100}
 					)
-					columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
+					//columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
 					columnDefs.enableFiltering=false
 					$scope.gridOptions.columnDefs=columnDefs
-					make_a_line_chart.build($scope,columnDefs,"museum","gallery_visits")
+					make_a_line_chart.build($scope,columnDefs,"museum")
 			
 			
 			

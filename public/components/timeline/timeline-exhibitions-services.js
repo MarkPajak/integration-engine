@@ -105,9 +105,9 @@ exports.timeline_exhibitions_functions =  function (timeline_functions,$http,Tim
 													}
 													select_group = true
 													if($routeParams.track){
-													select_group = false
+														select_group = false
 													if($routeParams.track=="Arts and Events"){
-													//select_group = true
+														select_group = true
 													}
 													}
 													

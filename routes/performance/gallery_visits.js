@@ -40,6 +40,357 @@ var Kpi_aggregate = require('../../models/Kpi_log.js');
 var PWYT = require('../../models/performance/Exhibitions_pwyt.js');
 
 
+
+router.get('/exhibition', function(req, res, next) {
+
+
+
+function get_kpis(EXHIBITION_NAME,VENUE,start_date,end_date, cb){
+
+Team.aggregate([
+		{ $match: { 
+					  museum_id : VENUE ,					
+					   date_value : { $gte:start_date , $lte: end_date }  
+								
+										 
+		}
+	},
+		{ $group: {
+                _id: { 
+				
+				// "kpi_year": { "$year": route_functions.mongo_aggregator }, 
+				//"kpi_month": { "$month": route_functions.mongo_aggregator }, 
+				  kpi_venue:'$museum_id',
+					   
+					   
+					 },  
+				
+                gallery_visits: {$sum: '$value' },
+			 
+		      
+            }
+		 },
+		 
+
+	 { $project : {kpi_venue:"$_id.kpi_venue",gallery_visits:'$gallery_visits'}  },
+
+		
+
+    ], function (err, gallery_visits) {
+	if(err) console.log(err)
+	//console.log(result)
+
+
+	Kpi_aggregate.aggregate([
+			
+	{ $match: { 
+					  museum_id : VENUE ,					
+					   date_value : { $gte:start_date , $lte: end_date }  
+								
+										 
+		}
+	},
+
+		{ $group: {
+                _id: {// year :  { "$year": route_functions.mongo_aggregator },        
+					  // month : { "$month": route_functions.mongo_aggregator },        
+					   venue:'$museum_id',
+					   //gallery:'$gallery',
+					 },  
+				
+               visits:  { $sum:  "$value"  } ,
+			
+		      
+            }
+		 },
+
+	 { $project : { venue:"$_id.venue",ATV:'$ATV',number_transactions:'$number_transactions', net_sales:'$net_sales',visits:"$visits"}  },
+
+		
+	  ], function (err, museum_visits) {
+		  
+		  if(err) console.log(err)
+ 
+	PWYT.aggregate([
+	{ $match: { 
+					  museum_id : VENUE ,					
+					   date_value : { $gte:start_date , $lte: end_date }  
+								
+										 
+		}
+	},
+		{ $group: {
+                _id: { 
+
+						//"pwyt_year": { "$year": route_functions.mongo_aggregator }, 
+						//"pwyt_month": { "$month": route_functions.mongo_aggregator }, 					   
+					    pwyt_venue:'$museum_id',
+					   
+					 },  
+				
+                pwyt_income: {$sum: '$donation_box_amount' },
+				no_envelopes: {$sum: '$no_envelopes' }
+			 
+		      
+            }
+		 },
+
+	 { $project : {pwyt_venue:"$_id.pwyt_venue", pwyt_income:"$pwyt_income", no_envelopes:"$no_envelopes"}  },	  
+
+	 ], function (err, result_pwyt) {
+        if (err) {
+           // console.log(err);
+        } else {
+		
+		
+		_.each(gallery_visits,function(kpi,i){
+			_.each(museum_visits,function(visits,ii){
+
+			
+			
+			//console.log('conversion')
+			//console.log(gallery_visits[i].gallery_visits)
+			//console.log(gallery_visits[i].conversion)
+			
+			
+			
+			if(kpi.kpi_venue==visits.venue ){
+			gallery_visits[i].visits=visits.visits
+			gallery_visits[i].conversion=((kpi.gallery_visits/visits.visits)*100).toFixed(2);
+			
+			
+			
+				
+							for (compare_previous_years = 1; compare_previous_years < 2; compare_previous_years++) { 
+  
+
+							_.each(gallery_visits,function(previous_data){
+								compare_previous_year = visits.year-compare_previous_years
+								if(previous_data.kpi_venue==visits.venue ){
+									//console.log("adding % last year")
+									//gallery_visits[i]["% net_sales last year"] =((kpi.net_sales/previous_data.net_sales)*100-100).toFixed(2)+"%";
+		
+								}
+							})
+							
+							}
+			}
+			
+			
+			
+			
+			
+			
+			})
+			
+				_.each(result_pwyt,function(pwyt,iii){
+				//console.log('conversion')
+				//console.log(pwyt.pwyt_venue,kpi.kpi_venue, pwyt.pwyt_month,kpi.kpi_month,pwyt.pwyt_year,kpi.kpi_year)
+					if(pwyt.pwyt_venue==kpi.kpi_venue ){
+						gallery_visits[i].pwyt_income=pwyt.pwyt_income
+						gallery_visits[i].spend_per_head=(pwyt.pwyt_income/	gallery_visits[i].gallery_visits);
+					}
+				})
+		})
+		
+		
+//res.json(result)
+	cb(gallery_visits)
+		   	//mongoose.connection.close()	
+        }
+		
+    });
+	    });
+    });
+}
+
+
+data_services(function (events) {
+
+
+var exhibitions=[]
+
+
+_.each(events.events,function (event) {
+
+//CHANGES TO EMU GALLERY NAMES WIL MESS THIS UP
+if(event.venue && event.event_space){
+		if(event.venue=="M Shed" && event.event_space.toLowerCase().indexOf("temporary exhibition")!=-1|| 
+		event.venue.toLowerCase().indexOf("bristol museum")!=-1 &&  event.event_space.toLowerCase().indexOf("temporary exhibition gallery 1")!=-1){
+			
+			if(event.type=="Exhibition"){
+//console.log(event)
+			var exhibition={
+							EXHIBITION_NAME:event.name,
+							VENUE : event.venue=="M Shed" ? "M-SHED" : "BMAG",
+							start_date: moment(event.startDate, 'DD-MMM-YYYY').toDate(),
+							end_date: moment(event.endDate, 'DD-MMM-YYYY').toDate()
+							}
+			console.log('exhibition',exhibition)		
+			exhibitions.push(exhibition)
+
+			}
+			
+		}
+		}
+})
+
+			
+
+var page = 0
+var result=[]
+async.whilst(function () {
+  
+  return page <exhibitions.length;
+},
+function (next) {
+ 
+ analyse_exhibiton(exhibitions[page], function (data) {
+   console.log('exhibitions',exhibitions[page])
+      result=result.concat(data)
+  
+		page++;
+		next();
+  });
+},
+function (err) {
+
+  res.json(result)
+});
+
+
+function concatenate_exhibiton_kpis(exhibit,cb){
+
+			analyse_exhibiton(exhibit,function(data){
+			//async	
+				cb(data)
+				
+			})
+
+}
+
+});
+
+
+function analyse_exhibiton(exhibition,cb){
+
+var EXHIBITION_NAME = exhibition.EXHIBITION_NAME
+var VENUE = exhibition.VENUE
+var start_date= exhibition.start_date
+var end_date= exhibition.end_date
+
+					get_kpis(EXHIBITION_NAME,VENUE, start_date,end_date,function ( result) {
+						
+
+						//load venues
+						var venues=[]
+						_.each(result,function(row){
+							if(venues.indexOf(row.kpi_venue)==-1){
+								//console.log('adding venue ',row.kpi_venue)
+								if(row.kpi_venue!=""){
+								venues.push(row.kpi_venue)
+								}
+							}
+						})
+						
+						function wind_up_Stats(	result,returned_row,analysis_field,venue,round,pound,percent){
+								
+								var years = [2014,2015,2016,2017,2018]
+								//_.each(years,function(year){
+								//	_.each(moment.monthsShort(),function(month){
+									returned_row["total"]=""
+									_.each(result,function(row){
+										//if(month==moment.monthsShort(row.kpi_month-1) &&venue==row.kpi_venue &&row.kpi_year==year){
+											returned_row["total"]=row[analysis_field]
+										
+										
+											
+												if(round==true){
+									
+												returned_row["total"]=Math.round(returned_row["total"]* 100) / 100
+											}
+												if(pound==true){
+												
+												returned_row["total"]="£"+returned_row["total"]
+											}
+											if(percent==true){
+												
+												returned_row["total"]="%"+returned_row["total"]
+											}
+										//}
+										})
+									//})	
+								//})
+							
+							return(returned_row)
+						}
+						
+						
+						var returned_data=[]
+
+						_.each(venues,function(venue){
+							
+						var returned_row={}
+							
+							returned_row.exhibition=EXHIBITION_NAME
+							returned_row.museum=venue
+							returned_row.stat="TEG visits"
+							returned_data.push(	 wind_up_Stats(	result,returned_row,"gallery_visits",venue))
+						var returned_row={}
+							returned_row.exhibition=EXHIBITION_NAME
+							returned_row.museum=venue
+							returned_row.stat="Income"
+							returned_data.push(	 wind_up_Stats(	result,returned_row,"pwyt_income",venue,true,true))
+						
+						
+						var returned_row={}
+							returned_row.exhibition=EXHIBITION_NAME
+							returned_row.museum=venue
+							returned_row.stat="No. of transactions"
+							//returned_data.push(	 wind_up_Stats(	result,returned_row,"number_transactions",venue))
+						var returned_row={}
+							returned_row.exhibition=EXHIBITION_NAME
+							returned_row.museum=venue
+							returned_row.stat="Average transaction"
+							//returned_data.push(	 wind_up_Stats(	result,returned_row,"ATV",venue))
+						var returned_row={}
+							returned_row.exhibition=EXHIBITION_NAME
+							returned_row.museum=venue
+							returned_row.stat="Visits"
+							returned_data.push(	 wind_up_Stats(	result,returned_row,"visits",venue))
+						var returned_row={}
+							returned_row.exhibition=EXHIBITION_NAME
+							returned_row.museum=venue
+							returned_row.stat="TEG conversion"
+							returned_data.push(	 wind_up_Stats(	result,returned_row,"conversion",venue,true,false,true))
+							
+						var returned_row={}
+							returned_row.exhibition=EXHIBITION_NAME
+							returned_row.museum=venue
+							returned_row.stat="Spend per head"
+							returned_data.push(	 wind_up_Stats(	result,returned_row,"spend_per_head",venue,true,true,false))
+						//console.log(returned_data)
+						
+						
+						
+						
+						})
+
+
+					//res.json(returned_data)
+						cb(returned_data)
+					})
+
+}
+
+})
+
+
+
+
+
+
+
 //aggregation
 /* GET /todos listing. */
 router.get('/week/:start?/:end?', function(req, res, next) {
@@ -261,6 +612,8 @@ get_kpis( function ( result) {
 		returned_row.stat="TEG conversion"
 		returned_data.push(	 wind_up_Stats(	result,returned_row,"conversion",venue))
 	
+	
+	
 	})
 
 
@@ -421,6 +774,7 @@ Team.aggregate([
 				//console.log(pwyt.pwyt_venue,kpi.kpi_venue, pwyt.pwyt_month,kpi.kpi_month,pwyt.pwyt_year,kpi.kpi_year)
 					if(pwyt.pwyt_venue==kpi.kpi_venue &&  pwyt.pwyt_month== kpi.kpi_month && pwyt.pwyt_year==kpi.kpi_year){
 						gallery_visits[i].pwyt_income=pwyt.pwyt_income
+						gallery_visits[i].spend_per_head=(pwyt.pwyt_income/	gallery_visits[i].gallery_visits);
 					}
 				})
 		})
@@ -524,7 +878,7 @@ var end_date= exhibition.end_date
 							}
 						})
 						
-						function wind_up_Stats(	result,returned_row,analysis_field,venue){
+						 function wind_up_Stats(	result,returned_row,analysis_field,venue,round,pound,percent){
 								
 								var years = [2014,2015,2016,2017,2018]
 								_.each(years,function(year){
@@ -532,7 +886,28 @@ var end_date= exhibition.end_date
 									returned_row[month+" "+year]=""
 									_.each(result,function(row){
 										if(month==moment.monthsShort(row.kpi_month-1) &&venue==row.kpi_venue &&row.kpi_year==year){
+											
+											
 											returned_row[month+" "+year]=row[analysis_field]
+										
+										
+											
+												if(round==true){
+												
+													returned_row[month+" "+year]=Math.round(		returned_row[month+" "+year]* 100) / 100
+											}
+												if(pound==true){
+												
+													returned_row[month+" "+year]="£"+		returned_row[month+" "+year]
+											}
+											if(percent==true){
+												
+													returned_row[month+" "+year]="%"+		returned_row[month+" "+year]
+											}
+											
+											
+											
+											
 										}
 										})
 									})	
@@ -556,7 +931,7 @@ var end_date= exhibition.end_date
 							returned_row.exhibition=EXHIBITION_NAME
 							returned_row.museum=venue
 							returned_row.stat="Income"
-							returned_data.push(	 wind_up_Stats(	result,returned_row,"pwyt_income",venue))
+							returned_data.push(	 wind_up_Stats(	result,returned_row,"pwyt_income",venue,true,true))
 						
 						
 						var returned_row={}
@@ -578,8 +953,17 @@ var end_date= exhibition.end_date
 							returned_row.exhibition=EXHIBITION_NAME
 							returned_row.museum=venue
 							returned_row.stat="TEG conversion"
-							returned_data.push(	 wind_up_Stats(	result,returned_row,"conversion",venue))
-						//console.log(returned_data)
+							returned_data.push(	 wind_up_Stats(	result,returned_row,"conversion",venue,true,false,true))
+							
+						var returned_row={}
+							returned_row.exhibition=EXHIBITION_NAME
+							returned_row.museum=venue
+							returned_row.stat="Spend per head"
+							returned_data.push(	 wind_up_Stats(	result,returned_row,"spend_per_head",venue,false,true,false))
+						
+						
+						
+						
 						})
 
 
@@ -653,6 +1037,7 @@ router.get('/total', function(req, res, next) {
 									_.each(pwyt_income,function(pwyt,ii){
 										if( pwyt._id.pwyt_venue==gal._id.kpi_venue  && pwyt._id.year==gal._id.year && pwyt._id.financial_yer==gal._id.financial_yer){					
 											gallery_visits[i].pwyt_income=pwyt.pwyt_income
+											
 										}
 									})
 								}

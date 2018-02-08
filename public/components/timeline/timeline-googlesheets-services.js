@@ -25,7 +25,9 @@ exports.timeline_googlesheets_functions =  function (timeline_functions,$http,Ti
 		{
 		 
 	  return $http.get("https://script.google.com/macros/s/AKfycbzij_r2bTK6fiWU-h29rglHktd8pwbLfrti82Or68TkEjEHrOc/exec?id="+data_settings.googlesheet_id).then(function(datax) {
-					
+		
+		
+console.log('google sheet events',datax)		
 						self.add_events(data_settings,datax, function(public_dates){
 							 $rootScope.leave_groups = timeline_functions.loadgroups(public_dates)
 							_.each($rootScope.leave_groups, function(_group) {
@@ -35,7 +37,7 @@ exports.timeline_googlesheets_functions =  function (timeline_functions,$http,Ti
 								$rootScope.timeline.itemsData.getDataSet().add(date)
 							})
 						})
-					})
+					}, function(err) { console.log(err) })
 		}
    },
   
@@ -80,29 +82,30 @@ exports.timeline_googlesheets_functions =  function (timeline_functions,$http,Ti
 													
 													if(data_settings.use_moment==true){
 													
-													start_date=moment(event[data_settings.date_column])._d
-													end_date=moment(event[data_settings.date_column])._d
-													end_date.setDate(end_date.getDate() + 1)
+														start_date=moment(event[data_settings.date_column])._d
+														end_date=moment(event[data_settings.date_column])._d
+														end_date.setDate(end_date.getDate() + 1)
 													
 													}
 													else
 													{
 														
-													start_date=event[data_settings.start_column]
-													end_date=event[data_settings.end_column]
+														start_date=event[data_settings.start_column]
+														end_date=event[data_settings.end_column]
 													
 														
 													}
 																								
-													select_group = false
-													if($routeParams.track){
-													select_group = false
-													if($routeParams.track==data_settings.track){
 													select_group = true
-													}
+													
+													if($routeParams.track){
+														select_group = false
+														if($routeParams.track==data_settings.track){
+														select_group = true
+														}
 													}
 														
-														visevents.add( {content:"" ,
+														__event={content:"" ,
 																		select_group:select_group,
 																		group:event[data_settings.group_column]|| data_settings.group,
 																		group_id:event[data_settings.group_id_column]||data_settings.track ,
@@ -116,7 +119,9 @@ exports.timeline_googlesheets_functions =  function (timeline_functions,$http,Ti
 																		start:start_date,
 																		end:end_date,
 																		className 	:	scale_class
-																		})
+																		}
+														console.log('__event',__event)
+														visevents.add( __event)
 													
 														
 														
@@ -134,18 +139,18 @@ exports.timeline_googlesheets_functions =  function (timeline_functions,$http,Ti
 													}else
 													{
 													start_date=new Date(event[data_settings.start_column])
-													//end_date=new Date(start_date) //required e.g. art and events
-													var end_date=new Date(start_date).setDate( start_date.getDate() + 1);
+													end_date=new Date(event[data_settings.end_column]) //required e.g. art and events
+													//var end_date=new Date(end_date).setDate( end_date.getDate() + 1);
 													
-													end_date=new Date(start_date) //required e.g. art and events
-													end_date.setDate( start_date.getDate() + 1);
+													//end_date=new Date(end_date) //required e.g. art and events
+													//end_date.setDate( end_date.getDate() + 1);
 													}
 													
 													
 													
 												
 													
-									var event_image=false
+											var event_image=false
 											var event_image_irn
 											if(event.images){
 											if(event.images[0]){
@@ -154,20 +159,21 @@ exports.timeline_googlesheets_functions =  function (timeline_functions,$http,Ti
 												}
 											}
 												
-													var htmlContent =  self.event_html(event[data_settings.title_column],event_image,event_image_irn,start_date,end_date)
+													var htmlContent =  self.event_html(event[data_settings.title_column],event_image,event_image_irn,moment(start_date).startOf('day').format("MMM Do"),moment(end_date).startOf('day').format("MMM Do"))
 												
 													select_group = false
-													if($routeParams.track){
-													select_group = false
-													if($routeParams.track==data_settings.track){
-													select_group = true
-													}
+														if($routeParams.track){
+														select_group = false
+														if($routeParams.track==data_settings.track){
+														select_group = true
+														}
 													}  
 													
 													
 													//if(!data_settings.checked_event_types || (event[data_settings.group_column]!="" && data_settings.checked_event_types.indexOf(event[data_settings.group_column])!=-1 && new Date(event[data_settings.start_column]))){
 												
-														this_event={content:htmlContent ,
+														this_event={	
+																		content:htmlContent ,
 																		select_group:select_group,
 																		group_id:event[data_settings.group_column]+data_settings.track || data_settings.track,
 																		name:event[data_settings.title_column] ||"NA"  ,
@@ -178,7 +184,7 @@ exports.timeline_googlesheets_functions =  function (timeline_functions,$http,Ti
 																		type:data_settings.event_type ||"",
 																		start:start_date,
 																		className :data_settings.colour
-																		}
+																	}
 																		
 														
 														if(data_settings.subgroup_column!=""){
@@ -198,7 +204,7 @@ exports.timeline_googlesheets_functions =  function (timeline_functions,$http,Ti
 															this_event.end=end_date
 													//}
 														if(this_event.start && this_event.group )	{		
-														visevents.add(this_event)
+															visevents.add(this_event)
 														}
 														else{
 															console.log('no start or group',this_event)
@@ -220,7 +226,7 @@ exports.timeline_googlesheets_functions =  function (timeline_functions,$http,Ti
 																htmlContent+=name
 																htmlContent+='</div>';
 																htmlContent+="<span> ";
-																htmlContent+=start_date;
+																htmlContent+=start_date+" - "+end_date;
 																htmlContent+="<span>";
 																htmlContent+="<p>"+notes
 																

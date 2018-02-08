@@ -29,8 +29,8 @@ exports.timeline_install_functions =  function (timeline_functions,$http,Timelin
 												
 												tempdates=[]
 											if( 	$rootScope.added_track_groups.indexOf("Shopify product types")==-1){
-												$rootScope.added_track_groups.push("Shopify product types")														
-													$rootScope.track_groups.push({"track":"Shopify product types"})
+												//$rootScope.added_track_groups.push("Shopify product types")														
+													//$rootScope.track_groups.push({"track":"Shopify product types"})
 													}
 												console.log('INSTALL EVENTS',eventss)
 												$.each(eventss, function( index, data ) {

@@ -5,9 +5,9 @@
 <div  ng-controller="BasicDemoCtrl as ctrl" ng-cloak="">
     <md-menu class="pull-right">
       <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="ctrl.openMenu($mdMenu, $event)">
-         <i class="material-icons">face</i>
+         <i class="material-icons">dns</i>
       </md-button>
-      <md-menu-content width="4">
+      <md-menu-content width="7">
 	  	 <md-menu-item  ng-show="isloggedin && haspermissions">
           <md-button ng-click="">
          <md-icon md-svg-icon="social:notifications-{{ctrl.notificationsEnabled ? 'off' : 'on'}}"></md-icon>
