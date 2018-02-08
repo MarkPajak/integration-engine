@@ -6,8 +6,8 @@ exports.exhibitions_teg_controller = function($route,$scope, $http, $q, $routePa
 		$scope.show_all_Button=false
 		console.log('controller go')
 		$scope.table_heading = "Overall Stats by Exhibition"
-		$scope.chart_class = "col-md-8 col-lg-8 col-sm-6 pull-right"
-		$scope.table_class = "col-md-7 col-lg-7 col-sm-7"
+		$scope.chart_class = "col-md-12 col-lg-12 col-sm-6 pull-right"
+		$scope.table_class = "col-md-12 col-lg-12 col-sm-12"
 		$scope.chart_heading= "Gallery visits by month"
 		$scope.pie_date = "Apr 2017"
 		$scope.gridOptions=[]
@@ -16,10 +16,13 @@ exports.exhibitions_teg_controller = function($route,$scope, $http, $q, $routePa
 		var columnDefs= []
 			$scope.filter_pie=[]
 			columnDefs.push(
-		//	{ field: 'exhibition',	name: "Exhibition",width: 200},
-			//{ field: 'museum',	name: "Museum",width: 80},			
-			//{ ield: 'stat',	name: "Statistic",width: 100},
-			{ field: 'total',	name: "Total",width: 100}
+	{ field: 'museum',		name: "Museum",width: 90},
+					{ field: 'exhibition',	name: "Exhibition",width: 250},
+					{ field: 'visits',		name: "all visits",width: 110},
+					{ field: 'gallery_visits',		name: "exhibition  visits",width: 110},
+					{ field: 'income',		name: "income",width: 110},
+					{ field: 'conversion',		name: "conversion",width: 110},
+					{ field: 'spend_per_head',		name: "spend_per_head",width: 110}
 					
 			)
 		$scope.start_date=new Date("01/04/2017")
@@ -72,9 +75,12 @@ exports.exhibitions_teg_controller = function($route,$scope, $http, $q, $routePa
 					columnDefs=[]
 					columnDefs.push(
 					{ field: 'museum',		name: "Museum",width: 90},
-					{ field: 'exhibition',	name: "Exhibition",width: 300},					
-					{ field: 'stat',		name: "Statistic",width: 130},
-					{ field: 'total',	name: "Total",width: 100}
+					{ field: 'exhibition',	name: "Exhibition",width: 250},
+					{ field: 'visits',		name: "all visits",width: 130},
+					{ field: 'gallery_visits',		name: "exhibition  visits",width: 130},
+					{ field: 'income',		name: "income",width: 130},
+					{ field: 'conversion',		name: "conversion",width: 130},
+					{ field: 'spend_per_head',		name: "spend_per_head",width: 130}
 					)
 					//columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
 					columnDefs.enableFiltering=false

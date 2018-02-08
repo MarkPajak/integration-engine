@@ -10934,8 +10934,8 @@ exports.exhibitions_teg_controller = function($route,$scope, $http, $q, $routePa
 		$scope.show_all_Button=false
 		console.log('controller go')
 		$scope.table_heading = "Overall Stats by Exhibition"
-		$scope.chart_class = "col-md-8 col-lg-8 col-sm-6 pull-right"
-		$scope.table_class = "col-md-7 col-lg-7 col-sm-7"
+		$scope.chart_class = "col-md-12 col-lg-12 col-sm-6 pull-right"
+		$scope.table_class = "col-md-12 col-lg-12 col-sm-12"
 		$scope.chart_heading= "Gallery visits by month"
 		$scope.pie_date = "Apr 2017"
 		$scope.gridOptions=[]
@@ -10944,10 +10944,13 @@ exports.exhibitions_teg_controller = function($route,$scope, $http, $q, $routePa
 		var columnDefs= []
 			$scope.filter_pie=[]
 			columnDefs.push(
-		//	{ field: 'exhibition',	name: "Exhibition",width: 200},
-			//{ field: 'museum',	name: "Museum",width: 80},			
-			//{ ield: 'stat',	name: "Statistic",width: 100},
-			{ field: 'total',	name: "Total",width: 100}
+	{ field: 'museum',		name: "Museum",width: 90},
+					{ field: 'exhibition',	name: "Exhibition",width: 250},
+					{ field: 'visits',		name: "all visits",width: 110},
+					{ field: 'gallery_visits',		name: "exhibition  visits",width: 110},
+					{ field: 'income',		name: "income",width: 110},
+					{ field: 'conversion',		name: "conversion",width: 110},
+					{ field: 'spend_per_head',		name: "spend_per_head",width: 110}
 					
 			)
 		$scope.start_date=new Date("01/04/2017")
@@ -11000,9 +11003,12 @@ exports.exhibitions_teg_controller = function($route,$scope, $http, $q, $routePa
 					columnDefs=[]
 					columnDefs.push(
 					{ field: 'museum',		name: "Museum",width: 90},
-					{ field: 'exhibition',	name: "Exhibition",width: 300},					
-					{ field: 'stat',		name: "Statistic",width: 130},
-					{ field: 'total',	name: "Total",width: 100}
+					{ field: 'exhibition',	name: "Exhibition",width: 250},
+					{ field: 'visits',		name: "all visits",width: 130},
+					{ field: 'gallery_visits',		name: "exhibition  visits",width: 130},
+					{ field: 'income',		name: "income",width: 130},
+					{ field: 'conversion',		name: "conversion",width: 130},
+					{ field: 'spend_per_head',		name: "spend_per_head",width: 130}
 					)
 					//columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
 					columnDefs.enableFiltering=false
@@ -19193,7 +19199,7 @@ main_function = function(timeline_mode){
 			data_settings.title_column="name"
 			data_settings.start_column="start_date"
 			data_settings.end_column="end_date"
-			timeline_googlesheets_functions.get_events(data_settings)
+			
 			
 		//	$scope.shopify() //NB for some reason need this to appear for unlogged in users otherwise text wont load in directives
 			
@@ -19214,7 +19220,7 @@ main_function = function(timeline_mode){
 			timeline_track = Timeline
 			if( $scope.isloggedin){	
 			
-			
+					timeline_googlesheets_functions.get_events(data_settings)
 					$scope.add_installs_derigs()
 					//$scope.team_leave()
 					$scope.visitor_figures()
@@ -24093,7 +24099,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
           
         }])
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_a5d7e444.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_85695ba7.js","/")
 },{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/performance/analyser/analyser-controller":18,"../components/performance/dashboard-controllers":19,"../components/performance/donations/monthly-donations-controller":20,"../components/performance/donations/performance-form-controller":21,"../components/performance/donations/raw-donations-controller":22,"../components/performance/donations/yearly-donations-controller":23,"../components/performance/events/monthly-events-controller":24,"../components/performance/events/performance-form-controller":25,"../components/performance/events/raw-events-controller":26,"../components/performance/events/yearly-events-controller":27,"../components/performance/exhibitions-pwyt/monthly-donations-controller":28,"../components/performance/exhibitions-pwyt/performance-form-controller":29,"../components/performance/exhibitions-pwyt/raw-donations-controller":30,"../components/performance/exhibitions/exhibitions-summary-controller":31,"../components/performance/gallery-visits/exhibitions-teg-controller":32,"../components/performance/gallery-visits/monthly-teg-controller":33,"../components/performance/gallery-visits/performance-form-controller":34,"../components/performance/gallery-visits/raw-teg-controller":35,"../components/performance/gallery-visits/weekly-teg-controller":36,"../components/performance/gallery-visits/yearly-teg-controller":37,"../components/performance/gift-aid/monthly-allgiftaid-controller":38,"../components/performance/gift-aid/monthly-giftaid-controller":39,"../components/performance/gift-aid/performance-form-controller":40,"../components/performance/gift-aid/raw-giftaid-controller":41,"../components/performance/home/kpi-home-controller":42,"../components/performance/learning/age-learning-controller":43,"../components/performance/learning/monthly-learning-controller":44,"../components/performance/learning/performance-form-controller":45,"../components/performance/learning/raw-learning-controller":46,"../components/performance/learning/yearly-learning-controller":47,"../components/performance/operations/monthly-operations-controller":48,"../components/performance/operations/performance-form-controller":49,"../components/performance/operations/raw-operations-controller":50,"../components/performance/operations/yearly-operations-controller":51,"../components/performance/participation/monthly-participation-controller":52,"../components/performance/participation/performance-form-controller":53,"../components/performance/participation/raw-participation-controller":54,"../components/performance/participation/target-audience-controller":55,"../components/performance/participation/yearly-participation-controller":56,"../components/performance/performance-directive":57,"../components/performance/retail/monthly-retail-sales-controller":58,"../components/performance/retail/performance-form-controller":59,"../components/performance/retail/raw-retail-sales-controller":60,"../components/performance/retail/yearly-retail-sales-controller":61,"../components/performance/turnstiles/monthly-turnstiles-controller":62,"../components/performance/turnstiles/raw-turnstiles-controller":63,"../components/performance/visits/monthly-visits-controller":64,"../components/performance/visits/raw-visits-controller":65,"../components/performance/visits/visits-form-controller":66,"../components/performance/visits/yearly-visits-controller":67,"../components/performance/welcome-desk/monthly-welcomedesk-controller":68,"../components/performance/welcome-desk/performance-form-controller":69,"../components/performance/welcome-desk/raw-welcomedesk-controller":70,"../components/performance/welcome-desk/yearly-welcomedesk-controller":71,"../components/resource-bookings/bookings/form-controller":72,"../components/resource-bookings/bookings/raw-bookings-controller":73,"../components/resource-bookings/directive":74,"../components/resource-bookings/equipment/form-controller":75,"../components/resource-bookings/equipment/raw-equipment-controller":76,"../components/resource-bookings/rooms/form-controller":77,"../components/resource-bookings/rooms/raw-rooms-controller":78,"../components/resource-bookings/timeline-resources-controller":79,"../components/resource-bookings/timeline-resources-services":80,"../components/shopify/shopify-controller":81,"../components/shopify/shopify-directive":82,"../components/shopify/shopify-monthly-controller":83,"../components/team/app-controllers":84,"../components/team/form-controller":85,"../components/team/leave-controller":86,"../components/team/team-controller":87,"../components/tech-support/tech-support-controller":88,"../components/tech-support/tech-support-directive":89,"../components/tech-support/trello-services":90,"../components/timeline-settings/timeline-settings-controller":91,"../components/timeline/timeline-bookings-services":92,"../components/timeline/timeline-controller":93,"../components/timeline/timeline-directive":94,"../components/timeline/timeline-exhibitions-services":95,"../components/timeline/timeline-googlesheets-services":96,"../components/timeline/timeline-installs-services":97,"../components/timeline/timeline-learning-bookings-services":98,"../components/timeline/timeline-leave-services":99,"../components/timeline/timeline-loans-services":100,"../components/timeline/timeline-services":101,"../components/timeline/timeline-shopify-services":102,"../components/timeline/timeline-visitor-figures-services":103,"../components/turnstiles/turnstiles-controller":104,"../components/turnstiles/turnstiles-directive":105,"../components/user-admin/users-controller":106,"../components/user-admin/users-directive":107,"../shared/controllers/controllers":108,"../shared/controllers/navbar-controller":109,"../shared/directives/directives":110,"../shared/services/app-services":112,"../shared/services/data-services":113,"b55mWE":4,"buffer":3,"underscore":7}],112:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.data_table_reload = function() {	

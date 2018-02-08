@@ -2,7 +2,7 @@ fs = require('fs');
 
 data_services=  function(cb){
 	
-		fs.readFile('./public/assets/data/events.JSON', function(err, data){  
+		fs.readFile('./public/assets/data/all_events.JSON', function(err, data){  
 			if (err) console.log( err);		
 			cb(JSON.parse(data));
 		});
@@ -114,10 +114,8 @@ Team.aggregate([
 	PWYT.aggregate([
 	{ $match: { 
 					  museum_id : VENUE ,					
-					   date_value : { $gte:start_date , $lte: end_date }  
-								
-										 
-		}
+					   date_value : { $gte:start_date , $lte: end_date }  									 
+				}
 	},
 		{ $group: {
                 _id: { 
@@ -147,17 +145,11 @@ Team.aggregate([
 			_.each(museum_visits,function(visits,ii){
 
 			
-			
-			//console.log('conversion')
-			//console.log(gallery_visits[i].gallery_visits)
-			//console.log(gallery_visits[i].conversion)
-			
-			
-			
 			if(kpi.kpi_venue==visits.venue ){
 			gallery_visits[i].visits=visits.visits
+			gallery_visits[i].gallery_visits=kpi.gallery_visits
 			gallery_visits[i].conversion=((kpi.gallery_visits/visits.visits)*100).toFixed(2);
-			
+			console.log(gallery_visits[i])
 			
 			
 				
@@ -189,6 +181,7 @@ Team.aggregate([
 					if(pwyt.pwyt_venue==kpi.kpi_venue ){
 						gallery_visits[i].pwyt_income=pwyt.pwyt_income
 						gallery_visits[i].spend_per_head=(pwyt.pwyt_income/	gallery_visits[i].gallery_visits);
+					
 					}
 				})
 		})
@@ -301,21 +294,19 @@ var end_date= exhibition.end_date
 									returned_row["total"]=""
 									_.each(result,function(row){
 										//if(month==moment.monthsShort(row.kpi_month-1) &&venue==row.kpi_venue &&row.kpi_year==year){
-											returned_row["total"]=row[analysis_field]
+											returned_row[analysis_field]=row[analysis_field]
 										
-										
-											
 												if(round==true){
 									
-												returned_row["total"]=Math.round(returned_row["total"]* 100) / 100
+												returned_row[analysis_field]=Math.round(returned_row["total"]* 100) / 100
 											}
 												if(pound==true){
 												
-												returned_row["total"]="£"+returned_row["total"]
+												returned_row[analysis_field]="£"+returned_row["total"]
 											}
 											if(percent==true){
 												
-												returned_row["total"]="%"+returned_row["total"]
+												returned_row[analysis_field]="%"+returned_row["total"]
 											}
 										//}
 										})
@@ -333,44 +324,16 @@ var end_date= exhibition.end_date
 						var returned_row={}
 							
 							returned_row.exhibition=EXHIBITION_NAME
-							returned_row.museum=venue
-							returned_row.stat="TEG visits"
-							returned_data.push(	 wind_up_Stats(	result,returned_row,"gallery_visits",venue))
-						var returned_row={}
-							returned_row.exhibition=EXHIBITION_NAME
-							returned_row.museum=venue
-							returned_row.stat="Income"
-							returned_data.push(	 wind_up_Stats(	result,returned_row,"pwyt_income",venue,true,true))
-						
-						
-						var returned_row={}
-							returned_row.exhibition=EXHIBITION_NAME
-							returned_row.museum=venue
-							returned_row.stat="No. of transactions"
-							//returned_data.push(	 wind_up_Stats(	result,returned_row,"number_transactions",venue))
-						var returned_row={}
-							returned_row.exhibition=EXHIBITION_NAME
-							returned_row.museum=venue
-							returned_row.stat="Average transaction"
-							//returned_data.push(	 wind_up_Stats(	result,returned_row,"ATV",venue))
-						var returned_row={}
-							returned_row.exhibition=EXHIBITION_NAME
-							returned_row.museum=venue
-							returned_row.stat="Visits"
-							returned_data.push(	 wind_up_Stats(	result,returned_row,"visits",venue))
-						var returned_row={}
-							returned_row.exhibition=EXHIBITION_NAME
-							returned_row.museum=venue
-							returned_row.stat="TEG conversion"
-							returned_data.push(	 wind_up_Stats(	result,returned_row,"conversion",venue,true,false,true))
+							returned_row.museum=venue							
 							
-						var returned_row={}
-							returned_row.exhibition=EXHIBITION_NAME
-							returned_row.museum=venue
-							returned_row.stat="Spend per head"
-							returned_data.push(	 wind_up_Stats(	result,returned_row,"spend_per_head",venue,true,true,false))
-						//console.log(returned_data)
+							returned_row.conversion=result[0].conversion+"%"
+							returned_row.spend_per_head="£"+ (Math.round(result[0].spend_per_head * 100) / 100)
+							returned_row.income="£"+ (Math.round(parseInt(result[0].pwyt_income) * 100) / 100)
+							returned_row.visits=result[0].visits
+							returned_row.gallery_visits=result[0].gallery_visits
 						
+						
+							returned_data.push(returned_row)
 						
 						
 						
