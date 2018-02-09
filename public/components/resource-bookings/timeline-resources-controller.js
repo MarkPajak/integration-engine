@@ -25,13 +25,14 @@ exports.timeline_resources_controller=     function($compile,  $scope, $http, $q
 	
   {
    console.log('timeline_mode',timeline_mode)
+   $scope.mode=timeline_mode
 	 setTimeout(function() {
 	 
 				$scope.timeline_track = Bookings 
 			
-			
-				  AuthService.isLoggedIn().then(function(user){
 		
+				  AuthService.isLoggedIn().then(function(user){
+		$('.colourkey').show()	
 			
 			$scope.user=user
 			$scope.isloggedin=true			
@@ -56,7 +57,6 @@ exports.timeline_resources_controller=     function($compile,  $scope, $http, $q
 	  
 
 main_function = function(timeline_mode){
-
 
 
 	 timeline_track = Bookings 
@@ -408,8 +408,8 @@ main_function = function(timeline_mode){
 					console.log('data_settings',data_settings)
 					$scope.timeline_googlesheets_functions(data_settings)
 				})
-		
-		timeline_functions_resources.update_andCompile()	
+		console.log('$scope.mode', $scope.mode)
+		timeline_functions_resources.update_andCompile("",   $scope.mode)	
 		
 		})
 

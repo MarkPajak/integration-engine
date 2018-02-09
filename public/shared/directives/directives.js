@@ -1,4 +1,12 @@
-
+exports.colourKey = function() {
+	
+  return {
+			controller: 'ColourKeycontroller',
+			templateUrl: './shared/templates/colour_key.html'
+  }
+  
+}
+	
 	exports.userMenu = function() {
   return {
     controller: 'NavController',

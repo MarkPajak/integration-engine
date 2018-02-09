@@ -13,6 +13,7 @@ var controllers = require('../shared/controllers/controllers');
 var dead_controllers = require('../components/machine-monitor/dead-controller');
 
 var nav_controller = require('../shared/controllers/navbar-controller');
+var colourkey_controller = require('../shared/controllers/colourkey-controller');
 var tech_support_controller = require('../components/tech-support/tech-support-controller');
 
 
@@ -370,6 +371,11 @@ _.each(dead_controllers, function(controller, name) {
 _.each(nav_controller, function(controller, name) {
   app.controller(name, controller);
 });
+
+_.each(colourkey_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
 
 _.each(tech_support_controller, function(controller, name) {
   app.controller(name, controller);

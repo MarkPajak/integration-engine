@@ -72,9 +72,9 @@ console.log(room)
 								start: event.start_date,
 								end: new Date( event.end_date.getTime() + 3600000),
 								timestamp: new Date(),
-								summary: "["+event._type + "]  " + event.name + " - "  + (event.group !="" ? event.group + " - " : "") ,
+								summary:  event.name  ,
 								organizer: 'digital room bookings timeline <bmaga.digital@bristol.gov.uk>',
-								text:"description aboyut this" 
+								text:"description about this" 
 							}
 							
 					Events.push(date)

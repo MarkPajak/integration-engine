@@ -43,19 +43,18 @@ console.log('$location.path',$location.path())
 		}
 
 		columnDefs.push(
+		
 			{ field: 'group' ,name: mode,resizable: true,width:"150"},
 			{ field: 'name' ,name: "Name",resizable: true,width:"150"},
 			{ field: 'internal_external' ,name: "Type",resizable: true,width:"150"},
 			{ field: 'start_date' ,name: "From",type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',resizable: true,width:"150"},	
 			{ field: 'end_date' ,name: "Until",resizable: true,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',width:"150"},
-			
-
-		  
-		  
-		  
 			{ field: 'comments' ,value: "comments",resizable: true,visible:true,width:"150"},
+			{ field: 'calendarlink' ,name: "Outlook link",resizable: true,width:"150", cellTemplate: "<a href=" + window.location.origin +"{{\"/bookings/calendar/\"+row.entity.calendarlink}} >click for icalendar link</a>"}, 
+			
 			{ field: 'logger_user_name' ,value: "Logged by",resizable: true,visible:true,width:"150"},
 			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'', cellFilter: 'date:\'dd/MM/yy HH:mm\'',visible:true}
+			
 			)
 			
 			$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);

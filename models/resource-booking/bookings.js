@@ -20,6 +20,13 @@ var BookingsSchema = new mongoose.Schema({
 			logger_user_name: { type: String}
 });
 
+BookingsSchema.virtual('calendarlink').get(function() {
+ 
+				var link = encodeURIComponent(this.group);
+				
+				return link;
+
+});
 
 
 
@@ -31,6 +38,9 @@ BookingsSchema.virtual('duration').get(function() {
 
 });
 
+BookingsSchema.set('toJSON', {
+   virtuals: true
+});
 
 
 module.exports = mongoose.model('Bookings', BookingsSchema);

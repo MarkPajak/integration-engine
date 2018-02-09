@@ -44,8 +44,8 @@ exports.timeline_functions_resources = function ( $templateCache,$compile,$http,
 
 		},
 	
-		update_andCompile: function(item) {
-			
+		update_andCompile: function(item,mode) {
+		console.log('update_andCompile',mode)	
 			var self = this
 			
 				setTimeout(function() {
@@ -72,7 +72,7 @@ exports.timeline_functions_resources = function ( $templateCache,$compile,$http,
 								}
 						})	
 						
-						self.enable_event_drop(timeline_track,timeline_track)
+						self.enable_event_drop(timeline_track,mode)
 						$rootScope.timeline.redraw()
 			
             }, 2000);
@@ -89,7 +89,7 @@ exports.timeline_functions_resources = function ( $templateCache,$compile,$http,
 				  
 					dataset.query({}, function(datax) {
 						self.add_events_loop(rootScope,datax,dataset_functions,timeline_track)
-						self.update_andCompile()
+						self.update_andCompile("",$rootScope.mode)
 					})
 					
 		},
@@ -125,7 +125,7 @@ exports.timeline_functions_resources = function ( $templateCache,$compile,$http,
 							})
 							//rootScope.timeline.itemsData.on("update", function(){self.update_andCompile()})
 							rootScope.timeline.fit({},function(){
-										self.update_andCompile()
+										self.update_andCompile("",$rootScope.mode)
 							})//needed due to angular wierdness with directives
 				})
 	
@@ -244,7 +244,7 @@ exports.timeline_functions_resources = function ( $templateCache,$compile,$http,
                // log.firstChild ? log.insertBefore(msg, log.firstChild) : log.appendChild(msg);
             },
   
-  enable_event_drop:function(event){
+  enable_event_drop:function(event,track){
 		var self = this
                 $(".vis-group").droppable({
                     accept: '.date_add',
@@ -259,9 +259,10 @@ exports.timeline_functions_resources = function ( $templateCache,$compile,$http,
                             }, 100);
                           
                             time=(timeline.getEventProperties(event).time)
+						
 							group=(timeline.getEventProperties(event).group)
-							track=(timeline.getEventProperties(event).track)
-							
+							//track=$rootScope.timeline_mode
+							console.log(track)
 							//type=(timeline.getEventProperties(event).type)
                             $(ui.draggable[0]).hide()
 							
@@ -285,7 +286,7 @@ exports.timeline_functions_resources = function ( $templateCache,$compile,$http,
 							{
 									
 									
-									 console.log('add_item')
+									 console.log('add_item',track)
 									 date_dropped=(moment(time).startOf('day')._d)
 									
 									 
@@ -398,7 +399,7 @@ console.log('add_group_to_timeline')
 			//timeline.setGroups(list);
 			//this.enable_event_drop()	
 			
-				this.update_andCompile()
+				this.update_andCompile("",$rootScope.mode)
 			
 		
 				},  
@@ -416,7 +417,8 @@ console.log('changeTracks selection',selection)
 							})
 							
 						timeline.setGroups(list);
-						this.update_andCompile()					
+						$rootScope.mode=selection[0]
+						this.update_andCompile("",selection[0])		
 						this.enable_event_drop()
 				
 				},  
@@ -568,8 +570,8 @@ console.log('changeTracks selection',selection)
 		if(typeof(timeline)!="undefined"){
 			if(timeline.itemsData){
 				timeline.itemsData.getDataSet().update(options)
-				
-				this.update_andCompile()
+				console.log('updateItem - $rootScope.mode',$rootScope.mode)
+				this.update_andCompile("",$rootScope.mode)
 				
 			}
 		
@@ -703,7 +705,7 @@ console.log('changeTracks selection',selection)
 									var _options={id:item._id,content:self.event_html(event_to_add),start:moment(event_to_add.startDate)._d,end:moment(event_to_add.endDate)._d,start_date:moment(event_to_add.startDate)._d,end_date:moment(event_to_add.endDate)._d}
 						
 									self.updateItem(_options, function(){
-										self.update_andCompile()
+										self.update_andCompile("",item._type)
 									})									
 
 								 callback(item);

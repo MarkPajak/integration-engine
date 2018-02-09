@@ -865,7 +865,7 @@ var end_date= exhibition.end_date
 											}
 											if(percent==true){
 												
-													returned_row[month+" "+year]="%"+		returned_row[month+" "+year]
+													returned_row[month+" "+year]=	returned_row[month+" "+year]+"%"
 											}
 											
 											
