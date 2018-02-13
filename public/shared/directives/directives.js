@@ -6,6 +6,14 @@ exports.colourKey = function() {
   }
   
 }
+exports.tableFilter = function() {
+  return {
+			controller: 'TableFilterController',
+			templateUrl: './shared/templates/table_filter.html'
+  }
+  
+}
+	
 	
 	exports.userMenu = function() {
   return {

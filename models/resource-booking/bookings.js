@@ -1,15 +1,30 @@
 var mongoose = require('mongoose');
 
+
+var bookings_files = new mongoose.Schema({
+	
+		name:  	{ type: String},
+		size:	{ type: String},
+		type:	{ type: String}
+
+});
+
+
+
+
 var BookingsSchema = new mongoose.Schema({
 		
 		  start_date: { type: Date, required: true },
 		  end_date: { type: Date},
 		  group: { type: String, required: true },
+		  files:  [bookings_files],	
 		  _type: { type: String, required: true },
 		  className:{ type: String, required: true },
 		  content: { type: String, required: true },
 		  internal_external:{ type: String},
 		  approved:{ type: Boolean, default: false },
+		  payment:{ type: Boolean, default: false },
+		  confirmed:{ type: Boolean, default: false },
 		  name: { type: String, required: true },
 		  notes:{ type: String},
 		  days:{ type: Number },

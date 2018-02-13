@@ -597,7 +597,7 @@ console.log('changeTracks selection',selection)
 					snap: function (date, scale, step) {
 						return date;
 							},
-					stack:false,
+					stack:true,
 					orientation:{"axis":"top"},
 					selectable: true,  
                     editable: false,  

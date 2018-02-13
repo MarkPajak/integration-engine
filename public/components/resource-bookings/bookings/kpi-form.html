@@ -1,5 +1,64 @@
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <style>
+  
+  .btn:focus, .upload-btn:focus{
+  outline: 0 !important;
+}
+
+html,
+body {
+  height: 100%;
+  background-color: #4791D2;
+}
+
+body {
+  text-align: center;
+  font-family: 'Raleway', sans-serif;
+}
+
+.row {
+  margin-top: 80px;
+}
+
+.upload-btn {
+  color: #ffffff;
+  background-color: #F89406;
+  border: none;
+}
+
+.upload-btn:hover,
+.upload-btn:focus,
+.upload-btn:active,
+.upload-btn.active {
+  color: #ffffff;
+  background-color: #FA8900;
+  border: none;
+}
+
+h4 {
+  padding-bottom: 30px;
+  color: #B8BDC1;
+}
+
+.glyphicon {
+  font-size: 5em;
+  color: #9CA3A9;
+}
+
+h2 {
+  margin-top: 15px;
+  color: #68757E;
+}
+
+.panel {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+#upload-input {
+  display: none;
+}
+
   .panel > .panel-heading {
     background-image: none;
     background-color: red;
@@ -29,71 +88,136 @@
   background-color: #bbb;
 }
 </style>
-	  
-<div ng-show="user.username" class="panel panel-default col-xs-5 col-sm-5 col-md-5">
-<div class="panel-heading">Enter data</div>
-	<div class="panel-body">
-		<form name="visit_form"  id="visit_form">
-  <div class="form-group">
-	  
-  
-				<label for="name" required>Booking Name:</label>
-				<input  step="any" placeholder="booking" type = "text" class="form-control input-lg" id="name" rows="3"></input>
-			  </div>
-			  <div class="form-group">
-					<label for="name">{{name_of_form}}:</label>
-					<select  id="room" class="form-control input-lg" ng-model="room" ng-options="c.name for c in rooms" ng-change="room_change(room)">
+<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+<style type="text/css">
+.form-style-8{
+    font-family: 'Open Sans Condensed', arial, sans;
+    width: 500px;
+    padding: 30px;
+    background: #FFFFFF;
+    margin: 50px auto;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+    -moz-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+    -webkit-box-shadow:  0px 0px 15px rgba(0, 0, 0, 0.22);
+
+}
+.form-style-8 h2{
+    background: #4D4D4D;
+    text-transform: uppercase;
+    font-family: 'Open Sans Condensed', sans-serif;
+    color: #797979;
+    font-size: 18px;
+    font-weight: 100;
+    padding: 20px;
+    margin: -30px -30px 30px -30px;
+}
+.form-style-8 input[type="text"],
+.form-style-8 input[type="date"],
+.form-style-8 input[type="datetime"],
+.form-style-8 input[type="email"],
+.form-style-8 input[type="number"],
+.form-style-8 input[type="search"],
+.form-style-8 input[type="time"],
+.form-style-8 input[type="url"],
+.form-style-8 input[type="password"],
+.form-style-8 textarea,
+.form-style-8 select 
+{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 7px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    background: transparent;
+    margin-bottom: 10px;
+    font: 16px Arial, Helvetica, sans-serif;
+    height: 45px;
+}
+.form-style-8 textarea{
+    resize:none;
+    overflow: hidden;
+}
+.form-style-8 input[type="button"], 
+.form-style-8 input[type="submit"]{
+    -moz-box-shadow: inset 0px 1px 0px 0px #45D6D6;
+    -webkit-box-shadow: inset 0px 1px 0px 0px #45D6D6;
+    box-shadow: inset 0px 1px 0px 0px #45D6D6;
+    background-color: #2CBBBB;
+    border: 1px solid #27A0A0;
+    display: inline-block;
+    cursor: pointer;
+    color: #FFFFFF;
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 14px;
+    padding: 8px 18px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+.form-style-8 input[type="button"]:hover, 
+.form-style-8 input[type="submit"]:hover {
+    background:linear-gradient(to bottom, #34CACA 5%, #30C9C9 100%);
+    background-color:#34CACA;
+}
+</style>
+	  <div  ng-show="user.username"  class="form-style-8">
+  <h2>Request a new booking</h2>
+  <form  name="visit_form"  id="visit_form">
+    <input  step="any" placeholder="booking name" type = "text" class="form-control input-sm" id="name" rows="3"></input>
+    <div class="form-group">
+  <select  id="room" class="form-control input-sm" ng-model="room" ng-options="c.name for c in rooms" ng-change="room_change(room)">
 								<option value="">-- choose room or select add new --</option>
 					</select>
-			  </div>
-  
-<div class="radio-toolbar">
+	</div>
+   <div class="radio-toolbar">
   <input type="radio" id="radio1" name="type_radios" value="internal" checked>
   <label for="radio1">internal</label>
   <input type="radio" id="radio2" name="type_radios" value="external">
   <label for="radio2">external</label>
 </div>
+  <div class="form-group">
+<input class="form-control input-lg" id="start_date"
+						ng-model="ctrl.input_start"
+						ng-model-options="{ updateOn: 'blur' }"
+						placeholder="Select a start date & time ..."
+						max-view="minute"
+						minutesStep:   "15",
+						format="LL LT"
+						moment-picker="ctrl.input_start">
+
+	
+</div>
 
 
-
-			  <div class="form-group">
-
-			<label for="start_date">Date from:</label>
-			
-
-			<input class="form-control input-lg" id="start_date"
-						   ng-model="ctrl.input_start"
-						   ng-model-options="{ updateOn: 'blur' }"
-						   placeholder="Select a date..."
-						   max-view="minute"
-						   minutesStep:   "15",
-						    format="LL LT"
-						   moment-picker="ctrl.input_start">
-
-
-			<label for="end_date">Date to:</label>
-		
-
+ <div class="form-group">
 			<input  id="end_date" class="form-control input-lg"
-							   ng-model="ctrl.input_end"
-							   ng-model-options="{ updateOn: 'blur' }"
-							   placeholder="Select a date..."
-							   moment-picker="ctrl.input_end"
-							     max-view="minute"
-						   minutesStep:   "15",
-						    format="LL LT"
+						ng-model="ctrl.input_end"
+						ng-model-options="{ updateOn: 'blur' }"
+						placeholder="Select an end date & time..."
+						moment-picker="ctrl.input_end"
+						max-view="minute"
+						minutesStep:   "15",
+						format="LL LT"
 							   >
-			
-			</div>
-			
-		 <div class="form-group">
-				<label for="comments">Comments:</label>
-				<textarea class="form-control input-lg" id="comments" rows="3"></textarea>
-		</div>
-			   <button id="form_submit_button" name="form_submit_button" ng-click="onSubmit()" type="button" class="btn btn-primary submit-button" ng-disabled="vm.form.$invalid">Submit</button>
-			   <button type="button" class="btn btn-lg input-lg btn-default input-lg" ng-click="vm.options.resetModel()">Reset</button>
-		</form>
+			</div>				   
+		   
+  <div class="form-group">
+  
+			<button class="btn btn-lg upload-btn" type="button">Upload File</button>
+            <div class="progress">			
+            <div class="progress-bar" role="progressbar"></div>
+            </div>		   
+			<input id="upload-input" type="file" name="uploads[]" multiple="multiple"></br>					   
 	</div>
+				 
+    <textarea class="form-control input-lg" id="comments" placeholder="Message" ></textarea>
+  
+	  <button id="form_submit_button" name="form_submit_button" ng-click="onSubmit()" type="button" class="btn btn-primary submit-button" ng-disabled="vm.form.$invalid">Submit</button>
+			   <button type="button" class="btn btn-lg input-lg btn-default input-lg" ng-click="vm.options.resetModel()">Reset</button>
+  </form>
 </div>
 
   <script>

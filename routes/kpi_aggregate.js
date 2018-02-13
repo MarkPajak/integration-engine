@@ -29,8 +29,9 @@ router.get('/total', function(req, res, next) {
 					Kpi_aggregate.aggregate([
 					
 					
-					{$project:{"date":1,"value":1,"museum_id": 1,
-							  
+					{$project:{"date":1,
+							   "value":1,
+							   "museum_id": 1,							  
 								"financial_yer":{$cond:[{$lte:[{$month:route_functions.mongo_aggregator},3]},
 												"last",
 										"this"]
@@ -69,7 +70,7 @@ router.get('/total', function(req, res, next) {
 						
 						function wind_up_Stats(	result,returned_row,analysis_field,venue){
 						
-									var years = [2014,2015,2016,2017]
+									var years = [2014,2015,2016,2017,2018,2019]
 								_.each(years,function(year){
 									var financial_yesr_text = ["last","this"]
 									_.each(financial_yesr_text,function(financial_yer_text){

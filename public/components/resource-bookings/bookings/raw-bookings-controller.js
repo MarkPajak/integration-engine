@@ -22,22 +22,53 @@ var mode_name = "EQUIPMENT BOOKING"
 		$rootScope.featured_collection=Bookings
 		$scope.gridOptions=[]
 		$scope.gridOptions.data=[]
+		
 		$scope.extraQuery = { "museum_id":"#","_type":mode_name}
 		$scope.rooms=[]
+	
+		$scope.filter_x_button=true
+		$scope.filter_y_button=true
+		$scope.filter_z_button=true
+		$scope.filter_x="show pending bookings"
+		$scope.filter_y="show unpaid bookings"
+		$scope.filter_z="show confirmed bookings"
 		
+		   $scope._filter_x=[
+		  { false:"pending ",
+		   true:"approved",
+		   result:false}
+		   ]
+		   $scope._filter_y=[
+		  { false:"unpaid",
+		   true:"paid ",
+		   result:false}
+		   ]
+		   $scope._filter_z=[
+		   {false:"upconfirmed",
+		   true:"confirmed",
+		   result:false}
+		   ]
 		
-		
-		
+   $scope.onCompleteTodo = function(todo) {
+    console.log("onCompleteTodo -done: " + todo.done + " : " + todo.text);
+    $scope.doneAfterClick=todo.done;
+    $scope.todoText = todo.text;
+
+   };
+	
+	
 		var columnDefs= []
 		
-console.log('$location.path',$location.path())
+
 		$rootScope.canEdit_table=true
 		
-		if(	$scope.user.approve_room_bookings==true && $location.path()=="/bookings/rooms"	||  $scope.user.approve_equipment_bookings==true && $location.path()=="/bookings/equipment"
+		if(	$scope.user.approve_room_bookings==true && $location.path()=="/bookingslist/rooms"	||  $scope.user.approve_equipment_bookings==true && $location.path()=="/bookings/equipment"
 		) 
 		{
 			columnDefs.push(
-								{ field: 'approved' ,  allowCellFocus: true, type: 'boolean',value: "Approved",resizable: true,visible:true,width:"80",cellTemplate: "<div class='ui-grid-cell-contents'>{{row.entity.approved==true ? 'approved' : 'pending'}}</div>"}
+								{ field: 'approved' ,  allowCellFocus: true, type: 'boolean',value: "Approved",resizable: true,visible:true,width:"80",cellTemplate: "<div class='ui-grid-cell-contents'>{{row.entity.approved==true ? 'approved' : 'pending'}}</div>"},
+								{ field: 'payment' ,  allowCellFocus: true, type: 'boolean',value: "Payment",resizable: true,visible:true,width:"80",cellTemplate: "<div class='ui-grid-cell-contents'>{{row.entity.payment==true ? 'paid' : 'no'}}</div>"},
+								{ field: 'confirmed' ,  allowCellFocus: true, type: 'boolean',value: "Confirmed",resizable: true,visible:true,width:"80",cellTemplate: "<div class='ui-grid-cell-contents'>{{row.entity.confirmed==true ? 'confirmed' : 'no'}}</div>"}
 							)
 							
 		}
@@ -51,7 +82,7 @@ console.log('$location.path',$location.path())
 			{ field: 'end_date' ,name: "Until",resizable: true,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',width:"150"},
 			{ field: 'comments' ,value: "comments",resizable: true,visible:true,width:"150"},
 			{ field: 'calendarlink' ,name: "Outlook link",resizable: true,width:"150", cellTemplate: "<a href=" + window.location.origin +"{{\"/bookings/calendar/\"+row.entity.calendarlink}} >click for icalendar link</a>"}, 
-			
+			{ field: 'files' ,name: "Files",resizable: true,width:"150",  cellTemplate: "<a   ng-if='row.entity.files[0].name' href=" + window.location.origin +"{{\"/download/\"+row.entity.files[0].name}} target='_blank'>{{row.entity.files[0].name}}</a><br><a   ng-if='row.entity.files[1].name' href=" + window.location.origin +"{{\"/download/\"+row.entity.files[1].name}} target='_blank'>{{row.entity.files[1].name}}</a><br><a  ng-if='row.entity.files[2].name' href=" + window.location.origin +"{{\"/download/\"+row.entity.files[2].name}} target='_blank'>{{row.entity.files[2].name}}</a>"},
 			{ field: 'logger_user_name' ,value: "Logged by",resizable: true,visible:true,width:"150"},
 			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'', cellFilter: 'date:\'dd/MM/yy HH:mm\'',visible:true}
 			

@@ -71,6 +71,9 @@ var shopify = require('./routes/shopify')
 var shopify_monthy_products = require('./routes/shopify/monthly_products')
 
 
+var uploader = require('./routes/uploads/upload')	
+var downloader = require('./routes/uploads/download')	
+
 
 
 var team = require('./routes/team')
@@ -89,6 +92,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/lib', express.static(__dirname + '/lib/'));
 app.use('/scripts', express.static(__dirname + '/node_modules/'));
+
+
+
 
 // Configuring Passport
 var passport = require('passport');
@@ -124,8 +130,8 @@ app.use('/shopify_transactions', shopify_transactions);
 app.use('/shopify_product', shopify_product);
 app.use('/shopify_order', shopify_order);
 app.use('/shopify_monthy_products', shopify_monthy_products);
-
-
+app.use('/upload', uploader);
+app.use('/download', downloader);
 
 
 app.use('/shopify_product_status_app', shopify_product_status_app);
@@ -159,19 +165,6 @@ app.use('/likes_logging', likes_logging);
 
 
 app.use('/resources', resources);
-
-/*
-
-// We will log normal api operations into api.log
-console.log("starting logger...");
-winston.add(winston.transports.File, {
-  filename: config.logger.api
-});
-// We will log all uncaught exceptions into exceptions.log
-winston.handleExceptions(new winston.transports.File({
-	filename: config.logger.exception
-}));
-*/
 
 
 if(process.env.machine=="turnstile"){

@@ -47,10 +47,17 @@
 	}
 	
 	
-			exports.bookingsFormdata = function() {
+			exports.bookingsData = function() {
   return {
-  // controller: 'giftaid_performance_form',
-      templateUrl: './components/resource-bookings/bookings/kpi-form-and-data.html'
+  // controller: 'raw_bookings_controller',
+      templateUrl: './components/resource-bookings/bookings/data.html'
+  }
+  }
+  
+  			exports.bookingsForm = function() {
+  return {
+	  controller: 'record_bookings_controller',
+      templateUrl: './components/resource-bookings/bookings/kpi-form.html'
   }
   }
 	

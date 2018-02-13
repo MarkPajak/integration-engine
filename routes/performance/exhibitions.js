@@ -198,7 +198,7 @@ get_kpis( function ( result) {
 	})
 	
 	function wind_up_Stats(	result,returned_row,analysis_field,venue){
-		var years = [2014,2015,2016,2017,2018]
+		var years = [2014,2015,2016,2017,2018,2019]
 		_.each(years,function(year){
 			for (week = 0; week <= moment().isoWeeksInYear(); week++) { 
 			
@@ -410,7 +410,7 @@ get_kpis( function ( result) {
 	
 	function wind_up_Stats(	result,returned_row,analysis_field,venue){
 			
-			var years = [2014,2015,2016,2017,2018]
+				var years = [2014,2015,2016,2017,2018,2019]
 			_.each(years,function(year){
 				_.each(moment.monthsShort(),function(month){
 				returned_row[month+" "+year]=""
@@ -565,7 +565,7 @@ router.get('/total', function(req, res, next) {
 						
 						function wind_up_Stats(	result,returned_row,analysis_field,venue){
 						
-									var years = [2014,2015,2016,2017,2018]
+										var years = [2014,2015,2016,2017,2018,2019]
 								_.each(years,function(year){
 									var financial_yesr_text = ["last","this"]
 									_.each(financial_yesr_text,function(financial_yer_text){

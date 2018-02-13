@@ -68,10 +68,10 @@ console.log('Current route name: ' + $location.path());
 																		
 																		var event_to_add=	{
 																								  id : data._id,
-																								  name :data.name,
+																								  name :data.name + " - " + data.internal_external,
 																								  showimage :"",
 																								  image :"",
-																								  className		:	 data.approved == false ? "red" : "blue",
+																								  className		:	 data.approved == false ? "pending" : "blue",
 																								  start_date :moment(data.start_date).format("MMM Do"),
 																								  end_date :end_date ||"",
 																								  notes  :data.notes ,

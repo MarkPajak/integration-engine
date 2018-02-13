@@ -81,7 +81,7 @@ get_kpis( function ( result) {
 	if(venue=="") return;
 		var returned_row={}
 		returned_row.museum=venue
-				var years = [2016,2017,2018]
+					var years = [2014,2015,2016,2017,2018,2019]
 			_.each(years,function(year){
 			_.each(moment.monthsShort(),function(month){
 			

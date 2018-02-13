@@ -25,8 +25,26 @@ router.get('/:type',route_permissions.isAuthenticated, function(req, res, next) 
 
 
  type =decodeURI(req.params.type)
-console.log(type)
-  Collection.find({"_type":type})
+ var query={"_type":type}
+
+ if(req.query.approved){
+ 
+	_.extend(query, {approved:  req.query.approved})
+ 
+ }
+  if(req.query.payment){
+ 
+	_.extend(query, {payment:  req.query.payment})
+ 
+ }
+  if(req.query.confirmed){
+ 
+	_.extend(query, {confirmed:  req.query.confirmed})
+ 
+ }
+ 
+ console.log('query',query)
+  Collection.find(query)
 	   .populate('leave_taken')
 	   .exec (  function (err, todos) {
     if (err) return next(err);

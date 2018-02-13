@@ -8,7 +8,7 @@ exports.record_bookings_controller =  function($scope, $http, $q,
 	{
 		var mode = "room"
 		var mode_name = "ROOM BOOKING"
-		$scope.name_of_form = mode_name 
+		$scope.name_of_form = "Select room" 
 	}
 	else
 	{
@@ -44,23 +44,40 @@ exports.record_bookings_controller =  function($scope, $http, $q,
 				//Your logic
 			  $scope.selected_room=room.name
 			}
-				 
+		
+
+
+		
  $scope.onSubmit=function() {
 		
-			
+	var files =  []
+	_.each($('#upload-input').get(0).files, function(file){
+	
+	var _file = {}
+	_file.name=	file.name
+	_file.type=	file.type	
+	files.push(_file)	
+	console.log(_file)	
+	
+	})		
+	
+	console.log(files)	
 
 var event_to_add=	{
-													  id : new Date().getUTCMilliseconds(),
-													  name :visit_form.name.value,
-													 internal_external :visit_form.type_radios.value,														  
-													  showimage :"",
-													  image :"",
-													  start_date : new Date(visit_form.start_date.value),
-													  end_date :  new Date(visit_form.end_date.value),	
-													  notes  :visit_form.comments.value,	
-													 }
+													 
+						id : new Date().getUTCMilliseconds(),
+						name :visit_form.name.value,
+						
+						internal_external :visit_form.type_radios.value,														  
+						showimage :"",
+						image :"",
+						start_date : new Date(visit_form.start_date.value),
+						end_date :  new Date(visit_form.end_date.value),	
+						notes  :visit_form.comments.value	
+					
+					}
 			
-		    var kpis = new Bookings({
+var kpis = new Bookings({
 					
 					//DEPARTMENTAL VARIABLES	
 					start_date: new Date(visit_form.start_date.value),	
@@ -68,6 +85,7 @@ var event_to_add=	{
 					group:$scope.selected_room,	
 					_type: mode_name,	
 					className:"GREEN",	
+					files:files,
 					 internal_external :visit_form.type_radios.value,	
 					name:visit_form.name.value,		
 					notes:visit_form.comments.value,	
@@ -147,7 +165,69 @@ var event_to_add=	{
 	
 });
 	
+$('.upload-btn').on('click', function (){
+    $('#upload-input').click();
+    $('.progress-bar').text('0%');
+    $('.progress-bar').width('0%');
+});
 
+$('#upload-input').on('change', function(){
+
+  var files = $(this).get(0).files;
+
+  if (files.length > 0){
+    // create a FormData object which will be sent as the data payload in the
+    // AJAX request
+    var formData = new FormData();
+
+    // loop through all the selected files and add them to the formData object
+    for (var i = 0; i < files.length; i++) {
+      var file = files[i];
+
+      // add the files to formData object for the data payload
+      formData.append('uploads[]', file, file.name);
+    }
+
+    $.ajax({
+      url: '/upload',
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(data){
+          console.log('upload successful!\n' + data);
+      },
+      xhr: function() {
+        // create an XMLHttpRequest
+        var xhr = new XMLHttpRequest();
+
+        // listen to the 'progress' event
+        xhr.upload.addEventListener('progress', function(evt) {
+
+          if (evt.lengthComputable) {
+            // calculate the percentage of upload completed
+            var percentComplete = evt.loaded / evt.total;
+            percentComplete = parseInt(percentComplete * 100);
+
+            // update the Bootstrap progress bar with the new percentage
+            $('.progress-bar').text(percentComplete + '%');
+            $('.progress-bar').width(percentComplete + '%');
+
+            // once the upload reaches 100%, set the progress bar text to done
+            if (percentComplete === 100) {
+              $('.progress-bar').html('Done');
+            }
+
+          }
+
+        }, false);
+
+        return xhr;
+      }
+    });
+
+  }
+});
 	
 	}
  

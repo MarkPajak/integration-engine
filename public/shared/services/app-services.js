@@ -1,3 +1,16 @@
+
+
+
+exports.tableFilterService = function(AuthService,$rootScope) {	
+
+ return {
+   
+  }
+		
+
+}
+
+
 exports.data_table_reload = function() {	
 
 
@@ -43,6 +56,66 @@ var array = {};
 var myScope
 
 
+			
+			array.filter_x= function(filter_key,filter_value,$scope){
+			
+		
+			
+			
+			if($scope){
+				myScope=$scope
+			}
+			
+			
+	
+			
+			
+			var query = {'museum_id':"#","exact":false};
+			query[filter_key]=filter_value
+			
+			if($scope.extraQuery){
+								_.extend(query, $scope.extraQuery)
+								// $scope.extraQuery[filter_key]	=filter_value
+							}
+				
+				$rootScope.featured_collection.query(query, function(team) {
+							$scope.rows=[]
+							$scope._rows=[]
+							
+							console.log('filtering ' + team.length + " results")
+							
+							
+							_.each(team,function(row){
+									
+									$scope._rows.push(row)
+										
+							})
+
+						 $scope.gridOptions.data.length = 0;
+						  angular.forEach( $scope._rows, function( row ) {
+							$scope.gridOptions.data.push( row );
+						  });
+						  
+						  
+						  	$scope.$watch(function () {
+			
+								return data_table_reload.getDate();
+
+
+			},
+			
+		   function (value) {
+		 
+		   
+		   }
+		);
+						
+					})			 
+			}
+			
+		
+			
+			
 			array.getData= function(filterdate,$scope){
 			console.log('getData')
 			console.log('filterdate',filterdate)
@@ -127,8 +200,7 @@ var myScope
 					})	
 					
 			$rootScope.alldata=function (val) {
-					console.log('filter by date')	
-						
+
 						if (val=="month"){
 						
 							console.log('show month data')
@@ -158,11 +230,16 @@ var myScope
 
 
 			}
-
+			
+			
+			$rootScope.dynamic_filter=function (filter_key,filter_value) {
+			
+			array.filter_x(filter_key,filter_value,myScope)
+			
 			}
 			
-			
-		
+		}	
+
 		
    return array;
 }

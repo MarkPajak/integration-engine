@@ -14,6 +14,10 @@ var dead_controllers = require('../components/machine-monitor/dead-controller');
 
 var nav_controller = require('../shared/controllers/navbar-controller');
 var colourkey_controller = require('../shared/controllers/colourkey-controller');
+var tablefilter_controller = require('../shared/controllers/tablefilter-controller');
+
+
+
 var tech_support_controller = require('../components/tech-support/tech-support-controller');
 
 
@@ -375,6 +379,14 @@ _.each(nav_controller, function(controller, name) {
 _.each(colourkey_controller, function(controller, name) {
   app.controller(name, controller);
 });
+
+
+
+_.each(tablefilter_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+
 
 
 _.each(tech_support_controller, function(controller, name) {
@@ -1055,9 +1067,12 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
            })
 		   
 			.when('/bookings/:mode', {
-               template: '<bookings-Formdata></bookings-Formdata>'
+               template: '<bookings-Form></bookings-Form>'
           })
-
+		  
+			.when('/bookingslist/:mode', {
+               template: '<bookings-data></bookings-data>'
+          })
 
 		    .when('/turnstiles/:venue', {
                template: '<turnstiles-controller></turnstiles-controller>'

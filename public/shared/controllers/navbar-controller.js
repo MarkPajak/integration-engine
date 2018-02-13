@@ -56,7 +56,9 @@ var analyser = {link:"analyser",value:"Performance analyser (BETA)"}
 var rooms = {link:"rooms",value:"Add rooms"}
 var equipment = {link:"equipment",value:"Add equipment"}
 var equipment_bookings = {link:"bookings/equipment",value:"Equipment booking"}
-var room_bookings = {link:"bookings/rooms",value:"Room booking"}
+var room_bookings = {link:"bookings/rooms",value:"Add a room booking"}
+var room_bookings_list = {link:"bookingslist/rooms",value:"room bookings list"}
+
 var room_hire = {link:"room-hire",value:"Room booking timeline"}
 var equipment_booking_timeline = {link:"equipment-timeline",value:"Equipment booking timeline"}
 var participation = {link:"participation-dashboard",value:"Participation dashboard"}
@@ -124,6 +126,9 @@ resources.push(rooms)
 resources.push(equipment)
 resources.push(equipment_bookings)
 resources.push(room_bookings)
+resources.push(room_bookings_list)
+
+
 resources.push(room_hire)
 resources.push(equipment_booking_timeline)
 

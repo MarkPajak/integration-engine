@@ -270,6 +270,20 @@ background-color:white;
 	background-color:rgba(215, 0, 90, 0.73);
 	
 }
+
+
+.pending {
+
+	background-color:rgba(215, 0, 90,0.19) !important;
+
+
+
+}
+
+
+
+
+
 .provisional {
 	 
 	color:white;
