@@ -46,6 +46,8 @@ $('#'+id).each(function () {
 				$scope._rows=[]
 				$scope.visits=0
 				$scope.visits_num=0
+				$scope.lte_visits=0
+				$scope.lte_visits_num=0
 				_.each(team,function(row){
 					
 					
@@ -80,17 +82,24 @@ $('#'+id).each(function () {
 
 							if((current_year-3).toString()==(row._id.ltd_year).toString() && row._id.ltd_financial_yer=="this"){
 							
-								$scope.lte_visits=(row.total_sessions) 
-								$scope.lte_visits_num=row.total_sessions
+								$scope.lte_visits+=(row.total_sessions) 
+								$scope.lte_visits_num+=row.total_sessions
 								console.log('$scope.lte_visits',$scope.lte_visits)
 							}
 							
 							
 							if((current_year-1).toString()==(row._id.ltd_year).toString() && row._id.ltd_financial_yer=="this"){
 							
-								$scope.lte_visits+=numberWithCommas(row.total_sessions) 
+								$scope.lte_visits+=(row.total_sessions) 
 								$scope.lte_visits_num+=row.total_sessions
 								console.log('$scope.lte_visits',$scope.lte_visits)
+							}
+							
+							if((current_year-1).toString()==row._id.ltd_year.toString() && row._id.ltd_financial_yer=="last"){
+							
+								$scope.lte_visits+=(row.total_sessions) 
+								$scope.lte_visits_num+=row.total_sessions
+									console.log('$scope.visits_num_last'+current_year,row.total_sessions)
 							}
 							
 					}
