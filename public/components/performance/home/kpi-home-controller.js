@@ -44,6 +44,8 @@ $('#'+id).each(function () {
 			get_kpis.query({}, function(team) {
 				$scope.rows=[]
 				$scope._rows=[]
+				$scope.visits=0
+				$scope.visits_num=0
 				_.each(team,function(row){
 					
 					
@@ -53,16 +55,23 @@ $('#'+id).each(function () {
 					
 							if(current_month<=3 && (current_year-1).toString()==row._id.year.toString() && row._id.financial_yer=="this"){
 							
-								$scope.visits=numberWithCommas(row.total_sessions) 
-								$scope.visits_num=row.total_sessions
-								console.log('$scope.visits_num',$scope.visits_num)
+								$scope.visits+=(row.total_sessions) 
+								$scope.visits_num+=row.total_sessions
+									console.log('$scope.visits_num',$scope.visits_num)
 							}
 														
 							if(current_year.toString()==row._id.year.toString() && row._id.financial_yer=="this"){
 							
-								$scope.visits+=numberWithCommas(row.total_sessions) 
+								$scope.visits+=(row.total_sessions) 
 								$scope.visits_num+=row.total_sessions
-								console.log('$scope.visits_num',$scope.visits_num)
+									console.log('$scope.visits_num',$scope.visits_num)
+							}
+							
+							if(current_year.toString()==row._id.year.toString() && row._id.financial_yer=="last"){
+							
+								$scope.visits+=(row.total_sessions) 
+								$scope.visits_num+=row.total_sessions
+									console.log('$scope.visits_num_last'+current_year,row.total_sessions)
 							}
 					
 					}
@@ -71,7 +80,7 @@ $('#'+id).each(function () {
 
 							if((current_year-3).toString()==(row._id.ltd_year).toString() && row._id.ltd_financial_yer=="this"){
 							
-								$scope.lte_visits=numberWithCommas(row.total_sessions) 
+								$scope.lte_visits=(row.total_sessions) 
 								$scope.lte_visits_num=row.total_sessions
 								console.log('$scope.lte_visits',$scope.lte_visits)
 							}
