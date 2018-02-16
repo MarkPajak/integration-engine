@@ -393,7 +393,8 @@ main_function = function(timeline_mode){
 					timeline_googlesheets_functions.get_events(data_settings)
 				  		  
 			}
-	//dev		
+	//dev	
+		//n.b. need to content manage this	
 			data_settings=[]
 			data_settings.googlesheet_id="1XDUXfrYH8RtyDDaWfKSlosQ3EjatsmC2E8F22O1gkEg"
 			data_settings.googlesheet_name="retail"
@@ -421,7 +422,7 @@ main_function = function(timeline_mode){
 			
 			data_settings_donations=[]
 			data_settings_donations.googlesheet_id="1rISxf_ExC1_NyKbMGfB1KibTBttyyHLBkcv5RLNsvLw"
-			data_settings_donations.googlesheet_name="donations"
+			data_settings_donations.googlesheet_name="audio"
 			data_settings_donations.group_column="group"
 			data_settings_donations.type="text"
 			data_settings_donations.use_moment=false
@@ -431,6 +432,19 @@ main_function = function(timeline_mode){
 			data_settings_donations.title_column="name"
 			data_settings_donations.start_column="start_date"
 			data_settings_donations.end_column="end_date"
+			
+			data_settings_audio=[]
+			data_settings_audio.googlesheet_id="1rISxf_ExC1_NyKbMGfB1KibTBttyyHLBkcv5RLNsvLw"
+			data_settings_audio.googlesheet_name="donations"
+			data_settings_audio.group_column="group"
+			data_settings_audio.type="text"
+			data_settings_audio.use_moment=false
+			data_settings_audio.track="Digital"
+			//data_settings_donations.colour="red"
+			data_settings_audio.type_column="type"
+			data_settings_audio.title_column="name"
+			data_settings_audio.start_column="start_date"
+			data_settings_audio.end_column="end_date"
 		//	$scope.shopify() //NB for some reason need this to appear for unlogged in users otherwise text wont load in directives
 			
 			
@@ -451,6 +465,7 @@ main_function = function(timeline_mode){
 			if( $scope.isloggedin){	
 			
 					timeline_googlesheets_functions.get_events(data_settings)
+					timeline_googlesheets_functions.get_events(data_settings_audio)	
 					timeline_googlesheets_functions.get_events(data_settings_donations)
 					timeline_googlesheets_functions.get_events(data_settings_pliosaurus)
 					$scope.add_installs_derigs()
