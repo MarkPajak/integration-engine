@@ -85,6 +85,7 @@ console.log('google sheet events',datax)
 														start_date=moment(event[data_settings.date_column])._d
 														end_date=moment(event[data_settings.date_column])._d
 														end_date.setDate(end_date.getDate() + 1)
+														
 													
 													}
 													else
@@ -92,8 +93,8 @@ console.log('google sheet events',datax)
 														
 														start_date=event[data_settings.start_column]
 														end_date=event[data_settings.end_column]
-													
-														
+													end_date.setDate(end_date.getDate() + 1)
+													end_date.setHours(15);	
 													}
 																								
 													select_group = true
@@ -140,8 +141,9 @@ console.log('google sheet events',datax)
 													{
 													start_date=new Date(event[data_settings.start_column])
 													end_date=new Date(event[data_settings.end_column]) //required e.g. art and events
+													end_date.setHours(23);
 													//var end_date=new Date(end_date).setDate( end_date.getDate() + 1);
-													
+														//end_date.setDate(end_date.getDate() + 1)
 													//end_date=new Date(end_date) //required e.g. art and events
 													//end_date.setDate( end_date.getDate() + 1);
 													}
@@ -169,6 +171,18 @@ console.log('google sheet events',datax)
 														}
 													}  
 													
+													var colour = "red"
+													if(data_settings.colour){													
+														colour=data_settings.colour
+													}
+													if(data_settings.type_column){
+													colour=(event[data_settings.type_column]=="MILESTONE" ? "green" : "red")
+													
+													
+													}
+													
+													
+													
 													
 													//if(!data_settings.checked_event_types || (event[data_settings.group_column]!="" && data_settings.checked_event_types.indexOf(event[data_settings.group_column])!=-1 && new Date(event[data_settings.start_column]))){
 												
@@ -183,7 +197,7 @@ console.log('google sheet events',datax)
 																		order: data_settings.track,
 																		type:data_settings.event_type ||"",
 																		start:start_date,
-																		className :data_settings.colour
+																		className :colour
 																	}
 																		
 														

@@ -125,7 +125,7 @@ exports.timeline_exhibitions_functions =  function (timeline_functions,$http,Tim
 																		order:event.venue+event.event_space,
 																		track:event.venue,
 																		start		:	new Date(event.startDate), 
-																		end			:	event.endDate, 
+																		end			:	new Date(event.endDate).setHours(23), 
 																		className 	:	"green",
 																		event_type  :   "WHATS ON"
 																		})

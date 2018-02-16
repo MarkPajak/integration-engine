@@ -550,7 +550,7 @@ console.log('changeTracks selection',selection)
            },
 		   
    get_events: function() {
-      return $http.get('/assets/data/events.JSON');  //1. this returns promise
+      return $http.get('/assets/data/all_events.JSON');  //1. this returns promise
     },
 	
 	updateOptions: function(options){

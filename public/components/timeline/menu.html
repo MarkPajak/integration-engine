@@ -47,11 +47,16 @@
         <md-menu-item>
           <md-button ng-click="">
             <md-icon md-svg-icon="social:notifications-{{ctrl.notificationsEnabled ? 'off' : 'on'}}"></md-icon>
-        <label class=" switch checkbox checkbox-inline">
+       		<label class="switch">
 		<div class="settings_locklabel" >stack</div>
-		<input checked type="checkbox" id="stack"  ng-model="stack" value="">
-		<div class="slider round"></div>
-		</label>
+		
+			<input
+					type="checkbox"
+					name="selectedFruits[]"					
+					ng-model="track.stack"
+				  > 
+				   <div class="slider round"></div>
+			</label>
           </md-button>
         </md-menu-item>
 	

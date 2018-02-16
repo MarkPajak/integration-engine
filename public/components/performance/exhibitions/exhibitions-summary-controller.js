@@ -20,7 +20,7 @@ exports.exhibitions_summary_controller = function(monthly_data_table_columns,$ro
 			$scope.filter_pie=[]
 			
 			columnDefs.push(
-				{ field: 'name',		name: "Name",width:150, pinnedLeft:true, enableColumnMoving:false },
+				{ field: 'name',		name: "Name",width:350, pinnedLeft:true, enableColumnMoving:false },
 				{ field: 'venue',		name: "Venue",width:90, pinnedLeft:true, enableColumnMoving:false },
 				{ field: 'event_space',		name: "Gallery",width:90, pinnedLeft:true, enableColumnMoving:false },
 				{ field: 'startDate',		name: "Start",width:100, pinnedLeft:true, enableColumnMoving:false },

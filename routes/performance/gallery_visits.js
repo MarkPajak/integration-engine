@@ -2,7 +2,7 @@ fs = require('fs');
 
 data_services=  function(cb){
 	
-		fs.readFile('./public/assets/data/events.JSON', function(err, data){  
+		fs.readFile('./public/assets/data/all_events.JSON', function(err, data){  
 			if (err) console.log( err);		
 			cb(JSON.parse(data));
 		});

@@ -176,7 +176,7 @@ main_function = function(timeline_mode){
 	 
 			$scope.$watch('stack', function(stack) {
 		
-		
+		console.log('stack')
 					 if(typeof(stack)!="undefined"){
 						 
 						   options={stack:stack}
@@ -406,7 +406,31 @@ main_function = function(timeline_mode){
 			data_settings.start_column="start_date"
 			data_settings.end_column="end_date"
 			
+			data_settings_pliosaurus=[]
+			data_settings_pliosaurus.googlesheet_id="1rISxf_ExC1_NyKbMGfB1KibTBttyyHLBkcv5RLNsvLw"
+			data_settings_pliosaurus.googlesheet_name="pliosaurus"
+			data_settings_pliosaurus.group_column="group"
+			data_settings_pliosaurus.type="text"
+			data_settings_pliosaurus.use_moment=false
+			data_settings_pliosaurus.track="Digital"
+			//data_settings_pliosaurus.colour="red"
+			data_settings_pliosaurus.type_column="type"
+			data_settings_pliosaurus.title_column="name"
+			data_settings_pliosaurus.start_column="start_date"
+			data_settings_pliosaurus.end_column="end_date"
 			
+			data_settings_donations=[]
+			data_settings_donations.googlesheet_id="1rISxf_ExC1_NyKbMGfB1KibTBttyyHLBkcv5RLNsvLw"
+			data_settings_donations.googlesheet_name="donations"
+			data_settings_donations.group_column="group"
+			data_settings_donations.type="text"
+			data_settings_donations.use_moment=false
+			data_settings_donations.track="Digital"
+			//data_settings_donations.colour="red"
+			data_settings_donations.type_column="type"
+			data_settings_donations.title_column="name"
+			data_settings_donations.start_column="start_date"
+			data_settings_donations.end_column="end_date"
 		//	$scope.shopify() //NB for some reason need this to appear for unlogged in users otherwise text wont load in directives
 			
 			
@@ -427,6 +451,8 @@ main_function = function(timeline_mode){
 			if( $scope.isloggedin){	
 			
 					timeline_googlesheets_functions.get_events(data_settings)
+					timeline_googlesheets_functions.get_events(data_settings_donations)
+					timeline_googlesheets_functions.get_events(data_settings_pliosaurus)
 					$scope.add_installs_derigs()
 					//$scope.team_leave()
 					$scope.visitor_figures()
@@ -566,11 +592,24 @@ $scope.$watch('groups|filter:{selected:true}', function (nv) {
 	
 	} 
  
-exports.BasicDemoCtrl=   function ($mdDialog,$scope, $http, $q, $routeParams, $location
+exports.BasicDemoCtrl=   function (timeline_functions,$mdDialog,$scope, $http, $q, $routeParams, $location
 
     ) {
 	
 
+	 
+			$scope.$watch('track.stack', function(stack) {
+		
+		console.log('stack')
+					 if(typeof(stack)!="undefined"){
+						 
+						   options={stack:stack}
+							timeline_functions.updateOptions(options)
+					  }
+		  
+		
+		  
+			})
 
  var originatorEv;
 

@@ -813,7 +813,7 @@ exports.Tallys = function($resource){
 		   var  all,events = [];
     var getData = function() {
 	console.log('getting events')
-        return $http.get('/assets/data/events.JSON')
+        return $http.get('/assets/data/all_events.JSON')
         .then(function(response) {
           return response.data.events
         });
@@ -825,7 +825,7 @@ exports.Tallys = function($resource){
 		  
 		  var events = [];
 			
-	$http.get('/assets/data/events.JSON')
+	$http.get('/assets/data/all_events.JSON')
     .then(function(response) {
       events = response;
     }); 

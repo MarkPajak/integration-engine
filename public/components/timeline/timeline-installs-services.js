@@ -55,7 +55,7 @@ exports.timeline_install_functions =  function (timeline_functions,$http,Timelin
 																			$rootScope.added_track_groups.push(data._type)
 																	
 																	}
-																		
+																			//end_date.setHours(23);
 																			var event_to_add={
 																								  id : data._id,
 																								  name :data.name,
@@ -86,7 +86,7 @@ exports.timeline_install_functions =  function (timeline_functions,$http,Timelin
 																						start: data.start_date,
 																						days:data.days,
 																						install_features:data.install_features,																					
-																						end: data.end_date 
+																						end: new Date( data.end_date  ).setHours(23)
 																					})
 																			//}
 																	}
