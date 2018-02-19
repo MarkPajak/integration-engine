@@ -1,5 +1,5 @@
 exports.timeline_controller=     function($compile,  $scope, $http, $q, $routeParams, $location,
-         $location, $rootScope, trello,timeline_bookings_functions, get_trello_board, date_calc, Todos, Timeline, Bookings,Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate,Raw_visits,timeline_visitor_figures_functions,timeline_install_functions, $timeout,timeline_exhibitions_functions
+         $location, $rootScope, trello,timeline_bookings_functions, Timeline_data,get_trello_board, date_calc, Todos, Timeline, Bookings,Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate,Raw_visits,timeline_visitor_figures_functions,timeline_install_functions, $timeout,timeline_exhibitions_functions
     ) {
 		
 		$scope.locked=[]
@@ -395,6 +395,8 @@ main_function = function(timeline_mode){
 			}
 	//dev	
 		//n.b. need to content manage this	
+			
+			/*
 			data_settings=[]
 			data_settings.googlesheet_id="1XDUXfrYH8RtyDDaWfKSlosQ3EjatsmC2E8F22O1gkEg"
 			data_settings.googlesheet_name="retail"
@@ -447,7 +449,7 @@ main_function = function(timeline_mode){
 			data_settings_audio.end_column="end_date"
 		//	$scope.shopify() //NB for some reason need this to appear for unlogged in users otherwise text wont load in directives
 			
-			
+		*/	
 			//WE'll do some routing here - might need to put it in a better place one day
 			
 			
@@ -464,10 +466,24 @@ main_function = function(timeline_mode){
 			timeline_track = Timeline
 			if( $scope.isloggedin){	
 			
+			
+			  Timeline_data.query({}, function(data) {
+				
+				_.each(data, function(data_settings) {
+				if(data_settings.googlesheet_id!=""){
 					timeline_googlesheets_functions.get_events(data_settings)
-					timeline_googlesheets_functions.get_events(data_settings_audio)	
-					timeline_googlesheets_functions.get_events(data_settings_donations)
-					timeline_googlesheets_functions.get_events(data_settings_pliosaurus)
+					}
+				})
+				
+
+		
+				//timeline_functions.update_andCompile()	
+				
+				})
+			
+			
+			
+
 					$scope.add_installs_derigs()
 					//$scope.team_leave()
 					$scope.visitor_figures()
@@ -492,16 +508,6 @@ main_function = function(timeline_mode){
 											checked_event_types.push('Event')
 											checked_event_types.push('Family')
 
-	   Timeline_data.query({}, function(data) {
-				
-				_.each(data, function(data_settings) {
-					console.log('data_settings',data_settings)
-					$scope.timeline_googlesheets_functions(data_settings)
-				})
-		
-		timeline_functions.update_andCompile()	
-		
-		})
 
 	
 

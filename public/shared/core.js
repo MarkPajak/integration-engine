@@ -3,6 +3,7 @@
 var underscore = angular.module('underscore', []);
 var _ = require('underscore');
 
+var async = require('async');
 
 underscore.factory('_', ['$window', function($window) {
   return $window._; // assumes underscore has already been loaded on the page
@@ -142,7 +143,10 @@ var performance_form = require('../components/performance/visits/visits-form-con
 var retail_performance_form = require('../components/performance/retail/performance-form-controller');
 
 
-var timeline_settings_controller = require('../components/timeline-settings/timeline-settings-controller');
+var raw_timelinesettings_controller = require('../components/timeline-settings/raw-timeline-settings-controller');
+var timeline_settings_form = require('../components/timeline-settings/settings-form-controller');
+var timeline_settings_directives = require('../components/timeline-settings/timeline-settings-directive');
+
 var users_controller = require('../components/user-admin/users-controller');
 var iframe_controller = require('../components/iframe/iframe-controller');
 var turnstiles_controller = require('../components/turnstiles/turnstiles-controller');
@@ -184,7 +188,7 @@ var feedback_services = require('../components/machine-monitor/feedback-services
 
 	var app =  angular.module('app', [
 		'ng',
-	
+
 		'ngRoute',
 		'ngAnimate',		
 		'ngResource',
@@ -566,11 +570,18 @@ _.each(retail_performance_form, function(controller, name) {
 
 
 
-_.each(timeline_settings_controller, function(controller, name) {
+_.each(raw_timelinesettings_controller, function(controller, name) {
   app.controller(name, controller);
 });
 
 
+_.each(timeline_settings_form, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(timeline_settings_directives, function(controller, name) {
+  app.directive(name, controller);
+});
 
 
 
@@ -833,8 +844,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
 			  
            })
 		    .when('/timeline_settings', {
-              templateUrl: '../components/timeline-settings/timeline-settings-page.html',
-              controller: 'timeline_settings_controller'
+               template: '<timelinesettings-formdata></timelinesettings-formdata>'
            })
 		    .when('/room-hire', {
               template: '<timeline-bookings timeline_mode="Bookings" ng-init="init(\'room-hire\')"  ></timeline-bookings>'

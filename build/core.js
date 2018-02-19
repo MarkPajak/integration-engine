@@ -9848,7 +9848,7 @@ exports.monthly_donations_controller = function($route,$scope, $http, $q, $route
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations/monthly-donations-controller.js","/../components/performance/donations")
 },{"b55mWE":4,"buffer":3}],21:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-exports.donations_performance_form =  function($scope, $http, $q,  
+exports.record_timelinesettings_controller =  function($scope, $http, $q,  
           Raw_donations,data_table_reload,get_table_data
     ) {
 
@@ -18564,41 +18564,20 @@ console.log('trello card',card)
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/tech-support/trello-services.js","/../components/tech-support")
 },{"async":1,"b55mWE":4,"buffer":3}],91:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-exports.timeline_settings_controller =  function($scope, $http, $q, $routeParams, $location,
-        screen_saver_loop,  $rootScope, detect_dragging, trello, get_trello_board, date_calc, Todos, Tallys,Team,Timeline,$mdEditDialog,Timeline_data
+exports.raw_timelinesettings_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Timeline_data,data_table_reload,get_table_data,grid_ui_settings,make_a_pie,make_a_line_chart,monthly_data_table_columns,table_security
     ) {
-
-
-
-  $scope.rows = [];
-   $scope.column_headings = []
-
-  $scope.counter = 0;
-  
-  $scope.addRow = function() {
-   var data_row = new Timeline_data({
-                name:  $scope.counter
-            });
-			
-	 data_row.$save(function() {
 		
-               
-            });
-  
-    $scope.rows.push('Row ' + $scope.counter);
-    $scope.counter++;
-  }
-   Timeline_data.query({}, function(data) {
-  _.each(data, function(data_settings,index) {
-
-		  Timeline_data.remove({
-               // id: data_settings._id
-            });
+	
+		$scope.show_all_Button=true
+		$scope.featured_collection=Timeline_data
+		$rootScope.featured_collection=Timeline_data
+		$scope.gridOptions=[]
+		$scope.gridOptions.data=[]
+			$scope.extraQuery = { "googlesheet_id":"#","googlesheet_name":"#"}
 		
-	})	
-		})	  
-  
-  		var data_settings = new Timeline_data({ 
+		var columnDefs= []
+		/*
+		var data_settings = new Timeline_data({ 
 					type:"text",
 					data_feed_url:"https://www.gov.uk/bank-holidays.json",
 					googlesheet_name:"england-and-wales",
@@ -18615,15 +18594,15 @@ exports.timeline_settings_controller =  function($scope, $http, $q, $routeParams
 	//data_settings.$save();
 		
 			var checked_event_types=[]
-											checked_event_types.push('Tour')
-											checked_event_types.push('Walk')
-											checked_event_types.push('Rides')
-											checked_event_types.push('Tours')
-											checked_event_types.push('Talk')
-											checked_event_types.push('Lecture')
-											checked_event_types.push('Special Event')
-											checked_event_types.push('Event')
-											checked_event_types.push('Family')
+				checked_event_types.push('Tour')
+				checked_event_types.push('Walk')
+				checked_event_types.push('Rides')
+				checked_event_types.push('Tours')
+				checked_event_types.push('Talk')
+				checked_event_types.push('Lecture')
+				checked_event_types.push('Special Event')
+				checked_event_types.push('Event')
+				checked_event_types.push('Family')
 	
 	
 	
@@ -18716,55 +18695,168 @@ exports.timeline_settings_controller =  function($scope, $http, $q, $routeParams
 			 $scope.counter++;
 		 })
 	 })
-	 
-	 
-   $scope.editComment = function (event, dessert) {
-  // if auto selection is enabled you will want to stop the event
-  // from propagating and selecting the row
-  event.stopPropagation();
+*/
+		$rootScope.canEdit_table=true
+		 columnDefs.push(		 
+		 	{ field: 'googlesheet_id' ,name: "googlesheet_id",resizable: true,width:"150"},
+		 	{ field: 'googlesheet_name' ,name: "googlesheet_name",resizable: true,width:"150"},
+			{ field: 'group_column' ,name: "group_column",resizable: true,width:"150"},
+			{ field: 'type' ,name: "type",resizable: true,width:"150"},
+			{ field: 'use_moment' ,name: "use_moment",resizable: true,width:"150"},
+			{ field: 'track' ,name: "track",resizable: true,width:"150"},
+			{ field: 'type_column' ,name: "type_column",resizable: true,width:"150"},
+			{ field: 'title_column' ,name: "title_column",resizable: true,width:"150"},
+			{ field: 'start_column' ,name: "start_column",resizable: true,width:"150"},
+			{ field: 'end_column' ,name: "end_column",resizable: true,width:"150"}
+			)
+			
+			$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
+			
+			get_table_data.getData(moment(new Date()).subtract({'months':1})._d,$scope)
+			
+}				
 
-console.log(event)
-  
-	var myArray = []
-var key = "happyCount";
-var obj = {};
-obj[key] = newValue;
-myArray.push(obj);
- 
- 
-  var promise = $mdEditDialog.small({
 
-    modelValue: dessert.comment,
-    placeholder: 'Add a comment',
-    save: function (input) {
-	event.target.innerHTML=input.$modelValue
-			var query = {'id':dessert._id};
-			Timeline_data.update(query, {
-					myArray:input.$modelValue
-					}, function(err, affected, resp) {
-					console.log(resp)
-					console.log(err)
-			})
-    },
-    targetEvent: event,
-    validators: {
-      'md-maxlength': 30
-    }
-  });
-  promise.then(function (ctrl) {
-    var input = ctrl.getInput();
 
-    input.$viewChangeListeners.push(function () {
-      input.$setValidity('test', input.$modelValue !== 'test');
-    });
-  });
-  }
-  }
 
-  
-
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline-settings/timeline-settings-controller.js","/../components/timeline-settings")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline-settings/raw-timeline-settings-controller.js","/../components/timeline-settings")
 },{"b55mWE":4,"buffer":3}],92:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+exports.record_timelinesettings_controller =  function($scope, $http, $q,  
+          Timeline_data,data_table_reload,get_table_data
+    ) {
+
+//$scope.setDate = data_table_reload.setDate;
+		$scope.extraQuery = { "googlesheet_id":"#","googlesheet_name":"#"}
+
+    // function definition
+	
+	  $scope.Timeline_data=Timeline_data
+	 
+ $scope.onSubmit=function() {
+
+	
+		    var kpis = new Timeline_data({
+			
+					googlesheet_id:visit_form.googlesheet_id.value,	
+					googlesheet_name:visit_form.googlesheet_name.value,
+					group_column:visit_form.group_column.value,		
+					type:visit_form.type.value,
+					use_moment:visit_form.use_moment.value,
+					track:visit_form.track.value,
+					type_column:visit_form.type_column.value,
+					title_column:visit_form.title_column.value,
+					end_column:visit_form.end_column.value,
+					start_column:visit_form.start_column.value,					
+									
+					comments:visit_form.comments.value,			
+					logger_user_name: $scope.user.username
+            });
+			
+			var query = {'googlesheet_id':visit_form.googlesheet_id.value,'googlesheet_name':visit_form.googlesheet_name.value};
+			
+			Timeline_data.query(query, function(visits) {
+				  $scope.$emit('form_submit');
+				console.log('Raw_visits',visits.length)
+				$scope.results=visits
+			if(visits.length>0) {
+			
+			
+			if (confirm("we already have a figure of " + visits[0].value + " for that date - are you sure you wnt to overwrite it ?")) {
+			
+				_.each(	visits	, function(visit) {
+				
+				  Timeline_data.remove({
+						id: visit._id
+					}, function() {
+					  console.log('removed old data')
+					});
+					})
+						save(kpis)
+				// Save it!
+			} else {
+				// Do nothing!
+			}
+			
+			
+			}
+			else
+			{			
+						save(kpis)
+			}
+			})	
+			
+            
+		
+	
+
+	
+
+    }
+		function save(kpis){
+
+	kpis.$save(function(err, user) {
+		
+						if(err) console.log(err)
+						 var  message = "data saved successfully";
+							  message+= "\n ";
+							  //message+= " "+ data + " added to " + museum;
+							  alert(message);
+							  get_table_data.getData(moment(new Date()).subtract({'months':1})._d,$scope)			
+							$scope.message="data saved successfully";
+			
+							 
+						})
+						
+
+}
+	
+	$( document ).ready(function() {
+     $scope.$emit('donations_performance_form');
+	 $scope.savex=function(kpis) {
+			save(kpis)
+	 }
+	
+});
+	
+
+	
+	}
+ 
+
+ 
+
+	
+	
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline-settings/settings-form-controller.js","/../components/timeline-settings")
+},{"b55mWE":4,"buffer":3}],93:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+
+	exports.timelinesettingsFormdata = function() {
+  return {
+  // controller: 'giftaid_performance_form',
+      templateUrl: './components/timeline-settings/form-and-data.html'
+  }
+  }
+	
+		exports.rawTimelinesettings = function() {
+  return {
+   controller: 'raw_timelinesettings_controller',
+     templateUrl: './shared/templates/data_table.html'
+  }
+	}
+
+		exports.recordTimelinesettings = function() {
+  return {
+   controller: 'record_timelinesettings_controller',
+      templateUrl: './components/timeline-settings/kpi-form.html'
+  }
+	}
+	
+	
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline-settings/timeline-settings-directive.js","/../components/timeline-settings")
+},{"b55mWE":4,"buffer":3}],94:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_bookings_functions  =  function (timeline_functions,$http,Timeline,$rootScope,$location) {
@@ -18927,10 +19019,10 @@ console.log('Current route name: ' + $location.path());
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-bookings-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],93:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],95:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.timeline_controller=     function($compile,  $scope, $http, $q, $routeParams, $location,
-         $location, $rootScope, trello,timeline_bookings_functions, get_trello_board, date_calc, Todos, Timeline, Bookings,Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate,Raw_visits,timeline_visitor_figures_functions,timeline_install_functions, $timeout,timeline_exhibitions_functions
+         $location, $rootScope, trello,timeline_bookings_functions, Timeline_data,get_trello_board, date_calc, Todos, Timeline, Bookings,Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate,Raw_visits,timeline_visitor_figures_functions,timeline_install_functions, $timeout,timeline_exhibitions_functions
     ) {
 		
 		$scope.locked=[]
@@ -19326,6 +19418,8 @@ main_function = function(timeline_mode){
 			}
 	//dev	
 		//n.b. need to content manage this	
+			
+			/*
 			data_settings=[]
 			data_settings.googlesheet_id="1XDUXfrYH8RtyDDaWfKSlosQ3EjatsmC2E8F22O1gkEg"
 			data_settings.googlesheet_name="retail"
@@ -19378,7 +19472,7 @@ main_function = function(timeline_mode){
 			data_settings_audio.end_column="end_date"
 		//	$scope.shopify() //NB for some reason need this to appear for unlogged in users otherwise text wont load in directives
 			
-			
+		*/	
 			//WE'll do some routing here - might need to put it in a better place one day
 			
 			
@@ -19395,10 +19489,24 @@ main_function = function(timeline_mode){
 			timeline_track = Timeline
 			if( $scope.isloggedin){	
 			
+			
+			  Timeline_data.query({}, function(data) {
+				
+				_.each(data, function(data_settings) {
+				if(data_settings.googlesheet_id!=""){
 					timeline_googlesheets_functions.get_events(data_settings)
-					timeline_googlesheets_functions.get_events(data_settings_audio)	
-					timeline_googlesheets_functions.get_events(data_settings_donations)
-					timeline_googlesheets_functions.get_events(data_settings_pliosaurus)
+					}
+				})
+				
+
+		
+				//timeline_functions.update_andCompile()	
+				
+				})
+			
+			
+			
+
 					$scope.add_installs_derigs()
 					//$scope.team_leave()
 					$scope.visitor_figures()
@@ -19423,16 +19531,6 @@ main_function = function(timeline_mode){
 											checked_event_types.push('Event')
 											checked_event_types.push('Family')
 
-	   Timeline_data.query({}, function(data) {
-				
-				_.each(data, function(data_settings) {
-					console.log('data_settings',data_settings)
-					$scope.timeline_googlesheets_functions(data_settings)
-				})
-		
-		timeline_functions.update_andCompile()	
-		
-		})
 
 	
 
@@ -19605,7 +19703,7 @@ exports.add_timeline_items_controller=    function($scope, $http, $q, $routePara
   
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-controller.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],94:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],96:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	exports.timeLine = function() {
   return {
@@ -19704,7 +19802,7 @@ exports.timelineInfobox = function() {
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-directive.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],95:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],97:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_exhibitions_functions =  function (timeline_functions,$http,Timeline,$rootScope,$routeParams) {
@@ -19891,14 +19989,14 @@ exports.timeline_exhibitions_functions =  function (timeline_functions,$http,Tim
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-exhibitions-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],96:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],98:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_googlesheets_functions =  function (timeline_functions,$http,Timeline,$rootScope,$routeParams) {
 
   return {
 	  
-	  get_events: function(data_settings) {
+	  get_events: function(data_settings,cb) {
 	  var self = this
 	  
 	   if(data_settings.data_feed_url){
@@ -19922,7 +20020,7 @@ exports.timeline_googlesheets_functions =  function (timeline_functions,$http,Ti
 	  return $http.get("https://script.google.com/macros/s/AKfycbzij_r2bTK6fiWU-h29rglHktd8pwbLfrti82Or68TkEjEHrOc/exec?id="+data_settings.googlesheet_id).then(function(datax) {
 		
 		
-console.log('google sheet events',datax)		
+	
 						self.add_events(data_settings,datax, function(public_dates){
 							 $rootScope.leave_groups = timeline_functions.loadgroups(public_dates)
 							_.each($rootScope.leave_groups, function(_group) {
@@ -20167,7 +20265,7 @@ console.log('google sheet events',datax)
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-googlesheets-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],97:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],99:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_install_functions =  function (timeline_functions,$http,Timeline,$rootScope) {
@@ -20318,7 +20416,7 @@ exports.timeline_install_functions =  function (timeline_functions,$http,Timelin
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-installs-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],98:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],100:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_learning_functions = function ($http,Timeline,$rootScope) {
@@ -20438,7 +20536,7 @@ exports.timeline_learning_functions = function ($http,Timeline,$rootScope) {
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-learning-bookings-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],99:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],101:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_leave_functions =  function ($http,Timeline,$rootScope) {
@@ -20869,7 +20967,7 @@ exports.timeline_leave_functions =  function ($http,Timeline,$rootScope) {
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-leave-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],100:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],102:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_loans_functions =  function ($http,Timeline,$rootScope) {
@@ -20988,7 +21086,7 @@ exports.timeline_loans_functions =  function ($http,Timeline,$rootScope) {
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-loans-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],101:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],103:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 
@@ -21926,7 +22024,7 @@ console.log('on add called')
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],102:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],104:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_shopify_functions =  function ($http,Timeline,$rootScope) {
@@ -22069,7 +22167,7 @@ exports.timeline_shopify_functions =  function ($http,Timeline,$rootScope) {
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-shopify-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],103:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],105:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_visitor_figures_functions =  function ($http,Timeline,$rootScope) {
@@ -22210,7 +22308,7 @@ exports.timeline_visitor_figures_functions =  function ($http,Timeline,$rootScop
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-visitor-figures-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],104:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],106:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.turnstiles_controller = function(log_messages,$scope, AuthService,$http, $q, $routeParams, $location,$rootScope, turnstile_app
@@ -22405,7 +22503,7 @@ $scope.settings=[]
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/turnstiles/turnstiles-controller.js","/../components/turnstiles")
-},{"b55mWE":4,"buffer":3}],105:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],107:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	exports.turnstilesController = function() {
   return {
@@ -22433,7 +22531,7 @@ $scope.settings=[]
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/turnstiles/turnstiles-directive.js","/../components/turnstiles")
-},{"b55mWE":4,"buffer":3}],106:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],108:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.users_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Team
     ) {
@@ -22561,7 +22659,7 @@ exports.users_controller = function($route,$scope, $http, $q, $routeParams, $loc
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/user-admin/users-controller.js","/../components/user-admin")
-},{"b55mWE":4,"buffer":3}],107:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],109:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	exports.userAdmin = function() {
   return {
@@ -22573,7 +22671,7 @@ exports.users_controller = function($route,$scope, $http, $q, $routeParams, $loc
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/user-admin/users-directive.js","/../components/user-admin")
-},{"b55mWE":4,"buffer":3}],108:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],110:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	
 exports.ColourKeycontroller = function($location,AuthService,$scope,$http) {
@@ -22586,7 +22684,7 @@ exports.ColourKeycontroller = function($location,AuthService,$scope,$http) {
 };
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/controllers/colourkey-controller.js","/controllers")
-},{"b55mWE":4,"buffer":3}],109:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],111:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.ProductDetailsController = function($location, $scope, $routeParams, $http) {
 
@@ -22612,7 +22710,7 @@ exports.RadioController = function($location, $scope, $routeParams, $http) {
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/controllers/controllers.js","/controllers")
-},{"b55mWE":4,"buffer":3}],110:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],112:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	
 exports.NavController = function($location,AuthService,$scope,$http) {
@@ -22664,6 +22762,7 @@ var feedback = {link:"feedback",value:"Kiosk feedback"}
 var tech_support = {link:"tech-support",value:"Tech-support"}
 var shopify = {link:"shopify_app",value:"Shopify"}
 var users = {link:"users",value:"ADMIN: Users"}
+var timeline_settings = {link:"timeline_settings",value:"Timeline settings"}
 var doom = {link:"doom",value:"DOOM!"}
 
 var analyser = {link:"analyser",value:"Performance analyser (BETA)"}
@@ -22875,6 +22974,8 @@ $scope.user_groups['ADMIN'].views.push(feedback)
 $scope.user_groups['ADMIN'].views.push(tech_support)
 $scope.user_groups['ADMIN'].views.push(shopify)
 $scope.user_groups['ADMIN'].views.push(users)
+$scope.user_groups['ADMIN'].views.push(timeline_settings)
+
 
 $scope.user_groups['ADMIN'].enter_data=enter_data
 $scope.user_groups['ADMIN'].performance=performance_data
@@ -23195,7 +23296,7 @@ $scope.user_groups['RETAIL'].performance=performance_data
 };
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/controllers/navbar-controller.js","/controllers")
-},{"b55mWE":4,"buffer":3}],111:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],113:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	
 exports.TableFilterController = function($location,AuthService,tableFilterService, $scope,$http) {
@@ -23208,7 +23309,7 @@ exports.TableFilterController = function($location,AuthService,tableFilterServic
 };
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/controllers/tablefilter-controller.js","/controllers")
-},{"b55mWE":4,"buffer":3}],112:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],114:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.colourKey = function() {
 	
@@ -23270,13 +23371,14 @@ exports.tableFilter = function() {
   }
 	}
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/directives/directives.js","/directives")
-},{"b55mWE":4,"buffer":3}],113:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],115:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 /* app */
 var underscore = angular.module('underscore', []);
 var _ = require('underscore');
 
+var async = require('async');
 
 underscore.factory('_', ['$window', function($window) {
   return $window._; // assumes underscore has already been loaded on the page
@@ -23416,7 +23518,10 @@ var performance_form = require('../components/performance/visits/visits-form-con
 var retail_performance_form = require('../components/performance/retail/performance-form-controller');
 
 
-var timeline_settings_controller = require('../components/timeline-settings/timeline-settings-controller');
+var raw_timelinesettings_controller = require('../components/timeline-settings/raw-timeline-settings-controller');
+var timeline_settings_form = require('../components/timeline-settings/settings-form-controller');
+var timeline_settings_directives = require('../components/timeline-settings/timeline-settings-directive');
+
 var users_controller = require('../components/user-admin/users-controller');
 var iframe_controller = require('../components/iframe/iframe-controller');
 var turnstiles_controller = require('../components/turnstiles/turnstiles-controller');
@@ -23458,7 +23563,7 @@ var feedback_services = require('../components/machine-monitor/feedback-services
 
 	var app =  angular.module('app', [
 		'ng',
-	
+
 		'ngRoute',
 		'ngAnimate',		
 		'ngResource',
@@ -23840,11 +23945,18 @@ _.each(retail_performance_form, function(controller, name) {
 
 
 
-_.each(timeline_settings_controller, function(controller, name) {
+_.each(raw_timelinesettings_controller, function(controller, name) {
   app.controller(name, controller);
 });
 
 
+_.each(timeline_settings_form, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(timeline_settings_directives, function(controller, name) {
+  app.directive(name, controller);
+});
 
 
 
@@ -24107,8 +24219,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
 			  
            })
 		    .when('/timeline_settings', {
-              templateUrl: '../components/timeline-settings/timeline-settings-page.html',
-              controller: 'timeline_settings_controller'
+               template: '<timelinesettings-formdata></timelinesettings-formdata>'
            })
 		    .when('/room-hire', {
               template: '<timeline-bookings timeline_mode="Bookings" ng-init="init(\'room-hire\')"  ></timeline-bookings>'
@@ -24372,8 +24483,8 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
           
         }])
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_4f454cd5.js","/")
-},{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/performance/analyser/analyser-controller":18,"../components/performance/dashboard-controllers":19,"../components/performance/donations/monthly-donations-controller":20,"../components/performance/donations/performance-form-controller":21,"../components/performance/donations/raw-donations-controller":22,"../components/performance/donations/yearly-donations-controller":23,"../components/performance/events/monthly-events-controller":24,"../components/performance/events/performance-form-controller":25,"../components/performance/events/raw-events-controller":26,"../components/performance/events/yearly-events-controller":27,"../components/performance/exhibitions-pwyt/monthly-donations-controller":28,"../components/performance/exhibitions-pwyt/performance-form-controller":29,"../components/performance/exhibitions-pwyt/raw-donations-controller":30,"../components/performance/exhibitions/exhibitions-summary-controller":31,"../components/performance/gallery-visits/exhibitions-teg-controller":32,"../components/performance/gallery-visits/monthly-teg-controller":33,"../components/performance/gallery-visits/performance-form-controller":34,"../components/performance/gallery-visits/raw-teg-controller":35,"../components/performance/gallery-visits/weekly-teg-controller":36,"../components/performance/gallery-visits/yearly-teg-controller":37,"../components/performance/gift-aid/monthly-allgiftaid-controller":38,"../components/performance/gift-aid/monthly-giftaid-controller":39,"../components/performance/gift-aid/performance-form-controller":40,"../components/performance/gift-aid/raw-giftaid-controller":41,"../components/performance/home/kpi-home-controller":42,"../components/performance/learning/age-learning-controller":43,"../components/performance/learning/monthly-learning-controller":44,"../components/performance/learning/performance-form-controller":45,"../components/performance/learning/raw-learning-controller":46,"../components/performance/learning/yearly-learning-controller":47,"../components/performance/operations/monthly-operations-controller":48,"../components/performance/operations/performance-form-controller":49,"../components/performance/operations/raw-operations-controller":50,"../components/performance/operations/yearly-operations-controller":51,"../components/performance/participation/monthly-participation-controller":52,"../components/performance/participation/performance-form-controller":53,"../components/performance/participation/raw-participation-controller":54,"../components/performance/participation/target-audience-controller":55,"../components/performance/participation/yearly-participation-controller":56,"../components/performance/performance-directive":57,"../components/performance/retail/monthly-retail-sales-controller":58,"../components/performance/retail/performance-form-controller":59,"../components/performance/retail/raw-retail-sales-controller":60,"../components/performance/retail/yearly-retail-sales-controller":61,"../components/performance/turnstiles/monthly-turnstiles-controller":62,"../components/performance/turnstiles/raw-turnstiles-controller":63,"../components/performance/visits/monthly-visits-controller":64,"../components/performance/visits/raw-visits-controller":65,"../components/performance/visits/visits-form-controller":66,"../components/performance/visits/yearly-visits-controller":67,"../components/performance/welcome-desk/monthly-welcomedesk-controller":68,"../components/performance/welcome-desk/performance-form-controller":69,"../components/performance/welcome-desk/raw-welcomedesk-controller":70,"../components/performance/welcome-desk/yearly-welcomedesk-controller":71,"../components/resource-bookings/bookings/form-controller":72,"../components/resource-bookings/bookings/raw-bookings-controller":73,"../components/resource-bookings/directive":74,"../components/resource-bookings/equipment/form-controller":75,"../components/resource-bookings/equipment/raw-equipment-controller":76,"../components/resource-bookings/rooms/form-controller":77,"../components/resource-bookings/rooms/raw-rooms-controller":78,"../components/resource-bookings/timeline-resources-controller":79,"../components/resource-bookings/timeline-resources-services":80,"../components/shopify/shopify-controller":81,"../components/shopify/shopify-directive":82,"../components/shopify/shopify-monthly-controller":83,"../components/team/app-controllers":84,"../components/team/form-controller":85,"../components/team/leave-controller":86,"../components/team/team-controller":87,"../components/tech-support/tech-support-controller":88,"../components/tech-support/tech-support-directive":89,"../components/tech-support/trello-services":90,"../components/timeline-settings/timeline-settings-controller":91,"../components/timeline/timeline-bookings-services":92,"../components/timeline/timeline-controller":93,"../components/timeline/timeline-directive":94,"../components/timeline/timeline-exhibitions-services":95,"../components/timeline/timeline-googlesheets-services":96,"../components/timeline/timeline-installs-services":97,"../components/timeline/timeline-learning-bookings-services":98,"../components/timeline/timeline-leave-services":99,"../components/timeline/timeline-loans-services":100,"../components/timeline/timeline-services":101,"../components/timeline/timeline-shopify-services":102,"../components/timeline/timeline-visitor-figures-services":103,"../components/turnstiles/turnstiles-controller":104,"../components/turnstiles/turnstiles-directive":105,"../components/user-admin/users-controller":106,"../components/user-admin/users-directive":107,"../shared/controllers/colourkey-controller":108,"../shared/controllers/controllers":109,"../shared/controllers/navbar-controller":110,"../shared/controllers/tablefilter-controller":111,"../shared/directives/directives":112,"../shared/services/app-services":114,"../shared/services/data-services":115,"b55mWE":4,"buffer":3,"underscore":7}],114:[function(require,module,exports){
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_3cc4827d.js","/")
+},{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/performance/analyser/analyser-controller":18,"../components/performance/dashboard-controllers":19,"../components/performance/donations/monthly-donations-controller":20,"../components/performance/donations/performance-form-controller":21,"../components/performance/donations/raw-donations-controller":22,"../components/performance/donations/yearly-donations-controller":23,"../components/performance/events/monthly-events-controller":24,"../components/performance/events/performance-form-controller":25,"../components/performance/events/raw-events-controller":26,"../components/performance/events/yearly-events-controller":27,"../components/performance/exhibitions-pwyt/monthly-donations-controller":28,"../components/performance/exhibitions-pwyt/performance-form-controller":29,"../components/performance/exhibitions-pwyt/raw-donations-controller":30,"../components/performance/exhibitions/exhibitions-summary-controller":31,"../components/performance/gallery-visits/exhibitions-teg-controller":32,"../components/performance/gallery-visits/monthly-teg-controller":33,"../components/performance/gallery-visits/performance-form-controller":34,"../components/performance/gallery-visits/raw-teg-controller":35,"../components/performance/gallery-visits/weekly-teg-controller":36,"../components/performance/gallery-visits/yearly-teg-controller":37,"../components/performance/gift-aid/monthly-allgiftaid-controller":38,"../components/performance/gift-aid/monthly-giftaid-controller":39,"../components/performance/gift-aid/performance-form-controller":40,"../components/performance/gift-aid/raw-giftaid-controller":41,"../components/performance/home/kpi-home-controller":42,"../components/performance/learning/age-learning-controller":43,"../components/performance/learning/monthly-learning-controller":44,"../components/performance/learning/performance-form-controller":45,"../components/performance/learning/raw-learning-controller":46,"../components/performance/learning/yearly-learning-controller":47,"../components/performance/operations/monthly-operations-controller":48,"../components/performance/operations/performance-form-controller":49,"../components/performance/operations/raw-operations-controller":50,"../components/performance/operations/yearly-operations-controller":51,"../components/performance/participation/monthly-participation-controller":52,"../components/performance/participation/performance-form-controller":53,"../components/performance/participation/raw-participation-controller":54,"../components/performance/participation/target-audience-controller":55,"../components/performance/participation/yearly-participation-controller":56,"../components/performance/performance-directive":57,"../components/performance/retail/monthly-retail-sales-controller":58,"../components/performance/retail/performance-form-controller":59,"../components/performance/retail/raw-retail-sales-controller":60,"../components/performance/retail/yearly-retail-sales-controller":61,"../components/performance/turnstiles/monthly-turnstiles-controller":62,"../components/performance/turnstiles/raw-turnstiles-controller":63,"../components/performance/visits/monthly-visits-controller":64,"../components/performance/visits/raw-visits-controller":65,"../components/performance/visits/visits-form-controller":66,"../components/performance/visits/yearly-visits-controller":67,"../components/performance/welcome-desk/monthly-welcomedesk-controller":68,"../components/performance/welcome-desk/performance-form-controller":69,"../components/performance/welcome-desk/raw-welcomedesk-controller":70,"../components/performance/welcome-desk/yearly-welcomedesk-controller":71,"../components/resource-bookings/bookings/form-controller":72,"../components/resource-bookings/bookings/raw-bookings-controller":73,"../components/resource-bookings/directive":74,"../components/resource-bookings/equipment/form-controller":75,"../components/resource-bookings/equipment/raw-equipment-controller":76,"../components/resource-bookings/rooms/form-controller":77,"../components/resource-bookings/rooms/raw-rooms-controller":78,"../components/resource-bookings/timeline-resources-controller":79,"../components/resource-bookings/timeline-resources-services":80,"../components/shopify/shopify-controller":81,"../components/shopify/shopify-directive":82,"../components/shopify/shopify-monthly-controller":83,"../components/team/app-controllers":84,"../components/team/form-controller":85,"../components/team/leave-controller":86,"../components/team/team-controller":87,"../components/tech-support/tech-support-controller":88,"../components/tech-support/tech-support-directive":89,"../components/tech-support/trello-services":90,"../components/timeline-settings/raw-timeline-settings-controller":91,"../components/timeline-settings/settings-form-controller":92,"../components/timeline-settings/timeline-settings-directive":93,"../components/timeline/timeline-bookings-services":94,"../components/timeline/timeline-controller":95,"../components/timeline/timeline-directive":96,"../components/timeline/timeline-exhibitions-services":97,"../components/timeline/timeline-googlesheets-services":98,"../components/timeline/timeline-installs-services":99,"../components/timeline/timeline-learning-bookings-services":100,"../components/timeline/timeline-leave-services":101,"../components/timeline/timeline-loans-services":102,"../components/timeline/timeline-services":103,"../components/timeline/timeline-shopify-services":104,"../components/timeline/timeline-visitor-figures-services":105,"../components/turnstiles/turnstiles-controller":106,"../components/turnstiles/turnstiles-directive":107,"../components/user-admin/users-controller":108,"../components/user-admin/users-directive":109,"../shared/controllers/colourkey-controller":110,"../shared/controllers/controllers":111,"../shared/controllers/navbar-controller":112,"../shared/controllers/tablefilter-controller":113,"../shared/directives/directives":114,"../shared/services/app-services":116,"../shared/services/data-services":117,"async":1,"b55mWE":4,"buffer":3,"underscore":7}],116:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 
@@ -25354,7 +25465,7 @@ exports.screen_saver_loop=function($rootScope,$location,$interval,Team) {
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/services/app-services.js","/services")
-},{"b55mWE":4,"buffer":3}],115:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],117:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var status = require('http-status');
          
@@ -26216,4 +26327,4 @@ exports.Tallys = function($resource){
 		
 	
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/services/data-services.js","/services")
-},{"b55mWE":4,"buffer":3,"http-status":5}]},{},[113])
+},{"b55mWE":4,"buffer":3,"http-status":5}]},{},[115])

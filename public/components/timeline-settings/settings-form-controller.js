@@ -1,35 +1,37 @@
 exports.record_timelinesettings_controller =  function($scope, $http, $q,  
-          Raw_donations,data_table_reload,get_table_data
+          Timeline_data,data_table_reload,get_table_data
     ) {
 
 //$scope.setDate = data_table_reload.setDate;
-		$scope.extraQuery = { "donation_box_no":"#"}
+		$scope.extraQuery = { "googlesheet_id":"#","googlesheet_name":"#"}
 
     // function definition
 	
-	  $scope.Raw_donations=Raw_donations
+	  $scope.Timeline_data=Timeline_data
 	 
  $scope.onSubmit=function() {
-		
 
-		
-		    var kpis = new Raw_donations({
-					museum_id:visit_form.museum.value,				  
-					kpi_type: "visits",	
-				//DEPARTMENTAL VARIABLES	
-					donation_box_amount: visit_form.donation_box_amount.value,
-					donation_box_no: visit_form.donation_box_no.value,
-					//no_envelopes: visit_form.no_envelopes.value,
-					
-					date_logged:new Date(),	
-					date_value:visit_form.date_value.value,
+	
+		    var kpis = new Timeline_data({
+			
+					googlesheet_id:visit_form.googlesheet_id.value,	
+					googlesheet_name:visit_form.googlesheet_name.value,
+					group_column:visit_form.group_column.value,		
+					type:visit_form.type.value,
+					use_moment:visit_form.use_moment.value,
+					track:visit_form.track.value,
+					type_column:visit_form.type_column.value,
+					title_column:visit_form.title_column.value,
+					end_column:visit_form.end_column.value,
+					start_column:visit_form.start_column.value,					
+									
 					comments:visit_form.comments.value,			
 					logger_user_name: $scope.user.username
             });
 			
-			var query = {'museum_id':visit_form.museum.value,"date_value":visit_form.date_value.value,"donation_box_no":visit_form.donation_box_no,"exact":true};
+			var query = {'googlesheet_id':visit_form.googlesheet_id.value,'googlesheet_name':visit_form.googlesheet_name.value};
 			
-			Raw_donations.query(query, function(visits) {
+			Timeline_data.query(query, function(visits) {
 				  $scope.$emit('form_submit');
 				console.log('Raw_visits',visits.length)
 				$scope.results=visits
@@ -40,7 +42,7 @@ exports.record_timelinesettings_controller =  function($scope, $http, $q,
 			
 				_.each(	visits	, function(visit) {
 				
-				  Raw_donations.remove({
+				  Timeline_data.remove({
 						id: visit._id
 					}, function() {
 					  console.log('removed old data')
@@ -79,10 +81,6 @@ exports.record_timelinesettings_controller =  function($scope, $http, $q,
 							  get_table_data.getData(moment(new Date()).subtract({'months':1})._d,$scope)			
 							$scope.message="data saved successfully";
 			
-							visit_form.donation_box_amount.value=""
-							visit_form.donation_box_no.value=""
-							visit_form.no_envelopes.value=""
-							 
 							 
 						})
 						

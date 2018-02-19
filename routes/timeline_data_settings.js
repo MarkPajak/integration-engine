@@ -1,12 +1,28 @@
 var express = require('express');
 var router = express.Router();
-
+var _ =  require('underscore');
 
 var Timeline_data_settings = require('../models/timeline_data_settings.js');
 
 /* GET /todos listing. */
 router.get('/', function(req, res, next) {
-  Timeline_data_settings.find()
+ 
+  var query={}
+
+ if(req.query.googlesheet_id && req.query.googlesheet_id!="#"){
+ 
+	_.extend(query, {googlesheet_id:  req.query.googlesheet_id})
+ 
+ }
+  if(req.query.googlesheet_name && req.query.googlesheet_name!="#"){
+ 
+	_.extend(query, {googlesheet_name:  req.query.googlesheet_name})
+ 
+ }
+
+ 
+ console.log('query',query)
+  Timeline_data_settings.find(query)
    .sort({'date': 'desc'})
      .exec(function(err, todos) {
   

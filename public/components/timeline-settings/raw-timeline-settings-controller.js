@@ -1,38 +1,17 @@
-exports.timeline_settings_controller =  function($scope, $http, $q, $routeParams, $location,
-        screen_saver_loop,  $rootScope, detect_dragging, trello, get_trello_board, date_calc, Todos, Tallys,Team,Timeline,$mdEditDialog,Timeline_data
+exports.raw_timelinesettings_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Timeline_data,data_table_reload,get_table_data,grid_ui_settings,make_a_pie,make_a_line_chart,monthly_data_table_columns,table_security
     ) {
-
-
-
-  $scope.rows = [];
-   $scope.column_headings = []
-
-  $scope.counter = 0;
-  
-  $scope.addRow = function() {
-   var data_row = new Timeline_data({
-                name:  $scope.counter
-            });
-			
-	 data_row.$save(function() {
 		
-               
-            });
-  
-    $scope.rows.push('Row ' + $scope.counter);
-    $scope.counter++;
-  }
-   Timeline_data.query({}, function(data) {
-  _.each(data, function(data_settings,index) {
-
-		  Timeline_data.remove({
-               // id: data_settings._id
-            });
+	
+		$scope.show_all_Button=true
+		$scope.featured_collection=Timeline_data
+		$rootScope.featured_collection=Timeline_data
+		$scope.gridOptions=[]
+		$scope.gridOptions.data=[]
+			$scope.extraQuery = { "googlesheet_id":"#","googlesheet_name":"#"}
 		
-	})	
-		})	  
-  
-  		var data_settings = new Timeline_data({ 
+		var columnDefs= []
+		/*
+		var data_settings = new Timeline_data({ 
 					type:"text",
 					data_feed_url:"https://www.gov.uk/bank-holidays.json",
 					googlesheet_name:"england-and-wales",
@@ -49,15 +28,15 @@ exports.timeline_settings_controller =  function($scope, $http, $q, $routeParams
 	//data_settings.$save();
 		
 			var checked_event_types=[]
-											checked_event_types.push('Tour')
-											checked_event_types.push('Walk')
-											checked_event_types.push('Rides')
-											checked_event_types.push('Tours')
-											checked_event_types.push('Talk')
-											checked_event_types.push('Lecture')
-											checked_event_types.push('Special Event')
-											checked_event_types.push('Event')
-											checked_event_types.push('Family')
+				checked_event_types.push('Tour')
+				checked_event_types.push('Walk')
+				checked_event_types.push('Rides')
+				checked_event_types.push('Tours')
+				checked_event_types.push('Talk')
+				checked_event_types.push('Lecture')
+				checked_event_types.push('Special Event')
+				checked_event_types.push('Event')
+				checked_event_types.push('Family')
 	
 	
 	
@@ -150,49 +129,26 @@ exports.timeline_settings_controller =  function($scope, $http, $q, $routeParams
 			 $scope.counter++;
 		 })
 	 })
-	 
-	 
-   $scope.editComment = function (event, dessert) {
-  // if auto selection is enabled you will want to stop the event
-  // from propagating and selecting the row
-  event.stopPropagation();
+*/
+		$rootScope.canEdit_table=true
+		 columnDefs.push(		 
+		 	{ field: 'googlesheet_id' ,name: "googlesheet_id",resizable: true,width:"150"},
+		 	{ field: 'googlesheet_name' ,name: "googlesheet_name",resizable: true,width:"150"},
+			{ field: 'group_column' ,name: "group_column",resizable: true,width:"150"},
+			{ field: 'type' ,name: "type",resizable: true,width:"150"},
+			{ field: 'use_moment' ,name: "use_moment",resizable: true,width:"150"},
+			{ field: 'track' ,name: "track",resizable: true,width:"150"},
+			{ field: 'type_column' ,name: "type_column",resizable: true,width:"150"},
+			{ field: 'title_column' ,name: "title_column",resizable: true,width:"150"},
+			{ field: 'start_column' ,name: "start_column",resizable: true,width:"150"},
+			{ field: 'end_column' ,name: "end_column",resizable: true,width:"150"}
+			)
+			
+			$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
+			
+			get_table_data.getData(moment(new Date()).subtract({'months':1})._d,$scope)
+			
+}				
 
-console.log(event)
-  
-	var myArray = []
-var key = "happyCount";
-var obj = {};
-obj[key] = newValue;
-myArray.push(obj);
- 
- 
-  var promise = $mdEditDialog.small({
 
-    modelValue: dessert.comment,
-    placeholder: 'Add a comment',
-    save: function (input) {
-	event.target.innerHTML=input.$modelValue
-			var query = {'id':dessert._id};
-			Timeline_data.update(query, {
-					myArray:input.$modelValue
-					}, function(err, affected, resp) {
-					console.log(resp)
-					console.log(err)
-			})
-    },
-    targetEvent: event,
-    validators: {
-      'md-maxlength': 30
-    }
-  });
-  promise.then(function (ctrl) {
-    var input = ctrl.getInput();
 
-    input.$viewChangeListeners.push(function () {
-      input.$setValidity('test', input.$modelValue !== 'test');
-    });
-  });
-  }
-  }
-
-  

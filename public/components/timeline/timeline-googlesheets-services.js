@@ -3,7 +3,7 @@ exports.timeline_googlesheets_functions =  function (timeline_functions,$http,Ti
 
   return {
 	  
-	  get_events: function(data_settings) {
+	  get_events: function(data_settings,cb) {
 	  var self = this
 	  
 	   if(data_settings.data_feed_url){
@@ -27,7 +27,7 @@ exports.timeline_googlesheets_functions =  function (timeline_functions,$http,Ti
 	  return $http.get("https://script.google.com/macros/s/AKfycbzij_r2bTK6fiWU-h29rglHktd8pwbLfrti82Or68TkEjEHrOc/exec?id="+data_settings.googlesheet_id).then(function(datax) {
 		
 		
-console.log('google sheet events',datax)		
+	
 						self.add_events(data_settings,datax, function(public_dates){
 							 $rootScope.leave_groups = timeline_functions.loadgroups(public_dates)
 							_.each($rootScope.leave_groups, function(_group) {

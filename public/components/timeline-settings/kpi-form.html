@@ -1,0 +1,88 @@
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <style>
+  .panel > .panel-heading {
+    background-image: none;
+    background-color: red;
+    color: white;
+
+}
+  .panel > .panel-body {
+ 
+    background-color: white;
+
+}
+</style>
+		
+<div ng-show="user.username" class="panel panel-default col-xs-5 col-sm-5 col-md-5">
+<div class="panel-heading">Enter data</div>
+	<div class="panel-body">
+		<form name="visit_form"  id="visit_form">
+
+		  <div class="form-group">
+				<label for="googlesheet_id">googlesheet_id</label>
+				<textarea class="form-control input-sm" id="googlesheet_id" rows="1"></textarea>
+			  </div>
+			  <div class="form-group">
+				<label for="googlesheet_name">googlesheet_name</label>
+				<textarea class="form-control input-sm" id="googlesheet_name" rows="1"></textarea>
+			  </div>
+			<div class="form-group">
+				<label for="group_column">group_column</label>
+				<textarea class="form-control input-sm" id="group_column" rows="1">group</textarea>
+			  </div>
+		<div class="form-group">
+				<label for="track">track</label>
+				<textarea class="form-control input-sm" id="track" rows="1"></textarea>
+			  </div>
+		<div class="form-group">
+				<label for="type_column">type_column</label>
+				<textarea class="form-control input-sm" id="type_column" rows="1">type</textarea>
+			  </div>
+			<div class="form-group">
+				<label for="title_column">title_column</label>
+				<textarea class="form-control input-sm" id="title_column" rows="1">name</textarea>
+			  </div>
+			  	<div class="form-group">
+				<label for="start_column">start_column</label>
+				<textarea class="form-control input-sm" id="start_column" rows="1">start_date</textarea>
+			  </div>
+			<div class="form-group">
+				<label for="end_column">end_column</label>
+				<textarea class="form-control input-sm" id="end_column" rows="1">end_date</textarea>
+			  </div>
+		
+			  <div class="form-group">
+				<label for="type">type</label>
+				<select class="form-control input-sm" id="type">
+					<option selected value="text">text </option>
+					<option value="numerical">numerical </option>
+				
+				</select>
+			  </div>
+		
+			  <div class="form-group">
+				<label for="use_moment">use_moment</label>
+				<select class="form-control input-sm" id="use_moment">
+					<option selected value="false">false </option>
+					<option value="true">true</option>
+				
+				</select>
+			  </div>
+		
+		
+			  <div class="form-group">
+				<label for="comments">Comments</label>
+				<textarea class="form-control input-sm" id="comments" rows="3"></textarea>
+			  </div>
+			   <button id="form_submit_button" name="form_submit_button" ng-click="onSubmit()" type="button" class="btn btn-primary submit-button" ng-disabled="vm.form.$invalid">Submit</button>
+			   <button type="button" class="btn btn-sm input-sm btn-default input-sm" ng-click="vm.options.resetModel()">Reset</button>
+		</form>
+	</div>
+</div>
+
+  <script>
+  $( function() {
+   if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent))
+    $( "#date_value" ).datepicker();
+  } );
+  </script>

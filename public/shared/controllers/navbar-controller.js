@@ -48,6 +48,7 @@ var feedback = {link:"feedback",value:"Kiosk feedback"}
 var tech_support = {link:"tech-support",value:"Tech-support"}
 var shopify = {link:"shopify_app",value:"Shopify"}
 var users = {link:"users",value:"ADMIN: Users"}
+var timeline_settings = {link:"timeline_settings",value:"Timeline settings"}
 var doom = {link:"doom",value:"DOOM!"}
 
 var analyser = {link:"analyser",value:"Performance analyser (BETA)"}
@@ -259,6 +260,8 @@ $scope.user_groups['ADMIN'].views.push(feedback)
 $scope.user_groups['ADMIN'].views.push(tech_support)
 $scope.user_groups['ADMIN'].views.push(shopify)
 $scope.user_groups['ADMIN'].views.push(users)
+$scope.user_groups['ADMIN'].views.push(timeline_settings)
+
 
 $scope.user_groups['ADMIN'].enter_data=enter_data
 $scope.user_groups['ADMIN'].performance=performance_data
