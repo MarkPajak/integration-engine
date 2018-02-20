@@ -1,10 +1,10 @@
 /* app css stylesheet */
 /* @import must be at top of file, otherwise CSS will not work */
 /* Grow Rotate */
-img.logo{
- max-height: 50px;
-   left: 20px;
-
+img.logo {
+    max-height: 50px;
+    left: 20px;
+    padding-right: 90px;
 }
 html, body {
     height: 100%;

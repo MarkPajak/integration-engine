@@ -29,6 +29,10 @@ var  equipment_controller = require('../components/resource-bookings/equipment/r
 var  record_equipment_controller = require('../components/resource-bookings/equipment/form-controller');
 var  record_bookings_controller = require('../components/resource-bookings/bookings/form-controller');
 var  bookings_controller = require('../components/resource-bookings/bookings/raw-bookings-controller');
+var  monthly_bookings_controller = require('../components/resource-bookings/bookings/monthly-bookings-controller');
+var  yearly_bookings_controller = require('../components/resource-bookings/bookings/yearly-bookings-controller');
+
+
 var  timeline_bookings_services = require('../components/timeline/timeline-bookings-services');
 var  timeline_functions_resources = require('../components/resource-bookings/timeline-resources-services');
 var  timeline_resources_controller = require('../components/resource-bookings/timeline-resources-controller');
@@ -403,6 +407,16 @@ _.each(tech_support_controller, function(controller, name) {
 _.each(record_bookings_controller, function(controller, name) {
   app.controller(name, controller);
 });
+
+
+
+_.each(yearly_bookings_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+_.each(monthly_bookings_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
 
 _.each(bookings_controller, function(controller, name) {
   app.controller(name, controller);
@@ -1071,6 +1085,13 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
 		  .when('/rooms', {
                template: '<rooms-Formdata></rooms-Formdata>'
            })
+		   
+		    .when('/bookings-report', {
+               template: '<bookings-dashboard></bookings-dashboard>'
+           })
+		   
+		   
+		   
 		   
 			.when('/equipment', {
                template: '<equipment-Formdata></equipment-Formdata>'

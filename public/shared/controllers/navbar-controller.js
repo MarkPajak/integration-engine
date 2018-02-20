@@ -58,7 +58,8 @@ var rooms = {link:"rooms",value:"Add rooms"}
 var equipment = {link:"equipment",value:"Add equipment"}
 var equipment_bookings = {link:"bookings/equipment",value:"Equipment booking"}
 var room_bookings = {link:"bookings/rooms",value:"Add a room booking"}
-var room_bookings_list = {link:"bookingslist/rooms",value:"room bookings list"}
+var room_bookings_list = {link:"bookingslist/rooms",value:"Room bookings list"}
+var bookings_report = {link:"bookings-report",value:"Bookings report"}
 
 var room_hire = {link:"room-hire",value:"Room booking timeline"}
 var equipment_booking_timeline = {link:"equipment-timeline",value:"Equipment booking timeline"}
@@ -128,7 +129,7 @@ resources.push(equipment)
 resources.push(equipment_bookings)
 resources.push(room_bookings)
 resources.push(room_bookings_list)
-
+resources.push(bookings_report)
 
 resources.push(room_hire)
 resources.push(equipment_booking_timeline)

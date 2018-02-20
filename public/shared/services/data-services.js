@@ -309,7 +309,28 @@ exports.Monthly_visits =  function($resource){
   }); 
 
   } 
+  
+     exports.Yearly_bookings =  function($resource){
+	  
+	  
+	return $resource('/bookings/year',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+       
 
+  }
+  
+    exports.Monthly_bookings =  function($resource){
+	  
+	  
+	return $resource('/bookings/all',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+       
+
+  } 
     exports.Monthly_turnstiles =  function($resource){
 	  
 	  

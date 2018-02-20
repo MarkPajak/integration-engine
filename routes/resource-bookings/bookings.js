@@ -19,8 +19,214 @@ router.get('/',route_permissions.isAuthenticated, function(req, res, next) {
     res.json(todos);
   })
 });
+router.get('/year', function(req, res, next) {
+	
+	
+			
+		function get_kpis(cb){	
+			
+			
+					Collection.aggregate([
+					{ $match : { _type : "ROOM BOOKING", payment :true} },		
+					{$project:{"date_logged":1,"balance":1,"deposit":1,"group":1,
+							   "quarter":{$cond:[{$lte:[{$month:route_functions.mongo_aggregator2},3]},
+												 "fourth",
+												 {$cond:[{$lte:[{$month:route_functions.mongo_aggregator2},6]},
+														 "first",
+														 {$cond:[{$lte:[{$month:route_functions.mongo_aggregator2},9]},
+																 "second",
+										"third"]}]}]},
+								"financial_yer":{$cond:[{$lte:[{$month:route_functions.mongo_aggregator2},3]},
+												"last",
+										"this"]
+										
+								},
+								"year":{$cond:[{$lte:[{$month:route_functions.mongo_aggregator2},3]},
+												{$year:route_functions.mongo_aggregator2},
+										{$year:route_functions.mongo_aggregator2}]
+										
+					}}
+			
+					},
+					{$group:{"_id":{"year":"$year" ,"financial_yer":"$financial_yer" ,group:'$group'}, balance: {$sum: '$balance' }, deposit: {$sum: '$deposit' }}},
+
+				
+							
+
+						], function (err, visits) {
+					if(err) console.log(err)	
+console.log(visits)
+							cb(visits)
+									
+							})
+
+		}
+			
+
+		get_kpis( function ( result) {
+
+				
+						
+					function wind_up_Stats(	result,returned_row,analysis_field,venue){
+						
+								var years = [2014,2015,2016,2017,2018,2019]
+								_.each(years,function(year){
+									var financial_yesr_text = ["last","this"]
+									_.each(financial_yesr_text,function(financial_yer_text){
+										var financial_year_display=""
+										_.each(result,function(row){
+											if(venue==row._id.group &&row._id.financial_yer==financial_yer_text&&row._id.year==year){
+																							
+														var financial_year_display=""
+													if(financial_yer_text=="this"){
+													financial_year_display=	year+"-"+((year+1).toString().substring(2))
+													console.log('financial_year_display this',financial_year_display)
+														returned_row[financial_year_display]=row['balance']+row['deposit']
+													}
+													else
+													{
+													financial_year_display=	(year-1)+"-"+(year.toString().substring(2))	
+													console.log('financial_year_display',financial_year_display)
+														returned_row[financial_year_display]=row['balance']+row['deposit']
+												}
+												
+												
+												
+											
+											
+											}
+										})
+									})
+									
+								})
+								//console.log(returned_rows)
+							return(returned_row)
+						}
+						
+						//load venues
+		//load venues
+						var venues=[]
+						_.each(result,function(row){
+							if(venues.indexOf(row._id.group)==-1){
+							
+								venues.push(row._id.group)
+							}
+						})
+	
+						var returned_data=[]
+
+					_.each(venues,function(venue){
+							
+						var returned_row={}
+							returned_row.space=venue
+							returned_row.stat="total"
+							returned_data.push(	 wind_up_Stats(	result,returned_row,"total",venue))
+						
+
+					})
 
 
+				res.json(returned_data)
+			
+		})
+
+
+
+});
+
+router.get('/all', function(req, res, next) {
+	
+	
+		function get_kpis(cb){	
+			
+		 
+					Collection.aggregate([
+					
+								 { $match : { _type : "ROOM BOOKING", payment :true} },
+								 { $group: {
+								_id: {
+									"year": { "$year": route_functions.mongo_aggregator2 }, 
+								    "month": { "$month": route_functions.mongo_aggregator2 }, 
+								
+			  
+									   name:'$group'
+									 },  
+							   balance: {$sum: '$balance' },
+							   deposit: {$sum: '$deposit' }
+							}
+						 }	
+
+						], function (err, visits) {
+						
+
+							cb(visits)
+									
+							})
+
+		}
+			
+
+		get_kpis( function ( result) {
+
+				
+						
+					function wind_up_Stats(	result,returned_row,analysis_field,venue){
+							 years = [2018,2019]
+									_.each(years,function(year){
+									_.each(moment.monthsShort(),function(month){
+									
+									returned_row[month+" "+year]=""
+										_.each(result,function(row){
+										
+											if(month==moment.monthsShort(row._id.month-1) &&venue==row._id.name &&row._id.year==year){
+											///	if( row.payment==true){
+console.log('adding row ',row)												
+													returned_row[month+" "+year]=row['balance']+row['deposit']
+												//}											
+												
+											}
+										})
+									})
+									
+									
+									
+								})
+								return(returned_row)
+							}
+						
+						//load venues
+		//load venues
+						var venues=[]
+						_.each(result,function(row){
+							if(venues.indexOf(row._id.name)==-1){
+							
+								venues.push(row._id.name)
+							}
+						})
+	
+						var returned_data=[]
+
+					_.each(venues,function(venue){
+							
+						var returned_row={}
+							returned_row.space=venue
+							returned_row.stat="total"
+							returned_data.push(	 wind_up_Stats(	result,returned_row,"total",venue))
+						var returned_row={}
+							returned_row.space=venue
+							returned_row.stat="deposit"
+							//returned_data.push(	 wind_up_Stats(	result,returned_row,"deposit",venue))
+
+					})
+
+
+					res.json(returned_data)
+			
+		})
+
+
+
+});
 router.get('/:type',route_permissions.isAuthenticated, function(req, res, next) {
 
 

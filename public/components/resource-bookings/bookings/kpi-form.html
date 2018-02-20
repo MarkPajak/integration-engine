@@ -22,7 +22,7 @@ body {
 
 .upload-btn {
   color: #ffffff;
-  background-color: #F89406;
+  background-color:#4f90b5;
   border: none;
 }
 
@@ -212,7 +212,10 @@ h2 {
             </div>		   
 			<input id="upload-input" type="file" name="uploads[]" multiple="multiple"></br>					   
 	</div>
-				 
+	 <input  step="any" placeholder="deposit" type = "number" class="form-control input-sm" id="deposit" rows="3"></input>
+ <input  step="any" placeholder="balance" type = "number" class="form-control input-sm" id="balance" rows="3"></input>
+
+ 
     <textarea class="form-control input-lg" id="comments" placeholder="Message" ></textarea>
   
 	  <button id="form_submit_button" name="form_submit_button" ng-click="onSubmit()" type="button" class="btn btn-primary submit-button" ng-disabled="vm.form.$invalid">Submit</button>

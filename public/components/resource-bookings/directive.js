@@ -1,8 +1,28 @@
 
 
-
-
-
+exports.yearlyBookings = function() {
+  return {
+  	    restrict: "E",
+    scope: {},
+   controller: 'yearly_bookings_controller',
+   templateUrl: './shared/templates/data_table.html'
+  }
+  }
+  
+exports.bookingsDashboard = function() {
+  return {
+     templateUrl: './components/resource-bookings/bookings/dashboard.html'
+  }
+  }
+  
+exports.bookingsReport = function() {
+  return {
+   
+   	    restrict: "E",
+    scope: {},controller: 'monthly_bookings_controller',
+   templateUrl: './shared/templates/data_table.html'
+  }
+  }
 
 	exports.roomsFormdata = function() {
   return {

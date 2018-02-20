@@ -1,7 +1,7 @@
-exports.yearly_donations_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Yearly_donations,make_a_pie,make_a_line_chart,yearly_data_table_columns,grid_ui_settings,table_security
+exports.yearly_bookings_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Yearly_bookings,make_a_pie,make_a_line_chart,yearly_data_table_columns,grid_ui_settings,table_security
     ) {
-		
-		$scope.table_class="col-md-4 col-lg-4 col-sm-5"
+
+		$scope.table_class="col-md-7 col-lg-7 col-sm-7"
 		$scope.monthWeek='month'
 		$scope.show_all_Button=false
 		console.log('controller go')
@@ -13,7 +13,7 @@ exports.yearly_donations_controller = function($route,$scope, $http, $q, $routeP
 		var columnDefs= []
 			$scope.filter_pie=[]
 			columnDefs.push(
-			{ field: 'museum',	name: "Museum",width: 90, pinnedLeft:true},
+			{ field: 'space',	name: "Space",width: 90, pinnedLeft:true},
 			{ field: 'stat',	name: "Statistic",width: 90, pinnedLeft:true}
 					
 			)
@@ -23,7 +23,7 @@ exports.yearly_donations_controller = function($route,$scope, $http, $q, $routeP
 			console.log('columnDefs',columnDefs)		
 			$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
 		 console.log('getData')	
-			Yearly_donations.query({}, function(team) {
+			Yearly_bookings.query({}, function(team) {
 				$scope.rows=[]
 				$scope.data_rows=[]
 				$scope._rows=[]
@@ -59,7 +59,7 @@ exports.yearly_donations_controller = function($route,$scope, $http, $q, $routeP
 			$scope.$watchGroup(['end_date','start_date'], function(newValue, oldValue) {
   
 					columnDefs=[]
-					columnDefs.push({ field: 'museum',		name: "Museum",width: 90},
+					columnDefs.push({ field: 'space',	name: "Space",width: 200, pinnedLeft:true},
 								{ field: 'stat',		name: "Statistic",width: 90}
 					)
 					columnDefs=columnDefs.concat(yearly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))

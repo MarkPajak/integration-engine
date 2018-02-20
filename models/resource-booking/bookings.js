@@ -24,6 +24,8 @@ var BookingsSchema = new mongoose.Schema({
 		  internal_external:{ type: String},
 		  approved:{ type: Boolean, default: false },
 		  payment:{ type: Boolean, default: false },
+		  deposit:{ type: Number},
+		  balance:{ type: Number},
 		  confirmed:{ type: Boolean, default: false },
 		  name: { type: String, required: true },
 		  notes:{ type: String},
@@ -40,6 +42,15 @@ BookingsSchema.virtual('calendarlink').get(function() {
 				var link = encodeURIComponent(this.group);
 				
 				return link;
+
+});
+
+
+BookingsSchema.virtual('total').get(function() {
+ 
+				var total = this.balance+this.deposit;
+				
+				return total;
 
 });
 

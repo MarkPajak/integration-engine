@@ -67,8 +67,11 @@ var mode_name = "EQUIPMENT BOOKING"
 		{
 			columnDefs.push(
 								{ field: 'approved' ,  allowCellFocus: true, type: 'boolean',value: "Approved",resizable: true,visible:true,width:"80",cellTemplate: "<div class='ui-grid-cell-contents'>{{row.entity.approved==true ? 'approved' : 'pending'}}</div>"},
-								{ field: 'payment' ,  allowCellFocus: true, type: 'boolean',value: "Payment",resizable: true,visible:true,width:"80",cellTemplate: "<div class='ui-grid-cell-contents'>{{row.entity.payment==true ? 'paid' : 'no'}}</div>"},
-								{ field: 'confirmed' ,  allowCellFocus: true, type: 'boolean',value: "Confirmed",resizable: true,visible:true,width:"80",cellTemplate: "<div class='ui-grid-cell-contents'>{{row.entity.confirmed==true ? 'confirmed' : 'no'}}</div>"}
+							{ field: 'confirmed' ,  allowCellFocus: true, type: 'boolean',value: "Confirmed",resizable: true,visible:true,width:"80",cellTemplate: "<div class='ui-grid-cell-contents'>{{row.entity.confirmed==true ? 'confirmed' : 'no'}}</div>"},
+								{ field: 'deposit' ,  allowCellFocus: true, type: 'number',value: "Deposit amount",resizable: true,visible:true,width:"80"},
+								{ field: 'balance' ,  allowCellFocus: true, type: 'number',value: "Balance amount",resizable: true,visible:true,width:"80"},
+								{ field: 'total' ,  allowCellFocus: false, type: 'number',value: "Total amount",resizable: true,visible:true,width:"80"},
+								{ field: 'payment' ,  allowCellFocus: true, type: 'boolean',value: "Paid",resizable: true,visible:true,width:"80",cellTemplate: "<div class='ui-grid-cell-contents'>{{row.entity.payment==true ? 'paid' : 'no'}}</div>"}
 							)
 							
 		}

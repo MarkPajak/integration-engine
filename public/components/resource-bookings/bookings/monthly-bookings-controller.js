@@ -1,11 +1,11 @@
-exports._monthly_bookings_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_bookings,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security
+exports.monthly_bookings_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_bookings,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security
     ) {
 		
 		
 		$scope.monthWeek='month'
 		$scope.show_all_Button=false
 		console.log('controller go')
-		$scope.table_heading = "Monthly TEG Stats"
+		$scope.table_heading = "Monthly Bookings Stats"
 		$scope.chart_class = "col-md-8 col-lg-8 col-sm-8 pull-right"
 		$scope.table_class = "col-md-12 col-lg-12 col-sm-5"
 		$scope.chart_heading= "Gallery visits by month"
@@ -16,17 +16,17 @@ exports._monthly_bookings_controller = function($route,$scope, $http, $q, $route
 		var columnDefs= []
 			$scope.filter_pie=[]
 			columnDefs.push(
-			{ field: 'museum',	name: "Museum",width: 80, pinnedLeft:true},
-			{{ field: 'stat',		name: "Statistic",width: 90, cellTemplate:  row.entity.stat=="TEG conversion" ? "cheese" + "%" :"bread"}
-			{ field: 'stat',	name: "Statistic",width: 100}		
+			{ field: 'space',	name: "Museum",width: 80, pinnedLeft:true},
+			{ field: 'stat',		name: "Statistic",width: 90}
+		
 			)
-		$scope.start_date=new Date("01/04/2017")
+			$scope.start_date=new Date("01/04/2017")
 			$scope.end_date=new Date("01/04/2018")
 			columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
 			columnDefs.enableFiltering=false
 			console.log('columnDefs',columnDefs)		
 			$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
-		 console.log('getData')	
+			console.log('getData')	
 			Monthly_bookings.query({}, function(team) {
 				$scope.rows=[]
 				$scope.data_rows=[]
@@ -65,9 +65,9 @@ exports._monthly_bookings_controller = function($route,$scope, $http, $q, $route
   
 					columnDefs=[]
 					columnDefs.push(
-					{ field: 'museum',		name: "Museum",width: 90},
-					{ field: 'exhibition',	name: "Exhibition",width: 200},
-					{ field: 'stat',		name: "Statistic",width: 90, cellTemplate:  row.entity.stat=="TEG conversion" ? "cheese" + "%" : "bread"}
+					{ field: 'space',		name: "Space",width: 200},
+					//{ field: 'type',		name: "Exhibition",width: 200},
+					{ field: 'stat',		name: "Statistic",width: 90}
 					)
 					columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
 					columnDefs.enableFiltering=false
@@ -78,7 +78,9 @@ exports._monthly_bookings_controller = function($route,$scope, $http, $q, $route
 			
 			});
 		})	
-}				
+}	
+
+			
 
 
 
