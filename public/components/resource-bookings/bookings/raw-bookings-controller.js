@@ -66,8 +66,9 @@ var mode_name = "EQUIPMENT BOOKING"
 		) 
 		{
 			columnDefs.push(
+								{ name: "edit",resizable: true,width:"40", cellTemplate: "<a target='_blank' href=" + window.location.origin +"{{\"#/edit-booking/rooms/\"+row.entity._id}} >edit</a>"}, 
 								{ field: 'approved' ,  allowCellFocus: true, type: 'boolean',value: "Approved",resizable: true,visible:true,width:"80",cellTemplate: "<div class='ui-grid-cell-contents'>{{row.entity.approved==true ? 'approved' : 'pending'}}</div>"},
-							{ field: 'confirmed' ,  allowCellFocus: true, type: 'boolean',value: "Confirmed",resizable: true,visible:true,width:"80",cellTemplate: "<div class='ui-grid-cell-contents'>{{row.entity.confirmed==true ? 'confirmed' : 'no'}}</div>"},
+							    { field: 'confirmed' ,  allowCellFocus: true, type: 'boolean',value: "Confirmed",resizable: true,visible:true,width:"80",cellTemplate: "<div class='ui-grid-cell-contents'>{{row.entity.confirmed==true ? 'confirmed' : 'no'}}</div>"},
 								{ field: 'deposit' ,  allowCellFocus: true, type: 'number',value: "Deposit amount",resizable: true,visible:true,width:"80"},
 								{ field: 'balance' ,  allowCellFocus: true, type: 'number',value: "Balance amount",resizable: true,visible:true,width:"80"},
 								{ field: 'total' ,  allowCellFocus: false, type: 'number',value: "Total amount",resizable: true,visible:true,width:"80"},
@@ -78,6 +79,7 @@ var mode_name = "EQUIPMENT BOOKING"
 
 		columnDefs.push(
 		
+			
 			{ field: 'group' ,name: mode,resizable: true,width:"150"},
 			{ field: 'name' ,name: "Name",resizable: true,width:"150"},
 			{ field: 'internal_external' ,name: "Type",resizable: true,width:"150"},

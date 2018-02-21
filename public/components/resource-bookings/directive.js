@@ -94,4 +94,10 @@ exports.bookingsReport = function() {
   }
 	}
 
+		exports.editBooking = function() {
+  return {
+  controller: 'edit_booking_controller',
+      templateUrl: './components/resource-bookings/bookings/kpi-form-edit.html'
+  }
+	}
 

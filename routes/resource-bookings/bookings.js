@@ -11,14 +11,26 @@ var _ =  require('underscore');
 
 /* GET /todos listing. */
 router.get('/',route_permissions.isAuthenticated, function(req, res, next) {
+ 
+ var query={}
+ 
+ if(req.query._id){
+ 
+  var query={"_id":req.query._id}
+ 
+ }
 
-  Collection.find()
+  Collection.find(query)
 	   .populate('leave_taken')
 	   .exec (  function (err, todos) {
     if (err) return next(err);
     res.json(todos);
   })
 });
+
+
+
+
 router.get('/year', function(req, res, next) {
 	
 	

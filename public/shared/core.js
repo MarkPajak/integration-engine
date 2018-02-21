@@ -28,6 +28,8 @@ var  record_rooms_controller = require('../components/resource-bookings/rooms/fo
 var  equipment_controller = require('../components/resource-bookings/equipment/raw-equipment-controller');
 var  record_equipment_controller = require('../components/resource-bookings/equipment/form-controller');
 var  record_bookings_controller = require('../components/resource-bookings/bookings/form-controller');
+var  edit_bookings_controller = require('../components/resource-bookings/bookings/edit-form-controller');
+
 var  bookings_controller = require('../components/resource-bookings/bookings/raw-bookings-controller');
 var  monthly_bookings_controller = require('../components/resource-bookings/bookings/monthly-bookings-controller');
 var  yearly_bookings_controller = require('../components/resource-bookings/bookings/yearly-bookings-controller');
@@ -402,6 +404,10 @@ _.each(tech_support_controller, function(controller, name) {
 });
 
 
+
+_.each(edit_bookings_controller, function(controller, name) {
+  app.controller(name, controller);
+});
 
 
 _.each(record_bookings_controller, function(controller, name) {
@@ -938,6 +944,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
                template: '<raw-retailsales></raw-retailsales>'
            })
 		   
+		      
 		   
 		   
 		    .when('/record-exhibitions-pwyt', {
@@ -1091,6 +1098,9 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
            })
 		   
 		   
+		    .when('/edit-booking/:mode/:booking_id', {
+               template: '<edit-booking></edit-booking_id>'
+           })
 		   
 		   
 			.when('/equipment', {
