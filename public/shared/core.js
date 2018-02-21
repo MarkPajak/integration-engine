@@ -955,7 +955,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
                template: '<exhibitionspwyt-dashboard></exhibitionspwyt-dashboard>'
            })
 		   .when('/raw-exhibitions-pwyt', {
-               template: '<raw-exhibitionspwyt></raw-exhibitionspwyt>'
+               template: '<data-exhibitionspwyt></data-exhibitionspwyt>'
            })
 		   
 		   
@@ -1002,21 +1002,21 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
 		   
 		   
 		   
-		   	   .when('/raw-giftaid', {
-               template: '<raw-giftaid></raw-giftaid>'
+		   .when('/raw-giftaid', {
+              templateUrl: './components/performance/gift-aid/data.html'
            })
 		   
 			.when('/monthly-giftaid', {
                template: '<giftaid-dashboard></giftaid-dashboard>'
            })
 		   
-		    	   .when('/record-donations', {
+		   .when('/record-donations', {
                template: '<donations-Formdata></donations-Formdata>'
            })
 		   
 		   
-		   	   .when('/raw-donations', {
-               template: '<raw-donations></raw-donations>'
+		   	.when('/raw-donations', {
+                 templateUrl: './components/performance/donations/data.html'
            })
 		   
 			.when('/monthly-donations', {
@@ -1048,7 +1048,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
 		   
 		   
 		   .when('/raw-welcomedesk', {
-               template: '<raw-welcomedesk></raw-welcomedesk>'
+               templateUrl: './components/performance/welcome-desk/data.html'
            })
 		   
 			.when('/monthly-welcomedesk', {

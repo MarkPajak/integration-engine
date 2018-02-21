@@ -138,6 +138,16 @@ exports.rawWelcomedesk = function() {
      templateUrl: './shared/templates/data_table.html'
   }
 }
+
+exports.dataWelcomedesk = function() {
+  return {
+
+    templateUrl: './components/performance/welcome-desk/data.html'
+  }
+}
+
+
+
 	
 						exports.welcomedeskDashboard = function() {
   return {
@@ -209,6 +219,12 @@ exports.giftaidFormdata = function() {
 	}
 	
 	
+exports.dataGiftaid = function() {
+  return {
+ //  controller: 'raw_welcomedesk_controller',
+    templateUrl: './components/performance/gift-aid/data.html'
+  }
+}
 
 	
 	
@@ -252,6 +268,16 @@ exports.giftaidFormdata = function() {
      templateUrl: './shared/templates/data_table.html'
   }
 	}
+	
+		
+exports.dataDonations = function() {
+  return {
+ //  controller: 'raw_welcomedesk_controller',
+    templateUrl: './components/performance/donations/data.html'
+  }
+}
+
+	
 	
 		exports.monthlyDonations = function() {
   return {

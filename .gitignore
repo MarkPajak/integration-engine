@@ -3,6 +3,7 @@ secret/
 dump/
 test/
 log/
+uploads/
 npm-debug.log
 .env
 db.js

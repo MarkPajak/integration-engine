@@ -1,4 +1,4 @@
-exports.record_timelinesettings_controller =  function($scope, $http, $q,  
+exports.record_donations_controller =  function($scope, $http, $q,  
           Raw_donations,data_table_reload,get_table_data
     ) {
 
