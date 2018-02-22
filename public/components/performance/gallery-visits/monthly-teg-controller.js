@@ -6,9 +6,9 @@ exports.monthly_teg_controller = function($route,$scope, $http, $q, $routeParams
 		$scope.show_all_Button=false
 		console.log('controller go')
 		$scope.table_heading = "Monthly TEG stats"
-		$scope.chart_class = "col-md-4 col-lg-4 col-sm-4 pull-right"
-		$scope.table_class = "col-md-12 col-lg-12 col-sm-5"
-		$scope.chart_heading= "Gallery visits by month"
+				$scope.chart_class = "col-md-6 col-lg-6 col-sm-6"
+		$scope.table_class = "col-md-9 col-lg-9 col-sm-9"
+		$scope.chart_heading= "Exhibition visits by month"
 		$scope.pie_date = "Apr 2017"
 		$scope.gridOptions=[]
 		$scope.gridOptions.data=[]
@@ -61,7 +61,7 @@ exports.monthly_teg_controller = function($route,$scope, $http, $q, $routeParams
 				})
 			})
 			make_a_pie.build($scope,"Apr 2017","museum")
-			make_a_line_chart.build($scope,columnDefs,"museum")
+			make_a_line_chart.build($scope,columnDefs,"exhibition")
 			$scope.changedValue = function(item){ 
 					$scope.pie_date=item			
 					make_a_pie.build($scope,item,"museum")
@@ -77,7 +77,7 @@ exports.monthly_teg_controller = function($route,$scope, $http, $q, $routeParams
 					columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
 					columnDefs.enableFiltering=false
 					$scope.gridOptions.columnDefs=columnDefs
-					make_a_line_chart.build($scope,columnDefs,"museum")
+					make_a_line_chart.build($scope,columnDefs,"exhibition")
 			
 			
 			

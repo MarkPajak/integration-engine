@@ -89,10 +89,10 @@ var record_teg = {link:"record-teg",value:"EXHIBITIONS: Record TEG figures"}
 var teg = {link:"raw-teg",value:"EXHIBITIONS: Raw TEG figures"}
 var monthly_teg = {link:"monthly-teg",value:"EXHIBITIONS: Monthly TEG figures"}
 
- var record_exhibitions_pwyt = {link:"record-exhibitions-pwyt",value:"EXHIBITIONS: Record Pay What you think"}
- var exhibitions_pwyt_monthly = {link:"monthly-exhibitions-pwyt",value:"EXHIBITIONS: Monthly Pay What you think"}
- var raw_exhibitions_pwyt = {link:"raw-exhibitions-pwyt",value:"EXHIBITIONS: Pay What you think data"}
-  var exhibitions_summary = {link:"exhibitions-summary",value:"EXHIBITIONS: summary"}
+ var record_exhibitions_pwyt = {link:"record-exhibitions-pwyt",value:"EXHIBITIONS: Record income"}
+// var exhibitions_pwyt_monthly = {link:"monthly-exhibitions-pwyt",value:"EXHIBITIONS: Monthly Pay What you think"}
+ var raw_exhibitions_pwyt = {link:"raw-exhibitions-pwyt",value:"EXHIBITIONS: income"}
+  //var exhibitions_summary = {link:"exhibitions-summary",value:"EXHIBITIONS: summary"}
  
  
  var record_learning = {link:"record-learning",value:"LEARNING: Record learning"}
@@ -109,8 +109,8 @@ var record_giftaid = {link:"record-giftaid",value:"DONATIONS: Record gift aid"}
 var raw_giftaid = {link:"raw-giftaid",value:"DONATIONS: Raw gift aid"}
 var monthly_giftaid = {link:"monthly-giftaid",value:"DONATIONS: Monthly gift aid"}
 
-var raw_turnstiles = {link:"raw-turnstiles",value:"EXHIBITIONS: turnstiles raw data"}
-var monthly_turnstiles = {link:"monthly-turnstiles",value:"EXHIBITIONS: turnstiles Monthly"}
+//var raw_turnstiles = {link:"raw-turnstiles",value:"EXHIBITIONS: turnstiles raw data"}
+//var monthly_turnstiles = {link:"monthly-turnstiles",value:"EXHIBITIONS: turnstiles Monthly"}
 
 var record_welcomedesk = {link:"record-welcomedesk",value:"DONATIONS: Record Welcome desk"}
 var raw_welcomedesk = {link:"raw-welcomedesk",value:"DONATIONS: Raw Welcome desk"}
@@ -166,8 +166,7 @@ performance_data.push(raw_visits)
 performance_data.push(monthly_visits)
 //performance_data.push(raw_retail_sales)
 performance_data.push(monthly_retail_sales)
-//performance_data.push(raw_turnstiles)
-performance_data.push(monthly_turnstiles)
+
 performance_data.push(raw_giftaid)
 performance_data.push(monthly_giftaid)
 performance_data.push(monthly_donations)
@@ -217,8 +216,8 @@ performance_data.push(raw_visits)
 performance_data.push(monthly_visits)
 performance_data.push(raw_retail_sales)
 performance_data.push(monthly_retail_sales)
-performance_data.push(raw_turnstiles)
-performance_data.push(monthly_turnstiles)
+//performance_data.push(raw_turnstiles)
+//performance_data.push(monthly_turnstiles)
 performance_data.push(raw_giftaid)
 performance_data.push(monthly_giftaid)
 performance_data.push(monthly_donations)
@@ -229,9 +228,9 @@ performance_data.push(participation)
 performance_data.push(learning)
 performance_data.push(monthly_learning)
 
-performance_data.push(exhibitions_pwyt_monthly)
+//performance_data.push(exhibitions_pwyt_monthly)
 performance_data.push(raw_exhibitions_pwyt)
-performance_data.push(exhibitions_summary)
+//performance_data.push(exhibitions_summary)
 
 
 
@@ -278,11 +277,11 @@ var performance_data=[]
 performance_data.push(raw_visits)
 performance_data.push(monthly_visits)
 performance_data.push(monthly_retail_sales)
-performance_data.push(monthly_turnstiles)
+//performance_data.push(monthly_turnstiles)
 performance_data.push(monthly_donations)
 performance_data.push(monthly_learning)
-performance_data.push(exhibitions_pwyt_monthly)
-performance_data.push(exhibitions_summary)
+//performance_data.push(exhibitions_pwyt_monthly)
+//performance_data.push(exhibitions_summary)
 performance_data.push(raw_exhibitions_pwyt)
 performance_data.push(teg)
 performance_data.push(monthly_teg)
@@ -388,8 +387,8 @@ performance_data.push(raw_visits)
 performance_data.push(monthly_visits)
 performance_data.push(raw_retail_sales)
 performance_data.push(monthly_retail_sales)
-performance_data.push(raw_turnstiles)
-performance_data.push(monthly_turnstiles)
+//performance_data.push(raw_turnstiles)
+//performance_data.push(monthly_turnstiles)
 performance_data.push(raw_giftaid)
 performance_data.push(monthly_giftaid)
 performance_data.push(monthly_donations)
@@ -432,7 +431,7 @@ $scope.user_groups['DEFAULT'].permissions=default_permissions
 $scope.user_groups['DEFAULT'].views.push(timeline) 
 $scope.user_groups['DEFAULT'].views.push(analyser)
 $scope.user_groups['DEFAULT'].views.push(monthly_visits)
-$scope.user_groups['DEFAULT'].views.push(monthly_turnstiles) 
+//$scope.user_groups['DEFAULT'].views.push(monthly_turnstiles) 
 $scope.user_groups['DEFAULT'].performance=performance_data
 $scope.user_groups['DEFAULT'].enter_data=enter_data
 
@@ -449,10 +448,10 @@ var performance_data=[]
 performance_data.push(raw_visits)
 performance_data.push(monthly_visits)
 performance_data.push(monthly_retail_sales)
-performance_data.push(monthly_turnstiles)
+//performance_data.push(monthly_turnstiles)
 performance_data.push(monthly_donations)
 performance_data.push(raw_exhibitions_pwyt)
-performance_data.push(exhibitions_pwyt_monthly)
+//performance_data.push(exhibitions_pwyt_monthly)
 performance_data.push(monthly_teg)
 performance_data.push(events)
 performance_data.push(monthly_events)
@@ -479,10 +478,10 @@ var performance_data=[]
 performance_data.push(raw_visits)
 performance_data.push(monthly_visits)
 performance_data.push(monthly_retail_sales)
-performance_data.push(monthly_turnstiles)
+//performance_data.push(monthly_turnstiles)
 performance_data.push(monthly_donations)
 performance_data.push(raw_exhibitions_pwyt)
-performance_data.push(exhibitions_pwyt_monthly)
+//performance_data.push(exhibitions_pwyt_monthly)
 performance_data.push(monthly_teg)
 performance_data.push(events)
 performance_data.push(monthly_events)

@@ -3,8 +3,8 @@ exports.exhibitions_summary_controller = function(monthly_data_table_columns,$ro
 		
 	
 			$scope.chart_class = "col-md-8 col-lg-8 col-sm-5 pull-right"
-			$scope.table_class = "col-md-6 col-lg-62 col-sm-5"
-			$scope.table_heading = "Monthly event figues"
+			$scope.table_class = "col-md-6 col-lg-6 col-sm-6 pull-right"
+			$scope.table_heading = "Exhibition dates"
 			$scope.chart_heading = "Data  by month"
 			$scope.gridOptions=[]
 			$scope.gridOptions.data=[]
@@ -21,8 +21,8 @@ exports.exhibitions_summary_controller = function(monthly_data_table_columns,$ro
 			
 			columnDefs.push(
 				{ field: 'name',		name: "Name",width:350, pinnedLeft:true, enableColumnMoving:false },
-				{ field: 'venue',		name: "Venue",width:90, pinnedLeft:true, enableColumnMoving:false },
-				{ field: 'event_space',		name: "Gallery",width:90, pinnedLeft:true, enableColumnMoving:false },
+				{ field: 'venue',		name: "Venue",width:110, pinnedLeft:true, enableColumnMoving:false },
+				{ field: 'event_space',		name: "Gallery",width:110, pinnedLeft:true, enableColumnMoving:false },
 				{ field: 'startDate',		name: "Start",width:100, pinnedLeft:true, enableColumnMoving:false },
 				{ field: 'endDate',		name: "End",width:100, pinnedLeft:true, enableColumnMoving:false }
 			)

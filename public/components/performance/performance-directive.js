@@ -146,7 +146,12 @@ exports.dataWelcomedesk = function() {
   }
 }
 
+exports.dataExhibitionspwyt = function() {
+  return {
 
+    templateUrl: './components/performance/exhibitions-pwyt/data.html'
+  }
+}
 
 	
 						exports.welcomedeskDashboard = function() {
@@ -389,6 +394,8 @@ exports.recordExhibitionspwyt  = function() {
 
 		exports.monthlyExhibitionspwyt = function() {
   return {
+  	    restrict: "E",
+    scope: {},
    controller: 'monthly_exhibitions_pwyt_controller',
      templateUrl: './shared/templates/data_table.html'
   }
@@ -429,7 +436,7 @@ exports.recordTeg  = function() {
 	
 		exports.monthlyTeg = function() {
   return {
-	  
+
    controller: 'monthly_teg_controller',
    templateUrl: './shared/templates/data_table.html'
   }
@@ -609,6 +616,8 @@ exports.giftaidDashboard = function() {
 			
 	exports.exhibitionsSummary = function() {
   return {
+  	    restrict: "E",
+    scope: {},
    controller: 'exhibitions_summary_controller',
   templateUrl: './shared/templates/data_table.html'
   }

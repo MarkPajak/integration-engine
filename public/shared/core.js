@@ -954,7 +954,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
 		   .when('/monthly-exhibitions-pwyt', {
                template: '<exhibitionspwyt-dashboard></exhibitionspwyt-dashboard>'
            })
-		   .when('/raw-exhibitions-pwyt', {
+		   .when('/raw-exhibitions-income', {
                template: '<data-exhibitionspwyt></data-exhibitionspwyt>'
            })
 		   

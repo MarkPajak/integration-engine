@@ -7,8 +7,8 @@ exports.exhibitions_teg_controller = function($route,$scope, $http, $q, $routePa
 		console.log('controller go')
 		$scope.table_heading = "Overall Stats by Exhibition"
 		$scope.chart_class = "col-md-12 col-lg-12 col-sm-6 pull-right"
-		$scope.table_class = "col-md-12 col-lg-12 col-sm-12"
-		$scope.chart_heading= "Gallery visits by month"
+		$scope.table_class = "col-md-9 col-lg-9 col-sm-9"
+		$scope.chart_heading= "Gallery visits by monthx"
 		$scope.pie_date = "Apr 2017"
 		$scope.gridOptions=[]
 		$scope.gridOptions.data=[]
@@ -17,7 +17,7 @@ exports.exhibitions_teg_controller = function($route,$scope, $http, $q, $routePa
 			$scope.filter_pie=[]
 			columnDefs.push(
 	{ field: 'museum',		name: "Museum",width: 90},
-					{ field: 'exhibition',	name: "Exhibition",width: 250},
+					{ field: 'exhibition',	name: "Exhibition",width: 350},
 					{ field: 'visits',		name: "all visits",width: 110},
 					{ field: 'gallery_visits',		name: "exhibition  visits",width: 110},
 					{ field: 'income',		name: "income",width: 110},
@@ -64,11 +64,11 @@ exports.exhibitions_teg_controller = function($route,$scope, $http, $q, $routePa
 					
 				})
 			})
-			make_a_pie.build($scope,"Apr 2017","museum")
-			make_a_line_chart.build($scope,columnDefs,"museum")
+			//make_a_pie.build($scope,"Apr 2017","museum")
+			make_a_line_chart.build($scope,columnDefs,"exhibition")
 			$scope.changedValue = function(item){ 
 					$scope.pie_date=item			
-					make_a_pie.build($scope,item,"museum")
+					make_a_pie.build($scope,item,"exhibition")
 			}
 			$scope.$watchGroup(['end_date','start_date'], function(newValue, oldValue) {
   
@@ -85,7 +85,7 @@ exports.exhibitions_teg_controller = function($route,$scope, $http, $q, $routePa
 					//columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
 					columnDefs.enableFiltering=false
 					$scope.gridOptions.columnDefs=columnDefs
-					make_a_line_chart.build($scope,columnDefs,"museum")
+					make_a_line_chart.build($scope,columnDefs,"exhibition")
 			
 			
 			

@@ -10862,8 +10862,8 @@ exports.exhibitions_summary_controller = function(monthly_data_table_columns,$ro
 		
 	
 			$scope.chart_class = "col-md-8 col-lg-8 col-sm-5 pull-right"
-			$scope.table_class = "col-md-6 col-lg-62 col-sm-5"
-			$scope.table_heading = "Monthly event figues"
+			$scope.table_class = "col-md-6 col-lg-6 col-sm-6 pull-right"
+			$scope.table_heading = "Exhibition dates"
 			$scope.chart_heading = "Data  by month"
 			$scope.gridOptions=[]
 			$scope.gridOptions.data=[]
@@ -10880,8 +10880,8 @@ exports.exhibitions_summary_controller = function(monthly_data_table_columns,$ro
 			
 			columnDefs.push(
 				{ field: 'name',		name: "Name",width:350, pinnedLeft:true, enableColumnMoving:false },
-				{ field: 'venue',		name: "Venue",width:90, pinnedLeft:true, enableColumnMoving:false },
-				{ field: 'event_space',		name: "Gallery",width:90, pinnedLeft:true, enableColumnMoving:false },
+				{ field: 'venue',		name: "Venue",width:110, pinnedLeft:true, enableColumnMoving:false },
+				{ field: 'event_space',		name: "Gallery",width:110, pinnedLeft:true, enableColumnMoving:false },
 				{ field: 'startDate',		name: "Start",width:100, pinnedLeft:true, enableColumnMoving:false },
 				{ field: 'endDate',		name: "End",width:100, pinnedLeft:true, enableColumnMoving:false }
 			)
@@ -10935,8 +10935,8 @@ exports.exhibitions_teg_controller = function($route,$scope, $http, $q, $routePa
 		console.log('controller go')
 		$scope.table_heading = "Overall Stats by Exhibition"
 		$scope.chart_class = "col-md-12 col-lg-12 col-sm-6 pull-right"
-		$scope.table_class = "col-md-12 col-lg-12 col-sm-12"
-		$scope.chart_heading= "Gallery visits by month"
+		$scope.table_class = "col-md-9 col-lg-9 col-sm-9"
+		$scope.chart_heading= "Gallery visits by monthx"
 		$scope.pie_date = "Apr 2017"
 		$scope.gridOptions=[]
 		$scope.gridOptions.data=[]
@@ -10945,7 +10945,7 @@ exports.exhibitions_teg_controller = function($route,$scope, $http, $q, $routePa
 			$scope.filter_pie=[]
 			columnDefs.push(
 	{ field: 'museum',		name: "Museum",width: 90},
-					{ field: 'exhibition',	name: "Exhibition",width: 250},
+					{ field: 'exhibition',	name: "Exhibition",width: 350},
 					{ field: 'visits',		name: "all visits",width: 110},
 					{ field: 'gallery_visits',		name: "exhibition  visits",width: 110},
 					{ field: 'income',		name: "income",width: 110},
@@ -10992,11 +10992,11 @@ exports.exhibitions_teg_controller = function($route,$scope, $http, $q, $routePa
 					
 				})
 			})
-			make_a_pie.build($scope,"Apr 2017","museum")
-			make_a_line_chart.build($scope,columnDefs,"museum")
+			//make_a_pie.build($scope,"Apr 2017","museum")
+			make_a_line_chart.build($scope,columnDefs,"exhibition")
 			$scope.changedValue = function(item){ 
 					$scope.pie_date=item			
-					make_a_pie.build($scope,item,"museum")
+					make_a_pie.build($scope,item,"exhibition")
 			}
 			$scope.$watchGroup(['end_date','start_date'], function(newValue, oldValue) {
   
@@ -11013,7 +11013,7 @@ exports.exhibitions_teg_controller = function($route,$scope, $http, $q, $routePa
 					//columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
 					columnDefs.enableFiltering=false
 					$scope.gridOptions.columnDefs=columnDefs
-					make_a_line_chart.build($scope,columnDefs,"museum")
+					make_a_line_chart.build($scope,columnDefs,"exhibition")
 			
 			
 			
@@ -11039,9 +11039,9 @@ exports.monthly_teg_controller = function($route,$scope, $http, $q, $routeParams
 		$scope.show_all_Button=false
 		console.log('controller go')
 		$scope.table_heading = "Monthly TEG stats"
-		$scope.chart_class = "col-md-4 col-lg-4 col-sm-4 pull-right"
-		$scope.table_class = "col-md-12 col-lg-12 col-sm-5"
-		$scope.chart_heading= "Gallery visits by month"
+				$scope.chart_class = "col-md-6 col-lg-6 col-sm-6"
+		$scope.table_class = "col-md-9 col-lg-9 col-sm-9"
+		$scope.chart_heading= "Exhibition visits by month"
 		$scope.pie_date = "Apr 2017"
 		$scope.gridOptions=[]
 		$scope.gridOptions.data=[]
@@ -11094,7 +11094,7 @@ exports.monthly_teg_controller = function($route,$scope, $http, $q, $routeParams
 				})
 			})
 			make_a_pie.build($scope,"Apr 2017","museum")
-			make_a_line_chart.build($scope,columnDefs,"museum")
+			make_a_line_chart.build($scope,columnDefs,"exhibition")
 			$scope.changedValue = function(item){ 
 					$scope.pie_date=item			
 					make_a_pie.build($scope,item,"museum")
@@ -11110,7 +11110,7 @@ exports.monthly_teg_controller = function($route,$scope, $http, $q, $routeParams
 					columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
 					columnDefs.enableFiltering=false
 					$scope.gridOptions.columnDefs=columnDefs
-					make_a_line_chart.build($scope,columnDefs,"museum")
+					make_a_line_chart.build($scope,columnDefs,"exhibition")
 			
 			
 			
@@ -13357,7 +13357,12 @@ exports.dataWelcomedesk = function() {
   }
 }
 
+exports.dataExhibitionspwyt = function() {
+  return {
 
+    templateUrl: './components/performance/exhibitions-pwyt/data.html'
+  }
+}
 
 	
 						exports.welcomedeskDashboard = function() {
@@ -13600,6 +13605,8 @@ exports.recordExhibitionspwyt  = function() {
 
 		exports.monthlyExhibitionspwyt = function() {
   return {
+  	    restrict: "E",
+    scope: {},
    controller: 'monthly_exhibitions_pwyt_controller',
      templateUrl: './shared/templates/data_table.html'
   }
@@ -13640,7 +13647,7 @@ exports.recordTeg  = function() {
 	
 		exports.monthlyTeg = function() {
   return {
-	  
+
    controller: 'monthly_teg_controller',
    templateUrl: './shared/templates/data_table.html'
   }
@@ -13820,6 +13827,8 @@ exports.giftaidDashboard = function() {
 			
 	exports.exhibitionsSummary = function() {
   return {
+  	    restrict: "E",
+    scope: {},
    controller: 'exhibitions_summary_controller',
   templateUrl: './shared/templates/data_table.html'
   }
@@ -20244,7 +20253,7 @@ exports.timelineInfobox = function() {
   }
 	}
 	
-	
+
 	exports.timelineDatabar= function( $compile ) {
  
  return{
@@ -23303,10 +23312,10 @@ var record_teg = {link:"record-teg",value:"EXHIBITIONS: Record TEG figures"}
 var teg = {link:"raw-teg",value:"EXHIBITIONS: Raw TEG figures"}
 var monthly_teg = {link:"monthly-teg",value:"EXHIBITIONS: Monthly TEG figures"}
 
- var record_exhibitions_pwyt = {link:"record-exhibitions-pwyt",value:"EXHIBITIONS: Record Pay What you think"}
- var exhibitions_pwyt_monthly = {link:"monthly-exhibitions-pwyt",value:"EXHIBITIONS: Monthly Pay What you think"}
- var raw_exhibitions_pwyt = {link:"raw-exhibitions-pwyt",value:"EXHIBITIONS: Pay What you think data"}
-  var exhibitions_summary = {link:"exhibitions-summary",value:"EXHIBITIONS: summary"}
+ var record_exhibitions_pwyt = {link:"record-exhibitions-pwyt",value:"EXHIBITIONS: Record income"}
+// var exhibitions_pwyt_monthly = {link:"monthly-exhibitions-pwyt",value:"EXHIBITIONS: Monthly Pay What you think"}
+ var raw_exhibitions_pwyt = {link:"raw-exhibitions-pwyt",value:"EXHIBITIONS: income"}
+  //var exhibitions_summary = {link:"exhibitions-summary",value:"EXHIBITIONS: summary"}
  
  
  var record_learning = {link:"record-learning",value:"LEARNING: Record learning"}
@@ -23323,8 +23332,8 @@ var record_giftaid = {link:"record-giftaid",value:"DONATIONS: Record gift aid"}
 var raw_giftaid = {link:"raw-giftaid",value:"DONATIONS: Raw gift aid"}
 var monthly_giftaid = {link:"monthly-giftaid",value:"DONATIONS: Monthly gift aid"}
 
-var raw_turnstiles = {link:"raw-turnstiles",value:"EXHIBITIONS: turnstiles raw data"}
-var monthly_turnstiles = {link:"monthly-turnstiles",value:"EXHIBITIONS: turnstiles Monthly"}
+//var raw_turnstiles = {link:"raw-turnstiles",value:"EXHIBITIONS: turnstiles raw data"}
+//var monthly_turnstiles = {link:"monthly-turnstiles",value:"EXHIBITIONS: turnstiles Monthly"}
 
 var record_welcomedesk = {link:"record-welcomedesk",value:"DONATIONS: Record Welcome desk"}
 var raw_welcomedesk = {link:"raw-welcomedesk",value:"DONATIONS: Raw Welcome desk"}
@@ -23380,8 +23389,7 @@ performance_data.push(raw_visits)
 performance_data.push(monthly_visits)
 //performance_data.push(raw_retail_sales)
 performance_data.push(monthly_retail_sales)
-//performance_data.push(raw_turnstiles)
-performance_data.push(monthly_turnstiles)
+
 performance_data.push(raw_giftaid)
 performance_data.push(monthly_giftaid)
 performance_data.push(monthly_donations)
@@ -23431,8 +23439,8 @@ performance_data.push(raw_visits)
 performance_data.push(monthly_visits)
 performance_data.push(raw_retail_sales)
 performance_data.push(monthly_retail_sales)
-performance_data.push(raw_turnstiles)
-performance_data.push(monthly_turnstiles)
+//performance_data.push(raw_turnstiles)
+//performance_data.push(monthly_turnstiles)
 performance_data.push(raw_giftaid)
 performance_data.push(monthly_giftaid)
 performance_data.push(monthly_donations)
@@ -23443,9 +23451,9 @@ performance_data.push(participation)
 performance_data.push(learning)
 performance_data.push(monthly_learning)
 
-performance_data.push(exhibitions_pwyt_monthly)
+//performance_data.push(exhibitions_pwyt_monthly)
 performance_data.push(raw_exhibitions_pwyt)
-performance_data.push(exhibitions_summary)
+//performance_data.push(exhibitions_summary)
 
 
 
@@ -23492,11 +23500,11 @@ var performance_data=[]
 performance_data.push(raw_visits)
 performance_data.push(monthly_visits)
 performance_data.push(monthly_retail_sales)
-performance_data.push(monthly_turnstiles)
+//performance_data.push(monthly_turnstiles)
 performance_data.push(monthly_donations)
 performance_data.push(monthly_learning)
-performance_data.push(exhibitions_pwyt_monthly)
-performance_data.push(exhibitions_summary)
+//performance_data.push(exhibitions_pwyt_monthly)
+//performance_data.push(exhibitions_summary)
 performance_data.push(raw_exhibitions_pwyt)
 performance_data.push(teg)
 performance_data.push(monthly_teg)
@@ -23602,8 +23610,8 @@ performance_data.push(raw_visits)
 performance_data.push(monthly_visits)
 performance_data.push(raw_retail_sales)
 performance_data.push(monthly_retail_sales)
-performance_data.push(raw_turnstiles)
-performance_data.push(monthly_turnstiles)
+//performance_data.push(raw_turnstiles)
+//performance_data.push(monthly_turnstiles)
 performance_data.push(raw_giftaid)
 performance_data.push(monthly_giftaid)
 performance_data.push(monthly_donations)
@@ -23646,7 +23654,7 @@ $scope.user_groups['DEFAULT'].permissions=default_permissions
 $scope.user_groups['DEFAULT'].views.push(timeline) 
 $scope.user_groups['DEFAULT'].views.push(analyser)
 $scope.user_groups['DEFAULT'].views.push(monthly_visits)
-$scope.user_groups['DEFAULT'].views.push(monthly_turnstiles) 
+//$scope.user_groups['DEFAULT'].views.push(monthly_turnstiles) 
 $scope.user_groups['DEFAULT'].performance=performance_data
 $scope.user_groups['DEFAULT'].enter_data=enter_data
 
@@ -23663,10 +23671,10 @@ var performance_data=[]
 performance_data.push(raw_visits)
 performance_data.push(monthly_visits)
 performance_data.push(monthly_retail_sales)
-performance_data.push(monthly_turnstiles)
+//performance_data.push(monthly_turnstiles)
 performance_data.push(monthly_donations)
 performance_data.push(raw_exhibitions_pwyt)
-performance_data.push(exhibitions_pwyt_monthly)
+//performance_data.push(exhibitions_pwyt_monthly)
 performance_data.push(monthly_teg)
 performance_data.push(events)
 performance_data.push(monthly_events)
@@ -23693,10 +23701,10 @@ var performance_data=[]
 performance_data.push(raw_visits)
 performance_data.push(monthly_visits)
 performance_data.push(monthly_retail_sales)
-performance_data.push(monthly_turnstiles)
+//performance_data.push(monthly_turnstiles)
 performance_data.push(monthly_donations)
 performance_data.push(raw_exhibitions_pwyt)
-performance_data.push(exhibitions_pwyt_monthly)
+//performance_data.push(exhibitions_pwyt_monthly)
 performance_data.push(monthly_teg)
 performance_data.push(events)
 performance_data.push(monthly_events)
@@ -24830,7 +24838,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
 		   .when('/monthly-exhibitions-pwyt', {
                template: '<exhibitionspwyt-dashboard></exhibitionspwyt-dashboard>'
            })
-		   .when('/raw-exhibitions-pwyt', {
+		   .when('/raw-exhibitions-income', {
                template: '<data-exhibitionspwyt></data-exhibitionspwyt>'
            })
 		   
@@ -25015,7 +25023,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
           
         }])
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_c352b4fa.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_2ce6d9a1.js","/")
 },{"../components/iframe/iframe-controller":8,"../components/iframe/iframe-directive":9,"../components/machine-monitor/dashboard-controller":10,"../components/machine-monitor/dead-controller":11,"../components/machine-monitor/downtime-controller":12,"../components/machine-monitor/downtime-services":13,"../components/machine-monitor/feedback-controller":14,"../components/machine-monitor/feedback-services":15,"../components/machine-monitor/satisfaction-controller":16,"../components/member/member-controller":17,"../components/performance/analyser/analyser-controller":18,"../components/performance/dashboard-controllers":19,"../components/performance/donations/monthly-donations-controller":20,"../components/performance/donations/performance-form-controller":21,"../components/performance/donations/raw-donations-controller":22,"../components/performance/donations/yearly-donations-controller":23,"../components/performance/events/monthly-events-controller":24,"../components/performance/events/performance-form-controller":25,"../components/performance/events/raw-events-controller":26,"../components/performance/events/yearly-events-controller":27,"../components/performance/exhibitions-pwyt/monthly-donations-controller":28,"../components/performance/exhibitions-pwyt/performance-form-controller":29,"../components/performance/exhibitions-pwyt/raw-donations-controller":30,"../components/performance/exhibitions/exhibitions-summary-controller":31,"../components/performance/gallery-visits/exhibitions-teg-controller":32,"../components/performance/gallery-visits/monthly-teg-controller":33,"../components/performance/gallery-visits/performance-form-controller":34,"../components/performance/gallery-visits/raw-teg-controller":35,"../components/performance/gallery-visits/weekly-teg-controller":36,"../components/performance/gallery-visits/yearly-teg-controller":37,"../components/performance/gift-aid/monthly-allgiftaid-controller":38,"../components/performance/gift-aid/monthly-giftaid-controller":39,"../components/performance/gift-aid/performance-form-controller":40,"../components/performance/gift-aid/raw-giftaid-controller":41,"../components/performance/home/kpi-home-controller":42,"../components/performance/learning/age-learning-controller":43,"../components/performance/learning/monthly-learning-controller":44,"../components/performance/learning/performance-form-controller":45,"../components/performance/learning/raw-learning-controller":46,"../components/performance/learning/yearly-learning-controller":47,"../components/performance/operations/monthly-operations-controller":48,"../components/performance/operations/performance-form-controller":49,"../components/performance/operations/raw-operations-controller":50,"../components/performance/operations/yearly-operations-controller":51,"../components/performance/participation/monthly-participation-controller":52,"../components/performance/participation/performance-form-controller":53,"../components/performance/participation/raw-participation-controller":54,"../components/performance/participation/target-audience-controller":55,"../components/performance/participation/yearly-participation-controller":56,"../components/performance/performance-directive":57,"../components/performance/retail/monthly-retail-sales-controller":58,"../components/performance/retail/performance-form-controller":59,"../components/performance/retail/raw-retail-sales-controller":60,"../components/performance/retail/yearly-retail-sales-controller":61,"../components/performance/turnstiles/monthly-turnstiles-controller":62,"../components/performance/turnstiles/raw-turnstiles-controller":63,"../components/performance/visits/monthly-visits-controller":64,"../components/performance/visits/raw-visits-controller":65,"../components/performance/visits/visits-form-controller":66,"../components/performance/visits/yearly-visits-controller":67,"../components/performance/welcome-desk/monthly-welcomedesk-controller":68,"../components/performance/welcome-desk/performance-form-controller":69,"../components/performance/welcome-desk/raw-welcomedesk-controller":70,"../components/performance/welcome-desk/yearly-welcomedesk-controller":71,"../components/resource-bookings/bookings/edit-form-controller":72,"../components/resource-bookings/bookings/form-controller":73,"../components/resource-bookings/bookings/monthly-bookings-controller":74,"../components/resource-bookings/bookings/raw-bookings-controller":75,"../components/resource-bookings/bookings/yearly-bookings-controller":76,"../components/resource-bookings/directive":77,"../components/resource-bookings/equipment/form-controller":78,"../components/resource-bookings/equipment/raw-equipment-controller":79,"../components/resource-bookings/rooms/form-controller":80,"../components/resource-bookings/rooms/raw-rooms-controller":81,"../components/resource-bookings/timeline-resources-controller":82,"../components/resource-bookings/timeline-resources-services":83,"../components/shopify/shopify-controller":84,"../components/shopify/shopify-directive":85,"../components/shopify/shopify-monthly-controller":86,"../components/team/app-controllers":87,"../components/team/form-controller":88,"../components/team/leave-controller":89,"../components/team/team-controller":90,"../components/tech-support/tech-support-controller":91,"../components/tech-support/tech-support-directive":92,"../components/tech-support/trello-services":93,"../components/timeline-settings/raw-timeline-settings-controller":94,"../components/timeline-settings/settings-form-controller":95,"../components/timeline-settings/timeline-settings-directive":96,"../components/timeline/timeline-bookings-services":97,"../components/timeline/timeline-controller":98,"../components/timeline/timeline-directive":99,"../components/timeline/timeline-exhibitions-services":100,"../components/timeline/timeline-googlesheets-services":101,"../components/timeline/timeline-installs-services":102,"../components/timeline/timeline-learning-bookings-services":103,"../components/timeline/timeline-leave-services":104,"../components/timeline/timeline-loans-services":105,"../components/timeline/timeline-services":106,"../components/timeline/timeline-shopify-services":107,"../components/timeline/timeline-visitor-figures-services":108,"../components/turnstiles/turnstiles-controller":109,"../components/turnstiles/turnstiles-directive":110,"../components/user-admin/users-controller":111,"../components/user-admin/users-directive":112,"../shared/controllers/colourkey-controller":113,"../shared/controllers/controllers":114,"../shared/controllers/navbar-controller":115,"../shared/controllers/tablefilter-controller":116,"../shared/directives/directives":117,"../shared/services/app-services":119,"../shared/services/data-services":120,"async":1,"b55mWE":4,"buffer":3,"underscore":7}],119:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 

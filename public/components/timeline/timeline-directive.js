@@ -37,7 +37,7 @@ exports.timelineInfobox = function() {
   }
 	}
 	
-	
+
 	exports.timelineDatabar= function( $compile ) {
  
  return{
