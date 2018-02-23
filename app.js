@@ -53,6 +53,10 @@ var resource_booking = require('./routes/resource-bookings/bookings')
 //exhibitions
 var likes_logging = require('./routes/exhibitions/likes_logging')	
 	
+	
+//feedback
+var feedback = require('./routes/feedback/kiosk')		
+var analytics = require('./routes/feedback/analytics')		
 //PERFORMANCE KPIS	
 var raw_visits = require('./routes/raw_visits')
 var retail_sales = require('./routes/performance/retail_sales')
@@ -162,6 +166,8 @@ app.use('/operations', operations);
 //RESOURCE BOOKING
 app.use('/bookings', resource_booking);
 app.use('/likes_logging', likes_logging);
+app.use('/feedback', feedback);
+app.use('/analytics', analytics);
 
 
 app.use('/resources', resources);
