@@ -288,6 +288,14 @@ router.get('/', function(req, res, next) {
 /* POST /todos */
 router.get('/new', function(req, res, next) {
 
+/*
+	page_id: "1234",
+				page_name: ACTION,
+				page_type:"AUTO",
+				kiosk_id:"PLC-M-ICT05",
+				kiosk: kiosk,
+				app_type:"INTERPRETATION-KIOSK"
+	*/
 	var query={}
 
 	
@@ -331,6 +339,17 @@ router.get('/new', function(req, res, next) {
    if(req.query.description){
  
 	_.extend(query, {description:  req.query.description})
+ 
+ }
+  
+  if(req.query.app_type){
+ 
+	_.extend(query, {app_type:  req.query.app_type})
+ 
+ }
+  if(req.query.page_type){
+ 
+	_.extend(query, {page_type:  req.query.page_type})
  
  }
  console.log('query',query)
