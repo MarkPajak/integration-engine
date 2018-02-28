@@ -21,6 +21,18 @@ var tablefilter_controller = require('../shared/controllers/tablefilter-controll
 
 var tech_support_controller = require('../components/tech-support/tech-support-controller');
 
+//signage
+var  record_poster_controller = require('../components/signage/posters/form-controller');
+var  raw_poster_controller = require('../components/signage/posters/raw-poster-controller');
+var signage_settings_directives = require('../components/signage/directive');
+
+
+//Exhibitions
+var votes_form = require('../components/exhibitions/music/votes-form-controller');
+var raw_votes_controller = require('../components/exhibitions/music/raw-votes-controller');
+var monthly_votes_controller = require('../components/exhibitions/music/monthly-votes-controller');
+var votes_directive = require('../components/exhibitions/directive');
+
 
 //RESOURCE BOOKING
 var  rooms_controller = require('../components/resource-bookings/rooms/raw-rooms-controller');
@@ -194,7 +206,7 @@ var feedback_services = require('../components/machine-monitor/feedback-services
 
 	var app =  angular.module('app', [
 		'ng',
-
+		'ui.select', 
 		'ngRoute',
 		'ngAnimate',		
 		'ngResource',
@@ -256,7 +268,21 @@ _.each(target_audience_controller, function(controller, name) {
   app.controller(name, controller);
 });
 
+_.each(votes_form, function(controller, name) {
+  app.controller(name, controller);
+});
 
+_.each(raw_votes_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(monthly_votes_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(votes_directive, function(controller, name) {
+  app.directive(name, controller);
+});
 
 _.each(controllers, function(controller, name) {
   app.controller(name, controller);
@@ -440,6 +466,23 @@ _.each(equipment_controller, function(controller, name) {
 
 
 _.each(record_rooms_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+
+
+
+_.each(signage_settings_directives, function(controller, name) {
+  app.directive(name, controller);
+});
+
+
+
+_.each(raw_poster_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(record_poster_controller, function(controller, name) {
   app.controller(name, controller);
 });
 
@@ -728,13 +771,38 @@ app.filter('orderByDayNumber', function() {
   };
 });
 
-app.filter('mapGender', function() {
-  var genderHash = {
-    1: 'male',
-    2: 'female'
-  };
-})
+ 
+app.filter('propsFilter', function() {
+  return function(items, props) {
+    var out = [];
 
+    if (angular.isArray(items)) {
+      var keys = Object.keys(props);
+
+      items.forEach(function(item) {
+        var itemMatches = false;
+
+        for (var i = 0; i < keys.length; i++) {
+          var prop = keys[i];
+          var text = props[prop].toLowerCase();
+          if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
+            itemMatches = true;
+            break;
+          }
+        }
+
+        if (itemMatches) {
+          out.push(item);
+        }
+      });
+    } else {
+      // Let the output be the input untouched
+      out = items;
+    }
+
+    return out;
+  };
+});
 
 
 app.config(function config(formlyConfigProvider) {
@@ -996,11 +1064,14 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
                template: '<learning-dashboard></learning-dashboard>'
            })
 	//PERFORMANCE	DONATIONS	    
-		    	   .when('/record-giftaid', {
+		    .when('/record-giftaid', {
                template: '<giftaid-Formdata></giftaid-Formdata>'
            })
 		   
-		   
+	//EXHIBITIONS		    
+		    .when('/record-votes', {
+               template: '<votes-Formdata></votes-Formdata>'
+           })   
 		   
 		   .when('/raw-giftaid', {
               templateUrl: './components/performance/gift-aid/data.html'
@@ -1087,7 +1158,17 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
                template: '<monthly-turnstiles></monthly-turnstiles>'
            })
 		   
+		 //signage
+		 	.when('/add-poster', {
+               template: '<posters-Form></posters-Form>'
+          })
+		 
+		 	.when('/posters', {
+               template: '<raw-Posters></raw-Posters>'
+          })
+		 
 		 //RESOURCE BOOKING 
+		 
 
 		  .when('/rooms', {
                template: '<rooms-Formdata></rooms-Formdata>'

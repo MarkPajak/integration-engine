@@ -1,0 +1,16 @@
+<style>
+#thetable{
+margin-top: 4%;
+}
+</style>
+
+
+  
+<div id="thetable" ng-hide="loading" ng-class="table_class"  id="data_grid"  >
+
+	<div class="panel panel-default ">
+		
+	   <div  ng-class="dashboard ? '' : 'full-height'"  ui-grid-auto-resize ui-grid-resize-columns ui-grid-move-columns ui-grid-cellNav ui-grid-edit ui-grid-pinning ui-grid-row-edit ui-grid="gridOptions" ui-grid-selection ui-grid-exporter class="grid">
+	   </div>	
+	</div>
+</div>

@@ -306,7 +306,7 @@ router.get('/new', function(req, res, next) {
  }
   if(req.query.page_name){
  
-	_.extend(query, {page_name:  req.query.kiosk})
+	_.extend(query, {page_name:  req.query.page_name})
  
  }
   if(req.query.type){

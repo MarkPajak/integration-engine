@@ -369,7 +369,18 @@ exports.Monthly_visits =  function($resource){
   
   
   
-  
+    exports.Bristol_music_top_40 =  function($resource){
+	 
+		 
+            return $resource('/top_40/:id/:museum_id/:date_value/:on_site_off_site/:exact', null,
+			{ 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray:true}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+ }
   
   
   exports.Raw_events =  function($resource){
@@ -409,6 +420,20 @@ exports.Monthly_visits =  function($resource){
 			  'delete': {method:'DELETE'} // same, remove record
 			});
  }
+ 
+        exports.Posters =  function($resource){
+	 
+		 
+            return $resource('/posters/:id', null,
+			{ 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray:true}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			  'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+ }
+ 
  
        exports.Resources =  function($resource){
 	 
@@ -665,7 +690,13 @@ exports.AuthService = function($http) {
 
 };
 
+exports.Top_40_tally = function($resource){
+	
 
+          return $resource('/top_40/tally/:exhibition_id', null, {
+            'update': { method:'PUT' }
+          });
+ }
 
 exports.Tallys = function($resource){
 	
@@ -876,5 +907,60 @@ exports.Tallys = function($resource){
           });
   }
 		
+  exports.CustomerService =    function($filter){
+
+    var service = {};     
+
+    var countrylist = [
+       { "id": 1, "country": "The Wurzels" , "state": "Alaska"},
+        { "id": 2, "country": "Body Harvest", "state": "Hierarchy of Grief" },
+        { "id": 3, "country": "Babyhead" , "state": "Babyhead song 1"},
+		 { "id": 3, "country": "Babyhead" , "state": "Babyhead song 2"}
+    ];
+
+    var statelist = [
+        { "id": 1, "country": "The Wurzels" , "state": "Alaska"},
+        { "id": 2, "country": "Body Harvest", "state": "Hierarchy of Grief" },
+        { "id": 3, "country": "Babyhead" , "state": "Babyhead song 1"},
+		 { "id": 3, "country": "Babyhead" , "state": "Babyhead song 2"}
+      
+    ];
+
+    var citylist = [
+        {"Id":1, "city":"Anchorage", "stateId": 1},
+        {"Id":2, "city":"Fairbanks", "stateId": 1}//,
+       
+    ];
+
+    service.getCountry = function(){    
+       
+		uniquelist=[]
+		countries=[]
+		_.each(countrylist,function(country){
 		
+		if(countries.indexOf(country.country)==-1){
+		countries.push(country.country)			
+			uniquelist.push(country)
+			console.log('cheese',countries)
+			}
+		
+		})
+
+	   return uniquelist;
+    };
+
+    service.getCountryState = function(country){
+        var states = ($filter('filter')(statelist, {country: country}));
+        return states;
+    };
+
+
+    service.getStateCity = function(stateId){
+        var items = ($filter('filter')(citylist, {stateId: stateId}));      
+        return items;
+    };
+
+    return service; 
+	
+	}
 	

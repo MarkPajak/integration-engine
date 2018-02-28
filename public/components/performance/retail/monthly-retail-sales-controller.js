@@ -21,8 +21,10 @@ exports.monthly_retail_sales_controller = function($route,$scope, $http, $q, $ro
 		 columnDefs.push(
 		 
 			{ field: 'museum' ,name: "Museum",width: "40", pinnedLeft:true},
-			{ field: 'stat' ,name: "Statistic",width: "60", pinnedLeft:true}
-			
+			{ field: 'stat' ,name: "Statistic",width: "60", pinnedLeft:true},
+				{ field: 'comments' ,name: "comments",resizable: true,visible:false},
+			{ field: 'logger_user_name' ,name: "Logged by",resizable: true,visible:false},
+			{ field: 'date_logged', name: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',visible:false}
 			)
 	
 			columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))

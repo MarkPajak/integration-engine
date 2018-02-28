@@ -31,7 +31,12 @@ module.exports = function(passport){
   res.redirect('/');
 });
 	
-
+   router.get('/music', function(req, res) {
+		
+         console.log('Display the Login page with any flash message, if asny')
+		 
+        res.render('music', { message: req.flash('message') });
+    });
     /* GET login page. */
     router.get('/login', function(req, res) {
 		

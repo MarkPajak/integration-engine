@@ -8,8 +8,8 @@ html(ng-app='app')
 		script(src='//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js')
 		link(rel='stylesheet', href='/stylesheets/style.css')
 		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')
-		link(rel='stylesheet', href='/css/login.css')
-		link(rel='stylesheet', href='/css/style.css')
+	
+		link(rel='stylesheet', href='/css/music.css')
 		link(rel='stylesheet', href='/css/app.css')
 		link(rel='stylesheet', href='/css/animations.css')
 		link(rel='stylesheet', href='/css/responsive.css')
@@ -50,11 +50,10 @@ html(ng-app='app')
 		script(src='scripts/bootstrap-daterangepicker/moment.min.js')
 		script(src='scripts/bootstrap-daterangepicker/daterangepicker.js')
 		script(src='scripts/angular-ui-router/release/angular-ui-router.js')
-		
 		script(src='lib/angular-daterangepicker.js')
 		script(src='lib/animate_number.js')
 		
-		
+		script(src='scripts/ui-select/dist/select.js')
 		script(src='lib/md5.js')
 		// DEV charts
 		script(src='scripts/angular-bootstrap/ui-bootstrap.min.js')
@@ -81,32 +80,24 @@ html(ng-app='app')
 		script(src='scripts/angular-messages/angular-messages.min.js')
 		script(src='scripts/angular-moment-picker/dist/angular-moment-picker.min.js')
 
-		link(href='scripts/angular-moment-picker/dist/angular-moment-picker.min.css', rel='stylesheet')
 		
-		script(src='scripts/ui-select/dist/select.js')
+
 		script(src='scripts/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js')
 		script(src='bin/core.js')
 		body
-			.navbar.navbar-inverse.navbar-static-top(role='navigation')
+			.view-container
+			
+			.page.pageClass(ng-click='screensaverOff()', autoscroll='true', class='{{ }}', ng-view='')
+				
+					
 				.container
-					.navbar-header
-						button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
-							span.sr-only Toggle navigation
-							span.icon-bar
-							span.icon-bar
-							span.icon-bar
-						
-						img.logo(src= "images/culture-team-logo-data.png")
-					.collapse.navbar-collapse
-							user-menu
-			.container
-				if messages.error
-					.alert.alert-danger
-						div= messages.error
-					if messages.info
-					.alert.alert-info
-						div= messages.info
-					if messages.success
-					.alert.alert-success
-						div= messages.success
-			block content
+					if messages.error
+						.alert.alert-danger
+							div= messages.error
+						if messages.info
+						.alert.alert-info
+							div= messages.info
+						if messages.success
+						.alert.alert-success
+							div= messages.success
+				block content

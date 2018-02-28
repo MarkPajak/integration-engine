@@ -54,12 +54,22 @@ var doom = {link:"doom",value:"DOOM!"}
 var analyser = {link:"analyser",value:"Performance analyser (BETA)"}
 
 
+//resource booking
+
 var rooms = {link:"rooms",value:"Add rooms"}
 var equipment = {link:"equipment",value:"Add equipment"}
 var equipment_bookings = {link:"bookings/equipment",value:"Equipment booking"}
 var room_bookings = {link:"bookings/rooms",value:"Add a room booking"}
 var room_bookings_list = {link:"bookingslist/rooms",value:"Room bookings list"}
 var bookings_report = {link:"bookings-report",value:"Bookings report"}
+
+
+
+
+//signage
+var posters_list = {link:"posters",value:"Posters list"}
+var add_posters = {link:"add-poster",value:"Add poster"}
+
 
 var room_hire = {link:"room-hire",value:"Room booking timeline"}
 var equipment_booking_timeline = {link:"equipment-timeline",value:"Equipment booking timeline"}
@@ -118,8 +128,9 @@ var monthly_welcomedesk = {link:"monthly-welcomedesk",value:"DONATIONS: Monthly 
 
 
 
-
-
+var signage=[]
+signage.push(posters_list)
+signage.push(add_posters)
 
 
 var resources=[]
@@ -247,6 +258,7 @@ performance_data=performance_data.sort()
 $scope.user_groups['ADMIN'].views=[]
 $scope.user_groups['ADMIN'].enter_data=[]
 $scope.user_groups['ADMIN'].resources=[]
+$scope.user_groups['ADMIN'].signage=[]
 $scope.user_groups['ADMIN'].permissions=default_permissions
 
 
@@ -266,6 +278,7 @@ $scope.user_groups['ADMIN'].views.push(timeline_settings)
 $scope.user_groups['ADMIN'].enter_data=enter_data
 $scope.user_groups['ADMIN'].performance=performance_data
 $scope.user_groups['ADMIN'].resources=resources
+$scope.user_groups['ADMIN'].signage=signage
 
 var enter_data=[]
 
@@ -551,7 +564,11 @@ $scope.user_groups['RETAIL'].performance=performance_data
 		user.data.resources= $scope.user_groups[user.data.group].resources
 	    user.data.resources= user.data.resources.sort(sortFunction);
 	   
-	   
+	  	user.data.signage= $scope.user_groups[user.data.group].signage
+	    user.data.signage= user.data.signage.sort(sortFunction);
+
+
+	  
 		
 	   user.data.performance= $scope.user_groups[user.data.group].performance
 	   user.data.performance= user.data.performance.sort(sortFunction);

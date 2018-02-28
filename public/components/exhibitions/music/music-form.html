@@ -1,0 +1,73 @@
+<style>
+#theform{
+   margin-top: 30%;
+}
+</style>	  
+	
+<div class="ng-cloak" ng-controller="record_votes_controller as ctrl">
+
+	  
+	 
+<div id="theform" class="panel panel-default col-xs-4 col-sm-4 col-md-6">
+
+	<div class="panel-body">
+		<form name="visit_form" >
+		
+<div class="form-group">
+
+<div>             
+<ui-select 			
+on-select="ctrl.getCountryStates($item, $model)" 
+ng-model="customer.Country"
+ng-required="true"
+id="artist"
+reset-search-input="false" required="true" 
+ng-maxlength="40">
+<ui-select-match  placeholder="Select artist...">
+<span class="glyphclose">{{$select.selected.country || $select.search}}</span>
+<a class="btn btn-xs btn-link pull-right" ng-click="ctrl.clear($event, $select)"><i class="glyphicon_top glyphicon glyphicon-remove"></i></a>
+</ui-select-match>
+<ui-select-choices repeat="item in countries | filter: $select.search" refresh="ctrl.refreshResults($select,'artist')" refresh-delay="2">
+<span ng-bind-html="item.country | highlight: $select.search"></span>
+</ui-select-choices>
+</ui-select>
+</div>
+</div> 
+
+
+
+<div class="form-group">
+          
+<ui-select 			
+on-select="ctrl.getStateCities($item, $model)" 
+ng-model="customer.State"
+ng-required="true"
+id="track"
+reset-search-input="false" required="true" 
+ng-maxlength="40">
+<ui-select-match  placeholder="Select track...">
+<span class="glyphclose">{{$select.selected.state || $select.search}}</span>
+<a class="btn btn-xs btn-link pull-right" ng-click="ctrl.clear($event, $select)"><i class="glyphicon_top glyphicon glyphicon-remove"></i></a>
+</ui-select-match>
+<ui-select-choices repeat="item in states | filter: $select.search" refresh="ctrl.refreshResults($select,'track')" refresh-delay="2">
+<span ng-bind-html="item.state | highlight: $select.search"></span>
+</ui-select-choices>
+</ui-select>
+
+	</div>
+	</div>
+ <button ng-click="onSubmit()" type="submit" class="btn btn-primary submit-button" ng-disabled="vm.form.$invalid">Vote!</button>
+					 
+		</form>
+
+
+	</div>
+	</div>
+
+  <script>
+  $( function() {
+   if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent))
+    $( "#date_value" ).datepicker();
+  } );
+  </script>
+

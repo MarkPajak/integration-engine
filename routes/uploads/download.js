@@ -17,10 +17,13 @@ var fs = require('fs');
 var path = require('path');
 var staticBasePath = './uploads';
 
-var download = function( dest, res,cb) {
+var download = function( dest, res,directory,cb) {
 
 
  var fileLoc = path.resolve(staticBasePath);
+ if(directory=="posters"){
+  fileLoc = path.join(fileLoc,directory);
+ }
  fileLoc = path.join(fileLoc,dest);
 
        // parse URL
@@ -73,10 +76,15 @@ var download = function( dest, res,cb) {
 
 };
 
-router.get('/:file',route_permissions.isAuthenticated, function(req, res, next) {
+router.get('/:file/:directory?', function(req, res, next) {
 
+var directory=""
 
-download(req.params.file,res,function(){
+if(req.params.directory){
+var directory=req.params.directory
+
+}
+download(req.params.file,res,directory,function(){
 	
 
 	

@@ -53,6 +53,19 @@ color:#9d9d9d;
 
 	</ul>
 </li>
+
+<li  ng-show="user.group=='ADMIN' && user.firstName" > 
+	<button class="btn btn-primary dropdown-toggle"  data-toggle="dropdown">Signage
+	 <span class="caret"></span></button>
+	 <ul class="dropdown-menu" style="float:left;">
+	<li   ng-repeat="view in user.signage track by $index"  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+
+	</ul>
+	 <ul class="dropdown-menu" style="floaf=t:left;">
+	<li   ng-repeat="view in user.signage track by $index"  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+
+	</ul>
+</li>
 	<li ng-show="user.firstName" ng-controller="NavController"   role="navigation" class="pull-right">
 	<h6>Logged in as {{user.firstName}}</h6> <h6 ng-show="user.team">group: {{user.group}} </h6>
 	</li>
