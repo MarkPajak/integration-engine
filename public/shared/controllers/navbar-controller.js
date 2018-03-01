@@ -1,6 +1,6 @@
 	
 exports.NavController = function($location,AuthService,$scope,$http) {
-
+try{
   $scope.user="not logged in"
   $scope.$location = $location;
  function sortFunction(a, b) {
@@ -564,8 +564,11 @@ $scope.user_groups['RETAIL'].performance=performance_data
 		user.data.resources= $scope.user_groups[user.data.group].resources
 	    user.data.resources= user.data.resources.sort(sortFunction);
 	   
-	  	user.data.signage= $scope.user_groups[user.data.group].signage
-	    user.data.signage= user.data.signage.sort(sortFunction);
+	  	if( $scope.user_groups[user.data.group].signage){
+		
+			user.data.signage= $scope.user_groups[user.data.group].signage
+			user.data.signage= user.data.signage.sort(sortFunction);
+		}
 
 
 	  
@@ -592,7 +595,12 @@ $scope.user_groups['RETAIL'].performance=performance_data
   })
  
   
+  }catch(err)
   
+  {
+  if(err) console.log(err)
+  
+  }
   
        
     
