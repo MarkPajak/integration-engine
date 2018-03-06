@@ -2,13 +2,19 @@ var express = require('express');
 var router = express.Router();
 var Collection = require('../../models/resource-booking/bookings.js');
 Route_permissions= require('../functions/route_permissions.js');
-route_permissions=new Route_permissions()
-Api_calls= require('../functions/standard_api_calls.js');
+route_permissions=new Route_permissions();
+//Api_calls= require('../functions/standard_api_calls.js');
 var request = require('request');
-var moment = require('moment')
+var moment = require('moment');
 var _ =  require('underscore');
+var fs = require('fs');
+var Team = require('../../models/user.js');
+var User = require('../../models/user');
+var nodemailer = require('nodemailer');
+var smtpTransport = require('nodemailer-smtp-transport');
+var googe_keys=JSON.parse(fs.readFileSync('./secret/google_drive.json').toString());
 //    return $resource('/bookings/:id/:type/:start_date/:end_date', null,
-
+ var smtpTransport = require('nodemailer-smtp-transport');
 /* GET /todos listing. */
 router.get('/',route_permissions.isAuthenticated, function(req, res, next) {
  
@@ -369,7 +375,103 @@ if(decodeURIComponent(req.params.museum_id)!="#"){
   })
 });
 
-api_calls=new Api_calls(Collection,router)
+
+	router.post('/', route_permissions.isAuthenticated, function(req, res, next) {
+				  Collection.create(req.body, function (err, post) {
+					if (err) return next(err);
+					res.json(post);
+				  });
+				});
+
+				/* GET /todos/id */
+				router.get('/:id', route_permissions.isAuthenticated, function(req, res, next) {
+				  Collection.findById(req.params.id, function (err, post) {
+					if (err) return next(err);
+					res.json(post);
+				  });
+				});
+
+				/* PUT /todos/:id */
+				router.put('/:id', route_permissions.isAuthenticated, function(req, res, next) {
+				 
+
+console.log('got here')
+	var transport = nodemailer.createTransport(smtpTransport({		  
+							
+								service: 'gmail',
+								auth: {
+									user: googe_keys.user,
+									pass: googe_keys.password
+								}
+							}));
+
+				 Collection.findByIdAndUpdate(req.params.id, req.body, {new: true},function (err, post) {
+				  
+	console.log('post',post)
+	  User.findOne({ 'username' :  req.body.requested_by }, function(err, user) {
+                  
+              
+                    // already exists
+                    if (user) {
+		
+							var subject= 'Your room booking details have changed'
+							post=post.toJSON()
+							var result = "";
+				    
+
+								 
+							 if(post.approved==true){	 
+								subject = "Woo-hoo! your room booking has been approved!"	 
+							 }	 
+							 
+						var html="<P><b>START DATE:</b> "	+ post.start_date + "</p>";
+						 html+="<P><b>END DATE:</b>  "		+ post.end_date + "</p>";
+						 html+="<P><b>ROOM:</b>  "			+ post.group + "</p>";
+						 html+="<P><b>NAME:</b>  "			+ post.name + "</p>";
+						 html+="<P><b>NOTES:</b>  "			+ post.notes + "</p>";
+						 html+="<P><b>APPROVED:</b>  "		+ post.approved + "</p>";
+						 
+						 
+						var text="START DATE: "	+ post.start_date + "/t";
+						 text+="END DATE:  "		+ post.end_date + "/t";
+						 text+="ROOM:  "			+ post.group + "/t";
+						 text+="NAME:  "			+ post.name + "/t";
+						 text+="NOTES:  "			+ post.notes + "/t";
+						 text+="APPROVED:  "		+ post.approved + "/t";
+
+							 var mailOptions = {
+								to: user.email,
+								from: 'passwordreset@demo.com',
+								subject: subject,
+								text: text,							
+								html: html
+							  };
+							  transport.sendMail(mailOptions, function(err) {
+							   // req.flash('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
+								if (err) {
+								console.log(err)
+								return next(err);
+								
+								}
+											res.json(post);
+							  });
+	  
+							}
+	  
+				  
+				
+				  });
+				  
+				});
+});
+
+				/* DELETE /todos/:id */
+				router.delete('/:id', route_permissions.isAdmin, function(req, res, next) {
+				  Collection.findByIdAndRemove(req.params.id, req.body, function (err, post) {
+					if (err) return next(err);
+					res.json(post);
+				  });
+				});
 
 
 module.exports = router;

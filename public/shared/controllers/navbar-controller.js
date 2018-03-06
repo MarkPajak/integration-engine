@@ -1,5 +1,9 @@
 	
 exports.NavController = function($location,AuthService,$scope,$http) {
+
+
+  $scope.path = $location.path();
+  $scope.a = 10;
 try{
   $scope.user="not logged in"
   $scope.$location = $location;

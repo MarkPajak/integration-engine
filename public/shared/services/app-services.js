@@ -294,9 +294,14 @@ return {
 			var obj3 = {};
 			obj3[key3] =new Date();
 			
+			var key4 = "requested_by";
+			var obj4 = {};
+			obj4[key4] =rowEntity.requested_by
+			
 			update.push(obj3);
 			setupArray = _.extend(obj1, obj2);
 			setupArray = _.extend(setupArray, obj3);
+			setupArray = _.extend(setupArray, obj4);
 			
 				var query = {'id':rowEntity._id};
 						scope.featured_collection.update(query, 	setupArray

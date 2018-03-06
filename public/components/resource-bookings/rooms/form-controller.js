@@ -38,7 +38,8 @@ function guid() {
 					date_logged:new Date(),	
 					//date_value:visit_form.date_value.value,
 					comments:visit_form.comments.value,			
-					logger_user_name: $scope.user.username
+					logger_user_name: $scope.user.username,
+						requested_by:$scope.user.username
             });
 			
 			var query = {'name':visit_form.room_name.value,'type':"room",'exact':false};

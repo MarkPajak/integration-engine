@@ -97,6 +97,9 @@ var mode_name = "EQUIPMENT BOOKING"
 			
 			get_table_data.getData(moment(new Date()).subtract({'months':1})._d,$scope)
 			
+			//TO DO
+			//send confirmation email when booking changes to approved
+			
 }				
 
 

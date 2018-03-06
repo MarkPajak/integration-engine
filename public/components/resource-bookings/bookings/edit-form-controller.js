@@ -150,6 +150,7 @@ var update={
 					//date_value:visit_form.date_value.value,
 					comments:visit_form.comments.value,			
 					logger_user_name: $scope.user.username
+				
 					
             }
 			

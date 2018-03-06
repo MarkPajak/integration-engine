@@ -16,6 +16,21 @@ body {
   background-color: #fff;
 }
 
+.navbar-nav{
+width:70%;
+   
+}
+.navbar-nav h6,.navbar-nav p{
+color:#9d9d9d;
+   
+}
+
+button{
+      top: 7px;
+    position: relative;
+}
+
+
 label {
     display: inline-block;
     max-width: 100%;

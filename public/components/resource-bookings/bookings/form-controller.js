@@ -98,7 +98,8 @@ var kpis = new Bookings({
 					date_logged:new Date(),	
 					//date_value:visit_form.date_value.value,
 					comments:visit_form.comments.value,			
-					logger_user_name: $scope.user.username
+					logger_user_name: $scope.user.username,					
+					requested_by:$scope.user.username
 					
             });
 			

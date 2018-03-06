@@ -34,7 +34,8 @@ var BookingsSchema = new mongoose.Schema({
 		 
 			date_logged: { type: Date, required: true},
 			comments: { type: String},
-			logger_user_name: { type: String}
+			logger_user_name: { type: String},
+			requested_by: { type: String}
 });
 
 BookingsSchema.virtual('calendarlink').get(function() {

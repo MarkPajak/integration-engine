@@ -408,7 +408,17 @@ exports.Monthly_visits =  function($resource){
 			});
  }
  
-  
+      exports.send_confirmation_email =  function($resource){
+	 
+            return $resource('confirmation', null,
+			{ 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray:true}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			  'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+			});
+ }
    exports.Raw_welcomedesk =  function($resource){
 	 
             return $resource('/welcomedesk/:id/:museum_id/:date_value/:exact', null,
