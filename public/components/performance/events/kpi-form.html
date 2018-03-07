@@ -59,7 +59,7 @@ You'll probably need to log in to be able to enter data
 							  <option ng-repeat="i in museums" value="{{ i.value }}" ng-selelected="{{ selected_museum == i.value }}">{{ i.value }}</option>
 						</select>
 					</div>
-					
+					<!--
 					<div class="form-group">
 						<label for="comments">Community group:</label>
 						<select  id="community_group" class="form-control input-lg" ng-model="community_group" ng-options="(c.name) for c  in community_groups" ng-change="search_community(community_group)">
@@ -73,7 +73,7 @@ You'll probably need to log in to be able to enter data
 						</div>
 					</div>
 
-				
+				-->
 				
 				
 			  	 <!-- RADIO BUTTONS -->
@@ -145,7 +145,11 @@ You'll probably need to log in to be able to enter data
 						</div>
 				  </div>
 		 
-		 
+		<label> Did your event or activity specifically focus on any of the below groups? If so, please select all that apply. If not, please go to question 5.</label>
+
+<p>NB. Please only select groups that the event or activity was specifically and intentionally focused on; this question is not about who happened to attend an event. If the event was simply aimed at the general public, please continue to the next question.</p>
+
+
 		 
 	<div class="checkbox" ng-repeat="group_name in target_groups">
 		<div class="form-inline">

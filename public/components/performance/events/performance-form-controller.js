@@ -181,7 +181,7 @@ $scope.museums.push({value:"ROMAN-VILLA",name:'Kings Weston Roman Villas'});
  $scope.onSubmit=function() {
 		
 			$scope.addCount()
-			$scope.add_community()
+			//$scope.add_community()
 			
 		    var kpis = new Raw_events({
             museum_id:visit_form.museum.value,				  
@@ -195,7 +195,7 @@ $scope.museums.push({value:"ROMAN-VILLA",name:'Kings Weston Roman Villas'});
 			event_name: $('#event_name').find("option:selected").text(),
 			age_group: visit_form.age_group.value,
 			event_lead: visit_form.event_lead.value,
-			community_group: $('#community_group').find("option:selected").text(),
+		//	community_group: $('#community_group').find("option:selected").text(),
 		
 
 			date_logged:new Date(),	

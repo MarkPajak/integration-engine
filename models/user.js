@@ -9,7 +9,7 @@ var views = {"timeline":true}
 		id: String,
 		username:  { type: String, unique: true,dropDups: true } ,
 		password: String,
-		email: String,
+		email: String, unique: true,dropDups: true } ,
 		firstName: String,
 		lastName: String,
 		group:  { type: String, default: 'DEFAULT'} ,

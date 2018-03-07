@@ -273,7 +273,12 @@ return {
 			exporterCsvLinkElement: angular.element(document.querySelectorAll(".custom-csv-link-location")),
 			onRegisterApi: function(gridApi){
 			scope.gridApi = gridApi;
-
+			
+			
+			gridApi.core.addToGridMenu( gridApi.grid, [{ title: 'Dynamic item', order: 100}]);
+		
+		
+		
 	    gridApi.edit.on.afterCellEdit(scope, function(rowEntity, colDef, newValue, oldValue) {
     //Do your REST call here via $http.get or $http.post
 			if(scope.isloggedin!=true) alert('you\'ll need to log in to make these changes')
