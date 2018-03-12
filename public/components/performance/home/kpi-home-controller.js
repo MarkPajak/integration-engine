@@ -80,7 +80,7 @@ $('#'+id).each(function () {
 					
 					if(row._id.ltd_year){
 
-							if((current_year-3).toString()==(row._id.ltd_year).toString() && row._id.ltd_financial_yer=="this"){
+							if((current_year-2).toString()==(row._id.ltd_year).toString() && row._id.ltd_financial_yer=="this"){
 							
 								$scope.lte_visits+=(row.total_sessions) 
 								$scope.lte_visits_num+=row.total_sessions
