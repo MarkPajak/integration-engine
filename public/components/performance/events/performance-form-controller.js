@@ -61,17 +61,31 @@ $scope.museums.push({value:"ROMAN-VILLA",name:'Kings Weston Roman Villas'});
 	
 	});
 
- 
+function sortJSON(data, key, way) {
+    return data.sort(function(a, b) {
+        var x = a[key]; var y = b[key];
+        if (way === '123' ) { return ((x < y) ? -1 : ((x > y) ? 1 : 0)); }
+        if (way === '321') { return ((x > y) ? -1 : ((x < y) ? 1 : 0)); }
+    });
+}
+
+
 	 Emu_events.getData().then(function(response){
 	 
 			past_events=[]
 			_.each(response,function(event){
+var compare_date = new Date();
+compare_date.setFullYear( compare_date.getFullYear() - 1 );
 
-					if(new Date(event.startDate)<=new Date() && event.type!="Facilities"  && event.type!="Poster - Digital Signage" ){
+					if(new Date(event.startDate)<=new Date() && new Date(event.startDate) >=compare_date &&event.type!="Facilities"  && event.type!="Poster - Digital Signage" ){
 						past_events.push(event)
 						console.log('past event',event)
 					}
 			})
+			
+			 past_events = sortJSON(past_events,'startDate', '321');
+			 
+			 
 			$scope.events =past_events
 			$scope.events.push({name:'add new event'})
 		

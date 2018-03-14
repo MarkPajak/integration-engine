@@ -275,7 +275,7 @@ return {
 			scope.gridApi = gridApi;
 			
 			
-			gridApi.core.addToGridMenu( gridApi.grid, [{ title: 'Dynamic item', order: 100}]);
+			//gridApi.core.addToGridMenu( gridApi.grid, [{ title: 'Dynamic item', order: 100}]);
 		
 		
 		

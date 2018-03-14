@@ -42,7 +42,7 @@ You'll probably need to log in to be able to enter data
 					
 			 	    <div class="form-group">
 						<label for="comments">Event name:</label>
-						<select  id="event_name" class="form-control input-lg" ng-model="event" ng-options="(c.type+' '+c.name) for c in events" ng-change="search2(event)">
+						<select  id="event_name" class="form-control input-lg" ng-model="event" ng-options="(c.startDate + ' - '+ c.type+': '+c.name) for c in events" ng-change="search2(event)">
 								<option value="">-- choose event or select add new --</option>
 						</select>
 						<div class="col-md-4" ng-show="event.name == 'add new event'">
