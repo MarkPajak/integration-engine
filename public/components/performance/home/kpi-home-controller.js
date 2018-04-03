@@ -59,10 +59,12 @@ $('#'+id).each(function () {
 							
 								$scope.visits+=(row.total_sessions) 
 								$scope.visits_num+=row.total_sessions
-									console.log('$scope.visits_num',$scope.visits_num)
+									console.log('this fianncial year$scope.visits_num',$scope.visits_num)
+									console.log('(current_year-1).toString()',(current_year-1).toString())
+									
 							}
 														
-							if(current_year.toString()==row._id.year.toString() && row._id.financial_yer=="this"){
+							if(current_month>3 && current_year.toString()==row._id.year.toString() && row._id.financial_yer=="this"){
 							
 								$scope.visits+=(row.total_sessions) 
 								$scope.visits_num+=row.total_sessions

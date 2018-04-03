@@ -1,6 +1,7 @@
 
 
 
+
 exports.tableFilterService = function(AuthService,$rootScope) {	
 
  return {

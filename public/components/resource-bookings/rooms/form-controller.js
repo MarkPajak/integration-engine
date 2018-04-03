@@ -37,7 +37,9 @@ function guid() {
 					
 					date_logged:new Date(),	
 					//date_value:visit_form.date_value.value,
-					comments:visit_form.comments.value,			
+					comments:visit_form.comments.value,		
+					location:visit_form.museum.value,
+					permission_category:visit_form.priority.value,						
 					logger_user_name: $scope.user.username,
 						requested_by:$scope.user.username
             });

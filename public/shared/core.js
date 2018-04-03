@@ -40,7 +40,13 @@ var  record_rooms_controller = require('../components/resource-bookings/rooms/fo
 var  equipment_controller = require('../components/resource-bookings/equipment/raw-equipment-controller');
 var  record_equipment_controller = require('../components/resource-bookings/equipment/form-controller');
 var  record_bookings_controller = require('../components/resource-bookings/bookings/form-controller');
+var  recurring_events_controller = require('../components/resource-bookings/bookings/recurring-events-controller');
+
+
+
 var  edit_bookings_controller = require('../components/resource-bookings/bookings/edit-form-controller');
+
+
 
 var  bookings_controller = require('../components/resource-bookings/bookings/raw-bookings-controller');
 var  monthly_bookings_controller = require('../components/resource-bookings/bookings/monthly-bookings-controller');
@@ -204,7 +210,8 @@ var feedback_services = require('../components/machine-monitor/feedback-services
 
 
 
-	var app =  angular.module('app', [
+var app =  angular.module('app', [
+
 		'ng',
 		'ui.select', 
 		'ngRoute',
@@ -225,7 +232,8 @@ var feedback_services = require('../components/machine-monitor/feedback-services
 		'md.data.table',
 		'ui.router'	,
 		'ui.grid','ui.bootstrap', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit','ui.grid.resizeColumns','ui.grid.pinning',
-		 'ui.grid.autoResize','ngMessages', 'material.svgAssetsCache',	'moment-picker'
+		'ui.grid.autoResize','ngMessages', 'material.svgAssetsCache',	'moment-picker'
+		
 		])
 		
 	
@@ -439,6 +447,12 @@ _.each(edit_bookings_controller, function(controller, name) {
 _.each(record_bookings_controller, function(controller, name) {
   app.controller(name, controller);
 });
+
+
+_.each(recurring_events_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
 
 
 
@@ -1168,7 +1182,10 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
           })
 		 
 		 //RESOURCE BOOKING 
-		 
+		  .when('/recurring', {
+               template: '<recurring-Event></recurring-Event>'
+           })
+		   
 
 		  .when('/rooms', {
                template: '<rooms-Formdata></rooms-Formdata>'

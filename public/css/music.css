@@ -1,6 +1,11 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+      background: url('images/bristol-music-1b.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 a {
@@ -70,7 +75,7 @@ label {
 
 /* Mark invalid Select2 */
 .ng-dirty.ng-invalid > a.select2-choice {
-    border-color: #D44950;
+   /* border-color: #D44950;*/
 }
 
 .select2-result-single {
@@ -93,7 +98,7 @@ body > .select2-container.open {
 
 /* Helper class to show styles when focus */
 .selectize-input.selectize-focus{
-  border-color: #007FBB !important;
+ /* border-color: #007FBB !important;*/
 }
 
 /* Fix input width for Selectize theme */
@@ -108,7 +113,7 @@ body > .select2-container.open {
 
 /* Mark invalid Selectize */
 .ng-dirty.ng-invalid > div.selectize-input {
-    border-color: #D44950;
+    /*border-color: #D44950;*/
 }
 
 
@@ -116,7 +121,7 @@ body > .select2-container.open {
 
 /* Helper class to show styles when focus */
 .btn-default-focus {
-  color: #333;
+ /* color: #333;*/
   background-color: #EBEBEB;
   border-color: #ADADAD;
   text-decoration: none;
@@ -179,7 +184,7 @@ body > .ui-select-bootstrap.open {
 }
 
 .ui-select-multiple.ui-select-bootstrap input.ui-select-search {
-  background-color: transparent !important; /* To prevent double background when disabled */
+ /* background-color: transparent !important; /* To prevent double background when disabled */
   border: none;
   outline: none;
   height: 1.666666em;
@@ -226,18 +231,18 @@ body > .ui-select-bootstrap.open {
     clear: both;
     font-weight: 400;
     line-height: 1.42857143;
-    color: #333;
+   /* color: #333;*/
     white-space: nowrap;
 }
 
 .ui-select-bootstrap .ui-select-choices-row>a:hover, .ui-select-bootstrap .ui-select-choices-row>a:focus {
     text-decoration: none;
-    color: #262626;
-    background-color: #f5f5f5;
+  /*  color: #262626;*/
+ /*   background-color: #f5f5f5;*/
 }
 
 .ui-select-bootstrap .ui-select-choices-row.active>a {
-    color: #fff;
+   /* color: #fff;*/
     text-decoration: none;
     outline: 0;
     background-color: #428bca;
@@ -245,9 +250,9 @@ body > .ui-select-bootstrap.open {
 
 .ui-select-bootstrap .ui-select-choices-row.disabled>a,
 .ui-select-bootstrap .ui-select-choices-row.active.disabled>a {
-    color: #777;
+   /* color: #777;*/
     cursor: not-allowed;
-    background-color: #fff;
+   /* background-color: #fff;*/
 }
 
 /* fix hide/show angular animation */
@@ -258,7 +263,7 @@ body > .ui-select-bootstrap.open {
 
 /* Mark invalid Bootstrap */
 .ui-select-bootstrap.ng-dirty.ng-invalid > button.btn.ui-select-match {
-    border-color: #D44950;
+  /*  border-color: #D44950;*/
 }
 .glyphicon_top
 {
@@ -327,18 +332,18 @@ height: 25px !important;
   width: 1px;
 }
 .ui-grid-scrollbar-placeholder {
-  background-color: transparent;
+/*  background-color: transparent;*/
 }
 .ui-grid-header-cell:not(:last-child) .ui-grid-vertical-bar {
-  background-color: #ffffff;
+ /* background-color: #ffffff;*/
 }
 .ui-grid-cell:not(:last-child) .ui-grid-vertical-bar {
-  background-color: #94c0d2;
+ /* background-color: #94c0d2;*/
 }
 .ui-grid-header-cell:last-child .ui-grid-vertical-bar {
   right: -1px;
   width: 1px;
-  background-color: #ffffff;
+/*  background-color: #ffffff;*/
 }
 .ui-grid-clearfix:before,
 .ui-grid-clearfix:after {
@@ -367,12 +372,12 @@ height: 25px !important;
   border: 0;
 }
 .ui-grid-icon-button {
-  background-color: transparent;
+ /* background-color: transparent;*/
   border: none;
   padding: 0;
 }
 .ui-grid-top-panel-background {
-  background-color: #daecf4;
+ /* background-color: #daecf4;*/
 }
 .ui-grid-header {
   border-bottom: 1px solid #94c0d2;
@@ -382,7 +387,7 @@ height: 25px !important;
   position: relative;
   overflow: hidden;
   font-weight: bold;
-  background-color: #daecf4;
+/*  background-color: #daecf4;*/
   -webkit-border-top-right-radius: -1px;
   -webkit-border-bottom-right-radius: 0;
   -webkit-border-bottom-left-radius: 0;
@@ -424,9 +429,9 @@ height: 25px !important;
 .ui-grid-header-cell {
   position: relative;
   box-sizing: border-box;
-  background-color: inherit;
+ /* background-color: inherit;*/
   border-right: 1px solid;
-  border-color: #ffffff;
+ /* border-color: #ffffff;*/
   display: table-cell;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -649,13 +654,13 @@ select.ui-grid-filter-select:hover {
   clear: both;
 }
 .ui-grid-row:nth-child(odd) .ui-grid-cell {
-  background-color: #ffffff;
+ /* background-color: #ffffff;*/
 }
 .ui-grid-row:nth-child(even) .ui-grid-cell {
   background-color: #eaf4f9;
 }
 .ui-grid-row:last-child .ui-grid-cell {
-  border-bottom-color: #94c0d2;
+  /*border-bottom-color: #94c0d2;*/
   border-bottom-style: solid;
 }
 .ui-grid-no-row-overlay {
@@ -665,7 +670,7 @@ select.ui-grid-filter-select:hover {
   left: 0;
   right: 0;
   margin: 10%;
-  background-color: #daecf4;
+ /* background-color: #daecf4;*/
   -webkit-border-top-right-radius: 0px;
   -webkit-border-bottom-right-radius: 0;
   -webkit-border-bottom-left-radius: 0;
@@ -725,9 +730,9 @@ select.ui-grid-filter-select:hover {
 .ui-grid-cell {
   overflow: hidden;
   float: left;
-  background-color: inherit;
+ /* background-color: inherit;*/
   border-right: 1px solid;
-  border-color: #94c0d2;
+ /* border-color: #94c0d2;*/
   box-sizing: border-box;
 }
 .ui-grid-cell:last-child {
@@ -752,7 +757,7 @@ select.ui-grid-filter-select:hover {
   display: none;
 }
 .ui-grid-row .ui-grid-cell.ui-grid-row-header-cell {
-  background-color: #f0f0ee;
+ /* background-color: #f0f0ee;*/
   border-bottom: solid 1px #94c0d2;
 }
 .ui-grid-cell-empty {
@@ -769,7 +774,7 @@ select.ui-grid-filter-select:hover {
   border-top: 1px solid #94c0d2;
   overflow: hidden;
   font-weight: bold;
-  background-color: #daecf4;
+ /* background-color: #daecf4;*/
   -webkit-border-top-right-radius: -1px;
   -webkit-border-bottom-right-radius: 0;
   -webkit-border-bottom-left-radius: 0;
@@ -816,9 +821,9 @@ select.ui-grid-filter-select:hover {
 }
 .ui-grid-footer-cell {
   overflow: hidden;
-  background-color: inherit;
+/*  background-color: inherit;*/
   border-right: 1px solid;
-  border-color: #94c0d2;
+ /* border-color: #94c0d2;*/
   box-sizing: border-box;
   display: table-cell;
 }
@@ -905,7 +910,7 @@ input[type="text"].ui-grid-filter-input:hover {
   padding: 0px;
 }
 .ui-grid-menu .ui-grid-menu-inner ul li button {
-  color: #000000;
+/*  color: #000000;*/
   min-width: 100%;
   padding: 8px;
   text-align: left;
@@ -914,10 +919,10 @@ input[type="text"].ui-grid-filter-input:hover {
 }
 .ui-grid-menu .ui-grid-menu-inner ul li button:hover,
 .ui-grid-menu .ui-grid-menu-inner ul li button:focus {
-  background-color: #b3c4c7;
+/*  background-color: #b3c4c7;*/
 }
 .ui-grid-menu .ui-grid-menu-inner ul li button.ui-grid-menu-item-active {
-  background-color: #9cb2b6;
+ /* background-color: #9cb2b6;*/
 }
 .ui-grid-menu .ui-grid-menu-inner ul li:not(:last-child) > button {
   border-bottom: 1px solid #94c0d2;
@@ -1191,5 +1196,5 @@ input[type="text"].ui-grid-filter-input:hover {
     More info at: http://lesselements.com
   ---------------------------------------------------*/
 .ui-grid {
-  color: #003f59;
+ /* color: #003f59;*/
 }

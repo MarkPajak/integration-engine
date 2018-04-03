@@ -17,8 +17,8 @@ exports.raw_rooms_controller = function($route,$scope, $http, $q, $routeParams, 
 		$rootScope.canEdit_table=true
 		 columnDefs.push(
 			{ field: 'name' ,name: "Room",resizable: true,width:"150"},	
-			{ field: 'permission_category' ,name: "Priotity",resizable: true,width:"150"},					
-			
+			{ field: 'permission_category' ,name: "Priotity",resizable: true,width:"150"},
+			{ field: 'location' ,name: "Location",resizable: true,width:"150"},		
 			{ field: 'comments' ,value: "comments",resizable: true,visible:true},
 			{ field: 'logger_user_name' ,value: "Logged by",resizable: true,visible:false},
 			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',visible:false}

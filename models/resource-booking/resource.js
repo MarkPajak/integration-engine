@@ -6,6 +6,7 @@ var Resource = new mongoose.Schema({
 		type: { type: String, required: true},
 		permission_category: { type: String, required: true},
 		date_logged: { type: Date, required: true},
+		location: { type: String},
 		comments: { type: String},
 		logger_user_name: { type: String},
 		asset_name: { type: String},

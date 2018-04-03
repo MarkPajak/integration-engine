@@ -22,7 +22,29 @@
 				<label for="room_name">Room Name</label>
 				<input  step="any" type = "text" class="form-control input-lg" id="room_name" rows="3"></input>
 			  </div>
-			  
+			  	  <div class="form-group">
+				<label for="exampleSelect1">Location</label>
+					<select class="form-control input-lg" ng-model="museum" id="museum">
+							<option value="BMAG">Bristol Museum</option>
+							<option value="M-SHED">M Shed</option>
+							<option value="GEORGIAN-HOUSE">The Georgian House Museum</option>
+							<option value="RED-LODGE">The Red Lodge</option>
+							<option value="BRISTOL-ARCHIVES">Bristol Archives</option>
+							<option value="BLAISE">Blaise</option>
+							<option value="ROMAN-VILLA">Kings Weston Roman Villa</option>
+							<option value="VESTIBULES">The Vestibules</option>
+					</select>
+			  </div>
+			    	  <div class="form-group">
+				<label for="exampleSelect1">Priority</label>
+					<select class="form-control input-lg" ng-model="priority" id="priority">
+							<option value="NORMAL">NORMAL</option>
+							<option value="EXTERNAL">EXTERNAL</option>
+							<option value="MANAGEMENT">MANAGEMENT</option>
+							<option value="LEARNING">LEARNING</option>
+							
+					</select>
+			  </div>
 			  <div class="form-group">
 				<label for="comments">Comments</label>
 				<textarea class="form-control input-lg" id="comments" rows="3"></textarea>

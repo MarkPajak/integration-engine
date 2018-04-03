@@ -149,6 +149,7 @@
     "pinch-zoom": "*",
     "refresh-token": "*",
     "request": "^2.79.0",
+    "rrule": "^2.2.9",
     "serialport": "^4.0.7",
     "serve-favicon": "^2.2.0",
     "sha1": "*",

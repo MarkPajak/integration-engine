@@ -1,5 +1,17 @@
 
 
+
+
+exports.recurringEvent = function() {
+  return {
+  	    restrict: "E",
+    scope: {},
+   controller: 'recurring_events_controller',
+   templateUrl: './components/resource-bookings/bookings/recurrance-form.html'
+  }
+  }
+  
+
 exports.yearlyBookings = function() {
   return {
   	    restrict: "E",
