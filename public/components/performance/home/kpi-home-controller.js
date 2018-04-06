@@ -71,18 +71,19 @@ $('#'+id).each(function () {
 									console.log('$scope.visits_num',$scope.visits_num)
 							}
 							
-							if(current_year.toString()==row._id.year.toString() && row._id.financial_yer=="last"){
+								if(current_month<=3 && current_year.toString()==row._id.year.toString() && row._id.financial_yer=="last"){
+								
+									$scope.visits+=(row.total_sessions) 
+									$scope.visits_num+=row.total_sessions
+										console.log('$scope.visits_num_last'+current_year,row.total_sessions)
+								}
 							
-								$scope.visits+=(row.total_sessions) 
-								$scope.visits_num+=row.total_sessions
-									console.log('$scope.visits_num_last'+current_year,row.total_sessions)
-							}
 					
 					}
 					
 					if(row._id.ltd_year){
 
-							if((current_year-2).toString()==(row._id.ltd_year).toString() && row._id.ltd_financial_yer=="this"){
+							if(current_month<=3 &&(current_year-2).toString()==(row._id.ltd_year).toString() && row._id.ltd_financial_yer=="this"){
 							
 								$scope.lte_visits+=(row.total_sessions) 
 								$scope.lte_visits_num+=row.total_sessions
@@ -97,7 +98,7 @@ $('#'+id).each(function () {
 								console.log('$scope.lte_visits',$scope.lte_visits)
 							}
 							
-							if((current_year-1).toString()==row._id.ltd_year.toString() && row._id.ltd_financial_yer=="last"){
+							if(current_month<=3 && (current_year-1).toString()==row._id.ltd_year.toString() && row._id.ltd_financial_yer=="last"){
 							
 								$scope.lte_visits+=(row.total_sessions) 
 								$scope.lte_visits_num+=row.total_sessions
