@@ -367,6 +367,13 @@ exports.retailKpiform = function() {
   }
 	}
 	
+				exports.rawRetailsalesfilter = function() {
+  return {
+    templateUrl: './components/performance/retail/raw-retail-data.html'
+  }
+	}
+	
+	
 exports.monthlyRetailsales = function() {
   return {
    controller: 'monthly_retail_sales_controller',
@@ -499,6 +506,12 @@ exports.recordTeg  = function() {
       templateUrl: './components/performance/events/kpi-form-and-data.html'
   }
   }
+  
+			exports.rawEventsfilter = function() {
+  return {
+    templateUrl: './components/performance/events/raw-events-data.html'
+  }
+	}
 	
 		exports.rawEvents = function() {
   return {

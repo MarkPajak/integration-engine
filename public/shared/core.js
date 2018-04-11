@@ -1023,7 +1023,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
                template: '<retail-dashboard></retail-dashboard>'
            })
 		   .when('/raw-retail-sales', {
-               template: '<raw-retailsales></raw-retailsales>'
+               template: '<raw-retailsalesfilter></raw-retailsalesfilter>'
            })
 		   
 		      
@@ -1116,7 +1116,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
 		   
 		   
 		   	.when('/raw-events', {
-               template: '<raw-events></raw-events>'
+               template: '<raw-eventsfilter></raw-eventseventsfilter>'
            })
 		   
 			.when('/monthly-events', {
