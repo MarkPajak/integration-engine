@@ -344,6 +344,7 @@ $scope.user_groups['LEARNING'].views.push(analyser)
 
 $scope.user_groups['LEARNING'].enter_data=enter_data
 $scope.user_groups['LEARNING'].performance=performance_data
+$scope.user_groups['LEARNING'].resources=resources
 $scope.user_groups['LEARNING'].views.push(room_hire)
 
 var enter_data=[]
@@ -457,7 +458,7 @@ enter_data.push(performance)
 enter_data.push(record_exhibitions_pwyt)
 enter_data.push(record_events)
 enter_data.push(record_teg)
-
+var resources=[]
 
 performance_data.push(teg)
 
@@ -482,11 +483,11 @@ $scope.user_groups['STAFF'].permissions=default_permissions
 
 $scope.user_groups['STAFF'].views.push(timeline) 
 $scope.user_groups['STAFF'].views.push(analyser) 
-
+resources.push(equipment_booking_timeline)
 
 $scope.user_groups['STAFF'].enter_data=enter_data
 $scope.user_groups['STAFF'].performance=performance_data
-
+$scope.user_groups['STAFF'].resources=resources
 
 
 
