@@ -20,7 +20,7 @@ exports.monthly_votes_controller = function($route,$scope, $http, $q, $routePara
 		$scope.loading=true
 		 columnDefs.push(
 		 
-			{ field: 'artist' ,name: "Artist",width: 155},
+			{ field: 'artist' ,name: "Artist",width: 250},
 			{ field: 'track' ,name: "Track",width: 250},
 			{ field: 'tally' ,name: "Votes",width: 75,visible:true},
 			{ field: 'logger_user_name' ,name: "Logged by",visible:false},

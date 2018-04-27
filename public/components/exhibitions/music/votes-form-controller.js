@@ -23,7 +23,7 @@ exports.record_votes_controller =  function($scope, $http, $q, $routeParams, $lo
   vm.clear = clear;
 
    $scope.selected=[]
-  
+  $scope.artistfilled=false
   function refreshResults($select,artist_or_state){
     var search = $select.search,
       list = angular.copy($select.items),
@@ -95,6 +95,8 @@ $scope.visitor_groups=[]
 	
 	 vm.getCountryStates = function (item, model){
         vm.counter++;
+		console.log('getCountryStates')
+		 $scope.artistfilled=true
 		$scope.selectedcountry= item.country
 		$scope.selected['artist']= item.country
 	    $scope._states = $filter('filter')($scope.allcountries, {country: item.country}); 
@@ -135,10 +137,13 @@ $scope.visitor_groups=[]
 
  $scope.onSubmit=function() {
 		
+		console.log('artist',	$scope.selected['artist'])
+		console.log('track',	$scope.selected['track'])
+		
 		    var kpis = new Bristol_music_top_40({
-					artist: 	$scope.selected['artist'],	
+					artist: 	artist.innerText.trim()||$scope.selected['artist'],	
 					exhibition_id:"bristolmusic",					
-					track:	$scope.selected['track'],
+					track:	track.innerText.trim() || $scope.selected['track'],
 					date_logged:new Date()//,	
 					//date_value:visit_form.date_value.value
 					

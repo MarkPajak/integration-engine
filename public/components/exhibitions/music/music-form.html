@@ -21,9 +21,9 @@ on-select="ctrl.getCountryStates($item, $model)"
 ng-model="customer.Country"
 ng-required="true"
 id="artist"
-reset-search-input="false" required="true" 
+reset-search-input="true" required="true" 
 ng-maxlength="40">
-<ui-select-match  placeholder="Select artist...">
+<ui-select-match  placeholder="Select an artist or add new...">
 <span class="glyphclose">{{$select.selected.country || $select.search}}</span>
 <a class="btn btn-xs btn-link pull-right" ng-click="ctrl.clear($event, $select)"><i class="glyphicon_top glyphicon glyphicon-remove"></i></a>
 </ui-select-match>
@@ -41,11 +41,12 @@ ng-maxlength="40">
 <ui-select 			
 on-select="ctrl.getStateCities($item, $model)" 
 ng-model="customer.State"
+ng-hide="artistfilled==false"
 ng-required="true"
 id="track"
-reset-search-input="false" required="true" 
+reset-search-input="true" required="true" 
 ng-maxlength="40">
-<ui-select-match  placeholder="Select track...">
+<ui-select-match  placeholder="Select a track or add new...">
 <span class="glyphclose">{{$select.selected.state || $select.search}}</span>
 <a class="btn btn-xs btn-link pull-right" ng-click="ctrl.clear($event, $select)"><i class="glyphicon_top glyphicon glyphicon-remove"></i></a>
 </ui-select-match>
