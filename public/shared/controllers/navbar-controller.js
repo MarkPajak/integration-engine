@@ -44,35 +44,30 @@ $scope.user_groups['EXHIBITIONS']=[]
 $scope.user_groups['OPERATIONS']=[]
 $scope.user_groups['COMMERCIAL']=[]
 	
-var timeline = {link:"timeline",value:"Timeline"}
-
-var dead ={link:"dead",value:"Downtime"}
-var activity = {link:"activity",value:"Machine Activity"}
-var feedback = {link:"feedback",value:"Kiosk feedback"}
-var tech_support = {link:"tech-support",value:"Tech-support"}
-var shopify = {link:"shopify_app",value:"Shopify"}
-var users = {link:"users",value:"ADMIN: Users"}
+var timeline 		  = {link:"timeline",value:"Timeline"}
+var dead 			  = {link:"dead",value:"Downtime"}
+var activity		  = {link:"activity",value:"Machine Activity"}
+var feedback		  = {link:"feedback",value:"Kiosk feedback"}
+var tech_support	  = {link:"tech-support",value:"Tech-support"}
+var shopify 		  = {link:"shopify_app",value:"Shopify"}
+var users 			  = {link:"users",value:"ADMIN: Users"}
 var timeline_settings = {link:"timeline_settings",value:"Timeline settings"}
-var doom = {link:"doom",value:"DOOM!"}
-
-var analyser = {link:"analyser",value:"Performance analyser (BETA)"}
-
+var doom 			  = {link:"doom",value:"DOOM!"}
+var analyser 		  = {link:"analyser",value:"Performance analyser (BETA)"}
 
 //resource booking
 
-var rooms = {link:"rooms",value:"Add rooms"}
-var equipment = {link:"equipment",value:"Add equipment"}
+var rooms 			   = {link:"rooms",value:"Add rooms"}
+var equipment 		   = {link:"equipment",value:"Add equipment"}
 var equipment_bookings = {link:"bookings/equipment",value:"Equipment booking"}
-var room_bookings = {link:"bookings/rooms",value:"Add a room booking"}
+var room_bookings	   = {link:"bookings/rooms",value:"Add a room booking"}
 var room_bookings_list = {link:"bookingslist/rooms",value:"Room bookings list"}
-var bookings_report = {link:"bookings-report",value:"Bookings report"}
-
-
+var bookings_report    = {link:"bookings-report",value:"Bookings report"}
 
 
 //signage
-var posters_list = {link:"posters",value:"Posters list"}
-var add_posters = {link:"add-poster",value:"Add poster"}
+var posters_list 		= {link:"posters",value:"Posters list"}
+var add_posters 		= {link:"add-poster",value:"Add poster"}
 
 
 var room_hire = {link:"room-hire",value:"Room booking timeline"}
