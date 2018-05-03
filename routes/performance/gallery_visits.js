@@ -1,7 +1,7 @@
 fs = require('fs');
 
 data_services=  function(cb){
-	
+	//NB EMU!
 		fs.readFile('./public/assets/data/all_events.JSON', function(err, data){  
 			if (err) console.log( err);		
 			cb(JSON.parse(data));
@@ -556,27 +556,24 @@ get_kpis( function ( result) {
 	var returned_data=[]
 
 	_.each(venues,function(venue){
-		
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat="TEG visits"
-		returned_data.push(	 wind_up_Stats(	result,returned_row,"gallery_visits",venue))
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat="Income"
-		returned_data.push(	 wind_up_Stats(	result,returned_row,"pwyt_income",venue))
+			
+			var returned_row={}
+				returned_row.museum=venue
+				returned_row.stat="TEG visits"
+				returned_data.push(	 wind_up_Stats(	result,returned_row,"gallery_visits",venue))
+			var returned_row={}
+				returned_row.museum=venue
+				returned_row.stat="Income"
+				returned_data.push(	 wind_up_Stats(	result,returned_row,"pwyt_income",venue))
+			var returned_row={}
+				returned_row.museum=venue
+				returned_row.stat="Visits"
+				returned_data.push(	 wind_up_Stats(	result,returned_row,"visits",venue))
+			var returned_row={}
+				returned_row.museum=venue
+				returned_row.stat="TEG conversion"
+				returned_data.push(	 wind_up_Stats(	result,returned_row,"conversion",venue))
 
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat="Visits"
-		returned_data.push(	 wind_up_Stats(	result,returned_row,"visits",venue))
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat="TEG conversion"
-		returned_data.push(	 wind_up_Stats(	result,returned_row,"conversion",venue))
-	
-	
-	
 	})
 
 
@@ -634,14 +631,13 @@ Team.aggregate([
 			
 	{ $match: { 
 					  museum_id : VENUE ,					
-					   date_value : { $gte:start_date , $lte: end_date }  
-								
-										 
+					  date_value : { $gte:start_date , $lte: end_date }  
+								 
 		}
 	},
 
 		{ $group: {
-                _id: { year :  { "$year": route_functions.mongo_aggregator },        
+                _id: { year :  { "$year": route_functions.mongo_aggregator  },        
 					   month : { "$month": route_functions.mongo_aggregator },        
 					   venue:'$museum_id',
 					   //gallery:'$gallery',
@@ -1086,12 +1082,42 @@ router.get('/total', function(req, res, next) {
 
 
 
+router.get('/munge_visits', function(req, res, next) {
+
+			
+Team.aggregate([
+   {
+      $lookup: {
+         from: "Kpi_aggregate",
+         localField: "date_value",    // field in the orders collection
+         foreignField: "date_value",  // field in the items collection
+         as: "date_value"
+      }
+   },
+   {
+      $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$Kpi_aggregate", 0 ] }, "$$ROOT" ] } }
+   },
+   { $project: { Kpi_aggregate: 0 } }
+],function (err, visits) {
+
+   
+    if (err) return next(err);
+if(req.params.csv){
+     res.setHeader('Content-disposition', 'attachment; filename=donations.csv');
+res.set('Content-Type', 'text/csv');
+var fields = ['museum_id', 'value','date','comments','logger_user_name','date_recorded','_all_visits'];
+var csv = json2csv({ data: todos, fields: fields });
+res.status(200).send(csv);
 
 
-
-
-
-
+}
+else
+{
+	res.json(todos);
+	
+}
+  })
+});
 
 
 /* GET /todos listing. */

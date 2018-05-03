@@ -73,12 +73,12 @@ function callbackhandler(err, results) {
 
 	
 		async.series([
-			_monthly_stats,
-			_retail_stats,
-			_retail_atv,
-			_retail_no_transactions,
-			_donations,
-			_welcome_desk_go
+			_monthly_stats//,
+			//_retail_stats,
+			//_retail_atv,
+			//_retail_no_transactions,
+			//_donations,
+			//_welcome_desk_go
 			
 			
 		], function (err, results) {
