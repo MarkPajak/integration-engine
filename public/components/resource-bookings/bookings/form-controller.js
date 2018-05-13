@@ -207,7 +207,7 @@ var kpis = new Bookings({
 
 	kpis.$save(function(err, user) {
 		
-						if(err) console.log(err)
+						if(err) alert(err)
 						
 						var  message = "data saved successfully";
 							  message+= "\n ";

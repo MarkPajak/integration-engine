@@ -14,6 +14,7 @@
     "test_account": "mocha ./test/account.js",
     "backup": "mongodump && cp -r * ../testbackup",
     "upd8": "git pull",
+	 "dates": "node data_loader/database/date_fix.js",
     "doom": "node data_loader/turnstiles/turnstile-controller.js",
     "karma_test": "./node_modules/karma/bin/karma start ./karma.local.conf.js",
     "karma": "./node_modules/karma/bin/karma start ./test/karma.local.conf.js"

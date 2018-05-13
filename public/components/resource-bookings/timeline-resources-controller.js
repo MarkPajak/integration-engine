@@ -2,6 +2,16 @@ exports.timeline_resources_controller=     function($compile,  $scope, $http, $q
          $location, $rootScope, trello,timeline_bookings_functions, get_trello_board, date_calc, Todos, Timeline, Bookings,Team, kiosk_activity,timeline_functions_resources,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate,Raw_visits,timeline_visitor_figures_functions,timeline_install_functions, $timeout,timeline_exhibitions_functions
     ) {
 		
+		for (var prop in $rootScope) {
+console.log(prop)
+   // Check is not $rootScope default properties, functions
+   if (prop != "user" && prop != "user" && "user_groups" && typeof $rootScope[prop] !== 'function' && prop.indexOf('$') == -1 && prop.indexOf('$$') == -1) {
+
+      delete $rootScope[prop];
+
+   }
+} 
+		
 		$scope.locked=[]
 		$scope.locked.add_item = false
 		$scope.locked['true']={status:" locked",value:false}

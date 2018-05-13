@@ -1,9 +1,26 @@
 var standard_API_calls = function (model,router){
 					/* POST /todos */
 				router.post('/', route_permissions.isAuthenticated, function(req, res, next) {
-				  model.create(req.body, function (err, post) {
+				 
+console.log(req.body)
+
+
+				 model.create(req.body, function (err, post) {
 					if (err) return next(err);
-					res.json(post);
+					console.log('moment(post.date_value)',moment(post.date_value).format("hh"))
+					
+					if(moment(post.date_value).format("hh")=="12"){
+						console.log("model updated",post.date_value)
+					visits.update({ _id: post._id }, { $set : { date_value: post.date_value.setHours(post.date_value.getHours()+1) }}, res.json(post));
+					}
+					else
+					{
+					res.json(post);	
+						
+					}
+					
+					
+					
 				  });
 				});
 
