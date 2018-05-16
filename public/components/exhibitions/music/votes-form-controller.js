@@ -21,7 +21,14 @@ exports.record_votes_controller =  function($scope, $http, $q, $routeParams, $lo
   
   vm.refreshResults = refreshResults;
   vm.clear = clear;
+	$scope.hideartistcross=false
+	$scope.hidetrackcross=false
 
+	
+	
+		$scope.blankform=$('#visit_form')
+	
+							
    $scope.selected=[]
   $scope.artistfilled=false
   function refreshResults($select,artist_or_state){
@@ -59,7 +66,10 @@ exports.record_votes_controller =  function($scope, $http, $q, $routeParams, $lo
   }
   
   function clear($event, $select){
-    $event.stopPropagation(); 
+    $('#vote-button').hide()
+	console.log('$select',$select)
+	
+	$event.stopPropagation(); 
     //to allow empty field, in order to force a selection remove the following line
     $select.selected = undefined;
     //reset search query
@@ -94,9 +104,15 @@ $scope.visitor_groups=[]
 
 	
 	 vm.getCountryStates = function (item, model){
+	 
+		
+	$('#heading').hide()
+
+
+	
         vm.counter++;
 		console.log('getCountryStates')
-		 $scope.artistfilled=true
+		$scope.artistfilled=true
 		$scope.selectedcountry= item.country
 		$scope.selected['artist']= item.country
 	    $scope._states = $filter('filter')($scope.allcountries, {country: item.country}); 
@@ -116,7 +132,7 @@ $scope.visitor_groups=[]
     };
 
     vm.getStateCities = function (item, model){
-        
+         $('#vote-button').show()
 		console.log(item, model)
 		$scope.selectedstate= item.state
 		$scope.selected['track']= item.state
@@ -132,14 +148,22 @@ $scope.visitor_groups=[]
   };
 
   	})
+	
+ $scope.resetform=function(){
+$('#vote-button').hide()
+$('#visit_form').show()
+$('#heading').hide()
+$('#reset-button').hide()	
 
-	 
+
+} 
 
  $scope.onSubmit=function() {
-		
+		//clear($event, $select)
 		console.log('artist',	$scope.selected['artist'])
 		console.log('track',	$scope.selected['track'])
-		
+		if($scope.selected['track']){
+
 		    var kpis = new Bristol_music_top_40({
 					artist: 	artist.innerText.trim()||$scope.selected['artist'],	
 					exhibition_id:"bristolmusic",					
@@ -155,9 +179,31 @@ $scope.visitor_groups=[]
 				console.log('Bristol_music_top_40',visits.length)
 			save(kpis)
 			})	
-			
+			}
             
 
+			
+			
+			
+			var time = new Date().getTime();
+     $(document.body).bind("mousemove keypress", function(e) {
+         time = new Date().getTime();
+     });
+
+     function refresh() {
+         if(new Date().getTime() - time >= 1* 5* 60000) 
+             window.location.reload(true);
+         else 
+             setTimeout(refresh, 10000);
+     }
+
+     setTimeout(refresh, 10000);
+			
+			
+			
+			
+			
+			
 	 
 	function save(kpis){
 
@@ -178,18 +224,20 @@ $scope.visitor_groups=[]
 												_.each(team,function(row){
 												//if(row.museum!=""){
 													$scope._rows.push(row)
-													
-														
-												//}
-											
+
 												})
 											
 											$scope.gridOptions.data=$scope._rows;
 				
 								})
 	
-							
-
+							$('#vote-button').hide()
+							$('#heading').show()								
+							$('#visit_form').hide()
+							$('#reset-button').show()	
+							$scope.selected['artist']=undefined
+							$scope.selected['track']=undefined
+						
 						})
 						
 

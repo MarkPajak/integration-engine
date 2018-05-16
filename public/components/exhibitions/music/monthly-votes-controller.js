@@ -5,7 +5,7 @@ exports.monthly_votes_controller = function($route,$scope, $http, $q, $routePara
 		
 		
 		$scope.chart_class = "col-md-8 col-lg-8 col-sm-5 pull-right"
-		$scope.table_class = "col-md-6 col-lg-6 col-sm-6"
+		$scope.table_class = "col-md-7 col-lg-7 col-sm-7"
 	    console.log('controller go')
 		$scope.start_date=new Date("01/04/2017")
 		$scope.end_date=new Date("01/04/2018")

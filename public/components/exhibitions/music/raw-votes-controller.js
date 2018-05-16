@@ -2,7 +2,7 @@ exports.raw_votes_controller = function($route,$scope, $http, $q, $routeParams, 
     ) {
 		
 		
-		$scope.table_class="col-md-6 col-lg-6 col-sm-1 full-height"
+		$scope.table_class="col-md-8 col-lg-8 col-sm-1 full-height"
 		$scope.featured_collection=Raw_visits
 		$rootScope.featured_collection=Raw_visits
 		$scope.show_all_Button=true
