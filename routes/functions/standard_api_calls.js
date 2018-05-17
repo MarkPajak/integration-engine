@@ -11,7 +11,7 @@ console.log(req.body)
 					
 					if(moment(post.date_value).format("hh")=="12"){
 						console.log("model updated",post.date_value)
-					visits.update({ _id: post._id }, { $set : { date_value: post.date_value.setHours(post.date_value.getHours()+1) }}, res.json(post));
+					model.update({ _id: post._id }, { $set : { date_value: post.date_value.setHours(post.date_value.getHours()+1) }}, res.json(post));
 					}
 					else
 					{
