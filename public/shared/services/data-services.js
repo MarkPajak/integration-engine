@@ -515,6 +515,19 @@ exports.Monthly_visits =  function($resource){
  }
  
  
+  exports.Raw_Bristol_music_top_40 =  function($resource){
+	 
+		 
+            return $resource('/top_40/:id', null,
+			{ 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray:true}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+ }
+ 
  exports.Raw_turnstiles =  function($resource){
 	 
 		 

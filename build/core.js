@@ -8240,13 +8240,13 @@ scope=$scope
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/exhibitions/music/monthly-votes-controller.js","/../components/exhibitions/music")
 },{"b55mWE":4,"buffer":3}],10:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-exports.raw_votes_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Raw_visits,data_table_reload,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,get_table_data,table_security
+exports.raw_votes_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Raw_Bristol_music_top_40,data_table_reload,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,get_table_data,table_security
     ) {
 		
 		
 		$scope.table_class="col-md-8 col-lg-8 col-sm-1 full-height"
-		$scope.featured_collection=Raw_visits
-		$rootScope.featured_collection=Raw_visits
+		$scope.featured_collection=Raw_Bristol_music_top_40
+		$rootScope.featured_collection=Raw_Bristol_music_top_40
 		$scope.show_all_Button=true
 		$scope.gridOptions=[]
 		$scope.gridOptions.data='__data'
@@ -8255,12 +8255,10 @@ exports.raw_votes_controller = function($route,$scope, $http, $q, $routeParams, 
 
 		columnDefs.push(
 		
-			{ field: 'museum_id' ,name: "Museum",resizable: true,enableFiltering: true,},
-			{ field: 'kpi_type' ,name: "kpi",resizable: true,visible:false},
-			{ field: 'value' ,resizable: true},
+			{ field: 'artist' ,name: "artist",resizable: true,enableFiltering: true,},
+			{ field: 'track' ,name: "track",resizable: true,visible:true},			
 			{ field: 'date_value' ,name: "Date",resizable: true ,type: 'date', cellFilter: 'date:\'dd/MM/yyyy\''},
-			{ field: 'comments' ,name: "comments",resizable: true,visible:false},
-			{ field: 'logger_user_name' ,name: "Logged by",resizable: true,visible:true},
+			
 			{ field: 'date_logged', name: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yyyy HH:mm\'',visible:false}
 		)
 			
@@ -8478,7 +8476,7 @@ $('#reset-button').hide()
      });
 
      function refresh() {
-         if(new Date().getTime() - time >= 60000) 
+         if(new Date().getTime() - time >= 1* 5* 60000) 
              window.location.reload(true);
          else 
              setTimeout(refresh, 10000);
@@ -26544,6 +26542,10 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
                template: '<votes-Formdata></votes-Formdata>'
            })   
 		   
+		      .when('/raw-votes', {
+               template: '<raw-votes></raw-votes>'
+           })  
+		   
 		   .when('/raw-giftaid', {
               templateUrl: './components/performance/gift-aid/data.html'
            })
@@ -26694,7 +26696,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
           
         }])
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_cae9f44b.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_3f161743.js","/")
 },{"../components/exhibitions/directive":8,"../components/exhibitions/music/monthly-votes-controller":9,"../components/exhibitions/music/raw-votes-controller":10,"../components/exhibitions/music/votes-form-controller":11,"../components/iframe/iframe-controller":12,"../components/iframe/iframe-directive":13,"../components/machine-monitor/dashboard-controller":14,"../components/machine-monitor/dead-controller":15,"../components/machine-monitor/downtime-controller":16,"../components/machine-monitor/downtime-services":17,"../components/machine-monitor/feedback-controller":18,"../components/machine-monitor/feedback-services":19,"../components/machine-monitor/satisfaction-controller":20,"../components/member/member-controller":21,"../components/performance/analyser/analyser-controller":22,"../components/performance/dashboard-controllers":23,"../components/performance/donations/monthly-donations-controller":24,"../components/performance/donations/performance-form-controller":25,"../components/performance/donations/raw-donations-controller":26,"../components/performance/donations/yearly-donations-controller":27,"../components/performance/events/monthly-events-controller":28,"../components/performance/events/performance-form-controller":29,"../components/performance/events/raw-events-controller":30,"../components/performance/events/yearly-events-controller":31,"../components/performance/exhibitions-pwyt/monthly-donations-controller":32,"../components/performance/exhibitions-pwyt/performance-form-controller":33,"../components/performance/exhibitions-pwyt/raw-donations-controller":34,"../components/performance/exhibitions/exhibitions-summary-controller":35,"../components/performance/gallery-visits/exhibitions-teg-controller":36,"../components/performance/gallery-visits/monthly-teg-controller":37,"../components/performance/gallery-visits/performance-form-controller":38,"../components/performance/gallery-visits/raw-teg-controller":39,"../components/performance/gallery-visits/weekly-teg-controller":40,"../components/performance/gallery-visits/yearly-teg-controller":41,"../components/performance/gift-aid/monthly-allgiftaid-controller":42,"../components/performance/gift-aid/monthly-giftaid-controller":43,"../components/performance/gift-aid/performance-form-controller":44,"../components/performance/gift-aid/raw-giftaid-controller":45,"../components/performance/home/kpi-home-controller":46,"../components/performance/learning/age-learning-controller":47,"../components/performance/learning/monthly-learning-controller":48,"../components/performance/learning/performance-form-controller":49,"../components/performance/learning/raw-learning-controller":50,"../components/performance/learning/yearly-learning-controller":51,"../components/performance/operations/monthly-operations-controller":52,"../components/performance/operations/performance-form-controller":53,"../components/performance/operations/raw-operations-controller":54,"../components/performance/operations/yearly-operations-controller":55,"../components/performance/participation/monthly-participation-controller":56,"../components/performance/participation/performance-form-controller":57,"../components/performance/participation/raw-participation-controller":58,"../components/performance/participation/target-audience-controller":59,"../components/performance/participation/yearly-participation-controller":60,"../components/performance/performance-directive":61,"../components/performance/retail/monthly-retail-sales-controller":62,"../components/performance/retail/performance-form-controller":63,"../components/performance/retail/raw-retail-sales-controller":64,"../components/performance/retail/yearly-retail-sales-controller":65,"../components/performance/turnstiles/monthly-turnstiles-controller":66,"../components/performance/turnstiles/raw-turnstiles-controller":67,"../components/performance/visits/monthly-visits-controller":68,"../components/performance/visits/raw-visits-controller":69,"../components/performance/visits/visits-form-controller":70,"../components/performance/visits/yearly-visits-controller":71,"../components/performance/welcome-desk/monthly-welcomedesk-controller":72,"../components/performance/welcome-desk/performance-form-controller":73,"../components/performance/welcome-desk/raw-welcomedesk-controller":74,"../components/performance/welcome-desk/yearly-welcomedesk-controller":75,"../components/resource-bookings/bookings/edit-form-controller":76,"../components/resource-bookings/bookings/form-controller":77,"../components/resource-bookings/bookings/monthly-bookings-controller":78,"../components/resource-bookings/bookings/raw-bookings-controller":79,"../components/resource-bookings/bookings/recurring-events-controller":80,"../components/resource-bookings/bookings/yearly-bookings-controller":81,"../components/resource-bookings/directive":82,"../components/resource-bookings/equipment/form-controller":83,"../components/resource-bookings/equipment/raw-equipment-controller":84,"../components/resource-bookings/rooms/form-controller":85,"../components/resource-bookings/rooms/raw-rooms-controller":86,"../components/resource-bookings/timeline-resources-controller":87,"../components/resource-bookings/timeline-resources-services":88,"../components/shopify/shopify-controller":89,"../components/shopify/shopify-directive":90,"../components/shopify/shopify-monthly-controller":91,"../components/signage/directive":92,"../components/signage/posters/form-controller":93,"../components/signage/posters/raw-poster-controller":94,"../components/team/app-controllers":95,"../components/team/form-controller":96,"../components/team/leave-controller":97,"../components/team/team-controller":98,"../components/tech-support/tech-support-controller":99,"../components/tech-support/tech-support-directive":100,"../components/tech-support/trello-services":101,"../components/timeline-settings/raw-timeline-settings-controller":102,"../components/timeline-settings/settings-form-controller":103,"../components/timeline-settings/timeline-settings-directive":104,"../components/timeline/timeline-bookings-services":105,"../components/timeline/timeline-controller":106,"../components/timeline/timeline-directive":107,"../components/timeline/timeline-exhibitions-services":108,"../components/timeline/timeline-googlesheets-services":109,"../components/timeline/timeline-installs-services":110,"../components/timeline/timeline-learning-bookings-services":111,"../components/timeline/timeline-leave-services":112,"../components/timeline/timeline-loans-services":113,"../components/timeline/timeline-services":114,"../components/timeline/timeline-shopify-services":115,"../components/timeline/timeline-visitor-figures-services":116,"../components/turnstiles/turnstiles-controller":117,"../components/turnstiles/turnstiles-directive":118,"../components/user-admin/users-controller":119,"../components/user-admin/users-directive":120,"../shared/controllers/colourkey-controller":121,"../shared/controllers/controllers":122,"../shared/controllers/navbar-controller":123,"../shared/controllers/tablefilter-controller":124,"../shared/directives/directives":125,"../shared/services/app-services":127,"../shared/services/data-services":128,"async":1,"b55mWE":4,"buffer":3,"underscore":7}],127:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
@@ -28205,6 +28207,19 @@ exports.Monthly_visits =  function($resource){
           });
  }
  
+ 
+  exports.Raw_Bristol_music_top_40 =  function($resource){
+	 
+		 
+            return $resource('/top_40/:id', null,
+			{ 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray:true}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+ }
  
  exports.Raw_turnstiles =  function($resource){
 	 

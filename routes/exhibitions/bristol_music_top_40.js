@@ -78,7 +78,7 @@ Likes_log.aggregate([
 			
 
 				}},
-		{ $match:{exhibition_id:req.params.exhibition_id }},
+		{ $match:{exhibition_id:req.params.exhibition_id ,artist: {  "$ne": "" } }},
 
 		 { $group: {
                 _id: {      
@@ -279,7 +279,10 @@ if(decodeURIComponent(req.params.exhibition_id)!="#"){
 });
 /* GET /todos listing. */
 router.get('/', function(req, res, next) {
-  Likes_log.find()
+
+ Likes_log.find({
+   "artist" : { $ne : "" }
+})
    .sort({'date': 'desc'})
      .exec(function(err, todos) {
   

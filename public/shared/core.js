@@ -1087,6 +1087,10 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
                template: '<votes-Formdata></votes-Formdata>'
            })   
 		   
+		      .when('/raw-votes', {
+               template: '<raw-votes></raw-votes>'
+           })  
+		   
 		   .when('/raw-giftaid', {
               templateUrl: './components/performance/gift-aid/data.html'
            })
