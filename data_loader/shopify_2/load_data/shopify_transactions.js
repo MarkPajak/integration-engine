@@ -1,7 +1,13 @@
 var shopify_transaction = function (keys,options){
 var self = this
 
-var created_at_min = options.created_at_min 
+
+
+var created_at_max = options.created_at_max 
+var created_at_min = options.created_at_min
+
+
+ 
 var async = require('async');
 var eachAsync = require('each-async');
 var express = require('express');
@@ -45,7 +51,12 @@ Shopify_transaction.find({shop_id:shop_id}).remove().exec(function(err, data) {
 var shopifyorders = []
 
 
-
+	created_at_max_bit=""
+			if (created_at_max!=""){
+			
+				created_at_max_bit="&created_at_max="+created_at_max
+			
+			}
 
 
 
@@ -148,8 +159,12 @@ function orders(total_orders,cb){
 	 function getNextset() {
 //console.log('looking at page '+current_page +"of "+ pages_in_total)
 			
+			
+		
+			
+			
 			var return_product_type = ""
-			url = url_base+"orders.json?created_at_min="+created_at_min+"&status=any&limit="+limit+"&page="+current_page+ "&fields=created_at,id,name,total-price,line_items,source_name"
+			url = url_base+"orders.json?created_at_min="+created_at_min+created_at_max_bit+"&status=any&limit="+limit+"&page="+current_page+ "&fields=created_at,id,name,total-price,line_items,source_name"
 		
 			request({
 				url: url,
@@ -217,7 +232,7 @@ self.count_all_orders = function(cb){
 
 					total_order_count = 0
 					//console.log('querying created_at_min'+created_at_min)
-					url = url_base+"orders/count.json?created_at_min="+created_at_min+"&status=any"+ (options.source_name=="web" ?  "&source_name=web" : "" )
+					url = url_base+"orders/count.json?created_at_min="+created_at_min+created_at_max_bit+"&status=any"+ (options.source_name=="web" ?  "&source_name=web" : "" )
 					console.log(url)
 					request({
 						url: url,

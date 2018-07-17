@@ -9,6 +9,7 @@ var doc = new GoogleSpreadsheet( options.google_sheet_id);
 var duplicate = false
 var logger = require('../../../models/logging.js');
 var sheet_name = options.title//+"_"+moment(new Date()).format('DD_MM_YYYY')
+
 console.log('options.manual',options.manual)
 if(options.manual==true){
 	sheet_name+="_MANUAL_"+moment(new Date()).format('DD_MM_YYYY')
@@ -27,8 +28,11 @@ async.series([
   
     doc.useServiceAccountAuth(creds, step);
   },
+  
    function getInfoAndWorksheets(step) {
-    doc.getInfo(function(err, info) {
+   
+
+   doc.getInfo(function(err, info) {
       console.log('Loaded doc: '+info.title+' by '+info.author.email);
      		var log = new logger({								
 								date:  moment(new Date()).format(),
@@ -85,7 +89,7 @@ async.series([
 	}
    },
      function setHeaderRow(step) {
-console.log('addig headsers')
+console.log('addig headers')
 		 var headers = []
 		 headers.push("product_type")
 		 headers.push("variant_id")

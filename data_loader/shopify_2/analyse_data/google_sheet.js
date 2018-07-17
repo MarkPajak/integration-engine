@@ -77,13 +77,10 @@ self.get_data = function(cb){
 							new_product.order_cost=product.cost_price*_product.count		
 							new_product.order_status=order_status
 							matches++
-						console.log(matches+ ' product-orders added')	
-						//n.b. does async mean soem get lost?	
-						var shopify_order = new Shopify_order(new_product);	
-						shopify_order.save();
-							
-							
-							
+							console.log(matches+ ' product-orders added')	
+							//n.b. does async mean soem get lost?	
+							var shopify_order = new Shopify_order(new_product);	
+							shopify_order.save();
 							result.push(new_product)
 	
 						}

@@ -20,37 +20,7 @@ shops.push("MSHED")
 shops.push("BMAG")
 shops.push("ONLINE")
 
-process_shop_data = function(shop,cb){
 
-
-if(shop=="ONLINE"){
-config.source_name="web"
-data_number=100
-}
-	config.created_at_min=moment(new Date()).add(-data_number, 'days').format()
-	config.generate_order_forms=false
-	config.save_to_sheets=true
-	config.source_name=""
-	
-	console.log('config.source_name',config.source_name)
-	
-	config.title = "last_"+data_number+"_days"
-	config.update_product_types=true
-
-	
-	var keys = allkeys[shop]
-	config.google_sheet_id=keys.google_sheet_id
-	
-var process_shopify_recent_product_analytics = new Process_shopify_recent_product_analytics(keys,config)
-  
-process_shopify_recent_product_analytics.go(function(data) {
-
-	console.log('all done')
-	
-	  cb() 
-},function done() {})
-
-}
 
 	function callbackhandler(err, results) {
 			console.log('It came back with this ' + results);
@@ -92,8 +62,41 @@ process_shopify_recent_product_analytics.go(function(data) {
 			
 			if(err) console.log(err)
 			});	
+			
+			
+			
+			
 		
-		
+		process_shop_data = function(shop,cb){
+
+
+										if(shop=="ONLINE"){
+											config.source_name="web"
+											data_number=100
+										}
+										
+										config.created_at_min=moment(new Date()).add(-data_number, 'days').format()
+										config.generate_order_forms=false
+										config.save_to_sheets=true
+										config.source_name=""										
+										console.log('config.source_name',config.source_name)										
+										config.title = "last_"+data_number+"_days"
+										config.update_product_types=true
+										var keys = allkeys[shop]
+										config.google_sheet_id=keys.google_sheet_id											
+										
+										
+										
+										var process_shopify_recent_product_analytics = new Process_shopify_recent_product_analytics(keys,config)									  
+										
+										process_shopify_recent_product_analytics.go(function(data) {
+											  
+											  console.log('all done')											
+											  cb()
+											  
+										},function done() {})
+
+		}
 		
 router.get('/test', function(req, res, next) {
 	
