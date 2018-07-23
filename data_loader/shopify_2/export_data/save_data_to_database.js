@@ -82,9 +82,11 @@ if(err) console.log(err)
 								cbb()});
 		
 			
+					}, function(err) {
+					done()
 					});
 					
-		done()
+		
 		
 	})
 
