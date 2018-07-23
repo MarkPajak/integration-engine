@@ -3,7 +3,8 @@ var moment = require('moment');
 var Shopify_month_report = new mongoose.Schema({
 		
 				shop_id: { type: String},	
-				month_id: { type: String, unique: true },	
+				month_id: { type: String},	
+				month_product_id: { type: String, unique: true },
 				year:{ type: Number },	
 				month:{ type: String },	
 				rank:{ type: Number },	
@@ -19,9 +20,9 @@ var Shopify_month_report = new mongoose.Schema({
 				price:{ type: Number },		
 				cost_of_goods:{ type: String },	
 				order_cost:{ type: Number },	
-				profitability:{ type: Number },
-				inventory_quantity:{ type: Number },
-				order_status:{ type: Number },
+				profitability:{ type: String },
+				inventory_quantity:{ type: String },
+				order_status:{ type: String },
 				barcode:{ type: String },
 				sku:{ type: String },
 				date_report_run:{ type: Date },	

@@ -90,9 +90,11 @@ cb()
 							 if(!err && post && added_order_items.indexOf(item.line_item_id)==-1 ){
 									//n.b. line item quantity
 									
-									console.log('post.quantity ', post.quantity)
-									console.log(' item.quantity ', item.quantity)
-									
+								//	console.log('post.quantity ', post.quantity)
+									//console.log(' item.quantity ', item.quantity)
+										console.log(' item.quantity * item.price', item.quantity * item.price)
+										
+										
 									var shopify_transaction = new Shopify_transaction({
 										//transaction_id:item.id+shop_id,
 										date:			 		item.date,

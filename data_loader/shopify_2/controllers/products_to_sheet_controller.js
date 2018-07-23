@@ -91,6 +91,7 @@ shops.push("BMAG_MONTHLY_PRODUCTS")
 			google_sheets_key_name = "BMAG_MONTHLY_PRODUCTS"
 			
 			process_shop_data(google_sheets_key_name,function() { //name of 		
+				mongoose.connection.close()	
 				callback()	
 			})
 		} 
