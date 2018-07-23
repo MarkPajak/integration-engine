@@ -52,8 +52,12 @@ function products(total_orders,cb){
 						});	
 						log.save(function (err) {})
 				async.forEach(body.products, function(post, cbb) { 
-						variant=post.variants[0]
-						//n.b. different variants not included in analysis>>>>RISK
+				
+	async.forEach(post.variants, function(variant, cbb) {				
+						
+						
+					
+						//n.b. was getting less than expected sales in results - have now incluyded all variants in analysis>>>>hopefully fixed
 						//console.log(' \n post.title.. '+ post.title)	
 						if(	post.product_type=="")post.product_type="unassigned"
 						
@@ -76,6 +80,7 @@ function products(total_orders,cb){
 						  shopify_products.save(function(){	 cbb()});
 	
 					});
+});
 								
 					if(body.products.length!=0){
 					
@@ -115,6 +120,7 @@ else
 				url: url,
 				json: true
 			}, function (error, response, body) {
+				if(error) {console.log(error)}
 				if (!error && response.statusCode === 200) {
 					 products(body.count,cb2)
 				}

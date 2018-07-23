@@ -3,7 +3,7 @@ var self = this
 
 
 
-var created_at_max = options.created_at_max 
+var created_at_max = options.created_at_max || ""
 var created_at_min = options.created_at_min
 
 
@@ -89,12 +89,18 @@ cb()
 								 
 							 if(!err && post && added_order_items.indexOf(item.line_item_id)==-1 ){
 									//n.b. line item quantity
+									
+									console.log('post.quantity ', post.quantity)
+									console.log(' item.quantity ', item.quantity)
+									
 									var shopify_transaction = new Shopify_transaction({
 										//transaction_id:item.id+shop_id,
 										date:			 		item.date,
 										shop_id:				shop_id,
 										source_name:			item.source_name,
-										quantity:				post.quantity,
+										quantity:				item.quantity,
+										discount:				item.total_discount,
+										gross_sales:			item.quantity * item.price ,
 										product_type: 			post.product_type,
 										number_bought:		    item.quantity,										
 										product_id: 			post.id,
@@ -105,7 +111,7 @@ cb()
 										barcode: 				post.barcode,
 										vendor:					post.vendor,
 										title: 					post.title,
-										price:					post.price,
+										price:					item.price,
 										line_id:				item.line_item_id
 									});	
 								
@@ -115,13 +121,13 @@ cb()
 									shopify_transaction.save(function (err) {
 										if(err) console.log(err)
 										product_count++	
-										if( total_orders[product_count]&&product_count< orders_in_total){
+										if( total_orders[product_count]&&product_count<= orders_in_total){
 											
 											getNextitemset(total_orders[product_count])
 										}
 										else
 										{
-											//console.log('max reached ' + shopifyorders.length + ' orders found - end of function chain')
+											console.log('max reached ' + shopifyorders.length + ' orders found - end of function chain')
 											innerCallback()	
 										}
 								 });
@@ -129,12 +135,12 @@ cb()
 							else  //no error
 							{
 								product_count++	
-										if(total_orders[product_count]&&product_count< orders_in_total){
+										if(total_orders[product_count]&&product_count<= orders_in_total){
 											getNextitemset(total_orders[product_count])
 										}
 										else
 										{
-											//console.log('max reached ' + shopifyorders.length + ' orders found - end of function chain')
+											console.log('max reached ' + shopifyorders.length + ' orders found - end of function chain')
 											innerCallback()	
 										}	
 							}
@@ -174,19 +180,22 @@ function orders(total_orders,cb){
 				if (!error && response.statusCode === 200) {
 						
 						_.each(body.orders, function(order) {
-						if(options.source_name=="web" && order.source_name!="web") return;
+						//if(options.source_name=="web" && order.source_name!="web") return; ??include web sales??
+							
 							_.each(order.line_items, function(item) {
+							
 							item.source_name=order.source_name
 							item.order_id=order.id
 							//console.log('order.id',order.id)
 							
-							for(count = 0; count < item.quantity; count++){ 
+							for(count = 0; count <= item.quantity; count++){ 
 							 
-							 	item.line_item_id = item.id+"_"+item.order_id+"_"+count
+									item.line_item_id = item.id+"_"+item.order_id+"_"+count
 							 
 									item.date= new Date(order.created_at)
+									
 									if(item.product_id){									
-									shopifyorders.push(item)	
+										shopifyorders.push(item)	
 									}	
 }									
 								});		

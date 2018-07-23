@@ -7,6 +7,7 @@ var Shopify_products = require('../../../models/Shopify_product.js');
 var _ = require('underscore');
 var mongoose = require('mongoose');
 var dbConfig = require('../../../db');
+var newproducts=[]
 
 csv_to_collection = new Csv_to_collection
 
@@ -24,14 +25,20 @@ var inputFile='./data_loader/shopify/imports/'+keys.cost_of_goods;
 								if(variant_id){
 									Shopify_products.find({'variant_id':variant_id})
 													.exec(function (err, products) {
-													_.each(products, function (product) {
+											
+												_.each(products, function (product) {
 															if(err) console.log(err)
-															if(product)console.log(product._id)
-															if(cost_price>0&& product.variant_id){
-																 product.cost_price=cost_price
-																// console.log(product)
-																product.save()
-															}	
+								
+															
+															if( product.variant_id){
+																if(cost_price){
+																	if(cost_price>0&& product.variant_id){
+																		 product.cost_price=cost_price
+																		newproducts.push(product)																	
+																}
+															}
+															}
+															
 													});	
 																			
 												
@@ -39,7 +46,10 @@ var inputFile='./data_loader/shopify/imports/'+keys.cost_of_goods;
 								}				
 								
 						})	
-cb()							
+Shopify_products.update({}, newproducts, {multi: true}, function(err) { 	if (err) {
+																				console.log(err);
+																			}});
+																							
 				})
 		}
 

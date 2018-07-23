@@ -9,7 +9,8 @@ var dbConfig = require('../../../db');
 var load_shopify_products = require("../load_data/load_shopify_product.js");
 var shopify_transaction = require("../load_data/shopify_transactions.js");
 var transactions_data_to_google_sheet = require("../analyse_data/google_sheet.js");
-var save_data_to_google_sheet = require("../export_data/save_data_to_google_sheet.js");
+var save_data_to_google_sheet = require("../export_data/save_product_report_to_google_sheet.js");
+var save_data_to_database = require("../export_data/save_data_to_database.js");
 //var Order_form_to_google_sheet = require("../shopify/order_form_controller.js");
 var Load_cost_of_goods = require("../load_data/load_cost_of_goods.js");
 var Monthlytotals = require("../analyse_data/monthly_totals.js");
@@ -26,7 +27,8 @@ function file_write(message){
 var load_shopify_productsInstance = new load_shopify_products(keys,options)
 var shopify_transactionInstance = new shopify_transaction(keys,options)
 var transactions_data_to_google_sheet = new transactions_data_to_google_sheet(keys,options)
-var save_data_to_google_sheetInstance = new save_data_to_google_sheet(keys,options);  
+var save_data_to_google_sheetInstance = new save_data_to_google_sheet(keys,options); 
+var save_data_to_databaseInstance = new save_data_to_database(keys,options);   
 //var order_form_sheet = new Order_form_to_google_sheet(keys,options);  
 var load_cost_of_goods = new Load_cost_of_goods(keys,options);  
 var monthlytotals = new Monthlytotals(keys,options); 
@@ -70,7 +72,7 @@ this.go = function(done,cb){
 				callback(null,donex)	
 			})
 		}   
-		 
+		
 		function get_data(callback) {
 			file_write('>>>>>>>>>>>get_data ')
 			transactions_data_to_google_sheet.get_data(function(analytics_data) {
@@ -78,6 +80,16 @@ this.go = function(done,cb){
 				shopifydata=analytics_data
 				callback(null,analytics_data)
 				cb(shopifydata)				
+			})
+		}  
+		
+			function save_to_database(callback) {
+		
+			file_write('>>>>>>>>>>>save_to_database')
+			
+			save_data_to_databaseInstance.add_data_to_database(shopifydata,function(analytics_data) {
+				file_write('add_data_to_database callback')
+				callback(null,analytics_data)	
 			})
 		}  
 
@@ -120,11 +132,13 @@ this.go = function(done,cb){
 
 		async.series([
 			count_all_products,
-			cost_of_goods,
+			//cost_of_goods, //NB hangs for unknown reason
 			count_all_orders,
+			
 			get_data,
-			add_data_to_sheet,
-			monthly_totals
+			save_to_database//,
+			//add_data_to_sheet,
+			//monthly_totals
 			//order_form_to_google_sheet
 			
 		], function (err, results) {

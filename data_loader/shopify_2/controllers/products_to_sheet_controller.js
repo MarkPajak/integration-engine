@@ -1,3 +1,10 @@
+//changelog
+//need to troubleshoot why it is bringing back less orders than the shopify report
+//fixed 17/07 it was not counting the number bought, just counting the number of orders :)
+//n.b. shopify changed the default data to return as last 60 days??
+
+
+
 var express = require('express');
 var router = express.Router();
 var shopifyAPI = require('shopify-node-api');
@@ -36,9 +43,16 @@ shops.push("BMAG_MONTHLY_PRODUCTS")
 											data_number=100
 										}
 										
-										config.created_at_min="20018-04-01 00:00"
-										config.created_at_max="20018-04-02 00:00"
-										
+										const monthNames = ["January", "February", "March", "April", "May", "June",
+										  "July", "August", "September", "October", "November", "December"
+										];
+										//config.created_at_min=moment(new Date()).add(-data_number, 'days').format()
+										config.created_at_min="2018-06-01"
+										var start_date = new Date(config.created_at_min);
+										config.created_at_max = new Date(start_date.getFullYear(), start_date.getMonth()+1, 0);
+										config.month=monthNames[start_date.getMonth()]
+										config.year=start_date.getFullYear()
+							
 										
 										
 										
@@ -66,18 +80,17 @@ shops.push("BMAG_MONTHLY_PRODUCTS")
 
 		function callbackhandler(err, results) {
 		
-file_write('It came back with this ' + results);
+			file_write('It came back with this ' + results);
+		
 		} 
 		
 		
-		function process_mshed(callback) {
+		function process_BMAG_MONTHLY_PRODUCTS(callback) {
 		
-			file_write('>>>>>>>>>>>count_all_products')
-			
+			file_write('>>>>>>>>>>>count_all_products')			
 			google_sheets_key_name = "BMAG_MONTHLY_PRODUCTS"
 			
-			process_shop_data(google_sheets_key_name,function() { //name of 
-		
+			process_shop_data(google_sheets_key_name,function() { //name of 		
 				callback()	
 			})
 		} 
@@ -103,9 +116,9 @@ file_write('It came back with this ' + results);
 
 	
 		async.series([
-			process_mshed,
-			process_BMAG,
-			process_ONLINE
+			process_BMAG_MONTHLY_PRODUCTS,
+			//process_BMAG,
+			//process_ONLINE
 		], function (err, results) {
 		
 			
