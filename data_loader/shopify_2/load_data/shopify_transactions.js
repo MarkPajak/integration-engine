@@ -92,7 +92,7 @@ cb()
 									
 								//	console.log('post.quantity ', post.quantity)
 									//console.log(' item.quantity ', item.quantity)
-										console.log(' item.quantity * item.price', item.quantity * item.price)
+										//console.log(' item.quantity * item.price', item.quantity * item.price)
 										
 										
 									var shopify_transaction = new Shopify_transaction({
@@ -156,7 +156,7 @@ getNextitemset(total_orders[0])
 }
 else
 {
-
+console.log('didnt find any orders!')
 cb()
 }	
 

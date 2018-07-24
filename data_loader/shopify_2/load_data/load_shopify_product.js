@@ -37,7 +37,8 @@ function products(total_orders,cb){
 			
 			var return_product_type = ""
 			url = url_base+"products.json?&limit="+limit+"&page="+current_page+ "&fields=id,title,product_type,published_at,variants,vendor"
-	//console.log('url'+url)		
+			//console.log('url'+url)		
+			
 			request({
 				url: url,
 				json: true

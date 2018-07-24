@@ -34,7 +34,7 @@ self.get_data = function(cb){
 					$group: {
 						_id: '$product_id' ,  
 							 count: {$sum:'$number_bought'},
-							 discounts: {$sum:'$discount'}
+							 discounts: {$sum:'$discounts'}
 					},
 					
 				}, {$sort : {count: -1 } }
@@ -59,7 +59,7 @@ self.get_data = function(cb){
 							new_product=product.toJSON()
 							new_product.count=_product.count
 							new_product.name=product.title
-							new_product.discounts=product.discounts
+							new_product.discounts=_product.discounts || 0
 							new_product.barcode=product.barcode
 							new_product.cost_of_goods=product.cost_price
 										
@@ -79,7 +79,7 @@ self.get_data = function(cb){
 							new_product.order_cost=product.cost_price*_product.count		
 							new_product.order_status=order_status
 							matches++
-							console.log(matches+ ' product-orders added')	
+							//console.log(matches+ ' product-orders added')	
 							//n.b. does async mean soem get lost?	
 							var shopify_order = new Shopify_order(new_product);	
 							shopify_order.save();

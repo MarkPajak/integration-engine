@@ -60,6 +60,7 @@ this.go = function(done,cb){
 		function cost_of_goods(callback) {
 			file_write('>>>>>>>>>>>cost_of_goods')
 			load_cost_of_goods.add_price_to_products( function(donex) {
+				
 				console.log('cost_of_goods callback')
 				callback(null,donex)	
 			})
@@ -68,6 +69,7 @@ this.go = function(done,cb){
 		function count_all_orders(callback) {
 			file_write('>>>>>>>>>>>count_all_orders')
 			shopify_transactionInstance.count_all_orders( function(donex) {
+				
 				file_write('count_all_orders callback')
 				callback(null,donex)	
 			})
@@ -76,6 +78,7 @@ this.go = function(done,cb){
 		function get_data(callback) {
 			file_write('>>>>>>>>>>>get_data ')
 			transactions_data_to_google_sheet.get_data(function(analytics_data) {
+				
 				file_write('get_data callback')
 				shopifydata=analytics_data
 				callback(null,analytics_data)
@@ -87,6 +90,7 @@ this.go = function(done,cb){
 		
 			file_write('>>>>>>>>>>>save_to_database')			
 			save_data_to_databaseInstance.add_data_to_database(shopifydata,function(analytics_data) {
+				
 				file_write('add_data_to_database callback')
 				callback(null,analytics_data)	
 			})
@@ -96,6 +100,7 @@ this.go = function(done,cb){
 		
 			file_write('>>>>>>>>>>>add_data_to_sheet')			
 			save_data_to_google_sheetInstance.add_data_to_sheet(shopifydata,function(analytics_data) {
+				
 				file_write('add_data_to_sheet callback')
 				callback(null,analytics_data)	
 			})
