@@ -52,7 +52,7 @@ else
 router.get('/:shop_id/:year/:month', function(req, res, next) {
 
 
-var vendor_id=req.params['shop_id']
+var shop_id=req.params['shop_id']
 var year=req.params['year']
 var month=req.params['month']
 

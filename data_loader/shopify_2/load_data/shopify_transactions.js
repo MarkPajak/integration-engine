@@ -149,8 +149,16 @@ cb()
 				
 					})	//end of async
 		}
-		
-getNextitemset(total_orders[0])		
+
+
+if(		orders_in_total>0){
+getNextitemset(total_orders[0])	
+}
+else
+{
+
+cb()
+}	
 
 }
 

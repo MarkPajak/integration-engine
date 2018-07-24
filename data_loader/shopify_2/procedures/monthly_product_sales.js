@@ -85,8 +85,7 @@ this.go = function(done,cb){
 		
 			function save_to_database(callback) {
 		
-			file_write('>>>>>>>>>>>save_to_database')
-			
+			file_write('>>>>>>>>>>>save_to_database')			
 			save_data_to_databaseInstance.add_data_to_database(shopifydata,function(analytics_data) {
 				file_write('add_data_to_database callback')
 				callback(null,analytics_data)	
@@ -95,8 +94,7 @@ this.go = function(done,cb){
 
 		function add_data_to_sheet(callback) {
 		
-			file_write('>>>>>>>>>>>add_data_to_sheet')
-			
+			file_write('>>>>>>>>>>>add_data_to_sheet')			
 			save_data_to_google_sheetInstance.add_data_to_sheet(shopifydata,function(analytics_data) {
 				file_write('add_data_to_sheet callback')
 				callback(null,analytics_data)	

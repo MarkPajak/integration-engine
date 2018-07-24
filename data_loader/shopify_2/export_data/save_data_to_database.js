@@ -77,7 +77,7 @@ var save_data_to_database = function (keys,options){
 
 								var shopify_monthly = new Shopify_monthly(new_product_month);
 								shopify_monthly.save(function(err){	
-if(err) console.log(err)
+		if(err) console.log(err)
 
 								cbb()});
 		

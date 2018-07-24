@@ -33,7 +33,8 @@ self.get_data = function(cb){
 				{
 					$group: {
 						_id: '$product_id' ,  
-							 count: {$sum:'$number_bought'}
+							 count: {$sum:'$number_bought'},
+							 discount: {$sum:'$discount'}
 					},
 					
 				}, {$sort : {count: -1 } }

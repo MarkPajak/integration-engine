@@ -71,7 +71,10 @@ function products(total_orders,cb){
 							  barcode: variant.barcode,
 							  metafield:post.metafield,
 							  taxable:variant.taxable,
+							  discounts:post.discounts,
+							  taxable:post.taxable,
 							  vendor:post.vendor,
+							  fulfillment_status:post.fulfillment_status,
 							  shop_id:shop_id,
 							  inventory_quantity:  variant.inventory_quantity,
 							  price:  variant.price

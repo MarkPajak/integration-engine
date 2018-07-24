@@ -47,7 +47,12 @@ shops.push("BMAG_MONTHLY_PRODUCTS")
 										  "July", "August", "September", "October", "November", "December"
 										];
 										//config.created_at_min=moment(new Date()).add(-data_number, 'days').format()
-										config.created_at_min="2018-06-01"
+										
+										
+										config.created_at_min="2018-07-01"
+										
+										
+										
 										var start_date = new Date(config.created_at_min);
 										config.created_at_max = new Date(start_date.getFullYear(), start_date.getMonth()+1, 0);
 										config.month=monthNames[start_date.getMonth()]
