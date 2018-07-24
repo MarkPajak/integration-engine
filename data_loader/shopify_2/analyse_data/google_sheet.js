@@ -49,7 +49,7 @@ self.get_data = function(cb){
 				var matches = 0
 				var report_date = new Date()
 				//possible mem leak
-				product_list
+				
 				
 				
 				_.each(transaction_analytics, function(_product) {	
@@ -59,14 +59,14 @@ self.get_data = function(cb){
 							new_product=product.toJSON()
 							new_product.count=_product.count
 							new_product.name=product.title
-							new_product.discounts=_product.discounts || 0
+							new_product.discounts=_product.discounts 
 							new_product.barcode=product.barcode
 							new_product.cost_of_goods=product.cost_price
 										
 							new_product.variant_id=product.variant_id
 							new_product.report_id=options.title+"_"+moment(new Date()).format('DD_MM_YYYY')
 							new_product.date_report_run=report_date 
-							new_product.net_sales = new_product.price/1.2
+							new_product.net_sales = Math.round(new_product.price/1.2)
 							new_product.profitability=product.cost_price ? (_product.count*(product.taxable=="true" ? new_product.net_income : new_product.price)) - (_product.count*product.cost_price) : "COST PRICE NEEDED"
 							new_product.taxable=product.taxable
 							

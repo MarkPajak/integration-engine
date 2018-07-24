@@ -17,7 +17,8 @@ var Shopify_transaction = new mongoose.Schema({
 		metafield: { type: Object},
 		product_id: { type: String, required: true },	
 		title: { type: String, required: true },	
-		source_name: { type: String},		
+		source_name: { type: String},	
+		discounts: { type: Number},				
 		price:{ type: Number }
 });
 

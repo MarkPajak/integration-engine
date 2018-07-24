@@ -17,6 +17,7 @@ var Shopify_product = new mongoose.Schema({
 			inventory_quantity: { type: Number},
 			revenue_to_date: { type: Number},	
 			number_sold: { type: Number},
+			
 			price:{ type: Number }
 });
 

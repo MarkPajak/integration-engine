@@ -32,7 +32,7 @@ var Shopify_month_report = new mongoose.Schema({
 				vendor:{ type: String },	
 				count:{ type: Number },
 				name: { type: String, required: true },	
-				net_sales:{ type: Number },
+				
 				Jan:{ type: Number },
 				Nov:{ type: Number },
 				Dec:{ type: Number }
