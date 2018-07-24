@@ -58,6 +58,7 @@ var shop_id=req.params['shop_id']
 var year=req.params['year']
 var month=req.params['month']
 
+
 			shopify_month_report.find().sort([['gross_sales', -1]])
             .exec(function (err, athletes) {
 				  if (err) return handleError(err);
