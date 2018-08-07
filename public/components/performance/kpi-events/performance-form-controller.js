@@ -6,7 +6,7 @@ $scope.scope = $scope;
 $scope.events = [];
 $scope.selected_event=[]
 $scope.teams=[]
-	$scope.extraQuery = { "on_site_off_site":"#"}
+	$scope.extraQuery = { "kpi_type":"#", "on_site_off_site":"#"}
 
 			
 			
@@ -223,7 +223,8 @@ compare_date.setFullYear( compare_date.getFullYear() - 1 );
 			
 			var query = {'team_id':visit_form.team.value,
 							//"event_lead":visit_form.event_lead.value,
-							"event_name": $('#event_name').find("option:selected").text(),
+							"event_name": visit_form.event_name.value,	
+							"kpi_type":visit_form.kpi_type.value,	
 							"date_value":visit_form.date_value.value,
 							//"on_site_off_site": visit_form.on_site_off_site.value,
 							"exact":true
