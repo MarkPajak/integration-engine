@@ -8,6 +8,8 @@ Route_permissions= require('../functions/route_permissions.js');
 route_permissions=new Route_permissions()
 Api_calls= require('../functions/standard_api_calls.js');
 
+
+
 var isAuthenticated = function (req, res, next) {
 	console.log('if user is authenticated in the session, call the next() to call the next request handler ')
 	// Passport adds this method to request object. A middleware is allowed to add properties to
