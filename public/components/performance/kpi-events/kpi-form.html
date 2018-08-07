@@ -36,28 +36,30 @@ You'll probably need to log in to be able to enter data
 		<form name="visit_form" id="visit_form">
 		
        
-				<label for="exampleSelect1">Name of event lead:</label>
-                <input type="text" name="event_lead" E" ng-model="event_lead">
-				<br>
+				  <div class="form-group">
+				<label for="exampleSelect1">Type of KPI</label>
+				<select class="form-control input-lg" id="kpi_type">
+					<option value="project">project</option>
+					<option value="partnership">partnership</option>
+					<option value="event">event</option>
+					<option value="other">other</option>
+				
+				</select>
+			  </div>
 					
 			 	    <div class="form-group">
-						<label for="comments">Event name:</label>
-						<select  id="event_name" class="form-control input-lg" ng-model="event" ng-options="(c.startDate + ' - '+ c.type+': '+c.name) for c in events" ng-change="search2(event)">
-								<option value="">-- choose event or select add new --</option>
-						</select>
-						<div class="col-md-4" ng-show="event.name == 'add new event'">
-							<input class="text-box" type="text" name="NewValue" ng-model="newValue" />
-							<button ng-click="add(newValue)">Click add to save event name</button>
-						</div>
+						<label for="comments">Name:</label>
+					
+					  <input type="text"  id="event_name"  name="event_name" >
 					</div>
 					
 
 					 <div class="form-group">
-						<label for="comments">Associated museum:</label>
-						  <select  id="museum" class="form-control input-lg" ng-model="selected_museum">
-							  <option></option>
-							  <option ng-repeat="i in museums" value="{{ i.value }}" ng-selelected="{{ selected_museum == i.value }}">{{ i.value }}</option>
-						</select>
+						<label for="comments">Team:</label>
+					
+							  <input type="text"  id="team"  name="country" value="{{team}}" readonly>
+							  
+					
 					</div>
 					<!--
 					<div class="form-group">
@@ -76,7 +78,7 @@ You'll probably need to log in to be able to enter data
 				-->
 				
 				
-			  	 <!-- RADIO BUTTONS -->
+			  	 <!-- RADIO BUTTONS 
 				<div class="form-group">
 					<div class="radio">
 						<label>
@@ -91,16 +93,27 @@ You'll probably need to log in to be able to enter data
 						</label>
 					</div>
 				</div>
+				-->
 				
-				
-			  <div class="form-group">					
-					
-							<label>No. Sessions</label>
-							<input type="number" class="form-control" id="no_sessions" name="count" value="1">
-						
-	 </div>
+						<div class="form-group col-xs-6">
+							<label>Number of sessions</label>
+							<input type="number" class="form-control" id="no_sessions" name="no_sessions">
+						  </div>
 	
-     
+						<div class="form-group col-xs-6">
+							<label>Number of people</label>
+							<input type="number" class="form-control" id="no_visits" name="no_visits">
+						  </div>
+						  
+						  	<div class="form-group col-xs-6">
+							<label>Number of enquiries</label>
+							<input type="number" class="form-control" id="no_enquiries" name="no_enquiries">
+						  </div>
+
+						<div class="form-group col-xs-6">
+							<label>Income</label>
+							<input type="number" class="form-control" id="income" name="income">
+						 </div>
 
 			  	
 			  <div class="form-group">
@@ -112,8 +125,9 @@ You'll probably need to log in to be able to enter data
 					<input type = "date" class="form-control input-lg" id="date_value_end" rows="3">
 				
 			  </div>
-
-
+		
+	
+ <!--
 				<div class="panel-body">
 					<div class="panel-heading">visitor numbers</div>
 						<div ng-repeat="age_group in age_groups" >
@@ -125,13 +139,13 @@ You'll probably need to log in to be able to enter data
 							</div>
 						</div>
 			
-			 
+			 -->
 			  
-					
+		 <!--			
 						  <div class="form-group col-xs-6">
 							<label>Age group:</label>
 							<select class="form-control input-lg" id="age_group" name="age_group">
-								<option value="Under 5s">Under 5s</option> <!-- REMEMBER TO CHANGE site_events.js route if you add or change an age grouop -->
+								<option value="Under 5s">Under 5s</option> 
 								<option value="ages 5-15">5-15</option>
 								<option value="Adults 16+">Adults 16+</option>
 							</select>  
@@ -152,24 +166,7 @@ You'll probably need to log in to be able to enter data
 		<label> Did your event or activity specifically focus on any of the below groups? If so, please select all that apply.</label>
 <br>
 <br>
-<p>NB. Please only select groups that the event or activity was specifically and intentionally focused on; this question is not about who happened to attend an event. If the event was simply aimed at the general public, please continue to the next question.</p>
-
-
-		 
-	<div class="checkbox" ng-repeat="group_name in target_groups">
-		<div class="form-inline">
-		<label>
-		  <input class="radioinput_fx"
-			type="checkbox"
-			name="target_groups[]"
-			value="{{group_name}}"
-			ng-checked="selection.indexOf(group_name) > -1"
-			ng-click="toggleSelection(group_name)"
-		  > {{group_name.name}}
-		</label>
-		</div>
-	</div>
-			  
+  -->
 	
 			
 			

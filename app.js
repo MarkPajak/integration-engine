@@ -182,12 +182,14 @@ var learning = require('./routes/performance/learning')
 var exhibitions_pwyt =  require('./routes/performance/exhibitions_pwyt')
 var gallery_visits =  require('./routes/performance/gallery_visits')
 var events =  require('./routes/performance/site_events.js')
+var enquiry_events =  require('./routes/performance/enquiry_events.js')
+
 var operations =  require('./routes/performance/operations.js')
 
 //shopify
 var shopify = require('./routes/shopify')
 var shopify_monthy_products = require('./routes/shopify/monthly_products')
-
+var shopify_monthy_vendors = require('./routes/shopify/monthly_vendors')
 
 var uploader = require('./routes/uploads/upload')	
 var downloader = require('./routes/uploads/download')	
@@ -248,6 +250,7 @@ app.use('/shopify_transactions', shopify_transactions);
 app.use('/shopify_product', shopify_product);
 app.use('/shopify_order', shopify_order);
 app.use('/shopify_monthy_products', shopify_monthy_products);
+app.use('/shopify_monthy_vendors', shopify_monthy_vendors);
 app.use('/upload', uploader);
 app.use('/download', downloader);
 
@@ -274,6 +277,11 @@ app.use('/learning', learning);
 app.use('/exhibitions_pwyt', exhibitions_pwyt);
 app.use('/gallery_visits', gallery_visits);
 app.use('/events', events);
+app.use('/kpi_events', enquiry_events);
+
+
+
+
 app.use('/operations', operations);
 
 

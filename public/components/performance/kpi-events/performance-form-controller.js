@@ -1,11 +1,11 @@
-exports.record_events_controller =  function($scope, $http, $q, $routeParams, $location,
-          $rootScope,Raw_events,data_table_reload,Emu_events,get_table_data,Community_groups
+exports.record_kpi_events_controller =  function($scope, $http, $q, $routeParams, $location,
+          $rootScope,Raw_kpi_events,data_table_reload,Emu_events,get_table_data_team,Community_groups
     ) {
 
 $scope.scope = $scope;
 $scope.events = [];
 $scope.selected_event=[]
-$scope.museums=[]
+$scope.teams=[]
 	$scope.extraQuery = { "on_site_off_site":"#"}
 
 			
@@ -21,27 +21,17 @@ $scope.$watch('event', function (newValue) {
 					
 					if(newValue.venue){
 					
-						newValue.venue=newValue.venue.replace("M Shed","M-SHED")
-						newValue.venue=newValue.venue.replace("Bristol Museum & Art Gallery","BMAG")
-						newValue.venue=newValue.venue.replace("Georgian House","GEORGIAN-HOUSE")
-						newValue.venue=newValue.venue.replace("The Red Lodge Museum","RED-LODGE")
-						newValue.venue=newValue.venue.replace("Bristol Archives","BRISTOL-ARCHIVES")
-						newValue.venue=newValue.venue.replace("Kings Weston Roman Villa","ROMAN-VILLA")
-						newValue.venue=newValue.venue.replace("Blaise Castle House Museum","BLAISE")
-						$scope.selected_museum=newValue.venue
+					//	newValue.venue=newValue.venue.replace("Arts and Events","Arts and Events")
+					
+						$scope.selected_team=newValue.venue
 					}
 					
 			}
 })
 
 
-$scope.museums.push({value:"BMAG",name:'Bristol Museum & Art Gallery'});
-$scope.museums.push({value:"M-SHED",name:'M Shed'});		
-$scope.museums.push({value:"GEORGIAN-HOUSE",name:'The Georgian House Museum'});	
-$scope.museums.push({value:"RED-LODGE",name:'The Red Lodge'});				
-$scope.museums.push({value:"BLAISE",name:'Blaise Museum'});
-$scope.museums.push({value:"BRISTOL-ARCHIVES",name:'Bristol Archives'});
-$scope.museums.push({value:"ROMAN-VILLA",name:'Kings Weston Roman Villas'});	
+$scope.team=$scope.user.team
+
 		
 
 	 Community_groups.query({}, function(groups) {
@@ -194,43 +184,52 @@ compare_date.setFullYear( compare_date.getFullYear() - 1 );
 	
  $scope.onSubmit=function() {
 		
-			$scope.addCount()
+			//$scope.addCount()
 			//$scope.add_community()
 			
-		    var kpis = new Raw_events({
-            museum_id:visit_form.museum.value,				  
-			kpi_type: "visits",	
+		    var kpis = new Raw_kpi_events({
+            team_id:visit_form.team.value,				  
+			
 			
 		//DEPARTMENTAL VARIABLES	
 			
-			age_groups: $scope.age_groups,
-			on_site_off_site: visit_form.on_site_off_site.value,
-			target_groups:$scope.selection,
-			event_name: $('#event_name').find("option:selected").text(),
-			age_group: visit_form.age_group.value,
-			no_sessions: visit_form.no_sessions.value,
-			event_lead: visit_form.event_lead.value,
+			//age_groups: $scope.age_groups,
+			//on_site_off_site: visit_form.on_site_off_site.value,
+			//target_groups:$scope.selection,
+			event_name:visit_form.event_name.value,	
+			//age_group: visit_form.age_group.value,
+			//event_lead: visit_form.event_lead.value,
 		//	community_group: $('#community_group').find("option:selected").text(),
 		
-
+			kpi_type:visit_form.kpi_type.value,	
 			date_logged:new Date(),	
 			date_value:visit_form.date_value.value,
 			date_value_end:visit_form.date_value_end.value,
-			comments:visit_form.comments.value,			
+			comments:visit_form.comments.value,	
+
+
+				no_sessions:visit_form.no_sessions.value,	
+				income:visit_form.income.value,	
+				no_visits:visit_form.no_visits.value,	
+				no_enquiries:visit_form.no_enquiries.value,
+
+
+
+				
 			logger_user_name: $scope.user.username
             });
 			
 			
 			
-			var query = {'museum_id':visit_form.museum.value,
-							"event_lead":visit_form.event_lead.value,
+			var query = {'team_id':visit_form.team.value,
+							//"event_lead":visit_form.event_lead.value,
 							"event_name": $('#event_name').find("option:selected").text(),
 							"date_value":visit_form.date_value.value,
-							"on_site_off_site": visit_form.on_site_off_site.value,
+							//"on_site_off_site": visit_form.on_site_off_site.value,
 							"exact":true
 						};
 			
-			Raw_events.query(query, function(visits) {
+			Raw_kpi_events.query(query, function(visits) {
 				console.log('Raw_visits',visits.length)
 			//if(visits.length>0) {
 			
@@ -270,17 +269,17 @@ compare_date.setFullYear( compare_date.getFullYear() - 1 );
 							  message+= "\n ";
 							  //message+= " "+ data + " added to " + museum;
 							  alert(message);
-							  get_table_data.getData(moment(new Date()).subtract({'months':1})._d,$scope)		
-							visit_form.on_site_off_site.value=""
-							$scope.age_groups=[]
-							$scope.selection=[]
+							  get_table_data_team.getData(moment(new Date()).subtract({'months':1})._d,$scope)		
+							//visit_form.on_site_off_site.value=""
+							//$scope.age_groups=[]
+							//$scope.selection=[]
 							visit_form.event_name.value=""
-							visit_form.community_group=""
+							//visit_form.community_group=""
 							visit_form.count.value=""
-							visit_form.age_group.value=""
+							//visit_form.age_group.value=""
 							visit_form.comments.value=""
 							visit_form.date_value.value=""
-							visit_form.event_lead.value=""
+						//	visit_form.event_lead.value=""
 							
 							
 							visit_form.date_value_end.value=""

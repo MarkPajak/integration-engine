@@ -12,20 +12,24 @@ var target_groupDoc = new mongoose.Schema({
 });
 
 
-var Events_kpi = new mongoose.Schema({
+var Kpi_events = new mongoose.Schema({
 		  
 		
 			id: String,
-			museum_id: { type: String, required: true},						
+			team_id: { type: String, required: true},						
 			kpi_type: { type: String },	
+			no_sessions: { type: Number, default:1},
+			no_visits: { type: Number},
+			no_enquiries: { type: Number},
+			income: { type: Number},
 			
-			on_site_off_site: { type: String, required: true},
+			//on_site_off_site: { type: String, required: true},
 			event_lead: { type: String},				
 			age_groups:  [age_groupDoc],
 			target_groups:  [target_groupDoc],
 			community_group:  { type: String},
 			event_name: { type: String, required: true},
-			sessons: { type: Number, Default: 1},	
+
 			date_value: { type: Date},	
 			date_value_end: { type: Date},
 			date_logged: { type: Date, required: true},
@@ -36,25 +40,25 @@ var Events_kpi = new mongoose.Schema({
 	
 });
 
-Events_kpi.virtual('date').get(function() {
+Kpi_events.virtual('date').get(function() {
  
 				
 			return   moment(this.date_value).format('DD/MM/YYYY');
 
 });
 
-Events_kpi.virtual('date_recorded').get(function() {
+Kpi_events.virtual('date_recorded').get(function() {
  
 				
 			return   moment(this.date_logged).format('DD/MM/YYYY');
 
 });
-Events_kpi.set('toJSON', {
+Kpi_events.set('toJSON', {
    virtuals: true
 });
-Events_kpi.set('toObject', {
+Kpi_events.set('toObject', {
    virtuals: true
 });
 
 
-module.exports = mongoose.model('Events_kpi', Events_kpi);
+module.exports = mongoose.model('Kpi_events', Kpi_events);

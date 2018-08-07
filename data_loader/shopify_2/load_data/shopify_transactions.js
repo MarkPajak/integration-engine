@@ -122,6 +122,7 @@ cb()
 								added_order_items.push(item.line_item_id)
 								
 									shopify_transaction.save(function (err) {
+									
 										if(err) console.log(err)
 										product_count++	
 										if( total_orders[product_count]&&product_count<= orders_in_total){

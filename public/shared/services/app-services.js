@@ -47,6 +47,202 @@ exports.table_security = function(AuthService,$rootScope) {
 	return this	
 
 }
+	exports.get_table_data_team = function($rootScope,data_table_reload) {	
+
+
+
+var self = this
+var array = {};
+var myScope
+
+
+			
+			array.filter_x= function(filter_key,filter_value,$scope){
+			
+		
+			
+			
+			if($scope){
+				myScope=$scope
+			}
+			
+			
+	
+			
+			
+			var query = {'team_id':"#","exact":false};
+			query[filter_key]=filter_value
+			
+			if($scope.extraQuery){
+								_.extend(query, $scope.extraQuery)
+								// $scope.extraQuery[filter_key]	=filter_value
+							}
+				
+				$rootScope.featured_collection.query(query, function(team) {
+							$scope.rows=[]
+							$scope._rows=[]
+							
+							console.log('filtering ' + team.length + " results")
+							
+							
+							_.each(team,function(row){
+									
+									$scope._rows.push(row)
+										
+							})
+
+						 $scope.gridOptions.data.length = 0;
+						  angular.forEach( $scope._rows, function( row ) {
+							$scope.gridOptions.data.push( row );
+						  });
+						  
+						  
+						  	$scope.$watch(function () {
+			
+								return data_table_reload.getDate();
+
+
+			},
+			
+		   function (value) {
+		 
+		   
+		   }
+		);
+						
+					})			 
+			}
+			
+		
+			
+			
+			array.getData= function(filterdate,$scope){
+			console.log('getData')
+			console.log('filterdate',filterdate)
+			if($scope){
+			myScope=$scope
+			}
+					if(filterdate){
+					console.log('all dates after',filterdate)
+							console.log(filterdate)
+							var filter_month = moment().month()
+							console.log('filter_month',filter_month)
+							filterdate=moment(filterdate)._d
+							
+					}
+					else
+					{
+						
+						
+							var filter_month = moment().month()
+							filterdate=moment(new Date()).subtract({'years': 1})
+							filterdate=moment(filterdate)._d
+							console.log('all dates after',filterdate)
+					
+					}
+					
+							var query = {'team_id':"#","date_value":moment(filterdate).format("YYYY-MM-DD"),"exact":false};
+							
+							if($scope.extraQuery){
+								_.extend(query, $scope.extraQuery)
+							}
+							 
+							 console.log('query',query)
+							 
+							$rootScope.featured_collection.query(query, function(team) {
+							$scope.rows=[]
+							$scope._rows=[]
+							
+							console.log('filtering ' + team.length + " results")
+							
+							
+							_.each(team,function(row){
+							
+							if(filterdate){
+									var data_month = moment(row.date_value).month()
+																		
+									
+								if(moment(row.date_value)._d>=moment(filterdate)._d  && row.team_id!=""){					
+									
+									$scope._rows.push(row)
+									
+								}
+							}
+							else
+							{
+								console.log('displaying all data')
+								$scope._rows.push(row)
+							
+							}
+								
+										
+							})
+
+						 $scope.gridOptions.data.length = 0;
+						  angular.forEach( $scope._rows, function( row ) {
+							$scope.gridOptions.data.push( row );
+						  });
+						  
+						  
+						  	$scope.$watch(function () {
+			
+			return data_table_reload.getDate();
+
+
+			},
+			
+		   function (value) {
+		 
+		   
+		   }
+		);
+						
+					})	
+					
+			$rootScope.alldata=function (val) {
+
+						if (val=="month"){
+						
+							console.log('show month data')
+							var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+							var firstDay = new Date(y, m, 1);
+							var lastDay = new Date(y, m + 1, 0);
+							firstDay = moment(firstDay);
+							array.getData(firstDay,myScope)
+						}
+						else if (val)
+						{
+								console.log('show month data')
+							var date = new Date(val), y = date.getFullYear(val), m = date.getMonth(val);
+							console.log('filtering on month', m)
+							var firstDay = new Date(y, m, 1);
+							var lastDay = new Date(y, m + 1, 0);
+							firstDay = moment(firstDay)._d;
+							array.getData(firstDay,myScope)	
+
+						}
+						else 
+						{
+							console.log('show all data')
+							array.getData("",myScope)		
+
+						}
+
+
+			}
+			
+			
+			$rootScope.dynamic_filter=function (filter_key,filter_value) {
+			
+			array.filter_x(filter_key,filter_value,myScope)
+			
+			}
+			
+		}	
+
+		
+   return array;
+}
 
 exports.get_table_data = function($rootScope,data_table_reload) {	
 

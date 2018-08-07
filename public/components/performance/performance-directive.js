@@ -507,11 +507,32 @@ exports.recordTeg  = function() {
   }
   }
   
+  			exports.kpieventsFormdata = function() {
+  return {
+  // controller: 'giftaid_performance_form',
+      templateUrl: './components/performance/kpi-events/kpi-form-and-data.html'
+  }
+  }
+  
 			exports.rawEventsfilter = function() {
   return {
     templateUrl: './components/performance/events/raw-events-data.html'
   }
 	}
+	
+				exports.rawKpieventsfilter = function() {
+  return {
+    templateUrl: './components/performance/kpi-events/raw-events-data.html'
+  }
+	}
+	
+			exports.rawKpievents = function() {
+  return {
+   controller: 'raw_kpi_events_controller',
+     templateUrl: './shared/templates/data_table.html'
+  }
+	}
+	
 	
 		exports.rawEvents = function() {
   return {
@@ -540,6 +561,15 @@ exports.targetAudience = function() {
   }
   
 }	
+
+		exports.recordKpievents = function() {
+  return {
+   controller: 'record_kpi_events_controller',
+      templateUrl: './components/performance/kpi-events/kpi-form.html'
+  }
+	}
+	
+	
 		
 		exports.recordEvents = function() {
   return {

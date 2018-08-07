@@ -96,10 +96,34 @@ exports.Monthly_visits =  function($resource){
        
 
   } 
+  
+    exports.Yearly_kpi_events =  function($resource){
+	  
+	  
+	return $resource('/kpi_events/total',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+       
+
+  } 
+  
+  
   exports.Monthly_events =  function($resource){
 	  
 	  
 	return $resource('/events/all/:event_type',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+       
+
+  }
+  
+    exports.Monthly_kpi_events =  function($resource){
+	  
+	  
+	return $resource('/kpi_events/all/:event_type',{ }, {
 		openGates: {method:'GET', isArray: true}
 			
   });
@@ -381,7 +405,18 @@ exports.Monthly_visits =  function($resource){
 			  'delete': {method:'DELETE'} // same, remove record
           });
  }
-  
+    exports.Raw_kpi_events =  function($resource){
+	 
+		 
+            return $resource('/kpi_events/:id/:team_id/:kpi_type/:date_value/:exact', null,
+			{ 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray:true}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+ }
   
   exports.Raw_events =  function($resource){
 	 

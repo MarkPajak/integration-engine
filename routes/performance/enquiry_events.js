@@ -19,7 +19,7 @@ var isAuthenticated = function (req, res, next) {
 	return false
 }
 
-var Team = require('../../models/performance/Events.js');
+var Team = require('../../models/performance/enquiry_events.js');
 
 
 router.get('/priority_groups', function(req, res, next) {
@@ -347,7 +347,7 @@ function get_kpis(cb){
 
 		Team.aggregate([
 								
-					{$project:{ museum_id : 1 ,
+					{$project:{ team_id : 1 ,
 								on_site_off_site : 1 ,
 								age_groups : 1,
 								event_name:1,
@@ -372,7 +372,7 @@ function get_kpis(cb){
 			
 					},
 					{ $unwind : "$age_groups" },
-					{$group:{"_id":{"year":"$year" ,"financial_yer":"$financial_yer" , venue:'$museum_id',
+					{$group:{"_id":{"year":"$year" ,"financial_yer":"$financial_yer" , venue:'$team_id',
 						on_site_off_site:'$on_site_off_site',
 					    age_groups:'$age_groups.name'}, count: {$sum: '$age_groups.count' }}
 					}
@@ -501,7 +501,7 @@ function get_kpis(cb){
 Team.aggregate([
 	{ $match: { on_site_off_site:req.params.event_type } },
     { $project : {
-        museum_id : 1 ,
+        team_id : 1 ,
         on_site_off_site : 1 ,
         date_value : 1,
 		age_groups : 1,
@@ -518,7 +518,7 @@ Team.aggregate([
 						"month": { "$month": route_functions.mongo_aggregator }, 
 
 					      
-					    venue:'$museum_id',
+					    venue:'$team_id',
 						on_site_off_site:'$on_site_off_site',
 					    age_groups:'$age_groups.name',
 						
@@ -657,7 +657,7 @@ Team.aggregate([
 						"month": { "$month": route_functions.mongo_aggregator }, 
 
 					      
-					    venue:'$museum_id',
+					    venue:'$team_id',
 						session_type:'$session_type',
 					    age_group:'$age_group',
 						
@@ -844,12 +844,12 @@ Team.aggregate([
 						//"month": { "$month": route_functions.mongo_aggregator }, 
 
 					      
-					   venue:'$museum_id',
+					   venue:'$team_id',
 					    age_group:'$age_group',
 					   
 					 },  
 				
-					no_sessions: {$sum: '$no_sessions' },
+					total_sessions: {$sum: '$total_sessions' },
 					total_children: {$sum: '$total_children' },
 					total_teachers: {$sum: '$total_teachers' },
 					total_income: {$sum: '$total_income' },
@@ -859,7 +859,7 @@ Team.aggregate([
             }
 		 },
  
-	 { $project : {venue:"$_id.venue",age_group:"$_id.age_group",  total_income:"$total_income",no_sessions:"$no_sessions", total_teachers:"$total_teachers",total_children:"$total_children",kpi_year :"$_id.year", kpi_month :"$_id.month"}  },
+	 { $project : {venue:"$_id.venue",age_group:"$_id.age_group",  total_income:"$total_income",total_sessions:"$total_sessions", total_teachers:"$total_teachers",total_children:"$total_children",kpi_year :"$_id.year", kpi_month :"$_id.month"}  },
 
 	{ $sort : { age_group : 1 } }
 
@@ -984,7 +984,7 @@ res.json(returned_data)
 
 
 });
-
+/*
 /* GET /todos listing. */
 router.get('/', function(req, res, next) {
 
@@ -997,7 +997,7 @@ router.get('/', function(req, res, next) {
 	if(req.params.csv){
 			res.setHeader('Content-disposition', 'attachment; filename=data.csv');
 			res.set('Content-Type', 'text/csv');
-			var fields = ['museum_id', 'date_value', 'value'];
+			var fields = ['team_id', 'date_value', 'value'];
 			var csv = json2csv({ data: todos, fields: fields });
 			res.status(200).send(csv);
 
@@ -1023,7 +1023,7 @@ router.get('/community_groups', function(req, res, next) {
 	if(req.params.csv){
 			res.setHeader('Content-disposition', 'attachment; filename=data.csv');
 			res.set('Content-Type', 'text/csv');
-			var fields = ['museum_id', 'date_value', 'value'];
+			var fields = ['team_id', 'date_value', 'value'];
 			var csv = json2csv({ data: todos, fields: fields });
 			res.status(200).send(csv);
 
@@ -1038,7 +1038,7 @@ router.get('/community_groups', function(req, res, next) {
 
 router.get('/target/:csv', function(req, res, next) {
 
-  Team.aggregate( [	{$project:{ museum_id : 1 ,
+  Team.aggregate( [	{$project:{ team_id : 1 ,
 								on_site_off_site : 1 ,
 								target_groups : 1,
 								event_name:1,
@@ -1048,7 +1048,7 @@ router.get('/target/:csv', function(req, res, next) {
 					, { $unwind :'$target_groups' },
 					
 					{
-					$project:{museum_id : 1 ,date : 1 ,on_site_off_site : 1 ,event_name:1,name :'$target_groups.name'}
+					$project:{team_id : 1 ,date : 1 ,on_site_off_site : 1 ,event_name:1,name :'$target_groups.name'}
 					}])
 	   .exec (  function (err, todos) {
     if (err) return next(err);
@@ -1056,7 +1056,7 @@ router.get('/target/:csv', function(req, res, next) {
 	if(req.params.csv){
 			res.setHeader('Content-disposition', 'attachment; filename=data.csv');
 			res.set('Content-Type', 'text/csv');
-			var fields = ['museum_id','date', 'on_site_off_site', 'event_name','name'];
+			var fields = ['team_id','date', 'on_site_off_site', 'event_name','name'];
 			var csv = json2csv({ data: todos, fields: fields });
 			res.status(200).send(csv);
 
@@ -1069,18 +1069,17 @@ router.get('/target/:csv', function(req, res, next) {
 });
 router.get('/:csv', function(req, res, next) {
 
-  Team.aggregate( [	{$project:{ museum_id : 1 ,
+  Team.aggregate( [	{$project:{ team_id : 1 ,
 								on_site_off_site : 1 ,
 								age_groups : 1,
 								event_name:1,
-								no_sessions:1,
 								date: { $dateToString: { format: "%d/%m/%Y", date: route_functions.mongo_aggregator } }							  
 										
 					}}
 					, { $unwind :'$age_groups' },
 					
 					{
-					$project:{museum_id : 1 ,date : 1 ,on_site_off_site : 1 ,no_sessions : 1 ,event_name:1,name :'$age_groups.name' ,count :'$age_groups.count' }
+					$project:{team_id : 1 ,date : 1 ,on_site_off_site : 1 ,event_name:1,name :'$age_groups.name' ,count :'$age_groups.count' }
 					}])
 	   .exec (  function (err, todos) {
     if (err) return next(err);
@@ -1088,7 +1087,7 @@ router.get('/:csv', function(req, res, next) {
 	if(req.params.csv){
 			res.setHeader('Content-disposition', 'attachment; filename=data.csv');
 			res.set('Content-Type', 'text/csv');
-			var fields = ['museum_id','date', 'on_site_off_site', 'event_name','name','count'];
+			var fields = ['team_id','date', 'on_site_off_site', 'event_name','name','count'];
 			var csv = json2csv({ data: todos, fields: fields });
 			res.status(200).send(csv);
 
@@ -1101,54 +1100,56 @@ router.get('/:csv', function(req, res, next) {
 });
 
 /* GET /todos listing. */
-router.get('/:museum_id/:date_value/:on_site_off_site/:exact',isAuthenticated, function(req, res, next) {
+router.get('/:team_id/:kpi_type/:date_value/:exact',isAuthenticated, function(req, res, next) {
 
 var query = {}
 
+if(decodeURIComponent(req.params.team_id)!="#"){
+ _.extend(query,{team_id: decodeURIComponent(req.params.team_id)})
+}
+if(decodeURIComponent(req.params.kpi_type)!="#"){
+console.log('filtering on kpi type',req.params.kpi_type)
+ _.extend(query,{kpi_type: decodeURIComponent(req.params.kpi_type)})
+}
 
+/*
 if( req.params.exact=="false"){
 	 _.extend(query, {date_value: {$gte: new Date(req.params.date_value)}})
-	 console.log(query)
+	 console.log("martching date greater then",query)
 }
 else
 {
   _.extend(query,{date_value: new Date(req.params.date_value)})
 }
 
-if(decodeURIComponent(req.params.museum_id)!="#"){
- _.extend(query,{museum_id: decodeURIComponent(req.params.museum_id)})
-}
+
 
 if(decodeURIComponent(req.params.on_site_off_site)!="#"){
  _.extend(query,{on_site_off_site: req.params.on_site_off_site})
 }
-
-/*
-  Team.find(query)
-	   .sort({date_value: 'desc'})
-	   .exec (  function (err, todos) {
-    if (err) return next(err);
-    res.json(todos);
-  })
-});
 */
+
 
 
 Team.aggregate(
     { $match: query }, // your find query
-    { $unwind : "$age_groups"},
+   // { $unwind : "$age_groups"},
 	{ $project: {
 			_id:1,
-			museum_id: 1,						
+			team_id: 1,						
 			kpi_type:1,	
-			no_sessions:1,
-			on_site_off_site:1,
-			event_lead:1,				
-			age_groups:  1,
-			target_groups: 1,
+			
+		//	on_site_off_site:1,
+		//	event_lead:1,				
+		//	age_groups:  1,
+		//	target_groups: 1,
 			event_name: 1,
-			community_group:1,
+			//community_group:1,
 			date_value:1,	
+			no_visits:1,
+			no_sessions:1,
+			no_enquiries:1,
+			income:1,
 			date_value_end: 1,
 			date_logged: 1,
 			comments: 1,
@@ -1157,56 +1158,27 @@ Team.aggregate(
     } },
 	
 		{
-			$group:{  "_id": "$_id", 
-					count: {$sum: '$age_groups.count' },
+			$group:{  "_id": "$_id", 	
+				
+				
 					
-					under_5: {$sum:{
-                    '$cond': [
-                        {'$eq': ['$age_groups.name',"Under 5s" ]}, //linked to pick list
-                       '$age_groups.count',
-                         0
-							]
-							} 
-					},
-					_5_15: {$sum: {
-                    '$cond': [
-					
-					{$or: [ { '$eq':['$age_groups.name',"5-15" ]}, { '$eq':['$age_groups.name',"ages 5-15"]}]} ,
-
-					 '$age_groups.count',
-                        0
-                    ]
-                }},
-					_16_over: {$sum: {
-                    '$cond': [
-                        {'$eq': ['$age_groups.name',"Adults 16+" ]}, //linked to pick list
-                       '$age_groups.count',
-                       0
-                    ]
-                } }
-				,
-					blank: {$sum: {
-                    '$cond': [
-                        {'$eq': ['$age_groups.name',null ]}, //linked to pick list
-                       '$age_groups.count',
-                       0
-                    ]
-                } }
-				,
-					
-							"museum_id": { "$first": "$museum_id"},
+							"team_id": { "$first": "$team_id"},
 							"kpi_type": { "$first": "$kpi_type"},
-							"on_site_off_site": { "$first": "$on_site_off_site"},
-							"event_lead": { "$first": "$event_lead"},
-							"target_groups": { "$first": "$target_groups"},
+							//"on_site_off_site": { "$first": "$on_site_off_site"},
+							//"event_lead": { "$first": "$event_lead"},
+							//"target_groups": { "$first": "$target_groups"},
 							"event_name": { "$first": "$event_name"},
-							"community_group": { "$first": "$community_group"},
+							//"community_group": { "$first": "$community_group"},
 							"date_value": { "$first": "$date_value"},
 							"date_value_end": { "$first": "$date_value_end"},
 							"date_logged": { "$first": "$date_logged"},
-							"no_sessions": { "$first": "$no_sessions"},
-						
 							
+							
+								"no_visits": { "$first": "$no_visits"},
+									"no_sessions": { "$first": "$no_sessions"},
+										"no_enquiries": { "$first": "$no_enquiries"},
+											"income": { "$first": "$income"},
+		
 							
 							"comments": { "$first": "$comments"},
 							"logger_user_name": { "$first": "$logger_user_name"},
@@ -1220,7 +1192,11 @@ Team.aggregate(
     // And then the normal Mongoose stuff:
     function (err, todos) {
 		
-	if (err) return next(err);
+	if (err){
+console.log(err)
+	return next(err);
+	
+	}
 	
 		res.json(todos);
 		

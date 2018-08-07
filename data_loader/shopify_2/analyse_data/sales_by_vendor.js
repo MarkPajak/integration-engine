@@ -9,6 +9,7 @@ var express = require('express');
 var router = express.Router();
 var _ = require('underscore');
 var Shopify_product = require('../../../models/Shopify_product.js');
+//var Shopify_vendor  = require('../../../models/Shopify_vendor.js');
 //var Shopify_order = require('../../../models/Shopify_order.js');
 
 var Shopify_aggregate = require('../../../models/Shopify_transaction.js');
@@ -32,7 +33,7 @@ self.get_data = function(cb){
 			 Shopify_aggregate.aggregate([
 				{
 					$group: {
-						_id: '$product_id' ,  
+						_id: '$vendor' ,  
 							 count: {$sum:'$number_bought'},
 							 discounts: {$sum:'$discounts'}
 					},
@@ -54,7 +55,7 @@ self.get_data = function(cb){
 				
 				_.each(transaction_analytics, function(_product) {	
 					_.each(product_list, function(product) {				
-						if(product._id==_product._id){
+						if(product._id==_product.vendor){
 							new_product=[]
 							new_product=product.toJSON()
 							new_product.count=_product.count

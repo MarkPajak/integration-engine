@@ -122,6 +122,12 @@ var monthly_events_controller = require('../components/performance/events/monthl
 var raw_events_controller = require('../components/performance/events/raw-events-controller');
 var events_performance_form = require('../components/performance/events/performance-form-controller');
 
+var raw_kpi_events_controller = require('../components/performance/kpi-events/raw-events-controller');
+var events_kpi_performance_form = require('../components/performance/kpi-events/performance-form-controller');
+
+
+
+
 var yearly_participation_controller = require('../components/performance/participation/yearly-participation-controller');
 var monthly_participation_controller = require('../components/performance/participation/monthly-participation-controller');
 var raw_participation_controller = require('../components/performance/participation/raw-participation-controller');
@@ -253,6 +259,16 @@ _.each(raw_events_controller, function(controller, name) {
 _.each(events_performance_form, function(controller, name) {
   app.controller(name, controller);
 });
+
+_.each(raw_kpi_events_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+_.each(events_kpi_performance_form, function(controller, name) {
+  app.controller(name, controller);
+});
+
+
+
 
 
 
@@ -1004,6 +1020,14 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
                template: '<performance-panel></performance-panel>'
            })
 		   
+		     .when('/record-kpi-events', {
+               template: '<kpievents-formdata></kpievents-formdata>'
+           })
+		     .when('/raw-kpi-events', {
+               template: '<raw-kpieventsfilter></raw-kpieventsfilter>'
+           })
+		  
+		   
 		    .when('/record-operations', {
                template: '<operations-formdata></operations-formdata>'
            })
@@ -1117,6 +1141,8 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
 		   .when('/record-events', {
                template: '<events-Formdata></events-Formdata>'
            })
+		   
+		   
 		   
 		   
 		   	.when('/raw-events', {

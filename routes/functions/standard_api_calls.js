@@ -27,7 +27,10 @@ console.log(req.body)
 				/* GET /todos/id */
 				router.get('/:id', route_permissions.isAuthenticated, function(req, res, next) {
 				  model.findById(req.params.id, function (err, post) {
-					if (err) return next(err);
+					if (err){
+					console.log(err)
+					return next(err);
+					}
 					res.json(post);
 				  });
 				});
@@ -35,7 +38,10 @@ console.log(req.body)
 				/* PUT /todos/:id */
 				router.put('/:id', route_permissions.isAuthenticated, function(req, res, next) {
 				  model.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
-					if (err) return next(err);
+						if (err){
+					console.log(err)
+					return next(err);
+					}
 					res.json(post);
 				  });
 				});
@@ -44,7 +50,10 @@ console.log(req.body)
 				/* DELETE /todos/:id */
 				router.delete('/:id', route_permissions.isAdmin, function(req, res, next) {
 				  model.findByIdAndRemove(req.params.id, req.body, function (err, post) {
-					if (err) return next(err);
+						if (err){
+					console.log(err)
+					return next(err);
+					}
 					res.json(post);
 				  });
 				});

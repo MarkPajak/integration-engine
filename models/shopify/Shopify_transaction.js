@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var moment = require('moment');
-var Shopify_month_report = new mongoose.Schema({
+var Shopify_transaction = new mongoose.Schema({
 		
 		
 	    year:{ type: String },	
@@ -8,11 +8,12 @@ var Shopify_month_report = new mongoose.Schema({
 		vendor:{ type: String },	
 		quantity:{ type: Number },
 		title: { type: String, required: true },	
-		net_sales:{ type: Number }
+		net_sales:{ type: Number },
+		discounts:{ type: Number }
 });
 
-Shopify_month_report.set('toJSON', {
+Shopify_transaction.set('toJSON', {
    virtuals: true
 });
 
-module.exports = mongoose.model('Shopify_month_report', Shopify_month_report);
+module.exports = mongoose.model('Shopify_transaction', Shopify_transaction);

@@ -76,6 +76,9 @@ shops.push("ONLINE")
 										config.created_at_min=year+"-"+monthName+"-01"
 										var start_date = new Date(config.created_at_min);
 										config.created_at_max = new Date(year, start_date.getMonth()+1, 0);
+										
+										 config.created_at_max .setDate(config.created_at_max .getDate() + 1);
+										
 										config.month=monthName
 										config.year=start_date.getFullYear()
 										config.generate_order_forms=false

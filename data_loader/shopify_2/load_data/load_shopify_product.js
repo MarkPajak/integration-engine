@@ -72,7 +72,7 @@ function products(total_orders,cb){
 							  barcode: variant.barcode,
 							  metafield:post.metafield,
 							  taxable:variant.taxable,
-							  discounts:variant.discounts,
+							 // discounts:variant.discounts,
 							  taxable:variant.taxable,
 							  vendor:post.vendor,
 							  fulfillment_status:post.fulfillment_status,
@@ -115,7 +115,7 @@ if(options.update_product_types=='false'){
 cb2()
 }
 else
-{
+{products
 
 			total_order_count = 0
 
