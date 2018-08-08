@@ -183,6 +183,8 @@ var exhibitions_pwyt =  require('./routes/performance/exhibitions_pwyt')
 var gallery_visits =  require('./routes/performance/gallery_visits')
 var events =  require('./routes/performance/site_events.js')
 var enquiry_events =  require('./routes/performance/enquiry_events.js')
+var satisfaction =  require('./routes/performance/satisfaction.js')
+
 
 var operations =  require('./routes/performance/operations.js')
 
@@ -278,7 +280,7 @@ app.use('/exhibitions_pwyt', exhibitions_pwyt);
 app.use('/gallery_visits', gallery_visits);
 app.use('/events', events);
 app.use('/kpi_events', enquiry_events);
-
+app.use('/satisfaction', satisfaction);
 
 
 

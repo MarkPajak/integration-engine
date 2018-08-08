@@ -34,9 +34,16 @@ You'll probably need to log in to be able to enter data
 <div class="panel-heading">Enter data for {{form_name}}</div>
 	<div class="panel-body">
 		<form name="visit_form" id="visit_form">
-		
+			 <div class="form-group">
+						<label for="comments">Team:</label>
+					
+							  <input type="text"  id="team"  name="country" value="{{team}}" readonly>
+							  
+					
+					</div>
        
 				  <div class="form-group">
+				   <div   class="col-xs-6">
 				<label for="exampleSelect1">Type of KPI</label>
 				<select class="form-control input-lg" id="kpi_type">
 					<option value="project">project</option>
@@ -49,22 +56,25 @@ You'll probably need to log in to be able to enter data
 					<option value="other">other</option>
 				
 				</select>
-			  </div>
+			</div>
+			  	<div class=" col-xs-6">
+							<label class="pull-left">KPI value</label>
+							<input type="number" class="form-control" id="no_sessions" name="no_sessions">
+				</div>
+					<br>
+					</br>
+			 	    <br>
+					</br>
+					  </div>
 					
-			 	    <div class="form-group">
+					<div class="form-group">
 						<label for="comments">Name:</label>
 					
 					  <input type="text"  id="event_name"  name="event_name" >
 					</div>
 					
 
-					 <div class="form-group">
-						<label for="comments">Team:</label>
-					
-							  <input type="text"  id="team"  name="country" value="{{team}}" readonly>
-							  
-					
-					</div>
+				
 					<!--
 					<div class="form-group">
 						<label for="comments">Community group:</label>
@@ -99,30 +109,28 @@ You'll probably need to log in to be able to enter data
 				</div>
 				-->
 				
-						<div class="form-group col-xs-6">
-							<label>KPI value</label>
-							<input type="number" class="form-control" id="no_sessions" name="no_sessions">
-						  </div>
+					
 	
-						<div class="form-group col-xs-6">
+						<div class="form-group">
+							<div class="col-xs-6">
 							<label>Number of people</label>
 							<input type="number" class="form-control" id="no_visits" name="no_visits">
 						  </div>
 						  
-						  	<div class="form-group col-xs-6">
+						  	<div class=" col-xs-6">
 							<label>Number of enquiries</label>
 							<input type="number" class="form-control" id="no_enquiries" name="no_enquiries">
 						  </div>
 
-						<div class="form-group col-xs-6">
+						<div class="col-xs-6">
 							<label>Income</label>
 							<input type="number" class="form-control" id="income" name="income">
 						 </div>
 
-			  	
+			  	</div><br></br>
 			  <div class="form-group">
 					
-						<label for="comments">Date from:</label>
+						<label for="comments" class="pull-left" >Date from:</label>
 						<input type = "date" class="form-control input-lg" id="date_value" rows="3">
 				
 					<label for="comments">Date to:</label>

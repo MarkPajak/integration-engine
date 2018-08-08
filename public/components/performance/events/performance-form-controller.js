@@ -6,9 +6,9 @@ $scope.scope = $scope;
 $scope.events = [];
 $scope.selected_event=[]
 $scope.museums=[]
-	$scope.extraQuery = { "on_site_off_site":"#"}
+$scope.extraQuery = { "on_site_off_site":"#"}
 
-			
+	$scope.event_lead = 		$scope.user.firstName+" "+$scope.user.lastName
 			
  
 $scope.$watch('event', function (newValue) {

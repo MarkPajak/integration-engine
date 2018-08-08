@@ -32,6 +32,15 @@ $('#'+id).each(function () {
 		
 }
 
+ $scope.satisfied=false
+$.getJSON('https://sheets.googleapis.com/v4/spreadsheets/1dZ1UMfIbNpbUEgGLy7nLeEwPaZ1xSlVyewSmK7jjWV0/values/satisfaction?key=AIzaSyCYImmjWQO1DVt0Wk3C2jUhQqRFQ1MgGfo', function(data) {
+   //data is the JSON string
+   console.log(parseInt(data.values[0][0].replace("%",""))>=75)
+   if(parseInt(data.values[0][0].replace("%",""))>=75){
+	whizz_number( data.values[0][0].replace("%",""),'satisfaction')
+	$scope.satisfied=true
+	}
+});
 
 		
 		var current_year=moment(new Date()).format("YYYY")
