@@ -1011,6 +1011,43 @@ router.get('/', function(req, res, next) {
 
 
 /* GET /todos listing. */
+router.get('/event_names', function(req, res, next) {
+
+
+	 Team.aggregate( [			{ $group: {
+                                         _id: {
+											
+											"event_lead":'$event_lead',
+											"event_name":'$event_name',
+					   
+											 },  
+									}
+								 },
+					
+					
+					{
+					$project:{event_name:1,event_lead :1}
+					}])
+	   .exec (  function (err, todos) {
+    if (err) return next(err);
+	
+	if(req.params.csv){
+			res.setHeader('Content-disposition', 'attachment; filename=data.csv');
+			res.set('Content-Type', 'text/csv');
+			var fields = ['museum_id', 'date_value', 'value'];
+			var csv = json2csv({ data: todos, fields: fields });
+			res.status(200).send(csv);
+
+	}
+	else
+	{
+		res.json(todos);
+	}
+  })
+});
+
+
+/* GET /todos listing. */
 router.get('/community_groups', function(req, res, next) {
 
   Team.find().distinct('community_group', function(err, todos) {

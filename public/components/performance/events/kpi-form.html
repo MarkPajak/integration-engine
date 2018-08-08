@@ -42,7 +42,7 @@ You'll probably need to log in to be able to enter data
 					
 			 	    <div class="form-group">
 						<label for="comments">Event name:</label>
-						<select  id="event_name" class="form-control input-lg" ng-model="event" ng-options="(c.startDate + ' - '+ c.type+': '+c.name) for c in events" ng-change="search2(event)">
+						<select  id="event_name" class="form-control input-lg" ng-model="event" ng-options="c.name for c in events" ng-change="search2(event)">
 								<option value="">-- choose event or select add new --</option>
 						</select>
 						<div class="col-md-4" ng-show="event.name == 'add new event'">
@@ -93,10 +93,10 @@ You'll probably need to log in to be able to enter data
 				</div>
 				
 				
-			  <div class="form-group">					
+			  <div class="form-group" ng-hide=true>					
 					
 							<label>No. Sessions</label>
-							<input type="number" class="form-control" id="no_sessions" name="count" value="1">
+							<input type="number" class="form-control" id="no_sessions"  value="1">
 						
 	 </div>
 	
@@ -106,10 +106,10 @@ You'll probably need to log in to be able to enter data
 			  <div class="form-group">
 					
 						<label for="comments">Date from:</label>
-						<input type = "date" class="form-control input-lg" id="date_value" rows="3">
+						<input type ="date" class="form-control input-lg" id="date_value" rows="3">
 				
 					<label for="comments">Date to:</label>
-					<input type = "date" class="form-control input-lg" id="date_value_end" rows="3">
+					<input type="date" class="form-control input-lg" id="date_value_end" rows="3">
 				
 			  </div>
 
@@ -142,8 +142,8 @@ You'll probably need to log in to be able to enter data
 						  </div>
 					
 					
-						 <div class="margin-20">
-						  <a ng-click="addCount()" style="cursor: default">
+						 <div class="margin-20" ng-click="addCount()">
+						  <a  style="cursor: default">
 							Add another count +
 						  </a>
 						</div>

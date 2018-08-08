@@ -10,7 +10,16 @@ var status = require('http-status');
        
 
   } 
-           
+    exports.Event_names =  function($resource){
+	  
+	  
+	return $resource('/events/event_names',{ }, {
+		  getData: {method:'GET', isArray: true}
+			
+  });
+       
+
+  }          
   exports.Monthly_products_sold_online =  function($resource){
 	  
 	  

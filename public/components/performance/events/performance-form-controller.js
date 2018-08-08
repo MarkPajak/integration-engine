@@ -1,5 +1,5 @@
 exports.record_events_controller =  function($scope, $http, $q, $routeParams, $location,
-          $rootScope,Raw_events,data_table_reload,Emu_events,get_table_data,Community_groups
+          $rootScope,Raw_events,Event_names,data_table_reload,Emu_events,get_table_data,Community_groups
     ) {
 
 $scope.scope = $scope;
@@ -69,27 +69,22 @@ function sortJSON(data, key, way) {
     });
 }
 
-
-	 Emu_events.getData().then(function(response){
+	 Event_names.query({}, function(response) {
 	 
 			past_events=[]
 			_.each(response,function(event){
-var compare_date = new Date();
-compare_date.setFullYear( compare_date.getFullYear() - 1 );
 
-					if(new Date(event.startDate)<=new Date() && new Date(event.startDate) >=compare_date &&event.type!="Facilities"  && event.type!="Poster - Digital Signage" ){
-						past_events.push(event)
-						console.log('past event',event)
+console.log(event.event_name)
+					if(event._id.event_lead.toLowerCase()==$scope.user.firstName.toLowerCase()+" "+$scope.user.lastName.toLowerCase() ){
+						past_events.push({"name":event._id.event_name})
+						console.log('past event',event._id.event_name)
 					}
 			})
-			
-			 past_events = sortJSON(past_events,'startDate', '321');
-			 
-			 
+			 past_events = sortJSON(past_events,'name', '321');
 			$scope.events =past_events
 			$scope.events.push({name:'add new event'})
-		
-	 });
+})
+
 
  
     $scope.add = function (newValue) {
@@ -168,14 +163,15 @@ compare_date.setFullYear( compare_date.getFullYear() - 1 );
 	if(visit_form.count.value>0){
 		
 		var age_group={ name: visit_form.age_group.value,
-					count: visit_form.count.value
-		}
+		count: visit_form.count.value}
+		
 		console.log("clear age group")
 		visit_form.age_group.value=""
 		visit_form.count.value=""
 		$scope.age_groups.push(age_group)
+		}
 	 }
-	 }
+	 
 	 
 	 	 $scope.addtarget_groups=function() {
 	 
@@ -183,11 +179,13 @@ compare_date.setFullYear( compare_date.getFullYear() - 1 );
 					
 		}
 	
-		$scope.target_groups.push(target_groups)
+	$scope.target_groups.push(target_groups)
+		
 		visit_form.age_group.value=""
 		visit_form.count.value=""
 		 $scope.$apply()
-	 }
+	
+	}
 	
 	
 	
@@ -222,11 +220,11 @@ compare_date.setFullYear( compare_date.getFullYear() - 1 );
 			
 			
 			
-			var query = {'museum_id':visit_form.museum.value,
-							"event_lead":visit_form.event_lead.value,
-							"event_name": $('#event_name').find("option:selected").text(),
-							"date_value":visit_form.date_value.value,
-							"on_site_off_site": visit_form.on_site_off_site.value,
+			var query = {   'museum_id'			:visit_form.museum.value,
+							"event_lead"		:visit_form.event_lead.value,
+							"event_name"		:$('#event_name').find("option:selected").text(),
+							"date_value"		:visit_form.date_value.value,
+							"on_site_off_site"	:visit_form.on_site_off_site.value,
 							"exact":true
 						};
 			
@@ -280,7 +278,7 @@ compare_date.setFullYear( compare_date.getFullYear() - 1 );
 							visit_form.age_group.value=""
 							visit_form.comments.value=""
 							visit_form.date_value.value=""
-							visit_form.event_lead.value=""
+						//	visit_form.event_lead.value=""
 							
 							
 							visit_form.date_value_end.value=""
