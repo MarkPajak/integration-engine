@@ -18,7 +18,7 @@ var Kpi_events = new mongoose.Schema({
 			id: String,
 			team_id: { type: String, required: true},						
 			kpi_type: { type: String },	
-			no_sessions: { type: Number, default:1},
+			no_sessions: { type: Number, default:1}, //kp value
 			no_visits: { type: Number},
 			no_enquiries: { type: Number},
 			income: { type: Number},
