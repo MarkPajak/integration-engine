@@ -1102,7 +1102,7 @@ router.get('/:csv', function(req, res, next) {
 });
 
 /* GET /todos listing. */
-router.get('/:team_id/:kpi_type/:date_value/:exact',isAuthenticated, function(req, res, next) {
+router.get('/:team_id/:kpi_type/:date_value/:exact/:csv*?', function(req, res, next) {
 
 var query = {}
 
@@ -1140,13 +1140,10 @@ Team.aggregate(
 			_id:1,
 			team_id: 1,						
 			kpi_type:1,	
-			
-		//	on_site_off_site:1,
-		//	event_lead:1,				
-		//	age_groups:  1,
-		//	target_groups: 1,
+		
 			event_name: 1,
 			//community_group:1,
+			date:1,
 			date_value:1,	
 			no_visits:1,
 			no_sessions:1,
@@ -1174,7 +1171,7 @@ Team.aggregate(
 							"date_value": { "$first": "$date_value"},
 							"date_value_end": { "$first": "$date_value_end"},
 							"date_logged": { "$first": "$date_logged"},
-							
+								"date": { "$first": "$date"},
 							
 								"no_visits": { "$first": "$no_visits"},
 									"no_sessions": { "$first": "$no_sessions"},
@@ -1200,7 +1197,18 @@ console.log(err)
 	
 	}
 	
+			if(req.params.csv){
+			res.setHeader('Content-disposition', 'attachment; filename=data.csv');
+			res.set('Content-Type', 'text/csv');
+			var fields = ['team_id','date', 'kpi_type', 'no_visits','no_sessions','no_enquiries','income'];
+			var csv = json2csv({ data: todos, fields: fields });
+			res.status(200).send(csv);
+
+	}
+	else
+	{
 		res.json(todos);
+	}
 		
     }
 );

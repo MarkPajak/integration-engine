@@ -43,7 +43,7 @@ var Kpi_events = new mongoose.Schema({
 Kpi_events.virtual('date').get(function() {
  
 				
-			return   moment(this.date_value).format('DD/MM/YYYY');
+			return   moment(this.date_value_end).format('DD/MM/YYYY');
 
 });
 

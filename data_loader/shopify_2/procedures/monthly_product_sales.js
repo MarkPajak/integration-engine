@@ -87,7 +87,7 @@ this.go = function(done,cb){
 				file_write('get_data callback')
 				shopifydata=analytics_data
 				callback(null,analytics_data)
-				cb(shopifydata)				
+							
 			})
 		} 
 		
@@ -97,7 +97,8 @@ this.go = function(done,cb){
 			save_data_to_databaseInstance.add_data_to_database(shopifydata,function(analytics_data) {
 				
 				file_write('add_data_to_database callback')
-				callback(null,analytics_data)	
+				callback(null,analytics_data)
+cb(shopifydata)					
 			})
 		}  
 
@@ -168,7 +169,7 @@ this.go = function(done,cb){
 			count_all_orders,
 			
 			get_data,
-			get_data_vendors,
+			//get_data_vendors,
 			save_to_database//,
 			//add_data_to_sheet,
 			//monthly_totals

@@ -94,6 +94,8 @@ cb()
 									//console.log(' item.quantity ', item.quantity)
 										//console.log(' item.quantity * item.price', item.quantity * item.price)
 										
+									//console.log('product_id', product_id)	
+										//console.log('item.variant_id', item.variant_id)
 										
 									var shopify_transaction = new Shopify_transaction({
 										//transaction_id:item.id+shop_id,

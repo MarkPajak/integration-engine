@@ -63,7 +63,7 @@ function products(total_orders,cb){
 						if(	post.product_type=="")post.product_type="unassigned"
 						
 						var shopify_products = new Shopify_products({
-							  _id: post.id,							 
+							  _id: variant.id,							 
 							  product_type:  post.product_type ,	
 							  title:  post.title,
 							  published_at: new Date(post.published_at),

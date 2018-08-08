@@ -86,7 +86,7 @@ self.get_data2 = function(cb){
 				
 				_.each(transaction_analytics, function(_product) {	
 					_.each(product_list, function(product) {				
-						if(product._id==_product._id.id){
+						if(product._id==_product.variant_id){
 							new_product=[]
 							new_product=product.toJSON()
 							new_product.count=_product.count

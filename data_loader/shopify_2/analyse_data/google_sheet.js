@@ -32,7 +32,7 @@ self.get_data = function(cb){
 			 Shopify_aggregate.aggregate([
 				{
 					$group: {
-						_id: '$product_id' ,  
+						_id: '$variant_id' ,  
 							 count: {$sum:'$number_bought'},
 							 discounts: {$sum:'$discounts'}
 					},
@@ -46,6 +46,7 @@ self.get_data = function(cb){
         } else {
 				var result = []
 				console.log(product_list.length+ ' products found')
+				console.log(transaction_analytics.length+ ' transactions found')
 				var matches = 0
 				var report_date = new Date()
 				//possible mem leak
@@ -53,8 +54,12 @@ self.get_data = function(cb){
 				
 				
 				_.each(transaction_analytics, function(_product) {	
-					_.each(product_list, function(product) {				
-						if(product._id==_product._id){
+					_.each(product_list, function(product) {	
+
+//console.log('_product._id',_product._id)
+//console.log('product.variant_id',product.variant_id)					
+						if(product.variant_id==_product._id){
+						
 							new_product=[]
 							new_product=product.toJSON()
 							new_product.count=_product.count
@@ -88,7 +93,7 @@ self.get_data = function(cb){
 						}
 					})		
 				})
-				console.log(matches+ ' matches found')
+				console.log(matches+ ' matches found xxx' )
 				cb(result)
 			
         }

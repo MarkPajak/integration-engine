@@ -32,7 +32,7 @@ self.get_data = function(cb){
 			 Shopify_transaction.aggregate([
 				{
 					$group: {
-						_id: '$product_id' ,  
+						_id: '$variant_id' ,  
 						 count: {$sum: 1}
 					},
 					
@@ -53,7 +53,7 @@ self.get_data = function(cb){
 				
 				_.each(transaction_analytics, function(_product) {	
 					_.each(product_list, function(product) {				
-						if(product._id==_product._id){
+						if(product._id==_product.variant_id){
 							new_product=[]
 							new_product=product.toJSON()
 							new_product.count=_product.count
@@ -89,7 +89,7 @@ self.get_data = function(cb){
 						}
 					})		
 				})
-				console.log(matches+ ' matches found')
+				console.log(matches+ ' matches found monthly sales')
 				cb(result)
 			
         }
