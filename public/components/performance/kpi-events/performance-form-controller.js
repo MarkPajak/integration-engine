@@ -6,8 +6,8 @@ $scope.scope = $scope;
 $scope.events = [];
 $scope.selected_event=[]
 $scope.teams=[]
-	$scope.extraQuery = { "kpi_type":"#", "on_site_off_site":"#"}
-
+$scope.extraQuery = { "kpi_type":"#", "on_site_off_site":"#"}
+$scope.changed=0
 			
 			
  
@@ -137,7 +137,26 @@ compare_date.setFullYear( compare_date.getFullYear() - 1 );
  }
  
  $scope.changed=0
+ $scope.tableChanged=0
  
+ 
+   $scope.start_date_update = function(target_group) {
+
+
+visit_form.date_value_end.value=moment(target_group).format('YYYY-MM-DD');  
+  }
+  
+  
+  
+  $scope.kpi_type_update = function(target_group) {
+
+    $scope.selectedkpiValue = target_group
+  
+  }
+  
+  
+  
+  
  $scope.toggleSelection = function(target_group) {
     var idx = $scope.selection.indexOf(target_group);
 
@@ -266,27 +285,22 @@ compare_date.setFullYear( compare_date.getFullYear() - 1 );
 	kpis.$save(function(err, user) {
 		
 						if(err) console.log(err)
-						 var  message = "data saved successfully";
+						 var  message = "data saved successfully :)";
 							  message+= "\n ";
 							  //message+= " "+ data + " added to " + museum;
-							  alert(message);
-							   $scope.changed++
-							  get_table_data_team.getData(moment(new Date()).subtract({'months':1})._d,$scope)		
-							//visit_form.on_site_off_site.value=""
-							//$scope.age_groups=[]
-							//$scope.selection=[]
-							visit_form.event_name.value=""
-							//visit_form.community_group=""
-							visit_form.count.value=""
-							//visit_form.age_group.value=""
-							visit_form.comments.value=""
-							visit_form.date_value.value=""
-						//	visit_form.event_lead.value=""
-							
-							
-							visit_form.date_value_end.value=""
+							 
+							  
+							  get_table_data_team.getData(moment(new Date()).subtract({'months':10})._d,$scope)		
+					
 						
-
+								alert(message);
+								
+				visit_form.no_sessions.value=""
+				visit_form.income.value=""	
+				visit_form.no_visits.value=""	
+				visit_form.no_enquiries.value=""
+				
+								$scope.changed++
 						})
 						
 

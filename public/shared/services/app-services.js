@@ -48,7 +48,7 @@ exports.table_security = function(AuthService,$rootScope) {
 
 }
 	exports.get_table_data_team = function($rootScope,data_table_reload) {	
-
+console.log('exports.get_table_data_team')
 
 
 var self = this
@@ -95,7 +95,7 @@ var myScope
 						  angular.forEach( $scope._rows, function( row ) {
 							$scope.gridOptions.data.push( row );
 						  });
-						  
+						 
 						  
 						  	$scope.$watch(function () {
 			
@@ -507,10 +507,10 @@ return {
 			
 				var query = {'id':rowEntity._id};
 						scope.featured_collection.update(query, 	setupArray
-								
+							 
 								, function(err, affected, resp) {
 
-
+scope.changed++	
 								
 								
 						})

@@ -533,7 +533,7 @@ exports.recordTeg  = function() {
 		
 		   
    scope: {
-		user: '='
+		user: '=',changed:'=',tableChanged:'='
 		
         },
 		
@@ -549,7 +549,7 @@ exports.recordTeg  = function() {
 
 	   
    scope: {
-		user: '='
+		user: '=',changed:'=',tableChanged:'='
         },
 		
    controller: 'monthly_kpi_events_controller',

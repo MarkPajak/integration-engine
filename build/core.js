@@ -12309,7 +12309,7 @@ $.getJSON('https://sheets.googleapis.com/v4/spreadsheets/1dZ1UMfIbNpbUEgGLy7nLeE
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/home/kpi-home-controller.js","/../components/performance/home")
 },{"b55mWE":4,"buffer":3}],47:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-exports.monthly_kpi_events_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_kpi_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security
+exports.monthly_kpi_events_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope,Monthly_kpi_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security
     ) {
 		
 		
@@ -12317,7 +12317,7 @@ exports.monthly_kpi_events_controller = function($route,$scope, $http, $q, $rout
 		
 			$scope.chart_class = "col-md-6 col-lg-6 col-sm-6 pull-right"
 			$scope.table_class = "col-md-6 col-lg-6 col-sm-6"
-			$scope.table_heading = "Monthly kpi figues"
+			$scope.table_heading = "Monthly kpi stats (automatically calulated)"
 			$scope.chart_heading = "Data  by month"
 			$scope.pie_date = "Apr 2017"
 			$rootScope.canEdit_table=false
@@ -12430,32 +12430,10 @@ exports.monthly_kpi_events_controller = function($route,$scope, $http, $q, $rout
 			
 			console.log('team $scope._rows',$scope._rows)
 			$scope.gridOptions.data=$scope._rows;
-			//columnDefs=columnDefs.concat(vertical_monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
+
+		
 			
 			
-			
-			
-			//make_a_pie.build($scope,"Apr 2017","team")
-			//make_a_line_chart.build($scope,columnDefs,"team")
-	
-	/*
-			$scope.$watchGroup(['end_date','start_date'], function(newValue, oldValue) {
-  
-					columnDefs=[]
-					columnDefs.push(
-			{ field: 'team',		name: "team",width:80, pinnedLeft:true, enableColumnMoving:false  },
-			{ field: 'kpi_type',		name: "kpi_type",width:80, pinnedLeft:true, enableColumnMoving:false  },
-			{ field: 'age_group',		name: "Age Group",width:80, pinnedLeft:true, enableColumnMoving:false  }
-					
-			)
-					columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
-					$scope.gridOptions.columnDefs=columnDefs
-					make_a_line_chart.build($scope,columnDefs,"team")
-									
-			
-			
-			});
-	*/
 			$scope.changedValue = function(item){ 
 					$scope.pie_date=item			
 					make_a_pie.build($scope,item,"team")
@@ -12463,6 +12441,24 @@ exports.monthly_kpi_events_controller = function($route,$scope, $http, $q, $rout
 			}
 		})	
 		}
+		
+		
+			
+			$scope.$watch('changed', function (newValue) {
+					if(newValue>0){
+						$scope.get_data()
+					}
+				
+				})
+				
+				$scope.$watch('tableChanged', function (newValue) {
+					
+					if(newValue>0){
+						$scope.get_data()
+					}
+				
+				})
+				
 		$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
 			$scope.options_list=[]
 			$scope.session_type="OFF SITE"
@@ -12499,8 +12495,8 @@ $scope.scope = $scope;
 $scope.events = [];
 $scope.selected_event=[]
 $scope.teams=[]
-	$scope.extraQuery = { "kpi_type":"#", "on_site_off_site":"#"}
-
+$scope.extraQuery = { "kpi_type":"#", "on_site_off_site":"#"}
+$scope.changed=0
 			
 			
  
@@ -12630,7 +12626,26 @@ compare_date.setFullYear( compare_date.getFullYear() - 1 );
  }
  
  $scope.changed=0
+ $scope.tableChanged=0
  
+ 
+   $scope.start_date_update = function(target_group) {
+
+
+visit_form.date_value_end.value=moment(target_group).format('YYYY-MM-DD');  
+  }
+  
+  
+  
+  $scope.kpi_type_update = function(target_group) {
+
+    $scope.selectedkpiValue = target_group
+  
+  }
+  
+  
+  
+  
  $scope.toggleSelection = function(target_group) {
     var idx = $scope.selection.indexOf(target_group);
 
@@ -12759,27 +12774,22 @@ compare_date.setFullYear( compare_date.getFullYear() - 1 );
 	kpis.$save(function(err, user) {
 		
 						if(err) console.log(err)
-						 var  message = "data saved successfully";
+						 var  message = "data saved successfully :)";
 							  message+= "\n ";
 							  //message+= " "+ data + " added to " + museum;
-							  alert(message);
-							   $scope.changed++
-							  get_table_data_team.getData(moment(new Date()).subtract({'months':1})._d,$scope)		
-							//visit_form.on_site_off_site.value=""
-							//$scope.age_groups=[]
-							//$scope.selection=[]
-							visit_form.event_name.value=""
-							//visit_form.community_group=""
-							visit_form.count.value=""
-							//visit_form.age_group.value=""
-							visit_form.comments.value=""
-							visit_form.date_value.value=""
-						//	visit_form.event_lead.value=""
-							
-							
-							visit_form.date_value_end.value=""
+							 
+							  
+							  get_table_data_team.getData(moment(new Date()).subtract({'months':10})._d,$scope)		
+					
 						
-
+								alert(message);
+								
+				visit_form.no_sessions.value=""
+				visit_form.income.value=""	
+				visit_form.no_visits.value=""	
+				visit_form.no_enquiries.value=""
+				
+								$scope.changed++
 						})
 						
 
@@ -12812,7 +12822,7 @@ exports.raw_kpi_events_controller = function($route,$scope, get_table_data_team,
 		$scope.show_all_Button=true
 		$scope.featured_collection=Raw_kpi_events
 		$rootScope.featured_collection=Raw_kpi_events
-			$scope.table_heading = "Raw data (editable)"
+		$scope.table_heading = "Raw data (editable)"
 		$rootScope.canEdit_table=true
 		$scope.gridOptions=[]
 		$scope.gridOptions.data=[]
@@ -12826,25 +12836,26 @@ exports.raw_kpi_events_controller = function($route,$scope, get_table_data_team,
 			{ field: 'event_name',name: "Name of Event" ,resizable: true,width:250},	
 			{ field: 'date_value_end' ,name: "End Date",resizable: true ,type: 'date', cellFilter: 'date:\'dd/MM/yy\'',width:200},
 			{ field: 'no_sessions',name: "KPI value" ,resizable: true,width:100},
-			{ field: 'no_visits',name: "No. participants" ,resizable: true,width:100},		
-		
+			{ field: 'no_visits',name: "No. participants" ,resizable: true,width:100},			
 			{ field: 'no_enquiries',name: "No. Enquiries" ,resizable: true,width:100},				
 			{ field: 'income',name: "Income" ,resizable: true,width:100,cellFilter:'currency:"&pound;" : 2'},
-	
-
-	
-		//	{ field: 'under_5',name: "Under 5s" ,resizable: true,width:100,Editable:false},	
-		//	{ field: '_5_15',name: "5 - 15" ,resizable: true,width:100,Editable:false},	
-			//{ field: '_16_over',name: "Adults 16+" ,resizable: true,width:100,Editable:false},	
-			
 			{ field: 'comments' ,value: "comments by",resizable: true,visible:false},
 			{ field: 'count',name: "Total" ,resizable: true,width:100,Editable:false},	
 			{ field: 'logger_user_name' ,value: "Logged by",resizable: true,visible:false},
 			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',visible:false}
 			)
 			
-				$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
-				get_table_data_team.getData(moment(new Date()).subtract({'months':10})._d,$scope)
+			$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
+			get_table_data_team.getData(moment(new Date()).subtract({'months':10})._d,$scope)
+				
+				
+			$scope.$watch('changed', function (newValue) {
+				if(newValue>0){
+					
+					get_table_data_team.getData(moment(new Date()).subtract({'months':10})._d,$scope)
+					//$scope.tableChanged++
+				}				
+			})
 }			
 
 
@@ -14793,7 +14804,7 @@ exports.recordTeg  = function() {
 		
 		   
    scope: {
-		user: '='
+		user: '=',changed:'=',tableChanged:'='
 		
         },
 		
@@ -14809,7 +14820,7 @@ exports.recordTeg  = function() {
 
 	   
    scope: {
-		user: '='
+		user: '=',changed:'=',tableChanged:'='
         },
 		
    controller: 'monthly_kpi_events_controller',
@@ -27354,7 +27365,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
           
         }])
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_57b9a67a.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_b5d29040.js","/")
 },{"../components/exhibitions/directive":8,"../components/exhibitions/music/monthly-votes-controller":9,"../components/exhibitions/music/raw-votes-controller":10,"../components/exhibitions/music/votes-form-controller":11,"../components/iframe/iframe-controller":12,"../components/iframe/iframe-directive":13,"../components/machine-monitor/dashboard-controller":14,"../components/machine-monitor/dead-controller":15,"../components/machine-monitor/downtime-controller":16,"../components/machine-monitor/downtime-services":17,"../components/machine-monitor/feedback-controller":18,"../components/machine-monitor/feedback-services":19,"../components/machine-monitor/satisfaction-controller":20,"../components/member/member-controller":21,"../components/performance/analyser/analyser-controller":22,"../components/performance/dashboard-controllers":23,"../components/performance/donations/monthly-donations-controller":24,"../components/performance/donations/performance-form-controller":25,"../components/performance/donations/raw-donations-controller":26,"../components/performance/donations/yearly-donations-controller":27,"../components/performance/events/monthly-events-controller":28,"../components/performance/events/performance-form-controller":29,"../components/performance/events/raw-events-controller":30,"../components/performance/events/yearly-events-controller":31,"../components/performance/exhibitions-pwyt/monthly-donations-controller":32,"../components/performance/exhibitions-pwyt/performance-form-controller":33,"../components/performance/exhibitions-pwyt/raw-donations-controller":34,"../components/performance/exhibitions/exhibitions-summary-controller":35,"../components/performance/gallery-visits/exhibitions-teg-controller":36,"../components/performance/gallery-visits/monthly-teg-controller":37,"../components/performance/gallery-visits/performance-form-controller":38,"../components/performance/gallery-visits/raw-teg-controller":39,"../components/performance/gallery-visits/weekly-teg-controller":40,"../components/performance/gallery-visits/yearly-teg-controller":41,"../components/performance/gift-aid/monthly-allgiftaid-controller":42,"../components/performance/gift-aid/monthly-giftaid-controller":43,"../components/performance/gift-aid/performance-form-controller":44,"../components/performance/gift-aid/raw-giftaid-controller":45,"../components/performance/home/kpi-home-controller":46,"../components/performance/kpi-events/monthly-events-controller":47,"../components/performance/kpi-events/performance-form-controller":48,"../components/performance/kpi-events/raw-events-controller":49,"../components/performance/learning/age-learning-controller":50,"../components/performance/learning/monthly-learning-controller":51,"../components/performance/learning/performance-form-controller":52,"../components/performance/learning/raw-learning-controller":53,"../components/performance/learning/yearly-learning-controller":54,"../components/performance/operations/monthly-operations-controller":55,"../components/performance/operations/performance-form-controller":56,"../components/performance/operations/raw-operations-controller":57,"../components/performance/operations/yearly-operations-controller":58,"../components/performance/participation/monthly-participation-controller":59,"../components/performance/participation/performance-form-controller":60,"../components/performance/participation/raw-participation-controller":61,"../components/performance/participation/target-audience-controller":62,"../components/performance/participation/yearly-participation-controller":63,"../components/performance/performance-directive":64,"../components/performance/retail/monthly-retail-sales-controller":65,"../components/performance/retail/performance-form-controller":66,"../components/performance/retail/raw-retail-sales-controller":67,"../components/performance/retail/yearly-retail-sales-controller":68,"../components/performance/turnstiles/monthly-turnstiles-controller":69,"../components/performance/turnstiles/raw-turnstiles-controller":70,"../components/performance/visits/monthly-visits-controller":71,"../components/performance/visits/raw-visits-controller":72,"../components/performance/visits/visits-form-controller":73,"../components/performance/visits/yearly-visits-controller":74,"../components/performance/welcome-desk/monthly-welcomedesk-controller":75,"../components/performance/welcome-desk/performance-form-controller":76,"../components/performance/welcome-desk/raw-welcomedesk-controller":77,"../components/performance/welcome-desk/yearly-welcomedesk-controller":78,"../components/resource-bookings/bookings/edit-form-controller":79,"../components/resource-bookings/bookings/form-controller":80,"../components/resource-bookings/bookings/monthly-bookings-controller":81,"../components/resource-bookings/bookings/raw-bookings-controller":82,"../components/resource-bookings/bookings/recurring-events-controller":83,"../components/resource-bookings/bookings/yearly-bookings-controller":84,"../components/resource-bookings/directive":85,"../components/resource-bookings/equipment/form-controller":86,"../components/resource-bookings/equipment/raw-equipment-controller":87,"../components/resource-bookings/rooms/form-controller":88,"../components/resource-bookings/rooms/raw-rooms-controller":89,"../components/resource-bookings/timeline-resources-controller":90,"../components/resource-bookings/timeline-resources-services":91,"../components/shopify/shopify-controller":92,"../components/shopify/shopify-directive":93,"../components/shopify/shopify-monthly-controller":94,"../components/signage/directive":95,"../components/signage/posters/form-controller":96,"../components/signage/posters/raw-poster-controller":97,"../components/team/app-controllers":98,"../components/team/form-controller":99,"../components/team/leave-controller":100,"../components/team/team-controller":101,"../components/tech-support/tech-support-controller":102,"../components/tech-support/tech-support-directive":103,"../components/tech-support/trello-services":104,"../components/timeline-settings/raw-timeline-settings-controller":105,"../components/timeline-settings/settings-form-controller":106,"../components/timeline-settings/timeline-settings-directive":107,"../components/timeline/timeline-bookings-services":108,"../components/timeline/timeline-controller":109,"../components/timeline/timeline-directive":110,"../components/timeline/timeline-exhibitions-services":111,"../components/timeline/timeline-googlesheets-services":112,"../components/timeline/timeline-installs-services":113,"../components/timeline/timeline-learning-bookings-services":114,"../components/timeline/timeline-leave-services":115,"../components/timeline/timeline-loans-services":116,"../components/timeline/timeline-services":117,"../components/timeline/timeline-shopify-services":118,"../components/timeline/timeline-visitor-figures-services":119,"../components/turnstiles/turnstiles-controller":120,"../components/turnstiles/turnstiles-directive":121,"../components/user-admin/users-controller":122,"../components/user-admin/users-directive":123,"../shared/controllers/colourkey-controller":124,"../shared/controllers/controllers":125,"../shared/controllers/navbar-controller":126,"../shared/controllers/tablefilter-controller":127,"../shared/directives/directives":128,"../shared/services/app-services":130,"../shared/services/data-services":131,"async":1,"b55mWE":4,"buffer":3,"underscore":7}],130:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
@@ -27407,7 +27418,7 @@ exports.table_security = function(AuthService,$rootScope) {
 
 }
 	exports.get_table_data_team = function($rootScope,data_table_reload) {	
-
+console.log('exports.get_table_data_team')
 
 
 var self = this
@@ -27454,7 +27465,7 @@ var myScope
 						  angular.forEach( $scope._rows, function( row ) {
 							$scope.gridOptions.data.push( row );
 						  });
-						  
+						 
 						  
 						  	$scope.$watch(function () {
 			
@@ -27866,10 +27877,10 @@ return {
 			
 				var query = {'id':rowEntity._id};
 						scope.featured_collection.update(query, 	setupArray
-								
+							 
 								, function(err, affected, resp) {
 
-
+scope.changed++	
 								
 								
 						})

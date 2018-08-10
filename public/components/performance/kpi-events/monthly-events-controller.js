@@ -1,4 +1,4 @@
-exports.monthly_kpi_events_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_kpi_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security
+exports.monthly_kpi_events_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope,Monthly_kpi_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security
     ) {
 		
 		
@@ -6,7 +6,7 @@ exports.monthly_kpi_events_controller = function($route,$scope, $http, $q, $rout
 		
 			$scope.chart_class = "col-md-6 col-lg-6 col-sm-6 pull-right"
 			$scope.table_class = "col-md-6 col-lg-6 col-sm-6"
-			$scope.table_heading = "Monthly kpi figues"
+			$scope.table_heading = "Monthly kpi stats (automatically calulated)"
 			$scope.chart_heading = "Data  by month"
 			$scope.pie_date = "Apr 2017"
 			$rootScope.canEdit_table=false
@@ -119,32 +119,10 @@ exports.monthly_kpi_events_controller = function($route,$scope, $http, $q, $rout
 			
 			console.log('team $scope._rows',$scope._rows)
 			$scope.gridOptions.data=$scope._rows;
-			//columnDefs=columnDefs.concat(vertical_monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
+
+		
 			
 			
-			
-			
-			//make_a_pie.build($scope,"Apr 2017","team")
-			//make_a_line_chart.build($scope,columnDefs,"team")
-	
-	/*
-			$scope.$watchGroup(['end_date','start_date'], function(newValue, oldValue) {
-  
-					columnDefs=[]
-					columnDefs.push(
-			{ field: 'team',		name: "team",width:80, pinnedLeft:true, enableColumnMoving:false  },
-			{ field: 'kpi_type',		name: "kpi_type",width:80, pinnedLeft:true, enableColumnMoving:false  },
-			{ field: 'age_group',		name: "Age Group",width:80, pinnedLeft:true, enableColumnMoving:false  }
-					
-			)
-					columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
-					$scope.gridOptions.columnDefs=columnDefs
-					make_a_line_chart.build($scope,columnDefs,"team")
-									
-			
-			
-			});
-	*/
 			$scope.changedValue = function(item){ 
 					$scope.pie_date=item			
 					make_a_pie.build($scope,item,"team")
@@ -152,6 +130,24 @@ exports.monthly_kpi_events_controller = function($route,$scope, $http, $q, $rout
 			}
 		})	
 		}
+		
+		
+			
+			$scope.$watch('changed', function (newValue) {
+					if(newValue>0){
+						$scope.get_data()
+					}
+				
+				})
+				
+				$scope.$watch('tableChanged', function (newValue) {
+					
+					if(newValue>0){
+						$scope.get_data()
+					}
+				
+				})
+				
 		$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
 			$scope.options_list=[]
 			$scope.session_type="OFF SITE"

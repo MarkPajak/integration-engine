@@ -12,6 +12,14 @@
 
 }
 
+input:-moz-read-only { /* For Firefox */
+    background-color: #80808029;
+}
+
+input:read-only { 
+    background-color: #80808029;
+}
+
 .radioinput_fx{
 left: 20px;    top: -3px;
 }
@@ -37,31 +45,28 @@ You'll probably need to log in to be able to enter data
 	<div class="panel-body">
 		<form name="visit_form" id="visit_form">
 			 <div class="form-group">
-						<label for="comments">Team:</label>
-					
-							  <input type="text"  id="team"  name="country" value="{{team}}" readonly>
-							  
-					
-					</div>
+						<label for="comments">These figures are being logged against the following team:</label>
+							  <input type="text"  class="form-control input-lg" id="team"  name="country" value="{{team}}" readonly>
+			</div>
        		
-			  <div class="form-group">
+			<div class="form-group">
 				
-						<label for="comments"  >Date from:
-						<input type = "date" class="form-control input-lg" id="date_value" rows="3" required>
-				</label>
-				
-				   
-					<label for="comments">Date to:
-					<input type = "date" class="form-control input-lg" id="date_value_end" rows="3" required>
-					 (this is the date against which the values are logged for reporting)
-				</label>
+				<label for="comments"  >Start date:	</label>
+						<input ng-model="start_date" ng-change="start_date_update(start_date)"  type = "date" class="form-control input-lg" id="date_value"  width="290px;"  required>
+			
+			</div>	
+			<div class="form-group">
+					<label for="comments">Date to: (this is the date against which the values are logged for reporting)	</label>
+					<input  type = "date" class="form-control input-lg" id="date_value_end"     width="290px;" required>
+					
+			
 			 
-			  </div>
+			</div>
 		
 				  <div class="form-group">
 				   <div   class="col-xs-6">
-				<label for="exampleSelect1">Type of KPI</label>
-				<select class="form-control input-lg" id="kpi_type">
+				<label for="exampleSelect1">KPI Type</label>
+				<select class="form-control input-lg" id="kpi_type" ng-model="kpiValue" ng-change="kpi_type_update(kpiValue)">
 					<option value="Total sessions">Sessions</option>
 					<option value="partnership">partnership</option>
 					<option value="event">event</option>
@@ -74,8 +79,8 @@ You'll probably need to log in to be able to enter data
 				</select>
 			</div>
 			  	<div class=" col-xs-6">
-							<label class="pull-left">KPI value</label>
-							<input type="number" class="form-control" id="no_sessions" name="no_sessions">
+							<label class="pull-left">No. of {{selectedkpiValue}}s</label>
+							<input type="number" class="form-control input-lg" id="no_sessions" name="no_sessions" value="1">
 				</div>
 					<br>
 					</br>
@@ -84,7 +89,7 @@ You'll probably need to log in to be able to enter data
 					  </div>
 					
 					<div class="form-group">
-						<label for="comments">Name of project / partnership / event / etx:</label>
+						<label for="comments">Name/ Description of {{selectedkpiValue}}</label>
 					
 					  <input type="text"  id="event_name"  name="event_name" required>
 					</div>
@@ -97,38 +102,31 @@ You'll probably need to log in to be able to enter data
 						<div class="form-group">
 							<div class="col-xs-6">
 							<label>Number of people</label>
-							<input type="number" class="form-control" id="no_visits" name="no_visits">
+							<input type="number" class="form-control input-lg" id="no_visits" name="no_visits">
 						  </div>
 						  	</div> 
 								<div class="form-group">
 						  	<div class=" col-xs-6">
 							<label>Number of enquiries</label>
-							<input type="number" class="form-control" id="no_enquiries" name="no_enquiries">
+							<input type="number" class="form-control input-lg" id="no_enquiries" name="no_enquiries">
 						  </div>
 					</div>
-			<div class="form-group">
-						<div class="col-xs-6">
-							<label>Income</label>
-							<input type="number" class="form-control" id="income" name="income">
-							
+						<div class="form-group">
+									<div class="col-xs-6">
+										<label>Income</label>
+										<input type="number" class="form-control input-lg" id="income" name="income">
+										
+									 </div>
+
 						 </div>
+				
 
-			 </div>
-				
-				
-				
-				
-				
-				
-		
-
-			
-			  
-			
 
 			  <div class="form-group">
+			  <div class="col-xs-6">
 				<label for="comments">Comments</label>
 				<textarea class="form-control input-lg" id="comments" rows="3"></textarea>
+			  </div>
 			  </div>
 			   <button ng-click="onSubmit()" type="submit" class="input-lg btn btn-primary submit-button" ng-disabled="vm.form.$invalid">Submit</button>
 			   <button type="button" class="input-lg btn btn-default" ng-click="vm.options.resetModel()">Reset</button>
