@@ -619,6 +619,40 @@ array.build  = function (scope,start_date,end_date) {
 
 }
 
+exports.vertical_monthly_data_table_columns = function() {	
+		
+
+var array = {};
+
+
+array.build  = function (scope,start_date,end_date) {
+  
+  var columns = []
+  
+  start=moment(start_date).year()
+  end=moment(end_date).year()
+
+	for (year = start; year <= end; year++) { 
+
+
+			_.each(scope.data_columns,function(column_name){	
+			//n.b. fields now need to be data label names so only one date column needed
+				columns.push({ field: column_name,width: "80"})
+				//scope.filter_pie.push({value:month+" "+year,name:month+" "+year})
+			})
+
+	   
+}
+
+			return columns
+
+	};
+	
+
+    return array;
+
+}
+
 exports.monthly_data_table_columns = function() {	
 		
 

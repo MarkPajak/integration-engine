@@ -501,10 +501,10 @@ router.get('/all/:event_type', function(req, res, next) {
 function get_kpis(cb){
 
 Team.aggregate([
-	{ $match: { on_site_off_site:req.params.event_type } },
+	//{ $match: { on_site_off_site:req.params.event_type } },
     { $project : {
         team_id : 1 ,
-        on_site_off_site : 1 ,
+        kpi_type : 1 ,
         date_value : 1,
 		age_groups : 1,
 		event_name:1,
@@ -512,7 +512,7 @@ Team.aggregate([
 
 		
     }},
-    { $unwind : "$age_groups" },
+   // { $unwind : "$age_groups" },
 
 		{ $group: {
                        _id: {
@@ -522,7 +522,7 @@ Team.aggregate([
 					      
 					    venue:'$team_id',
 						on_site_off_site:'$on_site_off_site',
-					    age_groups:'$age_groups.name',
+					    kpi_type:'$kpi_type.name',
 						
 					   
 					 },  
@@ -570,20 +570,20 @@ get_kpis( function ( result) {
 	var on_site_off_site=[]
 	
 	_.each(result,function(row){
+	
+	
+	
+		if(age_groups.indexOf(row._id.age_groups)==-1){
+			console.log('adding kpi type ',row._id.age_groups)
+			age_groups.push(row._id.age_groups)
+		}
+	
+	
 		if(venues.indexOf(row._id.venue)==-1){
 			console.log('adding venue ',row._id.venue)
 			venues.push(row._id.venue)
 		}
-		
-		if(age_groups.indexOf(row._id.age_groups)==-1){
-			console.log('adding age_groups ',row._id.age_groups)
-			age_groups.push(row._id.age_groups)
-		}
-		
-		if(on_site_off_site.indexOf(row._id.on_site_off_site)==-1){
-			console.log('adding on_site_off_site ',row._id.on_site_off_site)
-			on_site_off_site.push(row._id.on_site_off_site)
-		}
+
 	})
 	
 	function wind_up_Stats(	result,returned_row,analysis_field,venue,on_site_off_site,age_group){
@@ -645,38 +645,46 @@ res.json(returned_data)
 });
 //aggregation
 /* GET /todos listing. */
-router.get('/all/:csv*?', function(req, res, next) {
+router.get('/allx/:team_id/:csv*?', function(req, res, next) {
+
+var team_id = decodeURIComponent(req.params.team_id)
+
+
+
+
 
 function get_kpis(cb){
 
 Team.aggregate([
 			
 
-
+		{ $match: { team_id:team_id } },
 		{ $group: {
                        _id: {
- "year": { "$year": route_functions.mongo_aggregator }, 
-						"month": { "$month": route_functions.mongo_aggregator }, 
+						"year": { "$year": route_functions.mongo_aggregator3 }, 
+						"month": { "$month": route_functions.mongo_aggregator3 }, 
 
 					      
 					    venue:'$team_id',
-						session_type:'$session_type',
-					    age_group:'$age_group',
+						kpi_type:'$kpi_type',
+					   // age_group:'$age_group',
 						
 					   
 					 },  
 				
-					total_sessions: {$sum: '$total_sessions' },
-					total_children: {$sum: '$total_children' },
-					total_teachers: {$sum: '$total_teachers' },
-					total_income: {$sum: '$total_income' }
+					total_sessions: {$sum: '$no_sessions' },  //add more if you change the data entry field
+					total_people: {$sum: '$no_visits' },
+					total_enquiries: {$sum: '$no_enquiries' },
+					//total_children: {$sum: '$total_children' },
+					//total_teachers: {$sum: '$total_teachers' },
+					total_income: {$sum: '$income' }
 			 
 		      
             }
 		 },
 
-	 { $project : {venue:"$_id.venue",age_group:"$_id.age_group", session_type:"$_id.session_type", total_income:"$total_income",total_sessions:"$total_sessions", total_teachers:"$total_teachers",total_children:"$total_children",kpi_year :"$_id.year", kpi_month :"$_id.month"}  },
-	{ $sort : { age_group : 1 } }
+	 { $project : {venue:"$_id.venue", kpi_type:"$_id.kpi_type",  total_enquiries:"$total_enquiries",total_people:"$total_people",total_income:"$total_income",total_sessions:"$total_sessions",kpi_year :"$_id.year", kpi_month :"$_id.month"}  }//,
+	//{ $sort : { age_group : 1 } }
 		
 
     ], function (err, result) {
@@ -686,16 +694,27 @@ Team.aggregate([
         } else {
 		
 		
+		
+		
+		
+		
+		
+		
+		
+		
 		_.each(result,function(visits,i){
 			//_.each(result2,function(visits,ii){
 			//console.log(visits.year)
 			//if(kpi.kpi_venue==visits.venue &&  kpi.kpi_month==visits.month && kpi.kpi_year==visits.year){
 			result[i].kpi_venue=visits.venue
-			result[i].age_group=visits.age_group
-			result[i].session_type=visits.session_type
+			//result[i].age_group=visits.age_group
+			result[i].kpi_type=visits.kpi_type
 			result[i].total_sessions=visits.total_sessions
-			result[i].total_children=visits.total_children
-			result[i].total_teachers=visits.total_teachers
+			result[i].total_people=visits.total_people
+			result[i].total_enquiries=visits.total_enquiries
+			
+			//result[i].total_children=visits.total_children
+			//result[i].total_teachers=visits.total_teachers
 			result[i].total_income=visits.total_income
 			//result[i].conversion=(kpi.number_transactions/visits.visits*100).toFixed(2)+"%";    
 			//}
@@ -738,7 +757,7 @@ get_kpis( function ( result) {
 	
 	//load venues
 	var venues=[]
-	var age_groups=[]
+	var kpi_types=[]
 	var session_types=[]
 	
 	_.each(result,function(row){
@@ -747,10 +766,12 @@ get_kpis( function ( result) {
 			venues.push(row.kpi_venue)
 		}
 		
-		if(age_groups.indexOf(row.age_group)==-1){
-			console.log('adding age_group ',row.age_group)
-			age_groups.push(row.age_group)
+		if(kpi_types.indexOf(row.kpi_type)==-1){
+			console.log('adding kpi_type ',row.kpi_type)
+			kpi_types.push(row.kpi_type)
 		}
+		
+
 		
 		if(session_types.indexOf(row.session_type)==-1){
 			console.log('adding session_type ',row.session_type)
@@ -758,7 +779,7 @@ get_kpis( function ( result) {
 		}
 	})
 	
-	function wind_up_Stats(	result,returned_row,analysis_field,venue,session_type,age_group){
+	function wind_up_Stats(	result,returned_row,analysis_field,venue,session_type,kpi_type){
 		
 		
 			var years = [2014,2015,2016,2017,2018,2019]
@@ -766,7 +787,7 @@ get_kpis( function ( result) {
 			_.each(moment.monthsShort(),function(month){
 				returned_row[month+" "+year]=""
 				_.each(result,function(row){
-					if(month==moment.monthsShort(row.kpi_month-1)&&session_type==row.session_type  &&age_group==row.age_group&&venue==row.kpi_venue &&row.kpi_year==year){
+					if(month==moment.monthsShort(row.kpi_month-1)&&session_type==row.session_type  &&kpi_type==row.kpi_type&&venue==row.kpi_venue &&row.kpi_year==year){
 						if(row[analysis_field]>0){
 							returned_row[month+" "+year]=row[analysis_field]
 						}
@@ -782,43 +803,45 @@ get_kpis( function ( result) {
 	var returned_data=[]
 
 	_.each(venues,function(venue){
-	_.each(session_types,function(session_type){			
-		_.each(age_groups,function(age_group){	
-		
-		var returned_row={}
-			returned_row.museum=venue
-			returned_row.age_group=age_group
-			returned_row.session_type=session_type
-			returned_row.stat="Age Group"
-		//	returned_data.push(	 wind_up_Stats(	result,returned_row,"age_group",venue,age_group))
-		
+	_.each(session_types,function(session_type){
 
-		var returned_row={}
-			returned_row.museum=venue
-			returned_row.age_group=age_group
-			returned_row.session_type=session_type
-			returned_row.stat="Sessions"
-			returned_data.push(	 wind_up_Stats(	result,returned_row,"total_sessions",venue,session_type,age_group))
+			
 
-		var returned_row={}
-			returned_row.museum=venue
-			returned_row.age_group=age_group
-			returned_row.session_type=session_type
-			returned_row.stat="Children"
-			returned_data.push(	 wind_up_Stats(	result,returned_row,"total_children",venue,session_type,age_group))
+	
+		_.each(kpi_types,function(kpi_type){
 		
-		var returned_row={}
-			returned_row.museum=venue
-				returned_row.age_group=age_group
-				returned_row.session_type=session_type
-			returned_row.stat="Teachers"
-			returned_data.push(	 wind_up_Stats(	result,returned_row,"total_teachers",venue,session_type,age_group))
-		var returned_row={}
-			returned_row.museum=venue
-				//returned_row.age_group=age_group
-			returned_row.stat="Income"
-			returned_data.push(	 wind_up_Stats(	result,returned_row,"total_income",venue,session_type,age_group))
-
+		
+			var returned_row={}
+			returned_row.team=venue
+			returned_row.kpi_type=kpi_type
+			//returned_row.session_type=session_type
+			returned_row.stat=kpi_type
+			returned_data.push(	 wind_up_Stats(	result,returned_row,"total_sessions",venue,session_type,kpi_type))
+			
+			
+			var returned_row={}
+			returned_row.team=venue
+			returned_row.kpi_type="total_income"
+			returned_row.session_type=session_type
+		//	returned_row.stat=kpi_type
+			returned_data.push(	 wind_up_Stats(	result,returned_row,"total_income",venue,session_type,kpi_type))
+			
+			var returned_row={}
+			returned_row.team=venue
+			returned_row.kpi_type="total_people"
+			returned_row.session_type=session_type
+		//	returned_row.stat=kpi_type
+			returned_data.push(	 wind_up_Stats(	result,returned_row,"total_people",venue,session_type,kpi_type))
+			
+			var returned_row={}
+			returned_row.team=venue
+			returned_row.kpi_type="total_enquiries"
+			returned_row.session_type=session_type
+		//	returned_row.stat=kpi_type
+			returned_data.push(	 wind_up_Stats(	result,returned_row,"total_enquiries",venue,session_type,kpi_type))
+			
+		
+		
 		})
 	})
 })
@@ -1114,82 +1137,13 @@ console.log('filtering on kpi type',req.params.kpi_type)
  _.extend(query,{kpi_type: decodeURIComponent(req.params.kpi_type)})
 }
 
-/*
-if( req.params.exact=="false"){
-	 _.extend(query, {date_value: {$gte: new Date(req.params.date_value)}})
-	 console.log("martching date greater then",query)
-}
-else
-{
-  _.extend(query,{date_value: new Date(req.params.date_value)})
-}
 
 
+  Team.find(query)
+	   .populate('leave_taken')
+	     .sort({date_value: 'desc'})
+	   .exec (  function (err, todos) {
 
-if(decodeURIComponent(req.params.on_site_off_site)!="#"){
- _.extend(query,{on_site_off_site: req.params.on_site_off_site})
-}
-*/
-
-
-
-Team.aggregate(
-    { $match: query }, // your find query
-   // { $unwind : "$age_groups"},
-	{ $project: {
-			_id:1,
-			team_id: 1,						
-			kpi_type:1,	
-		
-			event_name: 1,
-			//community_group:1,
-			date:1,
-			date_value:1,	
-			no_visits:1,
-			no_sessions:1,
-			no_enquiries:1,
-			income:1,
-			date_value_end: 1,
-			date_logged: 1,
-			comments: 1,
-			logger_user_name: 1,			
-    
-    } },
-	
-		{
-			$group:{  "_id": "$_id", 	
-				
-				
-					
-							"team_id": { "$first": "$team_id"},
-							"kpi_type": { "$first": "$kpi_type"},
-							//"on_site_off_site": { "$first": "$on_site_off_site"},
-							//"event_lead": { "$first": "$event_lead"},
-							//"target_groups": { "$first": "$target_groups"},
-							"event_name": { "$first": "$event_name"},
-							//"community_group": { "$first": "$community_group"},
-							"date_value": { "$first": "$date_value"},
-							"date_value_end": { "$first": "$date_value_end"},
-							"date_logged": { "$first": "$date_logged"},
-								"date": { "$first": "$date"},
-							
-								"no_visits": { "$first": "$no_visits"},
-									"no_sessions": { "$first": "$no_sessions"},
-										"no_enquiries": { "$first": "$no_enquiries"},
-											"income": { "$first": "$income"},
-		
-							
-							"comments": { "$first": "$comments"},
-							"logger_user_name": { "$first": "$logger_user_name"},
-					},
-	
-       },
-
-				
-    { $sort: { date_value: 1} },
-
-    // And then the normal Mongoose stuff:
-    function (err, todos) {
 		
 	if (err){
 console.log(err)
@@ -1210,10 +1164,9 @@ console.log(err)
 		res.json(todos);
 	}
 		
-    }
-);
+    })
+})
 
-});
 
 api_calls=new Api_calls(Team,router)
 

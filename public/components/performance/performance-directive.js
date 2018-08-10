@@ -528,12 +528,34 @@ exports.recordTeg  = function() {
 	
 			exports.rawKpievents = function() {
   return {
+
+         restrict: "E",
+		
+		   
+   scope: {
+		user: '='
+		
+        },
+		
    controller: 'raw_kpi_events_controller',
      templateUrl: './shared/templates/data_table.html'
   }
 	}
 	
-	
+				exports.monthlyKpievents = function() {
+  return {
+  
+ restrict: "E",
+
+	   
+   scope: {
+		user: '='
+        },
+		
+   controller: 'monthly_kpi_events_controller',
+     templateUrl: './shared/templates/data_table.html'
+  }
+	}
 		exports.rawEvents = function() {
   return {
    controller: 'raw_events_controller',

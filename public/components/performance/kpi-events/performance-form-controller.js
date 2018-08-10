@@ -136,7 +136,7 @@ compare_date.setFullYear( compare_date.getFullYear() - 1 );
  
  }
  
- 
+ $scope.changed=0
  
  $scope.toggleSelection = function(target_group) {
     var idx = $scope.selection.indexOf(target_group);
@@ -270,6 +270,7 @@ compare_date.setFullYear( compare_date.getFullYear() - 1 );
 							  message+= "\n ";
 							  //message+= " "+ data + " added to " + museum;
 							  alert(message);
+							   $scope.changed++
 							  get_table_data_team.getData(moment(new Date()).subtract({'months':1})._d,$scope)		
 							//visit_form.on_site_off_site.value=""
 							//$scope.age_groups=[]

@@ -132,7 +132,7 @@ exports.Monthly_visits =  function($resource){
     exports.Monthly_kpi_events =  function($resource){
 	  
 	  
-	return $resource('/kpi_events/all/:event_type',{ }, {
+	return $resource('/kpi_events/allx/:team_id',{ }, {
 		openGates: {method:'GET', isArray: true}
 			
   });

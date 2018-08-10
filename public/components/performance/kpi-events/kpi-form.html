@@ -16,6 +16,8 @@
 left: 20px;    top: -3px;
 }
 
+
+
 .add_box{
 padding:20px;
 z-index:1000;
@@ -41,18 +43,32 @@ You'll probably need to log in to be able to enter data
 							  
 					
 					</div>
-       
+       		
+			  <div class="form-group">
+				
+						<label for="comments"  >Date from:
+						<input type = "date" class="form-control input-lg" id="date_value" rows="3" required>
+				</label>
+				
+				   
+					<label for="comments">Date to:
+					<input type = "date" class="form-control input-lg" id="date_value_end" rows="3" required>
+					 (this is the date against which the values are logged for reporting)
+				</label>
+			 
+			  </div>
+		
 				  <div class="form-group">
 				   <div   class="col-xs-6">
 				<label for="exampleSelect1">Type of KPI</label>
 				<select class="form-control input-lg" id="kpi_type">
-					<option value="project">project</option>
+					<option value="Total sessions">Sessions</option>
 					<option value="partnership">partnership</option>
 					<option value="event">event</option>
-					<option value="unique web visits">unique web visits</option>
-					<option value="web visits">web visits</option>
-					<option value="target income">target income</option>
-					<option value="filming days">filming days</option>
+					<option ng-show="user.team=='Film Office'" value="unique web visits">unique web visits</option>
+					<option ng-show="user.team=='Film Office'" value="web visits">web visits</option>
+					<option ng-show="user.team=='Film Office'" value="target income">target income</option>
+					<option ng-show="user.team=='Film Office'" value="filming days">filming days</option>
 					<option value="other">other</option>
 				
 				</select>
@@ -68,46 +84,13 @@ You'll probably need to log in to be able to enter data
 					  </div>
 					
 					<div class="form-group">
-						<label for="comments">Name:</label>
+						<label for="comments">Name of project / partnership / event / etx:</label>
 					
-					  <input type="text"  id="event_name"  name="event_name" >
+					  <input type="text"  id="event_name"  name="event_name" required>
 					</div>
 					
 
-				
-					<!--
-					<div class="form-group">
-						<label for="comments">Community group:</label>
-						<select  id="community_group" class="form-control input-lg" ng-model="community_group" ng-options="(c.name) for c  in community_groups" ng-change="search_community(community_group)">
-								<option value="">-- choose group or select add new --</option>
-						</select>
-						<div class="container" ng-show="community_group.name == 'add new group'">
-							<div class=" form-group ">
-								<input class="text-box" type="text" name="_NewValue" ng-model="_newValue" />
-								<button ng-click="add_community(_newValue)">Clickto save community group name</button>
-							</div>
-						</div>
-					</div>
-
-				-->
-				
-				
-			  	 <!-- RADIO BUTTONS 
-				<div class="form-group">
-					<div class="radio">
-						<label>
-							<input class="radioinput_fx" type="radio" name="on_site_off_site" value="OFF SITE" ng-model="on_site_off_site">
-						   Off site
-						</label>
-					</div>
-					<div class="radio">
-						<label>
-							<input class="radioinput_fx" type="radio" name="on_site_off_site" value="ON SITE" ng-model="on_site_off_site">
-						   On site
-						</label>
-					</div>
-				</div>
-				-->
+			
 				
 					
 	
@@ -116,71 +99,29 @@ You'll probably need to log in to be able to enter data
 							<label>Number of people</label>
 							<input type="number" class="form-control" id="no_visits" name="no_visits">
 						  </div>
-						  
+						  	</div> 
+								<div class="form-group">
 						  	<div class=" col-xs-6">
 							<label>Number of enquiries</label>
 							<input type="number" class="form-control" id="no_enquiries" name="no_enquiries">
 						  </div>
-
+					</div>
+			<div class="form-group">
 						<div class="col-xs-6">
 							<label>Income</label>
 							<input type="number" class="form-control" id="income" name="income">
+							
 						 </div>
 
-			  	</div><br></br>
-			  <div class="form-group">
-					
-						<label for="comments" class="pull-left" >Date from:</label>
-						<input type = "date" class="form-control input-lg" id="date_value" rows="3">
+			 </div>
 				
-					<label for="comments">Date to:</label>
-					<input type = "date" class="form-control input-lg" id="date_value_end" rows="3">
 				
-			  </div>
+				
+				
+				
+				
 		
-	
- <!--
-				<div class="panel-body">
-					<div class="panel-heading">visitor numbers</div>
-						<div ng-repeat="age_group in age_groups" >
-							 <div class="form-group col-xs-6">
-								{{age_group.name}}				
-							</div>
-							 <div class="form-group col-xs-6">
-								{{age_group.count}}		 <button class="btn btn-danger" ng-click="deleteUser(age_group)"><i class="icon-trash"></i> Delete</button>			
-							</div>
-						</div>
-			
-			 -->
-			  
-		 <!--			
-						  <div class="form-group col-xs-6">
-							<label>Age group:</label>
-							<select class="form-control input-lg" id="age_group" name="age_group">
-								<option value="Under 5s">Under 5s</option> 
-								<option value="ages 5-15">5-15</option>
-								<option value="Adults 16+">Adults 16+</option>
-							</select>  
-						  </div>
-						  <div class="form-group col-xs-6">
-							<label>Count</label>
-							<input type="number" class="form-control" id="count" name="count">
-						  </div>
-					
-					
-						 <div class="margin-20">
-						  <a ng-click="addCount()" style="cursor: default">
-							Add another count +
-						  </a>
-						</div>
-				  </div>
-		 
-		<label> Did your event or activity specifically focus on any of the below groups? If so, please select all that apply.</label>
-<br>
-<br>
-  -->
-	
-			
+
 			
 			  
 			

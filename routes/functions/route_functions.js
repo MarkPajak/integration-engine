@@ -42,7 +42,7 @@ this.calendar_feed = function (events){
 	
 	this.mongo_aggregator=  { "$add": [ "$date_value", 7 * 60 * 60 * 1000 ] }         
 	this.mongo_aggregator2=  { "$add": [ "$date_logged", 7 * 60 * 60 * 1000 ] }     	
-
+	this.mongo_aggregator3=  { "$add": [ "$date_value_end", 7 * 60 * 60 * 1000 ] }     	
 	 this.retail_stats_weekly=function(result,result2){				   
 
 			_.each(result,function(kpi,i){

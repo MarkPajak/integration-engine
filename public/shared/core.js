@@ -124,7 +124,7 @@ var events_performance_form = require('../components/performance/events/performa
 
 var raw_kpi_events_controller = require('../components/performance/kpi-events/raw-events-controller');
 var events_kpi_performance_form = require('../components/performance/kpi-events/performance-form-controller');
-
+var monthly_kpi_events_controller = require('../components/performance/kpi-events/monthly-events-controller');
 
 
 
@@ -263,10 +263,14 @@ _.each(events_performance_form, function(controller, name) {
 _.each(raw_kpi_events_controller, function(controller, name) {
   app.controller(name, controller);
 });
+
 _.each(events_kpi_performance_form, function(controller, name) {
   app.controller(name, controller);
 });
 
+_.each(monthly_kpi_events_controller, function(controller, name) {
+  app.controller(name, controller);
+});
 
 
 

@@ -8,10 +8,11 @@ exports.raw_kpi_events_controller = function($route,$scope, get_table_data_team,
 
 	
 		
-		$scope.table_class="col-md-12 col-lg-12col-sm-12 full-height"
+		$scope.table_class="col-md-12 col-lg-12col-sm-12"
 		$scope.show_all_Button=true
 		$scope.featured_collection=Raw_kpi_events
 		$rootScope.featured_collection=Raw_kpi_events
+			$scope.table_heading = "Raw data (editable)"
 		$rootScope.canEdit_table=true
 		$scope.gridOptions=[]
 		$scope.gridOptions.data=[]

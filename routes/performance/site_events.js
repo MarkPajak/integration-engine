@@ -21,7 +21,161 @@ var isAuthenticated = function (req, res, next) {
 
 var Team = require('../../models/performance/Events.js');
 
+router.get('/event_tally', function(req, res, next) {
 
+function get_kpis(cb){
+
+
+		Team.aggregate([
+								
+					{$project:{ //museum_id : 1 ,
+								//target_groups : 1 ,
+								age_groups : 1,
+								event_name:1,
+								//session_type:1,
+							   "quarter":{$cond:[{$lte:[{$month:route_functions.mongo_aggregator},3]},
+												 "fourth",
+												 {$cond:[{$lte:[{$month:route_functions.mongo_aggregator},6]},
+														 "first",
+														 {$cond:[{$lte:[{$month:route_functions.mongo_aggregator},9]},
+																 "second",
+										"third"]}]}]},
+										"financial_yer":{$cond:[{$lte:[{$month:route_functions.mongo_aggregator},3]},
+										"last",
+										"this"]
+										
+								},
+								"year":{$cond:[{$lte:[{$month:route_functions.mongo_aggregator},3]},
+												{$year:route_functions.mongo_aggregator},
+										{$year:route_functions.mongo_aggregator}]
+										
+					}}
+			
+					},
+					
+					{ $unwind : "$age_groups" },
+					{$group:{"_id":{"year":"$year" ,"financial_yer":"$financial_yer"  ,"event_name":"$event_name" , 
+						// age_groups:'$age_groups.name'
+					    },  "count": { $sum: '$age_groups.count' }}
+					}
+
+
+    ], function (err, result) {
+
+        if (err) {
+            console.log(err);
+        } else {
+		
+	console.log(result)
+			cb(result)
+			
+        }
+		
+    });
+	
+}
+
+get_kpis( function ( result) {
+	
+
+	//load venues
+	var venues=[]
+	//var age_groups=[]
+	//var on_site_off_site=[]
+	var event_name=[]
+	
+	_.each(result,function(row){
+	/*
+	if(venues.indexOf(row._id.venue)==-1){
+			console.log('adding venue ',row._id.venue)
+			venues.push(row._id.venue)
+		}
+		
+		if(age_groups.indexOf(row._id.age_groups)==-1){
+			console.log('adding age_groups ',row._id.age_groups)
+			age_groups.push(row._id.age_groups)
+		}
+*/		
+		if(event_name.indexOf(row._id.target_groups)==-1){
+		
+		if(row._id.event_name){
+			console.log('adding event_name ',row._id.event_name)
+			event_name.push(row._id.event_name)
+			}
+		}
+	})
+	
+	function wind_up_Stats(	result,returned_row,analysis_field,event_name){
+		
+		
+				var years = [2014,2015,2016,2017,2018,2019]
+								_.each(years,function(year){
+									var financial_yesr_text = ["last","this"]
+									_.each(financial_yesr_text,function(financial_yer_text){
+									
+										_.each(result,function(row){
+											if(event_name==row._id.event_name  &&row._id.financial_yer==financial_yer_text&&row._id.year==year){
+												
+												var financial_year_display=""
+												if(financial_yer_text=="this"){
+													financial_year_display=	year+"-"+((year+1).toString().substring(2))
+														console.log('financial_year_display this',financial_year_display)
+													returned_row[financial_year_display]=row[analysis_field]
+													}
+													else
+													{
+													financial_year_display=	(year-1)+"-"+(year.toString().substring(2))	
+														console.log('financial_year_display',financial_year_display)
+													returned_row[financial_year_display]+=row[analysis_field]
+												}
+
+												
+												
+											}
+										})
+									})
+									
+								})
+								//console.log(returned_rows)
+							return(returned_row)
+	}
+	
+	
+	
+	var returned_data=[]
+
+	//_.each(venues,function(venue){
+	//_.each(on_site_off_site,function(on_off_site){			
+		_.each(event_name,function(event_name){	
+		
+		var returned_row={}
+			//returned_row.museum=venue
+			//returned_row.age_group=age_group
+			//returned_row.on_off_site=on_off_site
+			console.log('event_name',event_name)
+			returned_row.stat="Event name"
+			returned_data.push(	 wind_up_Stats(	result,returned_row,"event_name",event_name))
+			
+			var returned_row={}
+		//	returned_row.museum=venue
+			returned_row.event_name=event_name
+			//returned_row.on_off_site=on_off_site
+			returned_row.stat="count"
+			returned_data.push(	 wind_up_Stats(	result,returned_row,"count",event_name))
+		
+
+
+		})
+	//})
+//})
+
+res.json(returned_data)
+	
+})
+
+
+
+});
 router.get('/priority_groups', function(req, res, next) {
 
 function get_kpis(cb){

@@ -37,11 +37,16 @@ Donations_kpi.virtual('date_recorded').get(function() {
 			return   moment(this.date_logged).format('DD/MM/YYYY');
 
 });
+
 Donations_kpi.set('toJSON', {
+
    virtuals: true
+   
 });
 Donations_kpi.set('toObject', {
+
    virtuals: true
+   
 });
 
 

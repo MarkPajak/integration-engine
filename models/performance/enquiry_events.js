@@ -30,8 +30,8 @@ var Kpi_events = new mongoose.Schema({
 			community_group:  { type: String},
 			event_name: { type: String, required: true},
 
-			date_value: { type: Date},	
-			date_value_end: { type: Date},
+			date_value: { type: Date, required: true},	
+			date_value_end: { type: Date, required: true},	
 			date_logged: { type: Date, required: true},
 			comments: { type: String},
 			logger_user_name: { type: String}
