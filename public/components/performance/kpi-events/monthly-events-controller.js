@@ -97,8 +97,15 @@ exports.monthly_kpi_events_controller = function($route,$scope, $http, $q, $rout
 												columnDefs.push(heading)
 										}	
 												
-												
-												column_data[heading_name]=row[month_year]
+												if(column_data[heading_name]){
+												column_data[heading_name]+=row[month_year]
+												}
+												else
+												{
+													if(row[month_year]>0){
+												column_data[heading_name]=parseInt(row[month_year])
+													}												
+												}
 												//column_data.income=row.income
 												//column_data.no_people=row.no_people
 												//column_data.no_enquiries=row.no_enquiries

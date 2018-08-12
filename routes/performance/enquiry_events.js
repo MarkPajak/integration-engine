@@ -789,7 +789,7 @@ get_kpis( function ( result) {
 				_.each(result,function(row){
 					if(month==moment.monthsShort(row.kpi_month-1)&&session_type==row.session_type  &&kpi_type==row.kpi_type&&venue==row.kpi_venue &&row.kpi_year==year){
 						if(row[analysis_field]>0){
-							returned_row[month+" "+year]=row[analysis_field]
+							returned_row[month+" "+year]=row[analysis_field]  //n.b. needs to add up if already exists!
 						}
 					}
 				})

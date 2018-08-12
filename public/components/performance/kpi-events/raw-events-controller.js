@@ -22,7 +22,7 @@ exports.raw_kpi_events_controller = function($route,$scope, get_table_data_team,
 
 		 columnDefs.push(
 			{ field: 'team_id' ,name: "Team",resizable: true,width:150},
-			{ field: 'kpi_type' ,name: "KPI Type",resizable: true,width:150},
+			{ field: 'kpi_type' ,name: "KPI Type",resizable: true,width:150,Editable:false},
 			{ field: 'event_name',name: "Name of Event" ,resizable: true,width:250},	
 			{ field: 'date_value_end' ,name: "End Date",resizable: true ,type: 'date', cellFilter: 'date:\'dd/MM/yy\'',width:200},
 			{ field: 'no_sessions',name: "KPI value" ,resizable: true,width:100},
