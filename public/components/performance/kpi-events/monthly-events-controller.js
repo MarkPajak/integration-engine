@@ -98,7 +98,7 @@ exports.monthly_kpi_events_controller = function($route,$scope, $http, $q, $rout
 										}	
 												
 												if(column_data[heading_name]){
-												column_data[heading_name]+=parseInt(row[month_year])
+												column_data[heading_name]=parseInt(row[month_year])+parseInt(column_data[heading_name])
 												}
 												else
 												{
