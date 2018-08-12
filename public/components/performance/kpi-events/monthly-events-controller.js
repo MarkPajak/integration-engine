@@ -35,7 +35,9 @@ exports.monthly_kpi_events_controller = function($route,$scope, $http, $q, $rout
 		
 
 		
-
+function isNumeric(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
 	
 			$scope.teams  =[]
 			$scope.selected_chart_stats=[]
@@ -97,13 +99,13 @@ exports.monthly_kpi_events_controller = function($route,$scope, $http, $q, $rout
 												columnDefs.push(heading)
 										}	
 												
-												if(column_data[heading_name]){
+												if(column_data[heading_name] && isNumeric(row[month_year])){
 													column_data[heading_name]=parseInt(column_data[heading_name])
 												column_data[heading_name]+=parseInt(row[month_year])
 												}
 												else
 												{
-													if(row[month_year]>0){
+													if(row[month_year]>0 && isNumeric(row[month_year])){
 												column_data[heading_name]=parseInt(row[month_year])
 													}												
 												}
