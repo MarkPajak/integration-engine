@@ -47,6 +47,22 @@ Kpi_events.virtual('date').get(function() {
 
 });
 
+Kpi_events.virtual('month').get(function() {
+ 
+				
+			return   moment(this.date_value_end).format('MMMM');
+
+});
+
+
+Kpi_events.virtual('year').get(function() {
+ 
+				
+			return   moment(this.date_value_end).format('YYYY');
+
+});
+
+
 Kpi_events.virtual('date_recorded').get(function() {
  
 				
