@@ -643,15 +643,115 @@ res.json(returned_data)
 
 
 });
-//aggregation
-/* GET /todos listing. */
-router.get('/allx/:team_id/:csv*?', function(req, res, next) {
+
+router.get('/monthly/:team_id/:csv*?', function(req, res, next) {
 
 var team_id = decodeURIComponent(req.params.team_id)
 
+function get_kpis(cb){
+
+Team.aggregate([
+			
+
+		{ $match: { team_id:team_id } },
+		{ $group: {
+                       _id: {
+						"year": { "$year": route_functions.mongo_aggregator3 }, 
+						"month": { "$month": route_functions.mongo_aggregator3 }, 
+
+					      
+					    venue:'$team_id',
+						kpi_type:'$kpi_type',
+					   // age_group:'$age_group',
+						
+					   
+					 },  
+				
+					total_sessions: {$sum: '$no_sessions' },  //add more if you change the data entry field
+					total_people: {$sum: '$no_visits' },
+					total_enquiries: {$sum: '$no_enquiries' },
+					//total_children: {$sum: '$total_children' },
+					//total_teachers: {$sum: '$total_teachers' },
+					total_income: {$sum: '$income' }
+			 
+		      
+            }
+		 },
+
+	 { $project : {venue:"$_id.venue", kpi_type:"$_id.kpi_type",  total_enquiries:"$total_enquiries",total_people:"$total_people",total_income:"$total_income",total_sessions:"$total_sessions",kpi_year :"$_id.year", kpi_month :"$_id.month"}  }//,
+	//{ $sort : { age_group : 1 } }
+		
+
+    ], function (err, result) {
+
+        if (err) {
+            console.log(err);
+        } else {
+		
+		
+			
+		
+		
+		
+		_.each(result,function(visits,i){
+			//_.each(result2,function(visits,ii){
+			//console.log(visits.year)
+			//if(kpi.kpi_venue==visits.venue &&  kpi.kpi_month==visits.month && kpi.kpi_year==visits.year){
+			result[i].kpi_venue=visits.venue
+			//result[i].age_group=visits.age_group
+			result[i].kpi_type=visits.kpi_type
+			result[i].total_sessions=visits.total_sessions
+			result[i].total_people=visits.total_people
+			result[i].total_enquiries=visits.total_enquiries
+			
+			//result[i].total_children=visits.total_children
+			//result[i].total_teachers=visits.total_teachers
+			result[i].total_income=visits.total_income
+			//result[i].conversion=(kpi.number_transactions/visits.visits*100).toFixed(2)+"%";    
+			//}
+			
+			
+			//})
+		})
+		
+		
+//res.json(result)
+
+if(req.params.csv){
+
+
+ res.setHeader('Content-disposition', 'attachment; filename=data.csv');
+  res.set('Content-Type', 'text/csv');
+  res.status(200).send(result);
+
+
+}
+else
+{
+	cb(result)
+	
+}
+		   	//mongoose.connection.close()	
+        }
+		
+    });
+	   // });
+}
+
+get_kpis( function ( result) {
+	
+
+res.json(result)
+	
+})
 
 
 
+});
+
+router.get('/allx/:team_id/:csv*?', function(req, res, next) {
+
+var team_id = decodeURIComponent(req.params.team_id)
 
 function get_kpis(cb){
 
