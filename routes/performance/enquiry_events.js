@@ -660,7 +660,7 @@ Team.aggregate([
 						"month": { "$month": route_functions.mongo_aggregator3 }, 
 
 					      
-					    venue:'$team_id',
+					    team:'$team_id',
 						kpi_type:'$kpi_type',
 					   // age_group:'$age_group',
 						
@@ -678,7 +678,7 @@ Team.aggregate([
             }
 		 },
 
-	 { $project : {venue:"$_id.venue",  kpi_type:"$_id.kpi_type",total_enquiries:"$total_enquiries",total_people:"$total_people",total_income:"$total_income",total_sessions:"$total_sessions",kpi_year :"$_id.year", kpi_month :"$_id.month"}  }//,
+	 { $project : {team:"$_id.team",  kpi_type:"$_id.kpi_type",total_enquiries:"$total_enquiries",total_people:"$total_people",total_income:"$total_income",total_sessions:"$total_sessions",year :"$_id.year",month :"$_id.month"}  }//,
 	//{ $sort : { age_group : 1 } }
 		
 
@@ -708,30 +708,55 @@ Team.aggregate([
 		
 	
 	})
-		
+	
+	const monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+
+
+	
+var new_results = []	
 		_.each(result,function(visits,i){
-		console.log(visits)
-		_.each(kpi_types,function(kpi_type){
-			if(visits.kpi_type=kpi_type){
-			//_.each(result2,function(visits,ii){
-			console.log(visits.year)
-			//if(kpi.kpi_venue==visits.venue &&  kpi.kpi_month==visits.month && kpi.kpi_year==visits.year){
-			result[i].kpi_venue=visits.venue
-			//result[i].age_group=visits.age_group
-			result[i][kpi_type]=visits.total_sessions
-		
-			result[i].total_people=visits.total_people
-			result[i].total_enquiries=visits.total_enquiries
+		var found_new=false
+			_.each(kpi_types,function(kpi_type){
 			
-			//result[i].total_children=visits.total_children
-			//result[i].total_teachers=visits.total_teachers
-			result[i].total_income=visits.total_income
-			//result[i].conversion=(kpi.number_transactions/visits.visits*100).toFixed(2)+"%";    
-			//}
+			
+				if(visits.kpi_type==kpi_type){
+				
+				_.each(new_results,function(test_newresult,i){
+				
+				if(test_newresult.month ==visits.month && test_newresult.year==visits.year && test_newresult.team==visits.team){
+			
+				new_results[i][kpi_type]=visits.total_sessions
+				new_results[i].total_people+=visits.total_people
+				new_results[i].total_enquiries+=visits.total_enquiries
+				new_results[i].total_income+=visits.total_income
+				found_new = true
+				}
+				
+				
+				})
+				
+				
+				
+				if(found_new==false	){		
+					new_result = {}
+					new_result.team=visits.team
+					new_result[kpi_type]=visits.total_sessions
+					new_result.total_people=visits.total_people
+					new_result.total_enquiries=visits.total_enquiries
+					new_result.total_income=visits.total_income
+					new_result.month=visits.month
+					new_result.monthName = monthNames[visits.month-1]
+					new_result.year=visits.year
+					new_results.push(new_result)
+				}
+				
+			
+			
 			}
+			})
 			
-			//})
-		})
 		})
 		
 		
@@ -748,7 +773,7 @@ if(req.params.csv){
 }
 else
 {
-	cb(result)
+	cb(new_results)
 	
 }
 		   	//mongoose.connection.close()	
@@ -1025,6 +1050,8 @@ Team.aggregate([
 			result[i].total_children=visits.total_children
 			result[i].total_teachers=visits.total_teachers
 			result[i].total_income=visits.total_income
+			
+			
 			//result[i].conversion=(kpi.number_transactions/visits.visits*100).toFixed(2)+"%";    
 			//}
 			
