@@ -1012,8 +1012,8 @@ res.json(returned_data)
 /*
 /* GET /todos listing. */
 router.get('/', function(req, res, next) {
-
-  Team.find()
+var query = { team_id: { $ne: "" } }
+  Team.find(query)
 	   .populate('leave_taken')
 	     .sort({date_value: 'desc'})
 	   .exec (  function (err, todos) {
