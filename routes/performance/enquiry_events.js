@@ -678,7 +678,7 @@ Team.aggregate([
             }
 		 },
 
-	 { $project : {venue:"$_id.venue", kpi_type:"$_id.kpi_type",  total_enquiries:"$total_enquiries",total_people:"$total_people",total_income:"$total_income",total_sessions:"$total_sessions",kpi_year :"$_id.year", kpi_month :"$_id.month"}  }//,
+	 { $project : {venue:"$_id.venue",  kpi_type:"$_id.kpi_type",total_enquiries:"$total_enquiries",total_people:"$total_people",total_income:"$total_income",total_sessions:"$total_sessions",kpi_year :"$_id.year", kpi_month :"$_id.month"}  }//,
 	//{ $sort : { age_group : 1 } }
 		
 
@@ -691,16 +691,35 @@ Team.aggregate([
 		
 			
 		
+			//load venues
+	var venues=[]
+	var kpi_types=[]
+	var session_types=[]
+	
+	_.each(result,function(row){
+	
 		
+		if(kpi_types.indexOf(row.kpi_type)==-1){
+			console.log('adding kpi_type ',row.kpi_type)
+			kpi_types.push(row.kpi_type)
+		}
+		
+
+		
+	
+	})
 		
 		_.each(result,function(visits,i){
+		console.log(visits)
+		_.each(kpi_types,function(kpi_type){
+			if(visits.kpi_type=kpi_type){
 			//_.each(result2,function(visits,ii){
-			//console.log(visits.year)
+			console.log(visits.year)
 			//if(kpi.kpi_venue==visits.venue &&  kpi.kpi_month==visits.month && kpi.kpi_year==visits.year){
 			result[i].kpi_venue=visits.venue
 			//result[i].age_group=visits.age_group
-			result[i].kpi_type=visits.kpi_type
-			result[i].total_sessions=visits.total_sessions
+			result[i][kpi_type]=visits.total_sessions
+		
 			result[i].total_people=visits.total_people
 			result[i].total_enquiries=visits.total_enquiries
 			
@@ -709,9 +728,10 @@ Team.aggregate([
 			result[i].total_income=visits.total_income
 			//result[i].conversion=(kpi.number_transactions/visits.visits*100).toFixed(2)+"%";    
 			//}
-			
+			}
 			
 			//})
+		})
 		})
 		
 		
