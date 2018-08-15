@@ -46,7 +46,7 @@ You'll probably need to log in to be able to enter data
 		<form name="visit_form" id="visit_form">
 			 <div class="form-group">
 						<label for="comments">These figures are being logged against the following team:</label>
-							  <input type="text"  class="form-control input-lg" id="team"  name="country" value="{{team}}" readonly>
+							  <input type="text"  class="form-control input-lg" id="team"  name="country" value="{{team}}"   ng-readonly="user.group!= 'ADMIN'" >
 			</div>
        		
 			<div class="form-group">
@@ -70,10 +70,17 @@ You'll probably need to log in to be able to enter data
 					<option value="Total sessions">Sessions</option>
 					<option value="partnership">partnership</option>
 					<option value="event">event</option>
-					<option ng-show="user.team=='Film Office'" value="unique web visits">unique web visits</option>
-					<option ng-show="user.team=='Film Office'" value="web visits">web visits</option>
-					<option ng-show="user.team=='Film Office'" value="target income">target income</option>
-					<option ng-show="user.team=='Film Office'" value="filming days">filming days</option>
+					<option ng-show="user.team=='FILM OFFICE' || user.group=='ADMIN'" value="unique web visits">unique web visits</option>
+					<option ng-show="user.team=='FILM OFFICE' || user.group=='ADMIN'"" value="web visits">web visits</option>
+					<option ng-show="user.team=='FILM OFFICE' || user.group=='ADMIN'"" value="target income">target income</option>
+					<option ng-show="user.team=='FILM OFFICE' || user.group=='ADMIN'"" value="filming days">filming days</option>
+					<option ng-show="user.team=='COLLECTIONS' || user.group=='ADMIN'"" value="new acquisitions">new acquisitions</option>
+					<option ng-show="user.team=='COLLECTIONS' || user.group=='ADMIN'"" value="new loans in">new loans in</option>
+					<option ng-show="user.team=='COLLECTIONS' || user.group=='ADMIN'"" value="new loans out ">new loans out </option>
+					<option ng-show="user.team=='COLLECTIONS' || user.group=='ADMIN'"" value="disposals">disposals</option>
+					<option ng-show="user.team=='COLLECTIONS' || user.group=='ADMIN'"" value="new collection object records ">new collection object records </option>
+				
+					
 					<option value="other">other</option>
 				
 				</select required>

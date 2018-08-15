@@ -74,12 +74,18 @@ function sortJSON(data, key, way) {
 			past_events=[]
 			_.each(response,function(event){
 
-console.log(event.event_name)
+
 					if(event._id.event_lead.toLowerCase()==$scope.user.firstName.toLowerCase()+" "+$scope.user.lastName.toLowerCase() ){
 						past_events.push({"name":event._id.event_name})
 						console.log('past event',event._id.event_name)
 					}
 			})
+			
+				if($scope.user.team.toUpperCase()=="PARTICIPATION" ){
+						past_events.push({"name":"Dementia Friendly Creative Cafés"})
+						
+					}
+			
 			 past_events = sortJSON(past_events,'name', '321');
 			$scope.events =past_events
 			$scope.events.push({name:'add new event'})

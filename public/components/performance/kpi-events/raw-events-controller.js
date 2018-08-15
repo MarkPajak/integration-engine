@@ -16,7 +16,11 @@ exports.raw_kpi_events_controller = function($route,$scope, get_table_data_team,
 		$rootScope.canEdit_table=true
 		$scope.gridOptions=[]
 		$scope.gridOptions.data=[]
-		$scope.extraQuery = { "team_id":$scope.user.team,"kpi_type":"#"}
+		
+		var teamfilter = $scope.user.team
+		if($scope.user.group=="ADMIN") teamfilter ="#"
+		
+		$scope.extraQuery = { "team_id":teamfilter,"kpi_type":"#"}
 		var columnDefs= []
 	  $scope.moused = function(){console.log("moused over");}
 

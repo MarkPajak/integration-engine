@@ -650,10 +650,7 @@ var team_id = decodeURIComponent(req.params.team_id)
 
 function get_kpis(cb){
 
-Team.aggregate([
-			
-
-		{ $match: { team_id:team_id } },
+var conditional_agg = [		{ $match: { team_id:team_id } },
 		{ $group: {
                        _id: {
 						"year": { "$year": route_functions.mongo_aggregator3 }, 
@@ -681,8 +678,50 @@ Team.aggregate([
 	 { $project : {team:"$_id.team",  kpi_type:"$_id.kpi_type",total_enquiries:"$total_enquiries",total_people:"$total_people",total_income:"$total_income",total_sessions:"$total_sessions",year :"$_id.year",month :"$_id.month"}  }//,
 	//{ $sort : { age_group : 1 } }
 		
+]
+   
+var non_conditional_agg = [		
+		{ $group: {
+                       _id: {
+						"year": { "$year": route_functions.mongo_aggregator3 }, 
+						"month": { "$month": route_functions.mongo_aggregator3 }, 
 
-    ], function (err, result) {
+					      
+					    team:'$team_id',
+						kpi_type:'$kpi_type',
+					   // age_group:'$age_group',
+						
+					   
+					 },  
+				
+					total_sessions: {$sum: '$no_sessions' },  //add more if you change the data entry field
+					total_people: {$sum: '$no_visits' },
+					total_enquiries: {$sum: '$no_enquiries' },
+					//total_children: {$sum: '$total_children' },
+					//total_teachers: {$sum: '$total_teachers' },
+					total_income: {$sum: '$income' }
+			 
+		      
+            }
+		 },
+
+	 { $project : {team:"$_id.team",  kpi_type:"$_id.kpi_type",total_enquiries:"$total_enquiries",total_people:"$total_people",total_income:"$total_income",total_sessions:"$total_sessions",year :"$_id.year",month :"$_id.month"}  }//,
+	//{ $sort : { age_group : 1 } }
+		
+]
+
+console.log('team_id',team_id)
+if (team_id == "#") {
+agg=non_conditional_agg
+
+}
+else
+{
+agg=conditional_agg
+}
+
+
+Team.aggregate(agg, function (err, result) {
 
         if (err) {
             console.log(err);
