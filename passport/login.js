@@ -1,6 +1,7 @@
 var LocalStrategy   = require('passport-local').Strategy;
 var User = require('../models/user');
 var bCrypt = require('bcrypt-nodejs');
+//db.users.find().forEach(function(e) {e.username = e.username.toLowerCase();db.users.save(e);})
 
 module.exports = function(passport){
 
@@ -9,7 +10,7 @@ module.exports = function(passport){
         },
         function(req, username, password, done) { 
             // check in mongo if a user with username exists or not
-            User.findOne({ 'username' :  username }, 
+            User.findOne({ 'username' :  username.toLowerCase() }, 
                 function(err, user) {
                     // In case of any error, return using the done method
                     if (err)

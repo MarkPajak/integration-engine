@@ -38,6 +38,15 @@ user.methods.hasChanged = function(firstName, lastName, email) {
 	return (this.firstName !== firstName || this.lastName !== lastName || this.email !== email);
 };
 
+
+user.virtual('username_lower' ).get(function() {
+ 
+		
+			return   (this.username.toLowerCase());
+
+});
+
+
 user.methods.getFullName = function() {
 	return (this.firstName + ' ' + this.lastName);    
 };
