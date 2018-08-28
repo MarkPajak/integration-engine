@@ -28,7 +28,7 @@ router.get('/total', function(req, res, next) {
 		 
 					Kpi_aggregate.aggregate([
 					
-					
+					{ $match : {museum_id: { $ne: null }} },
 					{$project:{"date":1,
 							   "value":1,
 							   "museum_id": 1,							  
@@ -43,7 +43,7 @@ router.get('/total', function(req, res, next) {
 			
 					},
 					{$group:{"_id":{"year":"$year" ,"financial_yer":"$financial_yer" ,kpi_venue:'$museum_id'}, visits: {$sum: '$value' }}},
-
+				
 				
 							
 
@@ -80,13 +80,13 @@ router.get('/total', function(req, res, next) {
 												var financial_year_display=""
 												if(financial_yer_text=="this"){
 													financial_year_display=	year+"-"+((year+1).toString().substring(2))
-													console.log('financial_year_display this',financial_year_display)
+													//console.log('financial_year_display this',financial_year_display)
 													returned_row[financial_year_display]=row[analysis_field]
 													}
 													else
 													{
 													financial_year_display=	(year-1)+"-"+(year.toString().substring(2))	
-													console.log('financial_year_display',financial_year_display)
+													//console.log('financial_year_display',financial_year_display)
 													returned_row[financial_year_display]+=row[analysis_field]
 												}
 
@@ -105,7 +105,7 @@ router.get('/total', function(req, res, next) {
 						var returned_data=[]
 
 						_.each(venues,function(venue){
-							console.log('adding venue ',venue)
+							//console.log('adding venue ',venue)
 						var returned_row={}
 							returned_row.museum=venue
 							returned_row.stat="Visits"
@@ -135,7 +135,7 @@ function get_kpis(cb){
 	
 	Kpi_aggregate.aggregate([
 	 //HOLY CRAP ITS NOT FUN WHEN YOUR AGGREGATION PIPELINE GETS THE MONTH WRONG
-	 
+	 { $match : {museum_id: { $ne: null }} },
 	 { $group: {
 				_id :{ 
 				// "year":{$year: "$date_value"}, //CAUSED A PROBLEM 07/07/2017
@@ -220,12 +220,12 @@ Kpi_aggregate.aggregate([
 	var d = new Date();
 d.setFullYear(d.getFullYear() - 1);
 
-	console.log(d)
+	//console.log(d)
 Kpi_aggregate.aggregate([
  //HOLY CRAP ITS NOT FUN WHEN YOUR AGGREGATION PIPELINE GETS THE MONTH WRONG
  
  
-    { $match:  { "date_value": { '$lte':d } }   },
+    { $match:  { "date_value": { '$lte':d },  museum_id: { $ne: null } }},  
 	{$project:{"date_value":1,
 					"value":1,
 					"museum_id":1,
@@ -300,7 +300,7 @@ function get_kpis(cb){
 
 Kpi_aggregate.aggregate([
  //HOLY CRAP ITS NOT FUN WHEN YOUR AGGREGATION PIPELINE GETS THE MONTH WRONG
- 
+ { $match : {museum_id: { $ne: null }} },
  { $group: {
 			_id :{ 
 			// "year":{$year: "$date_value"}, //CAUSED A PROBLEM 07/07/2017
@@ -313,8 +313,8 @@ Kpi_aggregate.aggregate([
 			
                visits: {$sum: '$value' }
             }
-		 }	
-
+		 }	,
+	{ $sort : { "visits" : -1} }
     ], function (err, result) {
         if (err) {
             console.log(err);

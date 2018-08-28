@@ -85,7 +85,7 @@ var monthly_turnstiles_controller = require('../components/performance/turnstile
 
 
 var kpi_home_controller = require('../components/performance/home/kpi-home-controller');
-
+var master_kpi_home_controller = require('../components/performance/home/master-kpi-home-controller');
 var yearly_retail_sales_controller = require('../components/performance/retail/yearly-retail-sales-controller');
 var monthly_retail_sales_controller = require('../components/performance/retail/monthly-retail-sales-controller');
 var raw_retail_sales_controller = require('../components/performance/retail/raw-retail-sales-controller');
@@ -125,6 +125,11 @@ var events_performance_form = require('../components/performance/events/performa
 var raw_kpi_events_controller = require('../components/performance/kpi-events/raw-events-controller');
 var events_kpi_performance_form = require('../components/performance/kpi-events/performance-form-controller');
 var monthly_kpi_events_controller = require('../components/performance/kpi-events/monthly-events-controller');
+var standard_monthly_kpi_events_controller = require('../components/performance/kpi-events/standard-monthly-events-controller');
+
+
+var team_monthly_kpi_events_controller = require('../components/performance/team-kpis/standard-monthly-events-controller');
+
 
 
 
@@ -272,8 +277,14 @@ _.each(monthly_kpi_events_controller, function(controller, name) {
   app.controller(name, controller);
 });
 
+_.each(standard_monthly_kpi_events_controller, function(controller, name) {
+  app.controller(name, controller);
+});
 
 
+_.each(team_monthly_kpi_events_controller, function(controller, name) {
+  app.controller(name, controller);
+});
 
 
 _.each(yearly_participation_controller, function(controller, name) {
@@ -592,7 +603,9 @@ _.each(raw_events_controller, function(controller, name) {
 _.each(events_performance_form, function(controller, name) {
   app.controller(name, controller);
 });
-
+_.each(master_kpi_home_controller, function(controller, name) {
+  app.controller(name, controller);
+});
 
 
 _.each(kpi_home_controller, function(controller, name) {
@@ -790,6 +803,69 @@ _.each(tech_trello_services, function(factory, name) {
   app.factory(name, factory);
 });
 
+app.filter('valueFilter_retail', function (){
+  return  function (value, entity){
+	  
+
+if(value){
+	if( !isNaN(value)&& (entity.typex=="retail" || entity.xtype=="currency" )){
+		
+			return "£"+ Math.round(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			
+	 }
+	 else if( !isNaN(value)&&  entity.stat=="Average transaction"){
+		 
+			return "£"+ value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	 }
+	  else if(  entity.stat==" % net_sales last year"){
+			
+			return value
+	 }
+	 
+	 else if(typeof value.replace === "function"){
+	 {
+		 value=value.replace("M-SHED","M Shed")
+		 value=value.replace("GEORGIAN-HOUSE","Georgian House")
+		 value=value.replace("RED-LODGE","Red Lodge")
+		  value=value.replace("BLAISE","Blaise Castle")
+		 value=value.replace("BRISTOL-ARCHIVES","Bristol Archives")
+	     value=value.replace("ROMAN-VILLA","Kings Weston")
+		 
+		 return value
+	 }
+		 
+	 }
+	 else{
+		 
+		  return value
+	 }
+}
+  };
+})
+
+app.filter('valueFilter', function () {
+  return  function (value, entity){
+	 if( !isNaN(value)&& (entity.typex=="retail" || entity.typex=="currency" )){
+			return "£"+ Math.round(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	 }
+	 else if( !isNaN(value) ){
+			return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	 }
+	 else if(value){
+	 {
+		 value=value.replace("M-SHED","M Shed")
+		 value=value.replace("GEORGIAN-HOUSE","Georgian House")
+		 value=value.replace("RED-LODGE","Red Lodge")
+		  value=value.replace("BLAISE","Blaise Castle")
+		 value=value.replace("BRISTOL-ARCHIVES","Bristol Archives")
+	     value=value.replace("ROMAN-VILLA","Kings Weston")
+		 
+		 return value
+	 }
+		 
+	 }
+  };
+})
 
 app.filter('orderByDayNumber', function() {
   return function(items, field, reverse) {
@@ -965,6 +1041,13 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
               template: '<time-line  timeline_mode="Timeline" ng-init="init(\'timeline\')"  ></time-line>'
 			  
            })
+		    .when('/master', {
+              template: '<master-kpi></master-kpi>'
+			  
+           })
+		   
+		   
+		   
 		    .when('/timeline_settings', {
                template: '<timelinesettings-formdata></timelinesettings-formdata>'
            })
@@ -1068,12 +1151,20 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
                template: '<data-exhibitionspwyt></data-exhibitionspwyt>'
            })
 		   
+		   //team kpis
+		    .when('/transformation-kpis', {
+               template: '<standardkpieventstransformation-dashboard  team="TRANSFORMATION"  ></standardkpieventstransformation-dashboard>'
+           })
 		   
-		   
-		   
+		      .when('/collections-kpis', {
+               template: '<standardkpieventscollections-dashboard  team="TRANSFORMATION"  ></standardkpieventscollections-dashboard>'
+           })
+		       .when('/engagement-kpis', {
+               template: '<standardkpieventsengagement-dashboard  team="TRANSFORMATION"  ></standardkpieventsengagement-dashboard>'
+           })
 
 		   .when('/raw-visits', {
-               template: '<raw-visits></raw-visits>'
+               template: '<datax-visits></datax-visits>'
            })
 		   
 			.when('/monthly-visits', {

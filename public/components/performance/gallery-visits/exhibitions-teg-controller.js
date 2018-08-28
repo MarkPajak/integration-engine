@@ -9,6 +9,7 @@ exports.exhibitions_teg_controller = function($route,$scope, $http, $q, $routePa
 		$scope.chart_class = "col-md-12 col-lg-12 col-sm-6 pull-right"
 		$scope.table_class = "col-md-9 col-lg-9 col-sm-9"
 		$scope.chart_heading= "Gallery visits by monthx"
+			$scope.background_colour="exhibitions"
 		$scope.pie_date = "Apr 2017"
 		$scope.gridOptions=[]
 		$scope.gridOptions.data=[]

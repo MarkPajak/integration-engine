@@ -1,7 +1,14 @@
 
 
 
+exports.masterKpi = function() {
 
+  return {
+	  
+	  controller: 'master_kpi_home_controller',
+   templateUrl: './components/performance/home/master_kpi_dashboard.html'
+  }
+  }
 exports.kpihomeDashboard = function() {
 
   return {
@@ -38,6 +45,13 @@ exports.dateSelect = function() {
   			exports.learningDashboard = function() {
   return {
    controller: 'dashboard_controller',
+      link: function(scope, element, attrs) {
+       
+  		$scope.refresh = function(){ 
+		alert('cheese')
+		}
+		
+      },
     templateUrl: './components/performance/retail/dashboard.html'
   }
 	}
@@ -73,6 +87,20 @@ exports.yearlyLearning = function() {
 	
 		exports.monthlyLearning = function() {
   return {
+
+ restrict: 'E',
+ scope: {
+	
+      },
+	   link: function(scope, element, attrs) {
+       
+        session_type=attrs.sessionType
+
+		console.log(attrs)
+		
+		scope.init(session_type)
+		
+      },
    controller: 'monthly_learning_controller',
    templateUrl: './shared/templates/data_table.html'
   }
@@ -185,6 +213,14 @@ exports.monthlyWelcomedesk = function() {
   }
 }	
 
+
+exports.dataxVisits = function() {
+  return {
+
+    templateUrl: './components/performance/visits/data.html'
+  }
+}
+
 exports.rawVisits = function() {
  return {
      controller: 'raw_visitor_numbers_controller',
@@ -194,6 +230,10 @@ exports.rawVisits = function() {
 	
 exports.monthlyVisits = function() {
   return {
+	 restrict: "E",
+     scope: {
+		
+        },
    controller: 'monthly_visitor_numbers_controller',
    templateUrl: './shared/templates/data_table.html'
   }
@@ -286,6 +326,7 @@ exports.dataDonations = function() {
 	
 		exports.monthlyDonations = function() {
   return {
+
    controller: 'monthly_donations_controller',
    templateUrl: './shared/templates/data_table.html'
   }
@@ -376,6 +417,10 @@ exports.retailKpiform = function() {
 	
 exports.monthlyRetailsales = function() {
   return {
+	      restrict: "E",
+  scope: {
+		
+        },
    controller: 'monthly_retail_sales_controller',
    templateUrl: './shared/templates/data_table.html'
   }
@@ -495,6 +540,19 @@ exports.recordTeg  = function() {
 		
 		exports.monthlyEvents = function() {
   return {
+	   restrict: 'E',
+ scope: {
+	
+      },
+	   link: function(scope, element, attrs) {
+       
+        event_type=attrs.eventType
+
+		console.log(attrs)
+		
+		scope.init(event_type)
+		
+      },
    controller: 'monthly_events_controller',
    templateUrl: './shared/templates/data_table.html'
   }
@@ -525,6 +583,7 @@ exports.recordTeg  = function() {
     templateUrl: './components/performance/kpi-events/raw-events-data.html'
   }
 	}
+
 	
 			exports.rawKpievents = function() {
   return {
@@ -539,6 +598,58 @@ exports.recordTeg  = function() {
 		
    controller: 'raw_kpi_events_controller',
      templateUrl: './shared/templates/data_table.html'
+  }
+	}
+	
+exports.standardkpieventstransformationDashboard = function() {
+  return {
+     controller: 'dashboard_controller',
+    templateUrl: './components/performance/team-kpis/transformation-dashboard.html'
+  }
+	}
+	
+	
+	
+exports.teamStandardkpievents = function() {
+
+		  return {
+			   restrict: 'E',
+		 scope: {
+			user: '=',changed:'=',tableChanged:'='
+			  },
+			   link: function(scope, element, attrs) {
+			   
+				team=attrs.team
+
+				console.log(attrs)
+				
+				scope.init(team)
+				
+			  },
+		   controller: 'team_monthly_kpi_events_controller',
+		   templateUrl: './shared/templates/data_table.html'
+		  }
+	}
+	
+	
+	
+			exports.monthlyStandardkpievents = function() {
+  return {
+	   restrict: 'E',
+ scope: {
+	user: '=',changed:'=',tableChanged:'='
+      },
+	   link: function(scope, element, attrs) {
+       
+        event_type=attrs.eventType
+
+		console.log(attrs)
+		
+		scope.init(event_type)
+		
+      },
+   controller: 'standard_monthly_kpi_events_controller',
+   templateUrl: './shared/templates/data_table.html'
   }
 	}
 	

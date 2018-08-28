@@ -833,6 +833,262 @@ res.json(result)
 
 });
 
+router.get('/ally/:team_id/:csv*?', function(req, res, next) {
+
+var team_id = decodeURIComponent(req.params.team_id)
+
+function get_kpis(cb){
+
+Team.aggregate([
+			
+
+		{ $match: { team_id:team_id } },
+		{ $group: {
+                       _id: {
+						"year": { "$year": route_functions.mongo_aggregator3 }, 
+						"month": { "$month": route_functions.mongo_aggregator3 }, 
+
+					      
+					    venue:'$team_id',
+						//kpi_type:'$kpi_type',
+					   // age_group:'$age_group',
+						
+					   
+					 },  
+				
+					total_sessions: {$sum: '$no_sessions' },  //add more if you change the data entry field
+					total_people: {$sum: '$no_visits' },
+					total_enquiries: {$sum: '$no_enquiries' },
+					//total_children: {$sum: '$total_children' },
+					//total_teachers: {$sum: '$total_teachers' },
+					total_income: {$sum: '$income' }
+			 
+		      
+            }
+		 },
+
+	 { $project : {venue:"$_id.venue",  total_enquiries:"$total_enquiries",total_people:"$total_people",total_income:"$total_income",total_sessions:"$total_sessions",kpi_year :"$_id.year", kpi_month :"$_id.month"}  }//,
+	//{ $sort : { age_group : 1 } }
+		
+
+    ], function (err, result) {
+
+        if (err) {
+            console.log(err);
+        } else {
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		_.each(result,function(visits,i){
+			//_.each(result2,function(visits,ii){
+			//console.log(visits.year)
+			//if(kpi.kpi_venue==visits.venue &&  kpi.kpi_month==visits.month && kpi.kpi_year==visits.year){
+			result[i].kpi_venue=visits.venue
+			//result[i].age_group=visits.age_group
+			result[i].kpi_type=visits.kpi_type
+			result[i].total_sessions=visits.total_sessions
+			result[i].total_people=visits.total_people
+			result[i].total_enquiries=visits.total_enquiries
+			
+			//result[i].total_children=visits.total_children
+			//result[i].total_teachers=visits.total_teachers
+			//result[i].total_income=visits.total_income
+			//result[i].conversion=(kpi.number_transactions/visits.visits*100).toFixed(2)+"%";    
+			//}
+			
+			
+			//})
+		})
+		
+		
+//res.json(result)
+
+if(req.params.csv){
+
+
+ res.setHeader('Content-disposition', 'attachment; filename=data.csv');
+  res.set('Content-Type', 'text/csv');
+  res.status(200).send(result);
+
+
+}
+else
+{
+	cb(result)
+	
+}
+		   	//mongoose.connection.close()	
+        }
+		
+    });
+	   // });
+}
+
+get_kpis( function ( result) {
+	
+
+	
+	//load venues
+	var venues=[]
+	var kpi_types=[]
+	var session_types=[]
+	
+	_.each(result,function(row){
+		if(venues.indexOf(row.kpi_venue)==-1){
+			console.log('adding team ',row.kpi_venue)
+			venues.push(row.kpi_venue)
+		}
+		
+		if(kpi_types.indexOf(row.kpi_type)==-1){
+			console.log('adding kpi_type ',row.kpi_type)
+			kpi_types.push(row.kpi_type)
+		}
+		
+
+		
+		if(session_types.indexOf(row.session_type)==-1){
+			console.log('adding session_type ',row.session_type)
+			session_types.push(row.session_type)
+		}
+	})
+	
+	function wind_up_Stats(	result,returned_row,analysis_field,venue,kpi_type){
+		
+		
+			var years = [2016,2017,2018,2019]
+			_.each(years,function(year){
+			_.each(moment.monthsShort(),function(month){
+				returned_row[month+" "+year]=""
+				_.each(result,function(row){
+					if(month==moment.monthsShort(row.kpi_month-1 )  && venue==row.kpi_venue &&row.kpi_year==year){
+						if(row[analysis_field]>0){
+							returned_row[month+" "+year]=row[analysis_field]  //n.b. needs to add up if already exists!
+						}
+					}
+					
+								if(analysis_field =="last_year" || analysis_field =="% last year"){
+							
+								for (compare_previous_years = 1; compare_previous_years < 2; compare_previous_years++) { 
+								
+								_.each(result,function(previous_data){
+									
+								compare_previous_year = year-compare_previous_years
+									
+								
+								
+								if(previous_data.kpi_year==compare_previous_year && row.kpi_year==year && moment.monthsShort(previous_data.kpi_month-1 ) == month && month==  moment.monthsShort(row.kpi_month-1 ) && venue==row.kpi_venue && venue==previous_data.kpi_venue){	
+								
+								
+									returned_row.team=compare_previous_year+ " - " + year
+									
+									if(analysis_field =="% last year"){
+										if(row.total_income){
+											if(previous_data.total_income){
+												if(row.total_income + previous_data.total_income >0){
+													returned_row[month+" "+year]=((row.total_income/previous_data.total_income)*100-100).toFixed(0)+"%";
+												}
+											}
+										}
+									}
+									
+									if(analysis_field =="last_year"){										
+										returned_row[month+" "+year]=previous_data.total_income
+									}
+								}
+							
+							})
+								
+							
+							}
+								
+							}
+				})
+			})	
+		})
+		return(returned_row)
+	}
+	
+	
+	
+	var returned_data=[]
+
+	_.each(venues,function(venue){
+		
+		console.log('team',venue)
+		
+		
+	//_.each(session_types,function(session_type){
+
+			//console.log('session_type',session_type)
+
+	
+		//_.each(kpi_types,function(kpi_type){
+		
+		var kpi_type="total_income"
+		
+			var returned_row={}
+			returned_row.team=venue
+			returned_row.kpi_type=kpi_type
+			//returned_row.session_type=session_type
+			returned_row.stat=kpi_type
+			//returned_data.push(	 wind_up_Stats(	result,returned_row,"total_sessions",venue,,kpi_type))
+			
+			
+			var returned_row={}
+			returned_row.team=venue
+			returned_row.kpi_type="total_income"
+			returned_row.stat="Income"
+			returned_row.typex="currency"
+						returned_row.csstype="bold"
+			//returned_row.session_type=session_type
+		//	returned_row.stat=kpi_type
+			returned_data.push(	 wind_up_Stats(	result,returned_row,"total_income",venue))
+										
+			var returned_row={}
+			returned_row.team=venue
+			returned_row.kpi_type="total_people"
+			//returned_row.session_type=session_type
+		//	returned_row.stat=kpi_type
+			//returned_data.push(	 wind_up_Stats(	result,returned_row,"total_people",venue,session_type,kpi_type))
+			
+			var returned_row={}
+			returned_row.team=venue
+			returned_row.kpi_type="total_enquiries"
+			//returned_row.session_type=session_type
+		//	returned_row.stat=kpi_type
+			//returned_data.push(	 wind_up_Stats(	result,returned_row,"total_enquiries",venue,session_type,kpi_type))
+			
+			var returned_row={}
+					returned_row.team=venue
+					returned_row.kpi_type=kpi_type
+					returned_row.stat="last year"
+					returned_data.push(	 wind_up_Stats(	result,returned_row,"last_year",venue,"total_income"))
+		
+				var returned_row={}
+					returned_row.museum=venue
+					returned_row.kpi_type=kpi_type
+					returned_row.stat="% last year"
+					returned_data.push(	 wind_up_Stats(	result,returned_row,"% last year",venue,"total_income"))
+		
+		//})
+	//})
+})
+
+res.json(returned_data)
+	
+})
+
+
+
+});
+
 router.get('/allx/:team_id/:csv*?', function(req, res, next) {
 
 var team_id = decodeURIComponent(req.params.team_id)

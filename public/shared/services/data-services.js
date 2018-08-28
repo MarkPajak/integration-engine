@@ -129,6 +129,19 @@ exports.Monthly_visits =  function($resource){
 
   }
   
+  
+      exports.Monthly_standard_kpi_events =  function($resource){
+	  
+	  
+	return $resource('/kpi_events/ally/:team_id',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+       
+
+  }
+  
+  
     exports.Monthly_kpi_events =  function($resource){
 	  
 	  
@@ -430,7 +443,7 @@ exports.Monthly_visits =  function($resource){
   exports.Raw_events =  function($resource){
 	 
 		 
-            return $resource('/events/:id/:museum_id/:date_value/:on_site_off_site/:exact', null,
+            return $resource('/events/:id/:museum_id/:date_value/:on_site_off_site/:exact/:end_value', null,
 			{ 'get':    {method:'GET'},  // get individual record
 			  'save':   {method:'POST'}, // create record
 			  'query':  {method:'GET', isArray:true}, // get list all records
@@ -590,7 +603,7 @@ exports.Monthly_visits =  function($resource){
 	 
 	 
 		 
-            return $resource('/raw_visits/:id/:museum_id/:date_value/:exact', null,
+            return $resource('/raw_visits/:id/:museum_id/:date_value/:exact/:end_value', null,
 			{ 'get':    {method:'GET'},  // get individual record
 			  'save':   {method:'POST'}, // create record
 			  'query':  {method:'GET', isArray:true}, // get list all records
@@ -618,7 +631,7 @@ exports.Monthly_visits =  function($resource){
  exports.Retail_sales =  function($resource){
 	 
 		 
-            return $resource('/retail_sales/:id/:museum_id/:date_value/:exact', null,
+            return $resource('/retail_sales/:id/:museum_id/:date_value/:exact/:end_value', null,
 			{ 'get':    {method:'GET'},  // get individual record
 			  'save':   {method:'POST'}, // create record
 			  'query':  {method:'GET', isArray:true}, // get list all records
@@ -633,7 +646,7 @@ exports.Monthly_visits =  function($resource){
    exports.Raw_exhibitions_pwyt =  function($resource){
 	 
 		 
-            return $resource('/exhibitions_pwyt/:id/:museum_id/:date_value/:donation_box_no/:exact', null,
+            return $resource('/exhibitions_pwyt/:id/:museum_id/:date_value/:donation_box_no/:exact/:end_value', null,
 			{ 'get':    {method:'GET'},  // get individual record
 			  'save':   {method:'POST'}, // create record
 			  'query':  {method:'GET', isArray:true}, // get list all records
@@ -646,7 +659,7 @@ exports.Monthly_visits =  function($resource){
   exports.Raw_donations =  function($resource){
 	 
 		 
-            return $resource('/donations/:id/:museum_id/:date_value/:donation_box_no/:exact', null,
+            return $resource('/donations/:id/:museum_id/:date_value/:donation_box_no/:exact/:end_value', null,
 			{ 'get':    {method:'GET'},  // get individual record
 			  'save':   {method:'POST'}, // create record
 			  'query':  {method:'GET', isArray:true}, // get list all records
@@ -659,7 +672,7 @@ exports.Monthly_visits =  function($resource){
   exports.Raw_learning =  function($resource){
 	 
 		 
-            return $resource('/learning/:id/:museum_id/:date_value/:session_type/:age_group/:exact', null,
+            return $resource('/learning/:id/:museum_id/:date_value/:session_type/:age_group/:exact/:end_value', null,
 			{ 'get':    {method:'GET'},  // get individual record
 			  'save':   {method:'POST'}, // create record
 			  'query':  {method:'GET', isArray:true}, // get list all records

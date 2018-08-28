@@ -29,11 +29,12 @@ exports.record_learning_controller =  function($scope, $http, $q, $routeParams, 
 			logger_user_name: $scope.user.username
             });
 			
-			var query = {'museum_id':visit_form.museum.value,
+			var query = {
+						'museum_id':visit_form.museum.value,
 				        "date_value":visit_form.date_value.value,
-						  "session_type":visit_form.session_type.value,
-						    "age_group":encodeURI(visit_form.age_group.value),
-							"exact":true
+						"session_type":visit_form.session_type.value,
+						"age_group":encodeURI(visit_form.age_group.value),
+					    "exact":true,"end_value": moment(new Date()).format("YYYY-MM-DD") 
 						};
 			
 			Raw_learning.query(query, function(visits) {

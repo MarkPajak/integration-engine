@@ -27,35 +27,48 @@
 <div  >
 <div class="filterdata panel-default" >
 
-<table>
-	<tr>
-		<td>
+
 				<label class="switch" ng-show="filter_x_button">  
 				<input type="checkbox" ng-click="dynamic_filter('approved',_filter_x.result)" ng-model="_filter_x.result">
 				  <span class="slider round"></span>
 				</label>
-			</td>
-		<td>
+		
 			<label class="switch" ng-show="filter_y_button">
 			 <input type="checkbox" ng-click="dynamic_filter('payment',_filter_y.result)" ng-model="_filter_y.result">
 			  <span class="slider round"></span>
 			</label>
-		</td>
-		<td>	
+		
 			<label class="switch" ng-show="filter_z_button">
 			 <input type="checkbox" ng-click="dynamic_filter('confirmed',_filter_z.result)" ng-model="_filter_z.result">
 			  <span class="slider round"></span>
 			</label>
-		</td><td width="150px"><button class="btn" ng-show="show_all_Button" ng-click="alldata()">show all data</button> </td>
-		<td width="150px"><button class="btn" ng-show="show_all_Button" ng-click="alldata('month')">show just this month</button> </td>
-	</tr>
-	<tr>
-		<td width="100px"  ng-show="filter_x_button">approved </td>
-		<td width="100px"  ng-show="filter_y_button">paid </td>
-		<td width="100px" ng-show="filter_z_button" >confirmed </td>
+			
+			
+			
+	
 		
-	</tr>
-</table>	
+
+
+
+	
+	<form  class="form-inline">
+  <div class="form-group">
+   From:
+   <input type="date" id="start" name="trip" ng-model="start" min="2015-01-01" />
+  </div>
+  <div class="form-group">
+Until:
+    <input type="date" id="end" name="end" ng-model="end" />
+  </div>
+  <div class="form-group">
+   
+    <input type="button" value="FILTER" ng-show="show_all_Button" ng-click="alldata('start')" class="btn btn-primary">
+  </div>
+
+</form>
+
+	</div>		
+
 	
 	
 </div>

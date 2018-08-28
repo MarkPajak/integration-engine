@@ -6,6 +6,7 @@ exports.exhibitions_summary_controller = function(monthly_data_table_columns,$ro
 			$scope.table_class = "col-md-6 col-lg-6 col-sm-6 pull-right"
 			$scope.table_heading = "Exhibition dates"
 			$scope.chart_heading = "Data  by month"
+			$scope.background_colour="exhibitions"
 			$scope.gridOptions=[]
 			$scope.gridOptions.data=[]
 			var columnDefs= []

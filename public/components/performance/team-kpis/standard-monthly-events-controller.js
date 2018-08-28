@@ -1,15 +1,15 @@
-exports.monthly_learning_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_learning,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter_retail
+exports.team_monthly_kpi_events_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope,Monthly_standard_kpi_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter_retail
     ) {
 		
 		
-	 $scope.init = function(session_type)
-    {
-
+		
+		$scope.init=function(team){
+$scope.team=team
 			$scope.chart_class = "col-md-8 col-lg-8 col-sm-5 pull-right"
 			$scope.table_class = "col-md-12 col-lg-12 col-sm-5"
 			//var session_type = $scope.session_type
-			$scope.background_colour="learning"
-			$scope.table_heading =session_type+ " monthly  stats" 
+			$scope.background_colour="events"
+			$scope.table_heading =$scope.team+ " monthly kpis" 
 			$scope.chart_heading = "Data  by month"
 			$scope.pie_date = "Apr 2017"
 			$rootScope.canEdit_table=false
@@ -43,9 +43,9 @@ exports.monthly_learning_controller = function($route,$scope, $http, $q, $routeP
 			$scope.options_list.push(option)
 				
 		
-		get_data=function(session_type){
+		get_data=function(){
 			console.log('get_data')
-			Monthly_learning.query({"session_type":session_type,cache:true}, function(team) {
+			Monthly_standard_kpi_events.query( { "team_id":$scope.team,"kpi_type":"#"}, function(team) {
 				$scope.rows=[]
 				$scope._rows=[]
 				$scope.data_rows=[]
@@ -84,7 +84,7 @@ exports.monthly_learning_controller = function($route,$scope, $http, $q, $routeP
 		
 		}
 		
-			get_data(session_type)
+			get_data()
 
 			
 			$scope.changedValue = function(item){ 
@@ -93,11 +93,9 @@ exports.monthly_learning_controller = function($route,$scope, $http, $q, $routeP
 			}
 			
 		
-			
-	}
-		
-}		
-			
+			}
+	
+}				
 
 
 

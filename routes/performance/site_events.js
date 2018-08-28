@@ -649,6 +649,16 @@ res.json(returned_data)
 
 
 router.get('/all/:event_type', function(req, res, next) {
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 function get_kpis(cb){
 
@@ -674,7 +684,7 @@ Team.aggregate([
 					      
 					    venue:'$museum_id',
 						on_site_off_site:'$on_site_off_site',
-					    age_groups:'$age_groups.name',
+					  //  age_groups:'$age_groups.name',
 						
 					   
 					 },  
@@ -687,7 +697,7 @@ Team.aggregate([
 		 },
 
 	// { $project : {venue:"$_id.venue",age_groups:"$_id.age_groups", session_type:"$_id.session_type", kpi_year :"$_id.year", kpi_month :"$_id.month"}  },
-	{ $sort : { age_groups : 1 } }
+	{ $sort : { count : -1 } }
 		
 
     ], function (err, result) {
@@ -726,34 +736,84 @@ get_kpis( function ( result) {
 			console.log('adding venue ',row._id.venue)
 			venues.push(row._id.venue)
 		}
-		
+		/*
 		if(age_groups.indexOf(row._id.age_groups)==-1){
 			console.log('adding age_groups ',row._id.age_groups)
 			age_groups.push(row._id.age_groups)
 		}
-		
+		*/
 		if(on_site_off_site.indexOf(row._id.on_site_off_site)==-1){
 			console.log('adding on_site_off_site ',row._id.on_site_off_site)
 			on_site_off_site.push(row._id.on_site_off_site)
 		}
 	})
 	
-	function wind_up_Stats(	result,returned_row,analysis_field,venue,on_site_off_site,age_group){
+	function wind_up_Stats(	result,returned_row,analysis_field,venue,on_site_off_site){
 		
 		
-			var years = [2014,2015,2016,2017,2018,2019]
+			var years = [2017,2018,2019]
 			_.each(years,function(year){
 			_.each(moment.monthsShort(),function(month){
 				returned_row[month+" "+year]=""
 				_.each(result,function(row){
-					if(month==moment.monthsShort(row._id.month-1)&&on_site_off_site==row._id.on_site_off_site  &&age_group==row._id.age_groups&&venue==row._id.venue &&row._id.year==year){
-console.log(row)					
+					
+					
+					
+					
+					if(month==moment.monthsShort(row._id.month-1) && on_site_off_site==row._id.on_site_off_site  && venue==row._id.venue && row._id.year==year){
+				
 					if(row[analysis_field]>0){
 						
 							returned_row[month+" "+year]=row[analysis_field]
 							
 						}
 					}
+					
+					
+					if(analysis_field =="last_year" || analysis_field =="% last year"){
+							
+								for (compare_previous_years = 1; compare_previous_years < 2; compare_previous_years++) { 
+								
+								_.each(result,function(previous_data){
+								
+													
+									
+								compare_previous_year = year-compare_previous_years
+							
+							if(month==moment.monthsShort(row._id.month-1)&&on_site_off_site==row._id.on_site_off_site  &&venue==row._id.venue &&row._id.year==year){
+								
+								if(month==moment.monthsShort(previous_data._id.month-1) && row._id.venue==previous_data._id.venue && previous_data._id.year==compare_previous_year && previous_data._id.on_site_off_site==row._id.on_site_off_site){
+																
+									returned_row.museum=compare_previous_year+ " - " + year
+									
+									if(analysis_field =="% last year"){
+									
+									console.log(month,year,venue,row.count)	
+									console.log(month,compare_previous_year,venue,previous_data.count)	
+
+									
+										if(row.count + previous_data.count >0){
+											
+											returned_row[month+" "+year]=((row.count/previous_data.count)*100-100).toFixed(0)+"%";	
+																				
+											
+										}
+									}
+									
+									if(analysis_field =="last_year"){
+										
+										returned_row[month+" "+year]=previous_data.count
+									}
+									
+									
+								}
+								}
+							})
+								
+							
+							}
+								
+							}
 				})
 			})	
 		})
@@ -766,25 +826,31 @@ console.log(row)
 
 	_.each(venues,function(venue){
 	_.each(on_site_off_site,function(on_off_site){			
-		_.each(age_groups,function(age_group){	
+		//_.each(age_groups,function(age_group){	
 		
+
+			
 		var returned_row={}
 			returned_row.museum=venue
-			returned_row.age_group=age_group
+		//	returned_row.age_group=age_group
 			returned_row.on_off_site=on_off_site
-			returned_row.stat="Age Group"
-			//returned_data.push(	 wind_up_Stats(	result,returned_row,"age_groups",venue,age_group))
-			
-			var returned_row={}
-			returned_row.museum=venue
-			returned_row.age_group=age_group
-			returned_row.on_off_site=on_off_site
-			returned_row.stat="count"
-			returned_data.push(	 wind_up_Stats(	result,returned_row,"count",venue,on_off_site,age_group))
+			returned_row.stat=venue + " event attendees"
+			returned_row.csstype="bold"
+			returned_data.push(	 wind_up_Stats(	result,returned_row,"count",venue,on_off_site))
 		
+		var returned_row={}
+					returned_row.museum=venue
+					returned_row.on_off_site=on_off_site
+					returned_row.stat="last year"
+					returned_data.push(	 wind_up_Stats(	result,returned_row,"last_year",venue,on_off_site))
+		
+				var returned_row={}
+					returned_row.museum=venue
+					returned_row.on_off_site=on_off_site
+					returned_row.stat="% last year"
+					returned_data.push(	 wind_up_Stats(	result,returned_row,"% last year",venue,on_off_site))
 
-
-		})
+		//})
 	})
 })
 
@@ -1292,12 +1358,13 @@ router.get('/:csv', function(req, res, next) {
 });
 
 /* GET /todos listing. */
-router.get('/:museum_id/:date_value/:on_site_off_site/:exact',isAuthenticated, function(req, res, next) {
+router.get('/:museum_id/:date_value/:on_site_off_site/:exact/:end_value',isAuthenticated, function(req, res, next) {
 
 var query = {}
 
 
 if( req.params.exact=="false"){
+	 _.extend(query, {date_value: {$gte: req.params.date_value}})
 	 _.extend(query, {date_value: {$gte: new Date(req.params.date_value)}})
 	 console.log(query)
 }

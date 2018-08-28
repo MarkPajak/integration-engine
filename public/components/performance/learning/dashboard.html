@@ -1,5 +1,8 @@
+<monthly-learning     session_type="INDEPENDENT" 	 ng-hide="formData.monthWeek=='week'"></monthly-learning>
+<monthly-learning     session_type="FACILITATED"	 ng-hide="formData.monthWeek=='week'"></monthly-learning>
 <yearly-learning></yearly-learning>
 <date-select></date-select>
 <option-select2></option-select2>
-<monthly-learning ng-hide="formData.monthWeek=='week'"></monthly-learning>
 <weekly-learning></weekly-learning>
+ <button name="monthWeek" value="week"  ng-model="refreshlink" ng-click="refresh('learning/all/FACILITATED')" >REFRESH FACILITATED</button>
+  <button name="monthWeek" value="week"  ng-model="refreshlink" ng-click="refresh('learning/all/INDEPENDENT')"  >REFRESH INDEPENDENT</button>

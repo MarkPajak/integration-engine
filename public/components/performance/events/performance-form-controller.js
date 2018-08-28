@@ -226,12 +226,12 @@ function sortJSON(data, key, way) {
 			
 			
 			
-			var query = {   'museum_id'			:visit_form.museum.value,
-							"event_lead"		:visit_form.event_lead.value,
-							"event_name"		:$('#event_name').find("option:selected").text(),
-							"date_value"		:visit_form.date_value.value,
-							"on_site_off_site"	:visit_form.on_site_off_site.value,
-							"exact":true
+			var query = {   'museum_id'				:visit_form.museum.value,
+							"event_lead"			:visit_form.event_lead.value,
+							"event_name"			:$('#event_name').find("option:selected").text(),
+							"date_value"			:visit_form.date_value.value,
+							"on_site_off_site"		:visit_form.on_site_off_site.value,
+							"exact":true,"end_value": moment(new Date()).format("YYYY-MM-DD")
 						};
 			
 			Raw_events.query(query, function(visits) {

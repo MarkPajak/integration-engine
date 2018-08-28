@@ -1,26 +1,154 @@
 <ul class="nav navbar-nav">
+
+
+
+
+
+
+
+
 	 <li><a class="login" ng-hide="user.firstName" id="logihash" href='/login!'  >Log in</a></li>	
 	<input type="hidden" id="hashval" name="redirect" value="">
 	<li  ng-hide="user.firstName"><a href="/signup">Register</a></li>
     <li ng-show="user.firstName" class="pull-right" ><a  href='/signout'  > Sign Out</a></li>	
 	<li  ng-show="user.firstName" > 
-	<button class="btn btn-primary dropdown-toggle"  data-toggle="dropdown">View Data
+	
+	
+	<button class="btn btn-primary dropdown-toggle"  data-toggle="dropdown">Resources
 	 <span class="caret"></span></button>
 	 <ul class="dropdown-menu">
-	<li   ng-repeat="view in user.views  track by $index"  ><a href="/#{{view.link}}">{{view.value}}</a></li>
-	<li class="divider"></li> 
-	<li   ng-repeat="view in user.performance track by $index"  ><a href="/#{{view.link}}">{{view.value}}</a></li>
-	<li class="divider"></li> 
-	
+	 <li   ng-repeat="view in user.views  track by $index"  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+
+
+
 	</ul>
 	
 </li>
+
+
+<li  ng-show="user.firstName" > 
+	
+	
+	<button class="btn btn-primary dropdown-toggle"  data-toggle="dropdown">View Data
+	 <span class="caret"></span></button>
+	 <ul class="dropdown-menu">
+
+	<li   ><a href="/#master">Bristol Culture KPIs</a></li>
+	 
+	<li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">Visits <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+           <li   ng-repeat="view in user.performance | filter:{ teamx:'VISITS'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+         </ul>
+     </li>
+	 
+	 	<li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">Retail <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+           <li   ng-repeat="view in user.performance | filter:{ teamx:'RETAIL'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+         </ul>
+     </li>
+	 
+	 <li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">Donations <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+           <li   ng-repeat="view in user.performance | filter:{ teamx:'DONATIONS'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+         </ul>
+     </li>
+	 
+	  <li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">Learning <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+           <li   ng-repeat="view in user.performance | filter:{ teamx:'LEARNING'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+         </ul>
+     </li>
+	 
+	 
+	   <li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">Exhibitions <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+           <li   ng-repeat="view in user.performance | filter:{ teamx:'EXHIBITIONS'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+         </ul>
+     </li>
+	 
+	    <li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">Events <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+           <li   ng-repeat="view in user.performance | filter:{ teamx:'EVENTS'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+         </ul>
+     </li>
+	 
+	  <li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">Team KPIs <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+           <li   ng-repeat="view in user.performance | filter:{ teamx:'TRANSFORMATION'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+         </ul>
+     </li>
+	
+	
+
+
+	</ul>
+	
+</li>
+
 	<li   ng-show="user.group!='DEFAULT' && user.firstName"> 
 	<button class="btn btn-primary dropdown-toggle"  data-toggle="dropdown">Record Data
 	 <span class="caret"></span></button>
 	 <ul class="dropdown-menu" style="floaf:left;">
-	<li   ng-repeat="view in user.enter_data  track by $index"  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+	
 
+	
+	<li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">Visits <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+           <li   ng-repeat="view in user.enter_data | filter:{ teamx:'VISITS'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+         </ul>
+     </li>
+	 
+	 	<li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">Retail <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+           <li   ng-repeat="view in user.enter_data | filter:{ teamx:'RETAIL'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+         </ul>
+     </li>
+	 
+	 <li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">Donations <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+           <li   ng-repeat="view in user.enter_data | filter:{ teamx:'DONATIONS'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+         </ul>
+     </li>
+	 
+	  <li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">Learning <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+           <li   ng-repeat="view in user.enter_data | filter:{ teamx:'LEARNING'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+         </ul>
+     </li>
+	 
+	 
+	   <li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">Exhibitions <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+           <li   ng-repeat="view in user.enter_data | filter:{ teamx:'EXHIBITIONS'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+         </ul>
+     </li>
+	 
+	    <li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">Events <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+           <li   ng-repeat="view in user.enter_data | filter:{ teamx:'EVENTS'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+         </ul>
+     </li>
+	 
+	  <li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">Team KPIs <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+           <li   ng-repeat="view in user.enter_data | filter:{ teamx:'TEAM'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+         </ul>
+     </li>
+	
 	</ul>
 	
 </li>
@@ -56,5 +184,25 @@
 <script>
 if( document.getElementById("logihash")){
 	  document.getElementById("logihash").href ='/login!'+location.hash.slice(0).replace("#!/","")
-	  }
+	
+	}  
+	 
+$(document).ready(function(){
+  var lastOpen
+
+  $('.dropdown-submenu a.test').on("click", function(e){
+  if(lastOpen){
+	lastOpen.next('ul').toggle();
+  }
+ 
+
+   $(this).next('ul').toggle();
+    
+	lastOpen=$(this)
+   
+   e.stopPropagation();
+    e.preventDefault();
+  });
+});
+
 </script>

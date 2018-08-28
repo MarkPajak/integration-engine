@@ -1,10 +1,11 @@
-exports.monthly_donations_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_donations,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,data_table_reload,table_security
+exports.monthly_donations_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_donations,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,data_table_reload,table_security,dynamicTableCellFilter_donations
     ) {
 		
 		
 			$scope.chart_class = "col-md-8 col-lg-8 col-sm-5 pull-right"
 			$scope.table_class = "col-md-12 col-lg-12 col-sm-5"	
-					$scope.chart_heading = "Donations  by month"
+			$scope.chart_heading = "Donations  by month"
+			$scope.background_colour="donations"
 		$scope.show_all_Button=false
 		console.log('controller go')
 		$scope.table_heading = "Monthly donations"
@@ -15,13 +16,13 @@ exports.monthly_donations_controller = function($route,$scope, $http, $q, $route
 		var columnDefs= []
 			$scope.filter_pie=[]
 			columnDefs.push(
-			{ field: 'museum',		name: "Museum",width: "100", pinnedLeft:true},
-			{ field: 'stat',		name: "Statistic",width: "100", pinnedLeft:true}
+		//	{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "100", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations},
+			{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations}
 					
 			)
-		$scope.start_date=new Date("01/04/2017")
-			$scope.end_date=new Date("01/04/2018")
-			columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
+		$scope.start_date=new Date("04/01/2018")
+			$scope.end_date= moment($scope.start_date).add('years', 1).format("DD/MM/YYYY")
+			columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))
 			console.log('columnDefs',columnDefs)		
 				$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
 	
@@ -51,6 +52,7 @@ exports.monthly_donations_controller = function($route,$scope, $http, $q, $route
 				})
 			
 			$scope.gridOptions.data=$scope._rows;
+			$scope.gridOptions.enableFiltering=false
 			
 			_.each([2016,2017],function(year){
 				_.each(moment.monthsShort(),function(month){				
@@ -67,10 +69,11 @@ exports.monthly_donations_controller = function($route,$scope, $http, $q, $route
 				$scope.$watchGroup(['end_date','start_date'], function(newValue, oldValue) {
   
 					columnDefs=[]
-					columnDefs.push(	{ field: 'museum',		name: "Museum",width: "100", pinnedLeft:true},
-			{ field: 'stat',		name: "Statistic",width: "100", pinnedLeft:true}
+				columnDefs.push(	
+				//{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "100", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations},
+			{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations}
 					)
-					columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
+					columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))
 					$scope.gridOptions.columnDefs=columnDefs
 					make_a_line_chart.build($scope,columnDefs,"museum")
 			

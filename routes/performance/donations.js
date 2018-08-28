@@ -21,8 +21,8 @@ var isAuthenticated = function (req, res, next) {
 }
 
 var Team = require('../../models/performance/Donations.js');
-
 var Gidftaid = require('../../models/performance/Giftaid.js');
+var Welcomedesk = require('../../models/performance/Welcomedesk.js');
 //aggregation
 
 
@@ -86,6 +86,7 @@ router.get('/total', function(req, res, next) {
 					{$group:{"_id":{"year":"$year" ,"financial_yer":"$financial_yer" ,pwyt_venue:'$museum_id'}, giftaid_income: {$sum: '$amount' }}},
 
 						], function (err, giftaid_incomes) {
+
 									
 							_.each(donations,function(gal,i){
 								if(gal.donations>0){
@@ -377,7 +378,7 @@ Team.aggregate([
 		      
             }
 		 },
-
+	{ $sort : { "donations" : -1} }	,
 	 { $project : {kpi_venue:"$_id.kpi_venue", kpi_year :"$_id.kpi_year", kpi_month :"$_id.kpi_month", donations:"$donations"}  },
 
 		
@@ -406,6 +407,34 @@ Team.aggregate([
 
 		
 	  ], function (err, result2) {
+		  
+		  
+		Welcomedesk.aggregate([
+			
+
+
+		{ $group: {
+                _id: { 
+				 "year": { "$year": route_functions.mongo_aggregator }, 
+						"month":  { "$month":route_functions.mongo_aggregator }, 	    
+					   venue:'$museum_id',
+					   
+					 },  
+		
+     
+	 totalSum :  { $sum: { $add :  [ '$cash', '$cash' ]}},
+			
+		      
+            }
+		 },
+
+	 { $project : {venue:"$_id.venue", year :"$_id.year", month :"$_id.month",donations:'$donations', totalSum:"$totalSum"}  },
+
+		
+	  ], function (err, welsomedesk) {	  
+		  
+		  
+		  
 	
         if (err) {
             console.log(err);
@@ -414,15 +443,21 @@ Team.aggregate([
 		
 		_.each(result,function(kpi,i){
 			_.each(result2,function(visits,ii){
-			//console.log(visits.year)
-			if(kpi.kpi_venue==visits.venue &&  kpi.kpi_month==visits.month && kpi.kpi_year==visits.year){
-			result[i].gift_aid_amount=visits.gift_aid_amount
+				result[i].gift_aid_amount=visits.gift_aid_amount
+							result[i].no_envelopes=visits.no_envelopes
+							
+							result[i].combined= kpi.donations
+							result[i].conversion=(kpi.number_transactions/visits.visits*100).toFixed(2)+"%"; 
+				_.each(welsomedesk,function(welcome,iii){		
+					if(kpi.kpi_venue==welcome.venue &&  kpi.kpi_month==welcome.month && kpi.kpi_year==welcome.year){
+						if(kpi.kpi_venue==visits.venue &&  kpi.kpi_month==visits.month && kpi.kpi_year==visits.year){
+							result[i].welcome=welcome.totalSum
+							result[i].combined+=welcome.totalSum
 						
-			result[i].no_envelopes=visits.no_envelopes
-			result[i].conversion=(kpi.number_transactions/visits.visits*100).toFixed(2)+"%";    
-			}
+						}
+					}
 			
-			
+				})
 			})
 		})
 		
@@ -440,14 +475,15 @@ if(req.params.csv){
 }
 else
 {
-	cb(result)
-	
+
+	cb(route_functions.donations_stats_monthly(result,result2,welsomedesk))
 }
 		   	//mongoose.connection.close()	
         }
 		
     });
 	    });
+		 });
 }
 
 get_kpis( function ( result) {
@@ -469,12 +505,16 @@ get_kpis( function ( result) {
 	
 	function wind_up_Stats(	result,returned_row,analysis_field,venue){
 	 years = [2014,2015,2016,2017,2018,2019]
+			returned_row.delete_row=true
 			_.each(years,function(year){
 			_.each(moment.monthsShort(),function(month){
 			
 			returned_row[month+" "+year]=""
 				_.each(result,function(row){
 					if(month==moment.monthsShort(row.kpi_month-1) &&venue==row.kpi_venue &&row.kpi_year==year){
+						if( !isNaN(row[analysis_field])&& row[analysis_field]>0){
+							returned_row.delete_row=false
+						}
 						returned_row[month+" "+year]=row[analysis_field]
 						
 					}
@@ -493,33 +533,58 @@ get_kpis( function ( result) {
 
 	_.each(venues,function(venue){
 		
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat="total"
-		returned_data.push(	 wind_up_Stats(	result,returned_row,"total",venue))
+
 	var returned_row={}
 		returned_row.museum=venue
 		returned_row.stat="Donations"
+		returned_row.xtype="currency"
 		returned_data.push(	 wind_up_Stats(	result,returned_row,"donations",venue))
 	var returned_row={}
 		returned_row.museum=venue
+		returned_row.stat="Welcome ex tax"
+		returned_row.xtype="currency"
+		row =  wind_up_Stats(	result,returned_row,"welcome",venue)
+		console.log(row)
+		if(row.delete_row==false){
+			returned_data.push(	row)
+		}
+	var returned_row={}
+		returned_row.museum=venue
+		returned_row.stat=venue+ " Combined total"
+		returned_row.xtype="currency"
+		returned_row.csstype="bold"
+		returned_data.push(	 wind_up_Stats(	result,returned_row,"combined",venue))
+	var returned_row={}
+		returned_row.museum="last year"
+		returned_row.stat="last year"
+		returned_row.xtype="currency"
+		
+		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(result,returned_row,"last_year_total",venue))
+	var returned_row={}
+		returned_row.museum=venue
+		returned_row.stat="% last year"
+		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"last_year",venue))
+	var returned_row={}
+		returned_row.museum=venue
 		returned_row.stat="Gift aid"
-		returned_data.push(	 wind_up_Stats(	result,returned_row,"gift_aid_amount",venue))
-			var returned_row={}
+		returned_row.xtype="currency"
+	
+	
+		row =  wind_up_Stats(	result,returned_row,"gift_aid_amount",venue)
+		if(row.delete_row==false){
+			returned_data.push(	row)
+		}
+		
+	var returned_row={}
 		returned_row.museum=venue
 		returned_row.stat="No envelopes"
-		returned_data.push(	 wind_up_Stats(	result,returned_row,"no_envelopes",venue))
-	/*
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat="visits"
-		returned_data.push(	 wind_up_Stats(	result,returned_row,"visits",venue))
-	
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat="conversion"
-		returned_data.push(	 wind_up_Stats(	result,returned_row,"conversion",venue))
-*/	
+		//returned_row.xtype="donations"
+		row =  		returned_data.push(	 wind_up_Stats(	result,returned_row,"no_envelopes",venue))
+		if(row.delete_row==false){
+			returned_data.push(	row)
+		}
+		
+		
 	})
 
 
@@ -584,13 +649,14 @@ router.get('/csv', function(req, res, next) {
 });
 
 
-router.get('/:museum_id/:date_value/:donation_box_no/:exact',isAuthenticated, function(req, res, next) {
+router.get('/:museum_id/:date_value/:donation_box_no/:exact/:end_value',isAuthenticated, function(req, res, next) {
 
 var query = {}
 
 
 if( req.params.exact=="false"){
 	 _.extend(query, {date_value: {$gte: req.params.date_value}})
+	 _.extend(query, {date_value: {$lte: req.params.end_value}})
 	 console.log(query)
 }
 else

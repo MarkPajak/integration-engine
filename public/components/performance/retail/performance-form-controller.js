@@ -26,7 +26,9 @@ exports.retail_performance_form =  function($scope, $http, $q, $routeParams, $lo
             });
 			
 
-			var query = {'museum_id':visit_form.museum.value,"date_value":visit_form.date_value.value,"exact":true};
+			var query = {'museum_id':visit_form.museum.value,"date_value":visit_form.date_value.value,"exact":true,
+					    "exact":true,"end_value": moment(new Date()).format("YYYY-MM-DD") 
+						};
 			
 			Retail_sales.query(query, function(visits) {
 				console.log('Raw_visits',visits.length)

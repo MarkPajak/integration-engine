@@ -20,7 +20,7 @@ var isAuthenticated = function (req, res, next) {
 }
 
 var Team = require('../../models/performance/Learning.js');
-
+var Cache = require('../../models/cache/cache.js');
 
 router.get('/total/:session_type', function(req, res, next) {
 
@@ -105,7 +105,7 @@ get_kpis( function ( result) {
 		}
 		
 		if(age_groups.indexOf(row.age_group)==-1){
-			console.log('adding age_group ',row.age_group)
+			//console.log('adding age_group ',row.age_group)
 			age_groups.push(row.age_group)
 		}
 		
@@ -129,17 +129,17 @@ get_kpis( function ( result) {
 											if(session_type== row._id.session_type&&venue==row._id.venue &&row._id.financial_yer==financial_yer_text&&row._id.year==year){
 												
 												var financial_year_display=""
-										if(financial_yer_text=="this"){
-													financial_year_display=	year+"-"+((year+1).toString().substring(2))
-													console.log('financial_year_display this',financial_year_display)
-													returned_row[financial_year_display]=row[analysis_field]
+													if(financial_yer_text=="this"){
+														financial_year_display=	year+"-"+((year+1).toString().substring(2))
+														//console.log('financial_year_display this',financial_year_display)
+														returned_row[financial_year_display]=row[analysis_field]
 													}
 													else
 													{
-													financial_year_display=	(year-1)+"-"+(year.toString().substring(2))	
-													console.log('financial_year_display',financial_year_display)
-													returned_row[financial_year_display]+=row[analysis_field]
-												}
+														financial_year_display=	(year-1)+"-"+(year.toString().substring(2))	
+														//console.log('financial_year_display',financial_year_display)
+														returned_row[financial_year_display]+=row[analysis_field]
+													}
 												
 											}
 										})
@@ -180,21 +180,25 @@ router.get('/all/:session_type', function(req, res, next) {
 
 
 
-function get_kpis(cb){
 
+	
+function get_kpis(cb){
+	
 Team.aggregate([
 			
-		{ $match: { session_type:req.params.session_type } },
-
+		{ $match: { session_type:req.params.session_type  ,		
+					
+						date_value: {$gte: new Date("2017-04-01")}}
+		},
+		
 		{ $group: {
                        _id: {
- "year": { "$year": route_functions.mongo_aggregator }, 
+						"year": { "$year": route_functions.mongo_aggregator }, 
 						"month": { "$month": route_functions.mongo_aggregator }, 
-
 					      
 					    venue:'$museum_id',
 						session_type:'$session_type',
-					    age_group:'$age_group',
+					   // age_group:'$age_group',
 						
 					   
 					 },  
@@ -204,12 +208,11 @@ Team.aggregate([
 					total_teachers: {$sum: '$total_teachers' },
 					total_income: {$sum: '$total_income' }
 			 
-		      
             }
-		 },
+		},
 
-	 { $project : {venue:"$_id.venue",age_group:"$_id.age_group", session_type:"$_id.session_type", total_income:"$total_income",total_sessions:"$total_sessions", total_teachers:"$total_teachers",total_children:"$total_children",kpi_year :"$_id.year", kpi_month :"$_id.month"}  },
-	{ $sort : { age_group : 1 } }
+	 { $project : {venue:"$_id.venue", session_type:"$_id.session_type", total_income:"$total_income",total_sessions:"$total_sessions", total_teachers:"$total_teachers",total_children:"$total_children",kpi_year :"$_id.year", kpi_month :"$_id.month"}  },
+	{ $sort : { total_sessions : -1 } }
 		
 
     ], function (err, result) {
@@ -219,23 +222,7 @@ Team.aggregate([
         } else {
 		
 		
-		_.each(result,function(visits,i){
-			//_.each(result2,function(visits,ii){
-			//console.log(visits.year)
-			//if(kpi.kpi_venue==visits.venue &&  kpi.kpi_month==visits.month && kpi.kpi_year==visits.year){
-			result[i].kpi_venue=visits.venue
-			result[i].age_group=visits.age_group
-			result[i].session_type=visits.session_type
-			result[i].total_sessions=visits.total_sessions
-			result[i].total_children=visits.total_children
-			result[i].total_teachers=visits.total_teachers
-			result[i].total_income=visits.total_income
-			//result[i].conversion=(kpi.number_transactions/visits.visits*100).toFixed(2)+"%";    
-			//}
-			
-			
-			//})
-		})
+
 		
 		
 //res.json(result)
@@ -253,114 +240,244 @@ else
 {
 	cb(result)
 	
+	
 }
 		   	//mongoose.connection.close()	
         }
 		
     });
 	   // });
+
+
+
 }
+
+
+
+
+if(req.query.cache){
+	
+	var query={ type: 'monthly_learning', row_name: req.params.session_type }
+ 
+    Cache.findOne(query, {}, { sort: { 'date_cached' : 1 } })    
+  
+  
+	   .populate('leave_taken')
+	     .sort({date_value: 'desc'})
+	   .exec (  function (err, todos) {
+    if (err) return next(err);
+	
+	var data_to_return = []
+	
+	
+		data_to_return=todos.cache
+
+	
+	if(req.params.csv){
+			res.setHeader('Content-disposition', 'attachment; filename=data.csv');
+			res.set('Content-Type', 'text/csv');
+			var fields = ['museum_id', 'date_value', 'value'];
+			var csv = json2csv({ data: todos, fields: fields });
+			res.status(200).send(csv);
+
+	}
+	else
+	{
+		res.json(data_to_return);
+	}
+  })
+
+}
+
+else
+	
+{
+
+var months=moment.monthsShort()
+	
+
 
 get_kpis( function ( result) {
 	
 
 	
 	
+		function wind_up_Stats(	rows,returned_row,analysis_field,venue,session_type){
+			
+		var returned_row_compare_last_year={}
+		var returned_row_compare_last_year_total={}
+		
+				var years = [2017,2018,2019]
+				_.each(years,function(year){
+					_.each(months,function(month){
+						_.each(rows,function(row){
+									
+							if(analysis_field !="last_year" && analysis_field !="% last year"){
+								
+								if(month==moment.monthsShort(row.kpi_month-1) && session_type==row.session_type  && venue==row.venue && row.kpi_year==year){
+										
+										if(row[analysis_field]>0){
+											
+											returned_row[month+" "+year]=row[analysis_field]
+											
+			
+										}
+								}
+							}
+							
+							if(analysis_field =="last_year" || analysis_field =="% last year"){
+							
+								for (compare_previous_years = 1; compare_previous_years < 2; compare_previous_years++) { 
+								
+								_.each(rows,function(previous_data){
+								compare_previous_year = year-compare_previous_years
+								
+								
+								if(month==moment.monthsShort(row.kpi_month-1) && session_type==row.session_type  && venue==row.venue && row.kpi_year==year){
+								if(month==moment.monthsShort(previous_data.kpi_month-1) && row.venue==previous_data.venue && previous_data.kpi_year==compare_previous_year && previous_data.session_type==row.session_type){
+																
+									returned_row.museum=compare_previous_year+ " - " + year
+									
+									if(analysis_field =="% last year"){
+										
+										if(row.total_children + previous_data.total_children >0){
+											
+											returned_row[month+" "+year]=((row.total_children/previous_data.total_children)*100-100).toFixed(0)+"%";	
+											//console.log(compare_previous_year, month,venue,previous_data.total_children ,previous_data.session_type)	
+											//console.log(year,month, venue,row.total_children,row.session_type)	
+										//	console.log(returned_row[month+" "+year])											
+											
+										}
+									}
+									
+									if(analysis_field =="last_year"){
+										
+										returned_row[month+" "+year]=previous_data.total_children
+									}
+									
+									
+								}
+								}
+							})
+								
+							
+							}
+								
+							}
+								
+						
+					})	
+				})
+			})
+	
+	
+		return(returned_row)
+	}
 	
 
 	
 	//load venues
 	var venues=[]
-	var age_groups=[]
+	//var age_groups=[]
 	var session_types=[]
+		var returned_data=[]
+			var datasave = []
+	_.each(result,function(row, i){
+		
 	
-	_.each(result,function(row){
-		if(venues.indexOf(row.kpi_venue)==-1){
-			console.log('adding venue ',row.kpi_venue)
-			venues.push(row.kpi_venue)
+			
+			
+		if(venues.indexOf(row.venue)==-1){
+					venues.push(row.venue)
 		}
-		
+		/*
 		if(age_groups.indexOf(row.age_group)==-1){
-			console.log('adding age_group ',row.age_group)
-			age_groups.push(row.age_group)
+						age_groups.push(row.age_group)
 		}
-		
+		*/
 		if(session_types.indexOf(row.session_type)==-1){
 			console.log('adding session_type ',row.session_type)
 			session_types.push(row.session_type)
 		}
+		
+	var months=moment.monthsShort()
+	
+	
+	
 	})
 	
-	function wind_up_Stats(	result,returned_row,analysis_field,venue,session_type,age_group){
+	
+
+
+	_.each(venues,function(venue){	
+		//_.each(session_types,function(session_type){	
+			session_type=req.params.session_type 
+				var returned_row={}
+					returned_row.museum=venue
+					returned_row.csstype="bold"
+					returned_row.session_type=session_type
+					returned_row.stat=venue + " number of children"
+					returned_data.push(	 wind_up_Stats(	result,returned_row,"total_children",venue,session_type))
+				
 		
+				var returned_row={}
+					returned_row.museum=venue
+					returned_row.session_type=session_type
+					returned_row.stat="last year"
+					returned_data.push(	 wind_up_Stats(	result,returned_row,"last_year",venue,session_type))
 		
-			var years = [2014,2015,2016,2017,2018,2019]
-			_.each(years,function(year){
-			_.each(moment.monthsShort(),function(month){
-				returned_row[month+" "+year]=""
-				_.each(result,function(row){
-					if(month==moment.monthsShort(row.kpi_month-1)&&session_type==row.session_type  &&age_group==row.age_group&&venue==row.kpi_venue &&row.kpi_year==year){
-						if(row[analysis_field]>0){
-							returned_row[month+" "+year]=row[analysis_field]
-						}
-					}
-				})
-			})	
+				var returned_row={}
+					returned_row.museum=venue
+					returned_row.session_type=session_type
+					returned_row.stat="% last year"
+					returned_data.push(	 wind_up_Stats(	result,returned_row,"% last year",venue,session_type))
+		
+				
+				var returned_row={}
+					returned_row.museum=venue					
+					returned_row.session_type=session_type
+					returned_row.stat="Sessions"
+					returned_data.push(	 wind_up_Stats(	result,returned_row,"total_sessions",venue,session_type))
+					
+
+				var returned_row={}
+					returned_row.museum=venue					
+					returned_row.session_type=session_type
+					returned_row.stat="Teachers"
+					returned_data.push(	 wind_up_Stats(	result,returned_row,"total_teachers",venue,session_type))
+					
+				
+				var returned_row={}
+					returned_row.museum=venue					
+					returned_row.stat="Income"
+					returned_row.typex="currency"
+					
+					returned_data.push(	 wind_up_Stats(	result,returned_row,"total_income",venue,session_type))
+					
+				
+			//})
 		})
-		return(returned_row)
-	}
+
+	var datacache = [{ type: 'monthly_learning', row_name: req.params.session_type , date_cached: new Date(), cache:returned_data }];
 	
 	
+
+			
+ 
+    // save multiple documents to the collection referenced by Book Model
+    Cache.collection.insert(datacache, function (err, docs) {
+      if (err){ 
+          return console.error(err);
+      } else {
+        console.log("Multiple documents inserted to Collection");
+      }
+    });
 	
-	var returned_data=[]
-
-	_.each(venues,function(venue){
-	_.each(session_types,function(session_type){			
-		_.each(age_groups,function(age_group){	
-		
-		var returned_row={}
-			returned_row.museum=venue
-			returned_row.age_group=age_group
-			returned_row.session_type=session_type
-			returned_row.stat="Age Group"
-		//	returned_data.push(	 wind_up_Stats(	result,returned_row,"age_group",venue,age_group))
-		
-
-		var returned_row={}
-			returned_row.museum=venue
-			returned_row.age_group=age_group
-			returned_row.session_type=session_type
-			returned_row.stat="Sessions"
-			returned_data.push(	 wind_up_Stats(	result,returned_row,"total_sessions",venue,session_type,age_group))
-
-		var returned_row={}
-			returned_row.museum=venue
-			returned_row.age_group=age_group
-			returned_row.session_type=session_type
-			returned_row.stat="Children"
-			returned_data.push(	 wind_up_Stats(	result,returned_row,"total_children",venue,session_type,age_group))
-		
-		var returned_row={}
-			returned_row.museum=venue
-				returned_row.age_group=age_group
-				returned_row.session_type=session_type
-			returned_row.stat="Teachers"
-			returned_data.push(	 wind_up_Stats(	result,returned_row,"total_teachers",venue,session_type,age_group))
-		var returned_row={}
-			returned_row.museum=venue
-				//returned_row.age_group=age_group
-			returned_row.stat="Income"
-			returned_data.push(	 wind_up_Stats(	result,returned_row,"total_income",venue,session_type,age_group))
-
-		})
-	})
-})
-
 res.json(returned_data)
 	
 })
 
-
+}	
 
 });
 
@@ -504,7 +621,7 @@ get_kpis( function ( result) {
 		returned_row.museum=venue
 		returned_row.age_group=age_group
 		returned_row.stat="2016 sessions"
-		var column_headings=[]
+	var column_headings=[]
 		column_headings.push("total_sessions")
 		column_headings.push("total_children")
 		column_headings.push("total_teachers")
@@ -567,7 +684,7 @@ router.get('/:csv', function(req, res, next) {
 });
 
 
-router.get('/:museum_id/:date_value/:session_type/:age_group/:exact/:csv*?',isAuthenticated, function(req, res, next) {
+router.get('/:museum_id/:date_value/:session_type/:age_group/:exact/:end_value/:csv*?',isAuthenticated, function(req, res, next) {
 
 var query = {}
 
@@ -575,6 +692,7 @@ var query = {}
 
 if( req.params.exact=="false"){
 	 _.extend(query, {date_value: {$gte: req.params.date_value}})
+	 _.extend(query, {date_value: {$lte: req.params.end_value}})
 	 console.log(query)
 }
 else

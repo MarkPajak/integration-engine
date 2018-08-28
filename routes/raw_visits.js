@@ -22,8 +22,8 @@ function get_kpis(cb){
 
 
 		Team.aggregate([
-								
-			
+				
+			{ $match : {museum_id: { $ne: null }} },
 					{ $unwind : "$visitor_groups" },
 					{$group:{"_id":{"date_value":"$date_value" ,venue:'$museum_id',
 					
@@ -63,8 +63,8 @@ get_kpis( function ( result) {
 	var on_site_off_site=[]
 	
 	_.each(result,function(row){
-		if(venues.indexOf(row._id.venue)==-1){
-			console.log('adding venue ',row._id.venue)
+		if(venues.indexOf(row._id.venue)==-1 && row._id.venue!=""){
+			console.log('adding venuex ',row._id.venue)
 			venues.push(row._id.venue)
 		}
 		
@@ -153,7 +153,7 @@ get_kpis( function ( result) {
 
 router.get('/', function(req, res, next) {
 
-  Team.find()
+  Team.find({museum_id: { $ne: null }})
 	  
 	   .sort({date_value: 'desc'})
 	   .exec (  function (err, todos) {
@@ -192,19 +192,24 @@ router.get('/csv', function(req, res, next) {
   })
 });
 /* GET /todos listing. */
-router.get('/:museum_id/:date_value/:exact',route_permissions.isAuthenticated, function(req, res, next) {
+router.get('/:museum_id/:date_value/:exact/:end_value/',route_permissions.isAuthenticated, function(req, res, next) {
 
 var query = {}
 
 
 if( req.params.exact=="false"){
 	 _.extend(query, {date_value: {$gte: req.params.date_value}})
+	 _.extend(query, {date_value: {$lte: req.params.end_value}})
 	 console.log(query)
 }
 else
 {
   _.extend(query,{date_value:req.params.date_value})
 }
+
+
+
+_.extend(query,{museum_id: { $ne: null }})
 
 if(decodeURIComponent(req.params.museum_id)!="#"){
  _.extend(query,{museum_id: decodeURIComponent(req.params.museum_id)})

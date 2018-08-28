@@ -250,13 +250,14 @@ router.get('/csv', function(req, res, next) {
   })
 });
 /* GET /todos listing. */
-router.get('/:museum_id/:date_value/:donation_box_no/:exact',isAuthenticated, function(req, res, next) {
+router.get('/:museum_id/:date_value/:donation_box_no/:exact/:end_value',isAuthenticated, function(req, res, next) {
 
 var query = {}
 
 
 if( req.params.exact=="false"){
 	 _.extend(query, {date_value: {$gte: req.params.date_value}})
+	 _.extend(query, {date_value: {$lte: req.params.end_value}})
 	 console.log(query)
 }
 else

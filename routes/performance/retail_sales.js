@@ -354,9 +354,7 @@ function get_kpis(cb){
 console.log('get get_kpis')
 
 Team.aggregate([
-			
-
- //{ $match: { $non_vat_sales: },
+		
 		{ $group: {
                 _id: { 
 				
@@ -376,23 +374,22 @@ Team.aggregate([
             }
 		 },
 		 
-
+	{ $sort : { "total_sales" : -1} }	,
 	 { $project : {kpi_venue:"$_id.kpi_venue", kpi_year :"$_id.kpi_year", kpi_month :"$_id.kpi_month",number_transactions:'$number_transactions',  non_vat_sales:"$non_vat_sales", total_sales:"$total_sales"}  },
 
 		
 
     ], function (err, result) {
 	
-	console.log('err result')
+
 	
 	
 	if(err) console.log(err)
-	console.log(result)
+	
 	
 	Kpi_aggregate.aggregate([
 			
 
-//{ $match:{   value: { $gt: 0 }  } },	
 		{ $group: {
                 _id: { year : {$year:route_functions.mongo_aggregator},         
 					   month :{$month:route_functions.mongo_aggregator},       
@@ -445,12 +442,17 @@ get_kpis( function ( result) {
 		
 	var returned_row={}
 		returned_row.museum=venue
-		returned_row.stat="Net sales"
+		returned_row.stat=venue+ " Net sales"
+		returned_row.typex="retail"
 		returned_data.push(	route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"net_sales",venue))
 	var returned_row={}
+		returned_row.museum="last year"
+		returned_row.stat="last year"
+		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"last_year_total",venue))
+	var returned_row={}
 		returned_row.museum=venue
-		returned_row.stat=" % net_sales last year"
-		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row," % net_sales last year",venue))
+		returned_row.stat="% last year"
+		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"last_year",venue))
 	
 	
 	var returned_row={}
@@ -546,14 +548,16 @@ var query = {'museum_id':req.params.museum_id,'date_value':req.params.date_value
   })
 });
 */
-router.get('/:museum_id/:date_value/:exact',isAuthenticated, function(req, res, next) {
+router.get('/:museum_id/:date_value/:exact/:end_value',isAuthenticated, function(req, res, next) {
 
 var query = {}
 
 
 if( req.params.exact=="false"){
 	 _.extend(query, {date_value: {$gte: req.params.date_value}})
+	 _.extend(query, {date_value: {$lte: req.params.end_value}})
 	 console.log(query)
+	
 }
 else
 {

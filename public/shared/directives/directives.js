@@ -6,8 +6,19 @@ exports.colourKey = function() {
   }
   
 }
+
+exports.refreshButton = function() {
+	
+  return {
+			controller: 'refreshButtonKeycontroller',
+			templateUrl: './shared/templates/refreshbutton.html'
+  }
+  
+}
 exports.tableFilter = function() {
   return {
+	  
+	
 			controller: 'TableFilterController',
 			templateUrl: './shared/templates/table_filter.html'
   }

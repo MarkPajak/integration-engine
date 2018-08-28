@@ -1,4 +1,39 @@
 <style>
+.panel-heading {
+font-size: 25px;
+    color: white!important;
+}
+.learning{
+	background:#28772b !important
+
+}
+
+.exhibitions{
+	background:#fdec1f !important;
+	  color: black!important;
+}
+
+
+.events{
+
+	background:#f38a1d !important
+}
+.visits{
+
+
+background:#337ab7 !important
+}
+.retail{
+
+
+background:#9c3333 !important
+
+}
+.donations{
+
+	background:#51339c !important
+}
+
 .grid {
   width: 100%;
  position:relative;
@@ -10,6 +45,18 @@
   float: left;
 }
 
+.red{
+	color: #ff0000 !important;
+	background-color: #ffffff !important; 
+}
+
+.bold {
+    font-size: 20px !important;
+}
+.blue{
+	color: #ff0000 !important;
+	background-color: #ff0000 !important; 
+}
 .full-height {
   height: 98vh;
   
@@ -931,7 +978,7 @@ input[type="text"].ui-grid-filter-input:hover {
 <div ng-class="table_class ? table_class : 'col-lg-8 col-sm-8 col-md-8 full-height'"  id="data_grid"  >
 
 	<div class="panel panel-default ">
-		<div class="panel-heading"> {{table_heading}}</div>
+		<div class="panel-heading {{background_colour}}"> {{table_heading}}</div>
 	   <div  ng-class="dashboard ? '' : 'full-height'"  ui-grid-auto-resize ui-grid-resize-columns ui-grid-move-columns ui-grid-cellNav ui-grid-edit ui-grid-pinning ui-grid-row-edit ui-grid="gridOptions" ui-grid-selection ui-grid-exporter class="grid">
 	   </div>	
 	</div>

@@ -27,7 +27,7 @@ exports.donations_performance_form =  function($scope, $http, $q,
 					logger_user_name: $scope.user.username
             });
 			
-			var query = {'museum_id':visit_form.museum.value,"date_value":visit_form.date_value.value,"donation_box_no":visit_form.donation_box_no,"exact":true};
+			var query = {'museum_id':visit_form.museum.value,"date_value":visit_form.date_value.value,"donation_box_no":visit_form.donation_box_no,"exact":true,"end_value": moment(new Date()).format("YYYY-MM-DD") };
 			
 			Raw_donations.query(query, function(visits) {
 				  $scope.$emit('form_submit');

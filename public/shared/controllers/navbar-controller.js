@@ -44,91 +44,97 @@ $scope.user_groups['EXHIBITIONS']=[]
 $scope.user_groups['OPERATIONS']=[]
 $scope.user_groups['COMMERCIAL']=[]
 	
-var timeline 		  = {link:"timeline",value:"Timeline"}
-var dead 			  = {link:"dead",value:"Downtime"}
-var activity		  = {link:"activity",value:"Machine Activity"}
-var feedback		  = {link:"feedback",value:"Kiosk feedback"}
-var tech_support	  = {link:"tech-support",value:"Tech-support"}
-var shopify 		  = {link:"shopify_app",value:"Shopify"}
-var users 			  = {link:"users",value:"ADMIN: Users"}
-var timeline_settings = {link:"timeline_settings",value:"Timeline settings"}
-var doom 			  = {link:"doom",value:"DOOM!"}
-var analyser 		  = {link:"analyser",value:"Performance analyser (BETA)"}
+var timeline 		  = {teamx:"_DONATIONS" ,link:"timeline",value:"Timeline"}
+var masterkpi 		  = {teamx:"MASTER" ,link:"master",value:"Master KPIs"}
+var dead 			  = {teamx:"_DONATIONS" ,link:"dead",value:"Downtime"}
+var activity		  = {teamx:"_DONATIONS" ,link:"activity",value:"Machine Activity"}
+var feedback		  = {teamx:"_DONATIONS" ,link:"feedback",value:"Kiosk feedback"}
+var tech_support	  = {teamx:"_DONATIONS" ,link:"tech-support",value:"Tech-support"}
+var shopify 		  = {teamx:"_DONATIONS" ,link:"shopify_app",value:"Shopify"}
+var users 			  = {teamx:"_DONATIONS" ,link:"users",value:"ADMIN: Users"}
+var timeline_settings = {teamx:"_DONATIONS" ,link:"timeline_settings",value:"Timeline settings"}
+var doom 			  = {teamx:"_DONATIONS" ,link:"doom",value:"DOOM!"}
+var analyser 		  = {teamx:"_DONATIONS" ,link:"analyser",value:"Performance analyser (BETA)"}
 
 //resource booking
 
-var rooms 			   = {link:"rooms",value:"Add rooms"}
-var equipment 		   = {link:"equipment",value:"Add equipment"}
-var equipment_bookings = {link:"bookings/equipment",value:"Equipment booking"}
-var room_bookings	   = {link:"bookings/rooms",value:"Add a room booking"}
-var room_bookings_list = {link:"bookingslist/rooms",value:"Room bookings list"}
-var bookings_report    = {link:"bookings-report",value:"Bookings report"}
+var rooms 			   = {teamx:"_DONATIONS" ,link:"rooms",value:"Add rooms"}
+var equipment 		   = {teamx:"_DONATIONS" ,link:"equipment",value:"Add equipment"}
+var equipment_bookings = {teamx:"_DONATIONS" ,link:"bookings/equipment",value:"Equipment booking"}
+var room_bookings	   = {teamx:"_DONATIONS" ,link:"bookings/rooms",value:"Add a room booking"}
+var room_bookings_list = {teamx:"_DONATIONS" ,link:"bookingslist/rooms",value:"Room bookings list"}
+var bookings_report    = {teamx:"_DONATIONS" ,link:"bookings-report",value:"Bookings report"}
 
 
 //signage
-var posters_list 		= {link:"posters",value:"Posters list"}
-var add_posters 		= {link:"add-poster",value:"Add poster"}
+var posters_list 		= {teamx:"_DONATIONS" ,link:"posters",value:"Posters list"}
+var add_posters 		= {teamx:"_DONATIONS" ,link:"add-poster",value:"Add poster"}
 
 
-var room_hire = {link:"room-hire",value:"Room booking timeline"}
-var equipment_booking_timeline = {link:"equipment-timeline",value:"Equipment booking timeline"}
-var participation = {link:"participation-dashboard",value:"Participation dashboard"}
+var room_hire = {teamx:"_DONATIONS" ,link:"room-hire",value:"Room booking timeline"}
+var equipment_booking_timeline = {teamx:"_DONATIONS" ,link:"equipment-timeline",value:"Equipment booking timeline"}
+var participation = {teamx:"_DONATIONS" ,link:"participation-dashboard",value:"Participation dashboard"}
 
 
-var performance = {link:"record-visitor-numbers",value:"VISITS: Record visitor figures"}
-var record_retail_sales = {link:"record-retail-sales",value:"RETAIL:Record retail sales"}
-var raw_retail_sales = {link:"raw-retail-sales",value:"RETAIL:Raw retail sales"}
-var monthly_retail_sales = {link:"monthly-retail-sales",value:"RETAIL: Monthly retail sales"}
-
-
-
-var record_donations = {link:"record-donations",value:"DONATIONS: Record donations"}
-var donations = {link:"raw-donations",value:"DONATIONS: Raw donation data"}
-var monthly_donations = {link:"monthly-donations",value:"DONATIONS: Monthly donations"}
-
-var record_operations = {link:"record-operations",value:"OPERATIONS: Record operations"}
-var operations = {link:"raw-operations",value:"OPERATIONS: Raw operations data"}
-var monthly_operations = {link:"monthly-operations",value:"OPERATIONS: Monthly operations"}
-
-var record_events = {link:"record-events",value:"EVENTS: Record events"}
-var record_kpi_events = {link:"record-kpi-events",value:"TEAM KPIs: record income, enquiries, etc"}
-var events = {link:"raw-events",value:"EVENTS: Raw events data"}
-var kpi_events = {link:"raw-kpi-events",value:"TEAM KPIs: enquiries,income, sessions"}
+var performance = {teamx:"VISITS" ,link:"record-visitor-numbers",value:"Record visitor figures"}
+var record_retail_sales = {teamx:"RETAIL" ,link:"record-retail-sales",value:"Record retail sales"}
+var raw_retail_sales = {teamx:"RETAIL" ,link:"raw-retail-sales",value:"Raw retail sales"}
+var monthly_retail_sales = {teamx:"RETAIL" ,link:"monthly-retail-sales",value:"Monthly retail sales"}
 
 
 
-var monthly_events = {link:"monthly-events",value:"EVENTS: Monthly events"}
+var record_donations =			 {teamx:"DONATIONS" ,link:"record-donations",value:"Record donations"}
+var donations = 				 {teamx:"DONATIONS" ,link:"raw-donations",value:"Raw donation data"}
+var monthly_donations = 		 {teamx:"DONATIONS" ,link:"monthly-donations",value:"Monthly donations"}
 
-var record_teg = {link:"record-teg",value:"EXHIBITIONS: Record TEG figures"}
-var teg = {link:"raw-teg",value:"EXHIBITIONS: Raw TEG figures"}
-var monthly_teg = {link:"monthly-teg",value:"EXHIBITIONS: Monthly TEG figures"}
 
- var record_exhibitions_pwyt = {link:"record-exhibitions-pwyt",value:"EXHIBITIONS: Record income"}
+var transformation_kpis = 		 {teamx:"TEAM" ,link:"transformation-kpis",value:"Transformation"}
+var engagement_kpis = 		 {teamx:"TEAM" ,link:"transformation-kpis",value:"Engagement"}
+var collections_kpis = 		 {teamx:"TEAM" ,link:"transformation-kpis",value:"Collections"}
+
+var record_operations = {teamx:"OPERATIONS" ,link:"record-operations",value:"Record operations"}
+var operations = {teamx:"OPERATIONS" ,link:"raw-operations",value:"OPERATIONS: Raw operations data"}
+var monthly_operations = {teamx:"OPERATIONS" ,link:"monthly-operations",value:"Monthly operations"}
+
+var record_events = {teamx:"EVENTS" ,link:"record-events",value:"Record events"}
+var record_kpi_events = {teamx:"TEAM" ,link:"record-kpi-events",value:"record income, enquiries, etc"}
+var events = {teamx:"EVENTS" ,link:"raw-events",value:"EVENTS: Raw events data"}
+var kpi_events = {teamx:"TEAM" ,link:"raw-kpi-events",value:"enquiries,income, sessions"}
+
+
+
+var monthly_events = {teamx:"EVENTS" ,link:"monthly-events",value:"Monthly events"}
+
+var record_teg = {teamx:"EXHIBITIONS" ,link:"record-teg",value:"Record TEG figures"}
+var teg = {teamx:"EXHIBITIONS" ,link:"raw-teg",value:"Raw TEG figures"}
+var monthly_teg = {teamx:"EXHIBITIONS" ,link:"monthly-teg",value:"Monthly TEG figures"}
+
+ var record_exhibitions_pwyt = {teamx:"EXHIBITIONS" ,link:"record-exhibitions-pwyt",value:"Record income"}
 // var exhibitions_pwyt_monthly = {link:"monthly-exhibitions-pwyt",value:"EXHIBITIONS: Monthly Pay What you think"}
- var raw_exhibitions_pwyt = {link:"raw-exhibitions-pwyt",value:"EXHIBITIONS: income"}
+ var raw_exhibitions_pwyt = {teamx:"EXHIBITIONS" ,link:"raw-exhibitions-pwyt",value:"income"}
   //var exhibitions_summary = {link:"exhibitions-summary",value:"EXHIBITIONS: summary"}
  
  
- var record_learning = {link:"record-learning",value:"LEARNING: Record learning"}
-var learning = {link:"raw-learning",value:"LEARNING:Raw learning data"}
-var monthly_learning = {link:"monthly-learning",value:"LEARNING:Monthly learning"}
+ var record_learning = {teamx:"LEARNING" ,link:"record-learning",value:"Record learning"}
+var learning = {teamx:"LEARNING" ,link:"raw-learning",value:"Raw learning data"}
+var monthly_learning = {teamx:"LEARNING" ,link:"monthly-learning",value:"Monthly learning"}
 
  
-var raw_visits = {link:"raw-visits",value:"VISITS: Raw visits data"}
-var monthly_visits = {link:"monthly-visits",value:"VISITS:Monthly visits"}
+var raw_visits = {teamx:"VISITS" ,link:"raw-visits",value:"Raw visits data"}
+var monthly_visits = {teamx:"VISITS" ,link:"monthly-visits",value:"Monthly visits"}
 
 
 
-var record_giftaid = {link:"record-giftaid",value:"DONATIONS: Record gift aid"}
-var raw_giftaid = {link:"raw-giftaid",value:"DONATIONS: Raw gift aid"}
-var monthly_giftaid = {link:"monthly-giftaid",value:"DONATIONS: Monthly gift aid"}
+var record_giftaid = {teamx:"DONATIONS" ,link:"record-giftaid",value:"Record gift aid"}
+var raw_giftaid = {teamx:"DONATIONS" ,link:"raw-giftaid",value:"Raw gift aid"}
+var monthly_giftaid = {teamx:"DONATIONS" ,link:"monthly-giftaid",value:"Monthly gift aid"}
 
 //var raw_turnstiles = {link:"raw-turnstiles",value:"EXHIBITIONS: turnstiles raw data"}
 //var monthly_turnstiles = {link:"monthly-turnstiles",value:"EXHIBITIONS: turnstiles Monthly"}
 
-var record_welcomedesk = {link:"record-welcomedesk",value:"DONATIONS: Record Welcome desk"}
-var raw_welcomedesk = {link:"raw-welcomedesk",value:"DONATIONS: Raw Welcome desk"}
-var monthly_welcomedesk = {link:"monthly-welcomedesk",value:"DONATIONS: Monthly Welcome desk"}
+var record_welcomedesk = {teamx:"DONATIONS" ,link:"record-welcomedesk",value:"Record Welcome desk"}
+var raw_welcomedesk = {teamx:"DONATIONS" ,link:"raw-welcomedesk",value:"Raw Welcome desk"}
+var monthly_welcomedesk = {teamx:"DONATIONS" ,link:"monthly-welcomedesk",value:"Monthly Welcome desk"}
 
 
 
@@ -185,6 +191,11 @@ performance_data.push(monthly_retail_sales)
 performance_data.push(raw_giftaid)
 performance_data.push(monthly_giftaid)
 performance_data.push(monthly_donations)
+performance_data.push(transformation_kpis)
+performance_data.push(engagement_kpis)
+performance_data.push(collections_kpis)
+
+
 performance_data.push(donations)
 performance_data.push(monthly_welcomedesk)
 performance_data.push(raw_welcomedesk)
@@ -199,7 +210,7 @@ $scope.user_groups['DEVELOPMENT'].views=[]
 $scope.user_groups['DEVELOPMENT'].enter_data=[]
 $scope.user_groups['DEVELOPMENT'].resources=[]
 
-
+$scope.user_groups['DEVELOPMENT'].views.push(masterkpi)
 $scope.user_groups['DEVELOPMENT'].views.push(timeline)
 $scope.user_groups['DEVELOPMENT'].views.push(analyser)
 
@@ -239,6 +250,10 @@ performance_data.push(monthly_retail_sales)
 performance_data.push(raw_giftaid)
 performance_data.push(monthly_giftaid)
 performance_data.push(monthly_donations)
+performance_data.push(transformation_kpis)
+performance_data.push(engagement_kpis)
+performance_data.push(collections_kpis)
+
 performance_data.push(donations)
 performance_data.push(raw_welcomedesk)
 performance_data.push(monthly_welcomedesk)
@@ -270,7 +285,7 @@ $scope.user_groups['ADMIN'].signage=[]
 $scope.user_groups['ADMIN'].permissions=default_permissions
 
 
-
+$scope.user_groups['ADMIN'].views.push(masterkpi)
 $scope.user_groups['ADMIN'].views.push(room_hire)
 $scope.user_groups['ADMIN'].views.push(timeline)
 $scope.user_groups['ADMIN'].views.push(analyser)
@@ -300,6 +315,10 @@ performance_data.push(monthly_visits)
 performance_data.push(monthly_retail_sales)
 //performance_data.push(monthly_turnstiles)
 performance_data.push(monthly_donations)
+performance_data.push(transformation_kpis)
+performance_data.push(engagement_kpis)
+performance_data.push(collections_kpis)
+
 performance_data.push(monthly_learning)
 //performance_data.push(exhibitions_pwyt_monthly)
 //performance_data.push(exhibitions_summary)
@@ -316,7 +335,7 @@ $scope.user_groups['EXHIBITIONS'].resources=[]
 $scope.user_groups['EXHIBITIONS'].permissions=default_permissions
 
 
-
+$scope.user_groups['EXHIBITIONS'].views.push(masterkpi)
 $scope.user_groups['EXHIBITIONS'].views.push(timeline)
 $scope.user_groups['EXHIBITIONS'].views.push(analyser)
 $scope.user_groups['EXHIBITIONS'].performance=performance_data
@@ -346,6 +365,7 @@ $scope.user_groups['LEARNING'].enter_data=[]
 $scope.user_groups['LEARNING'].resources=[]
 $scope.user_groups['LEARNING'].permissions=default_permissions
 
+$scope.user_groups['LEARNING'].views.push(masterkpi)
 $scope.user_groups['LEARNING'].views.push(timeline)
 $scope.user_groups['LEARNING'].views.push(analyser)
 
@@ -419,6 +439,10 @@ performance_data.push(monthly_retail_sales)
 performance_data.push(raw_giftaid)
 performance_data.push(monthly_giftaid)
 performance_data.push(monthly_donations)
+performance_data.push(transformation_kpis)
+performance_data.push(engagement_kpis)
+performance_data.push(collections_kpis)
+
 performance_data.push(donations)
 performance_data.push(monthly_welcomedesk)
 performance_data.push(events)
@@ -434,6 +458,7 @@ $scope.user_groups['DIGITAL'].enter_data=[]
 $scope.user_groups['DIGITAL'].resources=[]
 $scope.user_groups['DIGITAL'].permissions=default_permissions
 
+$scope.user_groups['DIGITAL'].views.push(masterkpi)
 $scope.user_groups['DIGITAL'].views.push(timeline)
 $scope.user_groups['DIGITAL'].views.push(analyser)
 $scope.user_groups['DIGITAL'].views.push(dead)
@@ -456,6 +481,7 @@ $scope.user_groups['DEFAULT'].enter_data=[]
 $scope.user_groups['DEFAULT'].resources=[]
 $scope.user_groups['DEFAULT'].permissions=default_permissions
 
+$scope.user_groups['DEFAULT'].views.push(masterkpi)
 $scope.user_groups['DEFAULT'].views.push(timeline) 
 $scope.user_groups['DEFAULT'].views.push(analyser)
 $scope.user_groups['DEFAULT'].views.push(monthly_visits)
@@ -479,6 +505,10 @@ performance_data.push(monthly_visits)
 performance_data.push(monthly_retail_sales)
 //performance_data.push(monthly_turnstiles)
 performance_data.push(monthly_donations)
+performance_data.push(transformation_kpis)
+performance_data.push(engagement_kpis)
+performance_data.push(collections_kpis)
+
 performance_data.push(raw_exhibitions_pwyt)
 //performance_data.push(exhibitions_pwyt_monthly)
 performance_data.push(monthly_teg)
@@ -493,6 +523,7 @@ $scope.user_groups['STAFF'].resources=[]
 $scope.user_groups['STAFF'].permissions=default_permissions
 
 
+$scope.user_groups['STAFF'].views.push(masterkpi)
 $scope.user_groups['STAFF'].views.push(timeline) 
 $scope.user_groups['STAFF'].views.push(analyser) 
 resources.push(equipment_booking_timeline)
@@ -510,6 +541,10 @@ performance_data.push(monthly_visits)
 performance_data.push(monthly_retail_sales)
 //performance_data.push(monthly_turnstiles)
 performance_data.push(monthly_donations)
+performance_data.push(transformation_kpis)
+performance_data.push(engagement_kpis)
+performance_data.push(collections_kpis)
+
 performance_data.push(raw_exhibitions_pwyt)
 //performance_data.push(exhibitions_pwyt_monthly)
 performance_data.push(monthly_teg)
@@ -530,6 +565,7 @@ $scope.user_groups['OPERATIONS'].enter_data=[]
 $scope.user_groups['OPERATIONS'].resources=[]
 $scope.user_groups['OPERATIONS'].permissions=default_permissions
 
+$scope.user_groups['OPERATIONS'].views.push(masterkpi)
 $scope.user_groups['OPERATIONS'].views.push(timeline) 
 $scope.user_groups['OPERATIONS'].views.push(room_hire) 
 $scope.user_groups['OPERATIONS'].views.push(analyser) 
@@ -564,6 +600,7 @@ $scope.user_groups['RETAIL'].resources=[]
 $scope.user_groups['RETAIL'].performance=[]
 $scope.user_groups['RETAIL'].permissions=default_permissions
 
+$scope.user_groups['RETAIL'].views.push(masterkpi)
 $scope.user_groups['RETAIL'].views.push(timeline)
 
 $scope.user_groups['RETAIL'].enter_data=enter_data

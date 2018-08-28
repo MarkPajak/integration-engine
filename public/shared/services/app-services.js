@@ -11,6 +11,64 @@ exports.tableFilterService = function(AuthService,$rootScope) {
 
 }
 
+exports.dynamicTableCellFilter_donations= function() {
+	
+					 return function(grid, row, col, rowRenderIndex, colRenderIndex	){		
+								if(row.entity){
+										if(row.entity.csstype){
+											if(row.entity.csstype=="bold" ){
+												return ("bold")
+										}
+										else
+											return ""
+										}
+								}
+										
+																																
+}
+
+}
+
+exports.dynamicTableCellFilter_retail= function() {
+	
+					 return function(grid, row, col, rowRenderIndex, colRenderIndex	){		
+								if(row.entity){
+											if(row.entity.csstype){
+											if(row.entity.csstype=="bold" ){
+												return ("bold")
+										}
+											}
+										if(row.entity.stat){
+											if(row.entity.typex=="retail" ){
+												return ("bold")
+										}
+										else
+											return ""
+										}
+								}
+										
+																																
+}
+
+}
+
+exports.dynamicTableCellFilter = function() {
+	
+					 return function(grid, row, col, rowRenderIndex, colRenderIndex	){		
+								if(row.entity){
+										if(row.entity.stat){
+											if(row.entity.stat=="Visits" ){
+												return ("bold")
+										}
+										else
+											return ""
+										}
+								}
+										
+																																
+}
+
+}
 
 exports.data_table_reload = function() {	
 
@@ -119,11 +177,13 @@ var myScope
 			array.getData= function(filterdate,$scope){
 			console.log('getData')
 			console.log('filterdate',filterdate)
+		
 			if($scope){
 			myScope=$scope
 			}
 					if(filterdate){
-					console.log('all dates after',filterdate)
+							
+							console.log('all dates after',filterdate)
 							console.log(filterdate)
 							var filter_month = moment().month()
 							console.log('filter_month',filter_month)
@@ -140,8 +200,9 @@ var myScope
 							console.log('all dates after',filterdate)
 					
 					}
-					
-							var query = {'team_id':"#","date_value":moment(filterdate).format("YYYY-MM-DD"),"exact":false};
+							var end_date = $scope.end || new Date()
+							 end_date.setDate(end_date.getDate() + 1);
+							var query = {'team_id':"#","date_value":moment(filterdate).format("YYYY-MM-DD"),"exact":false,"end_value":end_date};
 							
 							if($scope.extraQuery){
 								_.extend(query, $scope.extraQuery)
@@ -338,7 +399,7 @@ var myScope
 					
 					}
 					
-							var query = {'museum_id':"#","date_value":moment(filterdate).format("YYYY-MM-DD"),"exact":false};
+							var query = {'museum_id':"#","date_value":moment(filterdate).format("YYYY-MM-DD"),"exact":false,"end_value":moment($scope.end).format("YYYY-MM-DD")};
 							
 							if($scope.extraQuery){
 								_.extend(query, $scope.extraQuery)
@@ -407,13 +468,15 @@ var myScope
 							firstDay = moment(firstDay);
 							array.getData(firstDay,myScope)
 						}
+							
+						
 						else if (val)
 						{
-								console.log('show month data')
+								console.log('show month data',myScope.start)
 							var date = new Date(val), y = date.getFullYear(val), m = date.getMonth(val);
 							console.log('filtering on month', m)
-							var firstDay = new Date(y, m, 1);
-							var lastDay = new Date(y, m + 1, 0);
+							var firstDay = new Date(myScope.start);
+							var lastDay = new Date(myScope.end);
 							firstDay = moment(firstDay)._d;
 							array.getData(firstDay,myScope)	
 
@@ -652,6 +715,86 @@ array.build  = function (scope,start_date,end_date) {
     return array;
 
 }
+exports.monthly_data_table_columns_retail = function() {	
+		
+
+var array = {};
+
+
+array.build  = function (scope,start_date,end_date) {
+  
+  var columns = []
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+];
+
+
+
+  start=moment(start_date).year()
+  end=moment(end_date).year()
+  start_month=moment(start_date).month()
+  end_month=moment(end_date).month()
+ 
+ 
+ var firstrun=true
+	for (year = start; year <= end; year++) { 
+month_num=0
+			_.each(moment.monthsShort(),function(month){	
+			month_num++
+
+			console.log('start_month',start_month)
+			console.log('monthNames.indexOf(month)',monthNames.indexOf(month))
+			console.log(year==end && month_num>monthNames.indexOf(month))
+			if(firstrun==true && month!=monthNames[start_month] || year==end && month_num>start_month) return;
+				columns.push({ cellFilter:  'valueFilter_retail:row.entity', field: month+" "+year,	name: month+" "+year.toString().substring(2),width: "100",	  cellClass: function(grid, row, col, rowRenderIndex, colRenderIndex) {
+																															
+																														
+																															if(row.entity[col.colDef.field]){
+																																if(typeof row.entity[col.colDef.field].indexOf === "function"){
+																																	if(row.entity[col.colDef.field].indexOf("-")!=-1){
+																																	return ("red")
+																																}
+																															}
+																																if(row.entity.stat){
+																																	if(row.entity.typex=="retail"){
+																																	console.log("bold")
+																																	return ("bold")
+																																}
+																																}
+																																if(row.entity.xtype){
+																																	if(row.entity.xtype=="donations" ){
+																																		return ("bold")
+																																}
+																																}
+																																	if(row.entity.csstype){
+																																	if(row.entity.csstype=="bold" ){
+																																		return ("bold")
+																																}
+																																}
+																															}
+																															
+																															
+																															
+																															}
+																															
+																															
+																															})
+				scope.filter_pie.push({value:month+" "+year,name:month+" "+year})
+				firstrun=false
+			
+			})
+
+	   
+}
+
+			return columns
+
+	};
+	
+
+    return array;
+
+}
 
 exports.monthly_data_table_columns = function() {	
 		
@@ -662,16 +805,60 @@ var array = {};
 array.build  = function (scope,start_date,end_date) {
   
   var columns = []
-  
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+];
+
+
+
   start=moment(start_date).year()
   end=moment(end_date).year()
-
+  start_month=moment(start_date).month()
+  end_month=moment(end_date).month()
+ 
+ 
+ var firstrun=true
 	for (year = start; year <= end; year++) { 
-
+month_num=0
 			_.each(moment.monthsShort(),function(month){	
-			
-				columns.push({ field: month+" "+year,	name: month+" "+year.toString().substring(2),width: "80"})
+			month_num++
+
+			console.log('start_month',start_month)
+			console.log('monthNames.indexOf(month)',monthNames.indexOf(month))
+			console.log(year==end && month_num>monthNames.indexOf(month))
+			if(firstrun==true && month!=monthNames[start_month] || year==end && month_num>start_month) return;
+				columns.push({ cellFilter:  'valueFilter:row.entity', field: month+" "+year,	name: month+" "+year.toString().substring(2),width: "100",	  cellClass: function(grid, row, col, rowRenderIndex, colRenderIndex) {
+																															
+																														
+																															if(row.entity[col.colDef.field]){
+																																if(typeof row.entity[col.colDef.field].indexOf === "function"){
+																																	if(row.entity[col.colDef.field].indexOf("-")!=-1){
+																																	return ("red")
+																																}
+																															}
+																																if(row.entity.stat){
+																																	if(row.entity.stat=="Visits"){
+																																	console.log("bold")
+																																	return ("bold")
+																																}
+																																}
+																																
+																																	if(row.entity.csstype){
+																																	if(row.entity.csstype=="bold" ){
+																																		return ("bold")
+																																}
+																																}
+																															}
+																															
+																															
+																															
+																															}
+																															
+																															
+																															})
 				scope.filter_pie.push({value:month+" "+year,name:month+" "+year})
+				firstrun=false
+			
 			})
 
 	   
