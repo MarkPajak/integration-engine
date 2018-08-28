@@ -72,10 +72,29 @@ exports.Monthly_operations  =  function($resource){
 
   } 
   
-exports.Monthly_visits =  function($resource){
+            exports.Yearly_venue_hire =  function($resource){
 	  
-	  
+	return $resource('/venue_hire/total/:booking_type',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+       
+
+  } 
+  
+  exports.Monthly_visits =  function($resource){
+
 	return $resource('/kpi_aggregate/all',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+       
+
+  } 
+  
+exports.Monthly_venue_hire =  function($resource){
+
+	return $resource('/venue_hire/all/:booking_type',{ }, {
 		openGates: {method:'GET', isArray: true}
 			
   });
@@ -94,7 +113,17 @@ exports.Monthly_visits =  function($resource){
        
 
   } 
-  
+    
+  exports.Weekly_venue_hire =  function($resource){
+	  
+	  
+	return $resource('/venue_hire/week/:booking_type',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+       
+
+  } 
     exports.Yearly_events =  function($resource){
 	  
 	  
@@ -465,6 +494,8 @@ exports.Monthly_visits =  function($resource){
 			});
  }
  
+
+ 
       exports.send_confirmation_email =  function($resource){
 	 
             return $resource('confirmation', null,
@@ -604,6 +635,21 @@ exports.Monthly_visits =  function($resource){
 	 
 		 
             return $resource('/raw_visits/:id/:museum_id/:date_value/:exact/:end_value', null,
+			{ 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray:true}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+ }
+ 
+  //PERFORMACE 
+ exports.Raw_venue_hire=  function($resource){
+	 
+	 
+		 
+            return $resource('/venue_hire/:id/:museum_id/:date_value/:exact/:end_value', null,
 			{ 'get':    {method:'GET'},  // get individual record
 			  'save':   {method:'POST'}, // create record
 			  'query':  {method:'GET', isArray:true}, // get list all records

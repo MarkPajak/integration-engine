@@ -173,6 +173,9 @@ var feedback = require('./routes/feedback/kiosk')
 var analytics = require('./routes/feedback/analytics')		
 //PERFORMANCE KPIS	
 var raw_visits = require('./routes/raw_visits')
+
+var venue_hire = require('./routes/performance/venue_hire')
+
 var retail_sales = require('./routes/performance/retail_sales')
 var donations = require('./routes/performance/donations')
 var giftaid = require('./routes/performance/giftaid')
@@ -264,6 +267,9 @@ app.use('/check_ticket_file', check_ticket_file);
 app.use('/check_ticket_database', check_ticket_database);
 
 app.use('/raw_visits', raw_visits);
+app.use('/venue_hire', venue_hire);
+
+
 app.use('/kpi_aggregate', kpi_aggregate);
 app.use('/community_group', community_group);
 

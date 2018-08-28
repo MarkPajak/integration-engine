@@ -78,10 +78,17 @@
          </ul>
      </li>
 	 
+	    <li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">Venue Hire <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+           <li   ng-repeat="view in user.performance | filter:{ teamx:'VENUE HIRE'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+         </ul>
+     </li>
+	 
 	  <li class="dropdown-submenu">
         <a class="test" tabindex="-1" href="#">Team KPIs <span class="caret"></span></a>
         <ul class="dropdown-menu">
-           <li   ng-repeat="view in user.performance | filter:{ teamx:'TRANSFORMATION'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+           <li   ng-repeat="view in user.performance | filter:{ teamx:'TEAM'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
          </ul>
      </li>
 	
@@ -141,6 +148,14 @@
            <li   ng-repeat="view in user.enter_data | filter:{ teamx:'EVENTS'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
          </ul>
      </li>
+	 
+	     <li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">Venue Hire <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+           <li   ng-repeat="view in user.enter_data | filter:{ teamx:'VENUE HIRE'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+         </ul>
+     </li>
+	 
 	 
 	  <li class="dropdown-submenu">
         <a class="test" tabindex="-1" href="#">Team KPIs <span class="caret"></span></a>

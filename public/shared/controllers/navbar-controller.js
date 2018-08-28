@@ -38,7 +38,8 @@ $scope.user_groups['RETAIL']=[]
 $scope.user_groups['DIGITAL']=[]
 $scope.user_groups['STAFF']=[]
 $scope.user_groups['DEFAULT']=[]
-$scope.user_groups['DEVELOPMENT']=[]	   
+$scope.user_groups['DEVELOPMENT']=[]	  
+$scope.user_groups['VENUE HIRE']=[]	 
 $scope.user_groups['LEARNING']=[]	
 $scope.user_groups['EXHIBITIONS']=[]	
 $scope.user_groups['OPERATIONS']=[]
@@ -123,6 +124,10 @@ var monthly_learning = {teamx:"LEARNING" ,link:"monthly-learning",value:"Monthly
 var raw_visits = {teamx:"VISITS" ,link:"raw-visits",value:"Raw visits data"}
 var monthly_visits = {teamx:"VISITS" ,link:"monthly-visits",value:"Monthly visits"}
 
+var record_venue_hire = {teamx:"VENUE HIRE" ,link:"record-venue-hire",value:"Record venue hire"}
+var raw_venue_hire = {teamx:"VENUE HIRE" ,link:"raw-venue-hire",value:"Raw venue hire"}
+var monthly_venue_hire = {teamx:"VENUE HIRE"  ,link:"monthly-venue-hire",value:"Monthly venue hire"}
+
 
 
 var record_giftaid = {teamx:"DONATIONS" ,link:"record-giftaid",value:"Record gift aid"}
@@ -179,12 +184,16 @@ enter_data.push(record_giftaid)
 enter_data.push(record_welcomedesk)
 enter_data.push(record_events)
 enter_data.push(record_kpi_events)
-
+enter_data.push(record_venue_hire)
 
 
 var performance_data=[]
 performance_data.push(raw_visits)
 performance_data.push(monthly_visits)
+performance_data.push(raw_venue_hire)
+performance_data.push(monthly_venue_hire)
+
+
 //performance_data.push(raw_retail_sales)
 performance_data.push(monthly_retail_sales)
 
@@ -234,6 +243,7 @@ enter_data.push(record_exhibitions_pwyt)
 enter_data.push(record_teg)
 enter_data.push(record_events)
 enter_data.push(record_kpi_events)
+enter_data.push(record_venue_hire)
 
 enter_data.push(record_operations)
 
@@ -243,6 +253,8 @@ enter_data=enter_data.sort()
 var performance_data=[]
 performance_data.push(raw_visits)
 performance_data.push(monthly_visits)
+performance_data.push(raw_venue_hire)
+performance_data.push(monthly_venue_hire)
 performance_data.push(raw_retail_sales)
 performance_data.push(monthly_retail_sales)
 //performance_data.push(raw_turnstiles)
@@ -250,9 +262,7 @@ performance_data.push(monthly_retail_sales)
 performance_data.push(raw_giftaid)
 performance_data.push(monthly_giftaid)
 performance_data.push(monthly_donations)
-performance_data.push(transformation_kpis)
-performance_data.push(engagement_kpis)
-performance_data.push(collections_kpis)
+
 
 performance_data.push(donations)
 performance_data.push(raw_welcomedesk)
@@ -274,6 +284,9 @@ performance_data.push(kpi_events)
 performance_data.push(monthly_events)
 performance_data.push(operations)
 performance_data.push(monthly_operations)
+performance_data.push(transformation_kpis)
+performance_data.push(engagement_kpis)
+performance_data.push(collections_kpis)
 
 performance_data=performance_data.sort()
 
@@ -309,9 +322,12 @@ enter_data.push(record_exhibitions_pwyt)
 enter_data.push(record_teg)
 enter_data.push(record_events)
 enter_data.push(record_kpi_events)
+enter_data.push(record_venue_hire)
 var performance_data=[]
 performance_data.push(raw_visits)
 performance_data.push(monthly_visits)
+performance_data.push(raw_venue_hire)
+performance_data.push(monthly_venue_hire)
 performance_data.push(monthly_retail_sales)
 //performance_data.push(monthly_turnstiles)
 performance_data.push(monthly_donations)
@@ -347,6 +363,7 @@ var enter_data=[]
 enter_data.push(record_learning)
 enter_data.push(record_events)
 enter_data.push(record_kpi_events)
+enter_data.push(record_venue_hire)
 var performance_data=[]
 performance_data.push(raw_visits)
 
@@ -385,6 +402,7 @@ enter_data.push(record_exhibitions_pwyt)
 enter_data.push(record_teg)
 enter_data.push(record_events)
 enter_data.push(record_kpi_events)
+enter_data.push(record_venue_hire)
 enter_data.push(record_operations)
 
 
@@ -393,6 +411,8 @@ enter_data=enter_data.sort()
 var performance_data=[]
 performance_data.push(raw_visits)
 performance_data.push(monthly_visits)
+performance_data.push(raw_venue_hire)
+performance_data.push(monthly_venue_hire)
 
 performance_data.push(teg)
 performance_data.push(monthly_teg)
@@ -428,10 +448,13 @@ enter_data.push(record_donations)
 enter_data.push(record_giftaid)
 enter_data.push(record_events)
 enter_data.push(record_kpi_events)
+enter_data.push(record_venue_hire)
 
 var performance_data=[]
 performance_data.push(raw_visits)
 performance_data.push(monthly_visits)
+performance_data.push(raw_venue_hire)
+performance_data.push(monthly_venue_hire)
 performance_data.push(raw_retail_sales)
 performance_data.push(monthly_retail_sales)
 //performance_data.push(raw_turnstiles)
@@ -494,6 +517,7 @@ enter_data.push(performance)
 enter_data.push(record_exhibitions_pwyt)
 enter_data.push(record_events)
 enter_data.push(record_kpi_events)
+enter_data.push(record_venue_hire)
 enter_data.push(record_teg)
 var resources=[]
 
@@ -502,6 +526,8 @@ performance_data.push(teg)
 var performance_data=[]
 performance_data.push(raw_visits)
 performance_data.push(monthly_visits)
+performance_data.push(raw_venue_hire)
+performance_data.push(monthly_venue_hire)
 performance_data.push(monthly_retail_sales)
 //performance_data.push(monthly_turnstiles)
 performance_data.push(monthly_donations)
@@ -534,10 +560,56 @@ $scope.user_groups['STAFF'].resources=resources
 
 
 
+var performance_data=[]
+performance_data.push(raw_visits)
+performance_data.push(monthly_visits)
+performance_data.push(raw_venue_hire)
+performance_data.push(monthly_venue_hire)
+performance_data.push(monthly_retail_sales)
+//performance_data.push(monthly_turnstiles)
+performance_data.push(monthly_donations)
+performance_data.push(transformation_kpis)
+performance_data.push(engagement_kpis)
+performance_data.push(collections_kpis)
+
+performance_data.push(raw_exhibitions_pwyt)
+//performance_data.push(exhibitions_pwyt_monthly)
+performance_data.push(monthly_teg)
+performance_data.push(events)
+performance_data.push(kpi_events)
+performance_data.push(monthly_events)
+performance_data.push(operations)
+performance_data.push(monthly_operations)
+performance_data.push(monthly_welcomedesk)
+performance_data.push(participation)
+
+enter_data.push(record_teg)
+enter_data.push(record_operations)
+enter_data.push(record_exhibitions_pwyt)
+
+$scope.user_groups['VENUE HIRE'].views=[]
+$scope.user_groups['VENUE HIRE'].enter_data=[]
+$scope.user_groups['VENUE HIRE'].resources=[]
+$scope.user_groups['VENUE HIRE'].permissions=default_permissions
+
+$scope.user_groups['VENUE HIRE'].views.push(masterkpi)
+$scope.user_groups['VENUE HIRE'].views.push(timeline) 
+$scope.user_groups['VENUE HIRE'].views.push(room_hire) 
+$scope.user_groups['VENUE HIRE'].views.push(analyser) 
+
+$scope.user_groups['VENUE HIRE'].enter_data=enter_data
+$scope.user_groups['VENUE HIRE'].performance=performance_data
+
+$scope.user_groups['VENUE HIRE'].resources=[]
+$scope.user_groups['VENUE HIRE'].resources=resources
+
+
 
 var performance_data=[]
 performance_data.push(raw_visits)
 performance_data.push(monthly_visits)
+performance_data.push(raw_venue_hire)
+performance_data.push(monthly_venue_hire)
 performance_data.push(monthly_retail_sales)
 //performance_data.push(monthly_turnstiles)
 performance_data.push(monthly_donations)
@@ -589,6 +661,8 @@ enter_data.push(record_kpi_events)
 
 var performance_data=[]
 performance_data.push(monthly_visits)
+performance_data.push(raw_venue_hire)
+performance_data.push(monthly_venue_hire)
 performance_data.push(raw_retail_sales)
 performance_data.push(monthly_retail_sales)
 performance_data.push(participation)

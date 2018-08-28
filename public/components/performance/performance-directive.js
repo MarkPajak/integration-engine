@@ -142,7 +142,16 @@ exports.yearlyLearning = function() {
  controller: 'dashboard_controller',
     templateUrl: './components/performance/visits/dashboard.html'
   }
+	}
+
+
+exports.venuehireDashboard = function() {
+  return {
+ controller: 'dashboard_controller',
+    templateUrl: './components/performance/venue-hire/dashboard.html'
+  }
 	}	
+		
 	
 				exports.donationsDashboard = function() {
   return {
@@ -221,9 +230,25 @@ exports.dataxVisits = function() {
   }
 }
 
+
+exports.dataxVenuehire = function() {
+  return {
+
+    templateUrl: './components/performance/venue-hire/data.html'
+  }
+}
+
+
 exports.rawVisits = function() {
  return {
      controller: 'raw_visitor_numbers_controller',
+     templateUrl: './shared/templates/data_table.html'
+  }
+}
+
+exports.rawVenuehire = function() {
+ return {
+     controller: 'raw_venue_hire_controller',
      templateUrl: './shared/templates/data_table.html'
   }
 }
@@ -238,13 +263,42 @@ exports.monthlyVisits = function() {
    templateUrl: './shared/templates/data_table.html'
   }
 }
+exports.monthlyVenuehire = function() {
+ 
+  return {
+
+ restrict: 'E',
+ scope: {
 	
+      },
+	   link: function(scope, element, attrs) {
+       
+        booking_type=attrs.bookingType
+
+		console.log(attrs)
+		
+		scope.init(booking_type)
+		
+      },
+   controller: 'monthly_venue_hire_controller',
+   templateUrl: './shared/templates/data_table.html'
+  }
+	}	
 
 				exports.yearlyVisits = function() {
   return {
 	    restrict: "E",
     scope: {},
    controller: 'yearly_visitor_numbers_controller',
+   templateUrl: './shared/templates/data_table.html'
+  }
+	}
+	
+					exports.yearlyVenuehire = function() {
+  return {
+	    restrict: "E",
+    scope: {},
+   controller: 'yearly_venue_hire_controller',
    templateUrl: './shared/templates/data_table.html'
   }
 	}
@@ -368,6 +422,20 @@ exports.kpiForm = function() {
   }
 }
 
+exports.venuehireForm = function() {
+  return {
+   controller: 'venue_hire_form',
+    templateUrl: './components/performance/venue-hire/kpi-form.html'
+  }
+}
+
+
+exports.venuehireFormdata = function() {
+  return {
+
+   templateUrl: './components/performance/venue-hire/kpi-form-and-data.html'
+  }
+}
 
 
 exports.visitsFormdata = function() {

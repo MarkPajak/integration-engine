@@ -79,6 +79,14 @@ var analyser_controller = require('../components/performance/analyser/analyser-c
 var raw_visitor_numbers_controller = require('../components/performance/visits/raw-visits-controller');
 var monthly_visitor_numbers_controller = require('../components/performance/visits/monthly-visits-controller');
 var yearly_visitor_numbers_controller = require('../components/performance/visits/yearly-visits-controller');
+
+
+var raw_venue_hire_controller = require('../components/performance/venue-hire/raw-visits-controller');
+var monthly_venue_hire_controller = require('../components/performance/venue-hire/monthly-visits-controller');
+var yearly_venue_hire_controller = require('../components/performance/venue-hire/yearly-visits-controller');
+
+
+
 var raw_turnstiles_controller = require('../components/performance/turnstiles/raw-turnstiles-controller');
 var monthly_turnstiles_controller = require('../components/performance/turnstiles/monthly-turnstiles-controller');
 
@@ -175,6 +183,12 @@ var shopify_monthly_controllers = require('../components/shopify/shopify-monthly
 
 //var performance_controller = require('../components/performance/performance-controller');
 var performance_form = require('../components/performance/visits/visits-form-controller');
+var venue_hire_form = require('../components/performance/venue-hire/visits-form-controller');
+
+
+
+
+
 var retail_performance_form = require('../components/performance/retail/performance-form-controller');
 
 
@@ -565,6 +579,25 @@ _.each(yearly_visitor_numbers_controller, function(controller, name) {
   app.controller(name, controller);
 });
 
+
+
+_.each(raw_venue_hire_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+
+_.each(monthly_venue_hire_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+
+_.each(yearly_venue_hire_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+
+
+
 _.each(monthly_visitor_numbers_controller, function(controller, name) {
   app.controller(name, controller);
 });
@@ -668,7 +701,9 @@ _.each(shopify_monthly_controllers, function(controller, name) {
 
 
 
-
+_.each(venue_hire_form, function(controller, name) {
+  app.controller(name, controller);
+});
 _.each(performance_form, function(controller, name) {
   app.controller(name, controller);
 });
@@ -1102,6 +1137,11 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
 		   .when('/record-visitor-numbers', {
                 template: '<visits-formdata></visits-formdata>'
            })
+		   
+		    .when('/record-venue-hire', {
+                template: '<venuehire-formdata></venuehire-formdata>'
+           })
+		   
 	   
 		     .when('/record-visitor-numbers/:kpi', {
                template: '<performance-panel></performance-panel>'
@@ -1172,6 +1212,13 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
            })
 		   
 		   
+		     .when('/raw-venue-hire', {
+               template: '<datax-venuehire></datax-venuehire>'
+           })
+		   
+			.when('/monthly-venue-hire', {
+               template: '<venuehire-dashboard></venuehire-dashboard>'
+           })
 		   
 		   
 		   
