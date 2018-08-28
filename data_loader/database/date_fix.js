@@ -83,7 +83,7 @@ var bad_date_countyer=0
 				async.eachSeries(todos, function updateObject (obj, done) {
 				
 					// Model.update(condition, doc, callback)
-					if(moment(obj.date_value).format("hh")=="12"){
+					if(moment(obj.date_value).format("hh")=="12" || moment(obj.date_value).format("hh")=="23" ){
 					bad_date_countyer++
 					model.update({ _id: obj._id }, { $set : { date_value: obj.date_value.setHours(obj.date_value.getHours()+1) }}, done);
 					}
