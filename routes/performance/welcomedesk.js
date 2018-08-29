@@ -368,7 +368,7 @@ Team.aggregate([
 					   
 					 },  
 				
-               total: { $sum:  { $sum: [ "$cash", "$card" ] }} ,
+               total:  { $sum: [ "$cash", "$card" ] } ,
 			   number_transactions: { $sum:    "$no_transactions" } ,
 			  // ATV: {$sum:  { $divide: [ { $sum:  { $sum: [ "$cash", "$card" ] }}   ,{ $sum:    "$no_transactions" } ]}},
 		      

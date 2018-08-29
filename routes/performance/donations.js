@@ -143,6 +143,7 @@ router.get('/total', function(req, res, next) {
 												if(returned_row['donations']){
 												returned_row['donations']=returned_row['donations'].substring(2)
 												}
+												
 											}
 										})
 									})
@@ -397,13 +398,13 @@ Team.aggregate([
 					   
 					 },  
 				
-               amount: {$sum: '$amount' },
+               gift_aid_amount: {$sum: '$amount' },
 			 no_envelopes: {$sum: '$no_envelopes' }
 		      
             }
 		 },
 
-	 { $project : {venue:"$_id.venue", year :"$_id.year", month :"$_id.month",donations:'$donations', gift_aid_amount:"$amount", no_envelopes:"$no_envelopes"}  },
+	 { $project : {venue:"$_id.venue", year :"$_id.year", month :"$_id.month",donations:'$donations', gift_aid_amount:"$gift_aid_amount", no_envelopes:"$no_envelopes"}  },
 
 		
 	  ], function (err, result2) {
@@ -422,13 +423,13 @@ Team.aggregate([
 					 },  
 		
      
-	 totalSum :  { $sum: { $add :  [ '$cash', '$cash' ]}},
-			
+	 cash :  { $sum:  '$cash' },
+	 card :  { $sum:   '$card' },	
 		      
             }
 		 },
 
-	 { $project : {venue:"$_id.venue", year :"$_id.year", month :"$_id.month",donations:'$donations', totalSum:"$totalSum"}  },
+	 { $project : {venue:"$_id.venue", year :"$_id.year", month :"$_id.month",donations:'$donations', cash:"$cash", card:"$card"}  },
 
 		
 	  ], function (err, welsomedesk) {	  
@@ -443,16 +444,25 @@ Team.aggregate([
 		
 		_.each(result,function(kpi,i){
 			_.each(result2,function(visits,ii){
-				result[i].gift_aid_amount=visits.gift_aid_amount
-							result[i].no_envelopes=visits.no_envelopes
-							
-							result[i].combined= kpi.donations
-							result[i].conversion=(kpi.number_transactions/visits.visits*100).toFixed(2)+"%"; 
 				_.each(welsomedesk,function(welcome,iii){		
 					if(kpi.kpi_venue==welcome.venue &&  kpi.kpi_month==welcome.month && kpi.kpi_year==welcome.year){
 						if(kpi.kpi_venue==visits.venue &&  kpi.kpi_month==visits.month && kpi.kpi_year==visits.year){
-							result[i].welcome=welcome.totalSum
-							result[i].combined+=welcome.totalSum
+						if(visits.kpi_venue==kpi.venue &&  visits.kpi_month==kpi.month && visits.kpi_year==kpi.year){
+						result[i].donations=kpi.donations
+						
+						//result[i].gift_aid_amountx=0
+						if(visits.gift_aid_amount){
+							result[i].gift_aid_amountx=visits.gift_aid_amount
+							
+						}
+							
+							
+						
+						}						
+							
+				
+							result[i].welcome=welcome.cash+welcome.card
+							result[i].combined=result[i].welcome+result[i].gift_aid_amountx+result[i].donations
 						
 						}
 					}
@@ -532,13 +542,26 @@ get_kpis( function ( result) {
 	var returned_data=[]
 
 	_.each(venues,function(venue){
-		
+		var returned_row={}
+		returned_row.museum=venue
+		returned_row.stat=venue+ " Combined total"
+		returned_row.xtype="currency"
+		returned_row.csstype="bold"
+		returned_data.push(	 wind_up_Stats(	result,returned_row,"combined",venue))	
 
 	var returned_row={}
 		returned_row.museum=venue
 		returned_row.stat="Donations"
 		returned_row.xtype="currency"
 		returned_data.push(	 wind_up_Stats(	result,returned_row,"donations",venue))
+		
+	var returned_row={}
+		returned_row.museum=venue
+		returned_row.stat="Gift Aid Amount"
+		returned_row.xtype="currency"
+		returned_data.push(	 wind_up_Stats(	result,returned_row,"gift_aid_amountx",venue))
+		
+		
 	var returned_row={}
 		returned_row.museum=venue
 		returned_row.stat="Welcome ex tax"
@@ -548,12 +571,7 @@ get_kpis( function ( result) {
 		if(row.delete_row==false){
 			returned_data.push(	row)
 		}
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat=venue+ " Combined total"
-		returned_row.xtype="currency"
-		returned_row.csstype="bold"
-		returned_data.push(	 wind_up_Stats(	result,returned_row,"combined",venue))
+
 	var returned_row={}
 		returned_row.museum="last year"
 		returned_row.stat="last year"
@@ -564,25 +582,9 @@ get_kpis( function ( result) {
 		returned_row.museum=venue
 		returned_row.stat="% last year"
 		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"last_year",venue))
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat="Gift aid"
-		returned_row.xtype="currency"
-	
-	
-		row =  wind_up_Stats(	result,returned_row,"gift_aid_amount",venue)
-		if(row.delete_row==false){
-			returned_data.push(	row)
-		}
+
 		
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat="No envelopes"
-		//returned_row.xtype="donations"
-		row =  		returned_data.push(	 wind_up_Stats(	result,returned_row,"no_envelopes",venue))
-		if(row.delete_row==false){
-			returned_data.push(	row)
-		}
+
 		
 		
 	})
