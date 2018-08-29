@@ -15,6 +15,7 @@ exports.raw_venue_hire_controller = function($route,$scope, $http, $q, $routePar
 		
 			{ field: 'museum_id' ,name: "Museum",resizable: true,enableFiltering: true,},
 			{ field: 'booking_type' ,name: "Booking type",resizable: true,visible:true},
+			{ field: 'income_source' ,name: "Source",resizable: true,visible:true},
 			{ field: 'value' ,resizable: true,cellFilter: 'currency:"&pound;" : 2'},
 			{ field: 'date_value' ,name: "Date",resizable: true ,type: 'date', cellFilter: 'date:\'dd/MM/yyyy\''},
 			{ field: 'comments' ,name: "comments",resizable: true,visible:false},

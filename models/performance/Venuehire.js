@@ -20,6 +20,7 @@ var Venue_hire = new mongoose.Schema({
 			comments: { type: String},	
 			customer: { type: String},	
 			booking_type: { type: String},	
+			income_source: { type: String},	
 			visitor_groups:  [visitor_groupDoc],			
 			logger_user_name: { type: String}
 			

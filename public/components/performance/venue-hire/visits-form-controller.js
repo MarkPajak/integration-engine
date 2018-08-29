@@ -53,6 +53,7 @@ exports.venue_hire_form =  function($scope, $http, $q, $routeParams, $location
 					date_value:visit_form.date_value.value,
 					comments:visit_form.comments.value,					
 					booking_type:encodeURI(visit_form.booking_type.value),
+					income_source:visit_form.income_source.value,
 					customer:visit_form.customer.value,					
 					logger_user_name: $scope.user.username
             });

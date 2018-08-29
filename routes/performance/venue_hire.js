@@ -58,7 +58,7 @@ function get_kpis(cb){
 
 Venuehire.aggregate([
  //HOLY CRAP ITS NOT FUN WHEN YOUR AGGREGATION PIPELINE GETS THE MONTH WRONG
- { $match : {museum_id: { $ne: null }, booking_type:req.params.booking_type} },
+ { $match : {museum_id: { $ne: null },income_source: { $ne: "Staffing Charge" }, booking_type:req.params.booking_type} },
  { $group: {
 			_id :{ 
 			// "year":{$year: "$date_value"}, //CAUSED A PROBLEM 07/07/2017
