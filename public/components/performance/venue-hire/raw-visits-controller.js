@@ -10,7 +10,9 @@ exports.raw_venue_hire_controller = function($route,$scope, $http, $q, $routePar
 		$scope.gridOptions.data='__data'
 		var columnDefs= []
 		$rootScope.canEdit_table=true
-
+$scope.start=new Date("04/01/2018")
+			$scope.end_date= moment($scope.start_date).add('years', 1).format("DD/MM/YYYY")
+			
 		columnDefs.push(
 		
 			{ field: 'museum_id' ,name: "Museum",resizable: true,enableFiltering: true,},
