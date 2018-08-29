@@ -1,4 +1,4 @@
-exports.monthly_kpi_events_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope,Monthly_kpi_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security
+exports.monthly_kpi_events_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope,Monthly_kpi_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security
     ) {
 		
 		
@@ -25,8 +25,9 @@ exports.monthly_kpi_events_controller = function($route,$scope, $http, $q, $rout
 					
 			)
 			
-			$scope.start_date=new Date("01/04/2018")
-			$scope.end_date=new Date("01/04/2019")
+		dates=getDateService.getDate()
+		$scope.start_date=dates[0]
+		$scope.end_date=dates[1]
 			
 			
 			
@@ -142,7 +143,12 @@ function isNumeric(n) {
 		}
 		
 		
+			 $scope.$on('date:updated', function(event,data) {
+					console.log(data)
+					$scope.start_date=data[0]
+					$scope.end_date=	data[1]	
 			
+				});
 			$scope.$watch('changed', function (newValue) {
 					if(newValue>0){
 						$scope.get_data()

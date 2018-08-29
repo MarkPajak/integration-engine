@@ -19,6 +19,17 @@ exports.RadioController = function($location, $scope, $routeParams, $http) {
 };
 
 
+exports.date_select_controller = function($location, $scope, $routeParams, $http) {
+
+	
+			$scope.start_date=new Date("04/01/2018")
+			$scope.end_date= moment($scope.start_date).add('years', 1).format("DD/MM/YYYY")
+
+			
+};
+
+
+
 
 
 exports.refreshButtonKeycontroller = function($location, $scope, $routeParams, $http) {

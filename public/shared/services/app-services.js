@@ -70,6 +70,41 @@ exports.dynamicTableCellFilter = function() {
 
 }
 
+exports.getDateService = function($rootScope) {	
+
+
+		 start_date=new Date("2018/04/01")
+		end_date= new Date(moment(start_date).add('years', 1).format("YYYY/MM/DD"))
+		 end_date.setDate(end_date.getDate()-1);
+		  
+		  function getDate() {
+		  
+		  var date=[]
+		  date.push(start_date)
+		  date.push(end_date)
+			return date;
+		  }
+		  function setDate(start_date,end_date) {
+			
+			   var date=[]
+		 
+
+			date.push(start_date)
+			date.push(end_date)
+			$rootScope.$broadcast('date:updated',date);
+			 
+			start_date=start_date
+			 end_date=end_date
+			
+		  }
+		  return {
+			getDate: getDate,
+			setDate: setDate,
+		  }
+				
+
+}
+
 exports.data_table_reload = function() {	
 
 

@@ -22,8 +22,10 @@ exports.kpihomeDashboard = function() {
 exports.dateSelect = function() {
 
   return {
-	  
-  // controller: 'giftaid_performance_form',
+	   
+        
+    
+   controller: 'date_select_controller',
          templateUrl: './shared/templates/date_select.html'
   }
   }
@@ -255,10 +257,11 @@ exports.rawVenuehire = function() {
 	
 exports.monthlyVisits = function() {
   return {
-	 restrict: "E",
-     scope: {
-		
+	  restrict: "E",
+	   scope: {
+           
         },
+       
    controller: 'monthly_visitor_numbers_controller',
    templateUrl: './shared/templates/data_table.html'
   }

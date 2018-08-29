@@ -1,4 +1,4 @@
-exports.monthly_donations_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_donations,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,data_table_reload,table_security,dynamicTableCellFilter_donations
+exports.monthly_donations_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_donations,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,data_table_reload,table_security,dynamicTableCellFilter_donations
     ) {
 		
 		
@@ -20,8 +20,9 @@ exports.monthly_donations_controller = function($route,$scope, $http, $q, $route
 			{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations}
 					
 			)
-		$scope.start_date=new Date("04/01/2018")
-			$scope.end_date= moment($scope.start_date).add('years', 1).format("DD/MM/YYYY")
+			dates=getDateService.getDate()
+		$scope.start_date=dates[0]
+		$scope.end_date=dates[1]
 			columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))
 			console.log('columnDefs',columnDefs)		
 				$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
@@ -66,6 +67,16 @@ exports.monthly_donations_controller = function($route,$scope, $http, $q, $route
 					$scope.pie_date=item			
 					make_a_pie.build($scope,item,"museum")
 			}
+				
+					
+			  $scope.$on('date:updated', function(event,data) {
+					console.log(data)
+					$scope.start_date=data[0]
+					$scope.end_date=	data[1]	
+			
+				});
+			
+				
 				$scope.$watchGroup(['end_date','start_date'], function(newValue, oldValue) {
   
 					columnDefs=[]

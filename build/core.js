@@ -10235,7 +10235,7 @@ $scope.dashboard = true
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/dashboard-controllers.js","/../components/performance")
 },{"b55mWE":4,"buffer":3}],24:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-exports.monthly_donations_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_donations,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,data_table_reload,table_security,dynamicTableCellFilter_donations
+exports.monthly_donations_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_donations,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,data_table_reload,table_security,dynamicTableCellFilter_donations
     ) {
 		
 		
@@ -10257,8 +10257,9 @@ exports.monthly_donations_controller = function($route,$scope, $http, $q, $route
 			{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations}
 					
 			)
-		$scope.start_date=new Date("04/01/2018")
-			$scope.end_date= moment($scope.start_date).add('years', 1).format("DD/MM/YYYY")
+			dates=getDateService.getDate()
+		$scope.start_date=dates[0]
+		$scope.end_date=dates[1]
 			columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))
 			console.log('columnDefs',columnDefs)		
 				$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
@@ -10303,6 +10304,16 @@ exports.monthly_donations_controller = function($route,$scope, $http, $q, $route
 					$scope.pie_date=item			
 					make_a_pie.build($scope,item,"museum")
 			}
+				
+					
+			  $scope.$on('date:updated', function(event,data) {
+					console.log(data)
+					$scope.start_date=data[0]
+					$scope.end_date=	data[1]	
+			
+				});
+			
+				
 				$scope.$watchGroup(['end_date','start_date'], function(newValue, oldValue) {
   
 					columnDefs=[]
@@ -10570,7 +10581,7 @@ exports.yearly_donations_controller = function($route,$scope, $http, $q, $routeP
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations/yearly-donations-controller.js","/../components/performance/donations")
 },{"b55mWE":4,"buffer":3}],28:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-exports.monthly_events_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter_retail
+exports.monthly_events_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter_retail
     ) {
 		
 		
@@ -10594,10 +10605,9 @@ exports.monthly_events_controller = function($route,$scope, $http, $q, $routePar
 					{ field: 'stat',cellFilter:'valueFilter',name: "Statistic",width:300, pinnedLeft:true, enableColumnMoving:false  ,cellClass:dynamicTableCellFilter_retail}		
 			
 			columnDefs.push(columns	)
-			
-			$scope.start_date=new Date("04/01/2018")
-			$scope.end_date= moment($scope.start_date).add('years', 1).format("DD/MM/YYYY")
-			
+				dates=getDateService.getDate()
+		$scope.start_date=dates[0]
+		$scope.end_date=dates[1]
 			
 			columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
 			console.log('columnDefs',columnDefs)		
@@ -10657,7 +10667,12 @@ exports.monthly_events_controller = function($route,$scope, $http, $q, $routePar
 		}
 		
 			get_data(event_type)
-
+ $scope.$on('date:updated', function(event,data) {
+					console.log(data)
+					$scope.start_date=data[0]
+					$scope.end_date=	data[1]	
+			
+				});
 			
 			$scope.changedValue = function(item){ 
 					console.log('filter')		
@@ -12472,7 +12487,7 @@ $.getJSON('https://sheets.googleapis.com/v4/spreadsheets/1dZ1UMfIbNpbUEgGLy7nLeE
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/home/master-kpi-home-controller.js","/../components/performance/home")
 },{"b55mWE":4,"buffer":3}],48:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-exports.monthly_kpi_events_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope,Monthly_kpi_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security
+exports.monthly_kpi_events_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope,Monthly_kpi_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security
     ) {
 		
 		
@@ -12499,8 +12514,9 @@ exports.monthly_kpi_events_controller = function($route,$scope, $http, $q, $rout
 					
 			)
 			
-			$scope.start_date=new Date("01/04/2018")
-			$scope.end_date=new Date("01/04/2019")
+		dates=getDateService.getDate()
+		$scope.start_date=dates[0]
+		$scope.end_date=dates[1]
 			
 			
 			
@@ -12616,7 +12632,12 @@ function isNumeric(n) {
 		}
 		
 		
+			 $scope.$on('date:updated', function(event,data) {
+					console.log(data)
+					$scope.start_date=data[0]
+					$scope.end_date=	data[1]	
 			
+				});
 			$scope.$watch('changed', function (newValue) {
 					if(newValue>0){
 						$scope.get_data()
@@ -13273,7 +13294,7 @@ $scope.chart_title="Age groups"
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/learning/age-learning-controller.js","/../components/performance/learning")
 },{"b55mWE":4,"buffer":3}],53:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-exports.monthly_learning_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_learning,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter_retail
+exports.monthly_learning_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_learning,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter_retail
     ) {
 		
 		
@@ -13297,10 +13318,9 @@ exports.monthly_learning_controller = function($route,$scope, $http, $q, $routeP
 					{ field: 'stat',cellFilter:'valueFilter',name: "Statistic",width:300, pinnedLeft:true, enableColumnMoving:false  ,cellClass:dynamicTableCellFilter_retail}		
 			
 			columnDefs.push(columns	)
-			
-			$scope.start_date=new Date("04/01/2018")
-			$scope.end_date= moment($scope.start_date).add('years', 1).format("DD/MM/YYYY")
-			
+		dates=getDateService.getDate()
+		$scope.start_date=dates[0]
+		$scope.end_date=dates[1]
 			
 			columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
 			console.log('columnDefs',columnDefs)		
@@ -13353,7 +13373,13 @@ exports.monthly_learning_controller = function($route,$scope, $http, $q, $routeP
 			
 			
 			});
-	
+			
+			  $scope.$on('date:updated', function(event,data) {
+					console.log(data)
+					$scope.start_date=data[0]
+					$scope.end_date=	data[1]	
+			
+				});
 			
 		})	
 		
@@ -14584,8 +14610,10 @@ exports.kpihomeDashboard = function() {
 exports.dateSelect = function() {
 
   return {
-	  
-  // controller: 'giftaid_performance_form',
+	   
+        
+    
+   controller: 'date_select_controller',
          templateUrl: './shared/templates/date_select.html'
   }
   }
@@ -14817,10 +14845,11 @@ exports.rawVenuehire = function() {
 	
 exports.monthlyVisits = function() {
   return {
-	 restrict: "E",
-     scope: {
-		
+	  restrict: "E",
+	   scope: {
+           
         },
+       
    controller: 'monthly_visitor_numbers_controller',
    templateUrl: './shared/templates/data_table.html'
   }
@@ -15442,18 +15471,28 @@ exports.giftaidDashboard = function() {
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/performance-directive.js","/../components/performance")
 },{"b55mWE":4,"buffer":3}],67:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-exports.monthly_retail_sales_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_retail_sales,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,table_security,dynamicTableCellFilter_retail
+exports.monthly_retail_sales_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_retail_sales,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,table_security,dynamicTableCellFilter_retail
     ) {
 		
 		
+		dates=getDateService.getDate()
+		$scope.start_date=dates[0]
+		$scope.end_date=dates[1]
 		
+			  $scope.$on('date:updated', function(event,data) {
+					console.log(data)
+					$scope.start_date=data[0]
+					$scope.end_date=	data[1]	
+			
+				});
 		
 			$scope.chart_class = "col-md-8 col-lg-8 col-sm-5 pull-right"
 			$scope.table_class = "col-md-12 col-lg-12 col-sm-5"
 	
 	 $scope.background_colour="retail"
-			$scope.start_date=new Date("04/01/2018")
-			$scope.end_date= moment($scope.start_date).add('years', 1).format("DD/MM/YYYY")
+			dates=getDateService.getDate()
+		$scope.start_date=dates[0]
+		$scope.end_date=dates[1]
 		$scope.table_heading = "Monthly retail sales"
 		$scope.chart_heading = "Data  by month"
 		$scope.pie_date = "Apr 2017"
@@ -15516,6 +15555,17 @@ exports.monthly_retail_sales_controller = function($route,$scope, $http, $q, $ro
 			
 			
 			});
+			
+				
+			  $scope.$on('date:updated', function(event,data) {
+					console.log(data)
+					$scope.start_date=data[0]
+					$scope.end_date=	data[1]	
+			
+				});
+			
+			
+			
 			$scope.changedValue = function(item){ 
 					$scope.pie_date=item			
 					make_a_pie.build($scope,item,"museum")
@@ -15761,7 +15811,7 @@ exports.yearly_retail_sales_controller = function($route,$scope, $http, $q, $rou
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/retail/yearly-retail-sales-controller.js","/../components/performance/retail")
 },{"b55mWE":4,"buffer":3}],71:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-exports.team_monthly_kpi_events_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope,Monthly_standard_kpi_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter_retail
+exports.team_monthly_kpi_events_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope,Monthly_standard_kpi_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter_retail
     ) {
 		
 		
@@ -15786,9 +15836,9 @@ $scope.team=team
 			
 			columnDefs.push(columns	)
 			
-			$scope.start_date=new Date("04/01/2018")
-			$scope.end_date= moment($scope.start_date).add('years', 1).format("DD/MM/YYYY")
-			
+				dates=getDateService.getDate()
+		$scope.start_date=dates[0]
+		$scope.end_date=dates[1]
 			
 			columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
 			console.log('columnDefs',columnDefs)		
@@ -15849,7 +15899,12 @@ $scope.team=team
 		
 			get_data()
 
+				 $scope.$on('date:updated', function(event,data) {
+					console.log(data)
+					$scope.start_date=data[0]
+					$scope.end_date=	data[1]	
 			
+				});
 			$scope.changedValue = function(item){ 
 					console.log('filter')		
 					$scope.get_data(item)
@@ -15965,7 +16020,7 @@ exports.raw_turnstiles_controller = function($route,$scope, $http, $q, $routePar
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/turnstiles/raw-turnstiles-controller.js","/../components/performance/turnstiles")
 },{"b55mWE":4,"buffer":3}],74:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-exports.monthly_venue_hire_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_venue_hire,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter
+exports.monthly_venue_hire_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_venue_hire,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter
     ) {
 		
 		
@@ -15985,7 +16040,10 @@ exports.monthly_venue_hire_controller = function($route,$scope, $http, $q, $rout
 			$scope.selected_museums  =[]
 			$scope.selected_chart_stats=["Visits"]
 				
-
+		
+		dates=getDateService.getDate()
+		$scope.start_date=dates[0]
+		$scope.end_date=dates[1]
 
 				
 			var columnDefs= []
@@ -16058,7 +16116,16 @@ exports.monthly_venue_hire_controller = function($route,$scope, $http, $q, $rout
 			
 			
 			});
-	
+			
+			
+	 $scope.$on('date:updated', function(event,data) {
+					console.log(data)
+					$scope.start_date=data[0]
+					$scope.end_date=	data[1]	
+			
+				});
+				
+				
 			$scope.changedValue = function(item){ 
 					$scope.pie_date=item			
 					make_a_pie.build($scope,item,"museum")
@@ -16316,11 +16383,13 @@ exports.yearly_venue_hire_controller = function($route,$scope, $http, $q, $route
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/venue-hire/yearly-visits-controller.js","/../components/performance/venue-hire")
 },{"b55mWE":4,"buffer":3}],78:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-exports.monthly_visitor_numbers_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_visits,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter
+exports.monthly_visitor_numbers_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_visits,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter
     ) {
 		
 		
-		
+		dates=getDateService.getDate()
+		$scope.start_date=dates[0]
+		$scope.end_date=dates[1]
 		
 			$scope.chart_class = "col-md-8 col-lg-8 col-sm-5 pull-right"
 			$scope.table_class = "col-md-12 col-lg-12 col-sm-5"
@@ -16348,8 +16417,7 @@ exports.monthly_visitor_numbers_controller = function($route,$scope, $http, $q, 
 					
 			)
 			
-			$scope.start_date=new Date("04/01/2018")
-			$scope.end_date= moment($scope.start_date).add('years', 1).format("DD/MM/YYYY")
+		
 
 			
 			columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
@@ -16393,11 +16461,19 @@ exports.monthly_visitor_numbers_controller = function($route,$scope, $http, $q, 
 			make_a_pie.build($scope,"Apr 2017","museum")
 			make_a_line_chart.build($scope,columnDefs,"museum")
 	
+			
+			  $scope.$on('date:updated', function(event,data) {
+					console.log(data)
+					$scope.start_date=data[0]
+					$scope.end_date=	data[1]	
+			
+				});
+			
 			$scope.$watchGroup(['end_date','start_date'], function(newValue, oldValue) {
-  
+ 
 					columnDefs=[]
 					columnDefs.push(
-			{ field: 'museum',	cellFilter:'valueFilter',		name: "Museum",width:200, pinnedLeft:true, enableColumnMoving:false  ,   cellClass:dynamicTableCellFilter}
+					{ field: 'museum',	cellFilter:'valueFilter',		name: "Museum",width:200, pinnedLeft:true, enableColumnMoving:false  ,   cellClass:dynamicTableCellFilter}
 					
 			)
 					columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
@@ -26336,6 +26412,17 @@ exports.RadioController = function($location, $scope, $routeParams, $http) {
 };
 
 
+exports.date_select_controller = function($location, $scope, $routeParams, $http) {
+
+	
+			$scope.start_date=new Date("04/01/2018")
+			$scope.end_date= moment($scope.start_date).add('years', 1).format("DD/MM/YYYY")
+
+			
+};
+
+
+
 
 
 exports.refreshButtonKeycontroller = function($location, $scope, $routeParams, $http) {
@@ -27089,14 +27176,23 @@ $scope.user_groups['RETAIL'].performance=performance_data
 },{"b55mWE":4,"buffer":3}],134:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	
-exports.TableFilterController = function($location,AuthService,tableFilterService, $scope,$http) {
+exports.TableFilterController = function(getDateService,$location,AuthService,tableFilterService, $scope,$http,get_table_data) {
 
-  	$scope.start_date=new Date("04/01/2018")
-	$scope.end_date= moment($scope.start_date).add('years', 1).format("DD/MM/YYYY")
+  	$scope.start_date=new Date("2018/04/01")
+	$scope.end_date= new Date(moment($scope.start_date).add('years', 1).format("YYYY/MM/DD"))
+	 $scope.end_date.setDate($scope.end_date.getDate()-1);
+  	$scope.start=	$scope.start_date
+	$scope.end=$scope.end_date
   
- $scope.end=new Date()
-       console.log(' $scope.end', $scope.end)
-    
+
+	$scope.$watchGroup(['end','start'], function(newValue, oldValue) {
+			
+		getDateService.setDate($scope.start,$scope.end)	
+		
+		
+			});
+
+	
 };
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/controllers/tablefilter-controller.js","/controllers")
@@ -28586,7 +28682,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
           
         }])
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_177ccec4.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_2e7ea398.js","/")
 },{"../components/exhibitions/directive":8,"../components/exhibitions/music/monthly-votes-controller":9,"../components/exhibitions/music/raw-votes-controller":10,"../components/exhibitions/music/votes-form-controller":11,"../components/iframe/iframe-controller":12,"../components/iframe/iframe-directive":13,"../components/machine-monitor/dashboard-controller":14,"../components/machine-monitor/dead-controller":15,"../components/machine-monitor/downtime-controller":16,"../components/machine-monitor/downtime-services":17,"../components/machine-monitor/feedback-controller":18,"../components/machine-monitor/feedback-services":19,"../components/machine-monitor/satisfaction-controller":20,"../components/member/member-controller":21,"../components/performance/analyser/analyser-controller":22,"../components/performance/dashboard-controllers":23,"../components/performance/donations/monthly-donations-controller":24,"../components/performance/donations/performance-form-controller":25,"../components/performance/donations/raw-donations-controller":26,"../components/performance/donations/yearly-donations-controller":27,"../components/performance/events/monthly-events-controller":28,"../components/performance/events/performance-form-controller":29,"../components/performance/events/raw-events-controller":30,"../components/performance/events/yearly-events-controller":31,"../components/performance/exhibitions-pwyt/monthly-donations-controller":32,"../components/performance/exhibitions-pwyt/performance-form-controller":33,"../components/performance/exhibitions-pwyt/raw-donations-controller":34,"../components/performance/exhibitions/exhibitions-summary-controller":35,"../components/performance/gallery-visits/exhibitions-teg-controller":36,"../components/performance/gallery-visits/monthly-teg-controller":37,"../components/performance/gallery-visits/performance-form-controller":38,"../components/performance/gallery-visits/raw-teg-controller":39,"../components/performance/gallery-visits/weekly-teg-controller":40,"../components/performance/gallery-visits/yearly-teg-controller":41,"../components/performance/gift-aid/monthly-allgiftaid-controller":42,"../components/performance/gift-aid/monthly-giftaid-controller":43,"../components/performance/gift-aid/performance-form-controller":44,"../components/performance/gift-aid/raw-giftaid-controller":45,"../components/performance/home/kpi-home-controller":46,"../components/performance/home/master-kpi-home-controller":47,"../components/performance/kpi-events/monthly-events-controller":48,"../components/performance/kpi-events/performance-form-controller":49,"../components/performance/kpi-events/raw-events-controller":50,"../components/performance/kpi-events/standard-monthly-events-controller":51,"../components/performance/learning/age-learning-controller":52,"../components/performance/learning/monthly-learning-controller":53,"../components/performance/learning/performance-form-controller":54,"../components/performance/learning/raw-learning-controller":55,"../components/performance/learning/yearly-learning-controller":56,"../components/performance/operations/monthly-operations-controller":57,"../components/performance/operations/performance-form-controller":58,"../components/performance/operations/raw-operations-controller":59,"../components/performance/operations/yearly-operations-controller":60,"../components/performance/participation/monthly-participation-controller":61,"../components/performance/participation/performance-form-controller":62,"../components/performance/participation/raw-participation-controller":63,"../components/performance/participation/target-audience-controller":64,"../components/performance/participation/yearly-participation-controller":65,"../components/performance/performance-directive":66,"../components/performance/retail/monthly-retail-sales-controller":67,"../components/performance/retail/performance-form-controller":68,"../components/performance/retail/raw-retail-sales-controller":69,"../components/performance/retail/yearly-retail-sales-controller":70,"../components/performance/team-kpis/standard-monthly-events-controller":71,"../components/performance/turnstiles/monthly-turnstiles-controller":72,"../components/performance/turnstiles/raw-turnstiles-controller":73,"../components/performance/venue-hire/monthly-visits-controller":74,"../components/performance/venue-hire/raw-visits-controller":75,"../components/performance/venue-hire/visits-form-controller":76,"../components/performance/venue-hire/yearly-visits-controller":77,"../components/performance/visits/monthly-visits-controller":78,"../components/performance/visits/raw-visits-controller":79,"../components/performance/visits/visits-form-controller":80,"../components/performance/visits/yearly-visits-controller":81,"../components/performance/welcome-desk/monthly-welcomedesk-controller":82,"../components/performance/welcome-desk/performance-form-controller":83,"../components/performance/welcome-desk/raw-welcomedesk-controller":84,"../components/performance/welcome-desk/yearly-welcomedesk-controller":85,"../components/resource-bookings/bookings/edit-form-controller":86,"../components/resource-bookings/bookings/form-controller":87,"../components/resource-bookings/bookings/monthly-bookings-controller":88,"../components/resource-bookings/bookings/raw-bookings-controller":89,"../components/resource-bookings/bookings/recurring-events-controller":90,"../components/resource-bookings/bookings/yearly-bookings-controller":91,"../components/resource-bookings/directive":92,"../components/resource-bookings/equipment/form-controller":93,"../components/resource-bookings/equipment/raw-equipment-controller":94,"../components/resource-bookings/rooms/form-controller":95,"../components/resource-bookings/rooms/raw-rooms-controller":96,"../components/resource-bookings/timeline-resources-controller":97,"../components/resource-bookings/timeline-resources-services":98,"../components/shopify/shopify-controller":99,"../components/shopify/shopify-directive":100,"../components/shopify/shopify-monthly-controller":101,"../components/signage/directive":102,"../components/signage/posters/form-controller":103,"../components/signage/posters/raw-poster-controller":104,"../components/team/app-controllers":105,"../components/team/form-controller":106,"../components/team/leave-controller":107,"../components/team/team-controller":108,"../components/tech-support/tech-support-controller":109,"../components/tech-support/tech-support-directive":110,"../components/tech-support/trello-services":111,"../components/timeline-settings/raw-timeline-settings-controller":112,"../components/timeline-settings/settings-form-controller":113,"../components/timeline-settings/timeline-settings-directive":114,"../components/timeline/timeline-bookings-services":115,"../components/timeline/timeline-controller":116,"../components/timeline/timeline-directive":117,"../components/timeline/timeline-exhibitions-services":118,"../components/timeline/timeline-googlesheets-services":119,"../components/timeline/timeline-installs-services":120,"../components/timeline/timeline-learning-bookings-services":121,"../components/timeline/timeline-leave-services":122,"../components/timeline/timeline-loans-services":123,"../components/timeline/timeline-services":124,"../components/timeline/timeline-shopify-services":125,"../components/timeline/timeline-visitor-figures-services":126,"../components/turnstiles/turnstiles-controller":127,"../components/turnstiles/turnstiles-directive":128,"../components/user-admin/users-controller":129,"../components/user-admin/users-directive":130,"../shared/controllers/colourkey-controller":131,"../shared/controllers/controllers":132,"../shared/controllers/navbar-controller":133,"../shared/controllers/tablefilter-controller":134,"../shared/directives/directives":135,"../shared/services/app-services":137,"../shared/services/data-services":138,"async":1,"b55mWE":4,"buffer":3,"underscore":7}],137:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
@@ -28658,6 +28754,41 @@ exports.dynamicTableCellFilter = function() {
 										
 																																
 }
+
+}
+
+exports.getDateService = function($rootScope) {	
+
+
+		 start_date=new Date("2018/04/01")
+		end_date= new Date(moment(start_date).add('years', 1).format("YYYY/MM/DD"))
+		 end_date.setDate(end_date.getDate()-1);
+		  
+		  function getDate() {
+		  
+		  var date=[]
+		  date.push(start_date)
+		  date.push(end_date)
+			return date;
+		  }
+		  function setDate(start_date,end_date) {
+			
+			   var date=[]
+		 
+
+			date.push(start_date)
+			date.push(end_date)
+			$rootScope.$broadcast('date:updated',date);
+			 
+			start_date=start_date
+			 end_date=end_date
+			
+		  }
+		  return {
+			getDate: getDate,
+			setDate: setDate,
+		  }
+				
 
 }
 

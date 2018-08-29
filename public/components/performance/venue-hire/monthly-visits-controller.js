@@ -1,4 +1,4 @@
-exports.monthly_venue_hire_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_venue_hire,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter
+exports.monthly_venue_hire_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_venue_hire,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter
     ) {
 		
 		
@@ -18,7 +18,10 @@ exports.monthly_venue_hire_controller = function($route,$scope, $http, $q, $rout
 			$scope.selected_museums  =[]
 			$scope.selected_chart_stats=["Visits"]
 				
-
+		
+		dates=getDateService.getDate()
+		$scope.start_date=dates[0]
+		$scope.end_date=dates[1]
 
 				
 			var columnDefs= []
@@ -91,7 +94,16 @@ exports.monthly_venue_hire_controller = function($route,$scope, $http, $q, $rout
 			
 			
 			});
-	
+			
+			
+	 $scope.$on('date:updated', function(event,data) {
+					console.log(data)
+					$scope.start_date=data[0]
+					$scope.end_date=	data[1]	
+			
+				});
+				
+				
 			$scope.changedValue = function(item){ 
 					$scope.pie_date=item			
 					make_a_pie.build($scope,item,"museum")

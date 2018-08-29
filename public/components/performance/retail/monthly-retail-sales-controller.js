@@ -1,15 +1,25 @@
-exports.monthly_retail_sales_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_retail_sales,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,table_security,dynamicTableCellFilter_retail
+exports.monthly_retail_sales_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_retail_sales,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,table_security,dynamicTableCellFilter_retail
     ) {
 		
 		
+		dates=getDateService.getDate()
+		$scope.start_date=dates[0]
+		$scope.end_date=dates[1]
 		
+			  $scope.$on('date:updated', function(event,data) {
+					console.log(data)
+					$scope.start_date=data[0]
+					$scope.end_date=	data[1]	
+			
+				});
 		
 			$scope.chart_class = "col-md-8 col-lg-8 col-sm-5 pull-right"
 			$scope.table_class = "col-md-12 col-lg-12 col-sm-5"
 	
 	 $scope.background_colour="retail"
-			$scope.start_date=new Date("04/01/2018")
-			$scope.end_date= moment($scope.start_date).add('years', 1).format("DD/MM/YYYY")
+			dates=getDateService.getDate()
+		$scope.start_date=dates[0]
+		$scope.end_date=dates[1]
 		$scope.table_heading = "Monthly retail sales"
 		$scope.chart_heading = "Data  by month"
 		$scope.pie_date = "Apr 2017"
@@ -72,6 +82,17 @@ exports.monthly_retail_sales_controller = function($route,$scope, $http, $q, $ro
 			
 			
 			});
+			
+				
+			  $scope.$on('date:updated', function(event,data) {
+					console.log(data)
+					$scope.start_date=data[0]
+					$scope.end_date=	data[1]	
+			
+				});
+			
+			
+			
 			$scope.changedValue = function(item){ 
 					$scope.pie_date=item			
 					make_a_pie.build($scope,item,"museum")

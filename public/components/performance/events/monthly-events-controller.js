@@ -1,4 +1,4 @@
-exports.monthly_events_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter_retail
+exports.monthly_events_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter_retail
     ) {
 		
 		
@@ -22,10 +22,9 @@ exports.monthly_events_controller = function($route,$scope, $http, $q, $routePar
 					{ field: 'stat',cellFilter:'valueFilter',name: "Statistic",width:300, pinnedLeft:true, enableColumnMoving:false  ,cellClass:dynamicTableCellFilter_retail}		
 			
 			columnDefs.push(columns	)
-			
-			$scope.start_date=new Date("04/01/2018")
-			$scope.end_date= moment($scope.start_date).add('years', 1).format("DD/MM/YYYY")
-			
+				dates=getDateService.getDate()
+		$scope.start_date=dates[0]
+		$scope.end_date=dates[1]
 			
 			columnDefs=columnDefs.concat(monthly_data_table_columns.build($scope,$scope.start_date,$scope.end_date))
 			console.log('columnDefs',columnDefs)		
@@ -85,7 +84,12 @@ exports.monthly_events_controller = function($route,$scope, $http, $q, $routePar
 		}
 		
 			get_data(event_type)
-
+ $scope.$on('date:updated', function(event,data) {
+					console.log(data)
+					$scope.start_date=data[0]
+					$scope.end_date=	data[1]	
+			
+				});
 			
 			$scope.changedValue = function(item){ 
 					console.log('filter')		
