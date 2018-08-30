@@ -186,6 +186,7 @@ function get_kpis(cb){
 Kpi_aggregate.aggregate([
  //HOLY CRAP ITS NOT FUN WHEN YOUR AGGREGATION PIPELINE GETS THE MONTH WRONG
  //NB the app injesting this needs logic based round the position in the financial year
+	 { $match : {museum_id: { $ne: null }} },
 	{$project:{"date":1,
 					"value":1,
 					"museum_id":1,
@@ -296,53 +297,56 @@ res.json(result)
 /* GET /todos listing. */
 router.get('/all', function(req, res, next) {
 
-function get_kpis(cb){
+	function get_kpis(cb){
 
-Kpi_aggregate.aggregate([
- //HOLY CRAP ITS NOT FUN WHEN YOUR AGGREGATION PIPELINE GETS THE MONTH WRONG
- { $match : {museum_id: { $ne: null }} },
- { $group: {
-			_id :{ 
-			// "year":{$year: "$date_value"}, //CAUSED A PROBLEM 07/07/2017
-			// "month":{$month:  "$date_value"}, //CAUSED A PROBLEM 07/07/2017
-					  "year":{$year:route_functions.mongo_aggregator},  //FIXED AN ISSUE 07/07/2017
-					  "month":{$month:route_functions.mongo_aggregator}, //FIXED AN ISSUE 07/07/2017
-				//	day: { $dayOfMonth : [{ $subtract: [ "$timestamp", 25200000 ]}] },
-				 venue:'$museum_id'
-				},               
-			
-               visits: {$sum: '$value' }
-            }
-		 }	,
-	{ $sort : { "visits" : -1} }
-    ], function (err, result) {
-        if (err) {
-            console.log(err);
-        } else {
+			Kpi_aggregate.aggregate([
+			 //HOLY CRAP ITS NOT FUN WHEN YOUR AGGREGATION PIPELINE GETS THE MONTH WRONG
+			 { $match : {museum_id: { $ne: null }} },
+			 { $group: {
+						_id :{ 
+						// "year":{$year: "$date_value"}, //CAUSED A PROBLEM 07/07/2017
+						// "month":{$month:  "$date_value"}, //CAUSED A PROBLEM 07/07/2017
+								  "year":{$year:route_functions.mongo_aggregator},  //FIXED AN ISSUE 07/07/2017
+								  "month":{$month:route_functions.mongo_aggregator}, //FIXED AN ISSUE 07/07/2017
+							//	day: { $dayOfMonth : [{ $subtract: [ "$timestamp", 25200000 ]}] },
+							 venue:'$museum_id'
+							},               
+						
+						   visits: {$sum: '$value' }
+						}
+					 }	,
+				{ $sort : { "visits" : -1} }
+				], function (err, result) {
+					if (err) {
+						console.log(err);
+					} else {
 
-		cb(result)
-		   	//mongoose.connection.close()	
-        }
+					cb(result)
+						//mongoose.connection.close()	
+					}
+					
+				});
+	}
+
+	get_kpis( function ( result) {
 		
-    });
-}
-
-get_kpis( function ( result) {
-	
-	//load venues
-	var venues=[]
-	_.each(result,function(row){
-		if(venues.indexOf(row._id.venue)==-1){
-			console.log('adding venue ',row._id.venue)
-			venues.push(row._id.venue)
-		}
+				//load venues
+				var venues=[]
+				_.each(result,function(row){
+					if(venues.indexOf(row._id.venue)==-1){
+						
+						if(row._id.venue!=""){
+						venues.push(row._id.venue)
+						console.log('adding venue ',row._id.venue)
+						}
+					}
+				})
+				
+				
+			returned_data=route_functions.wind_up_Stats_monthly(result,venues)
+			res.json(returned_data)
+		
 	})
-	
-	
-returned_data=route_functions.wind_up_Stats_monthly(result,venues)
-res.json(returned_data)
-	
-})
 
 
 

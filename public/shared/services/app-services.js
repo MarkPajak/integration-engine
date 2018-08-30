@@ -56,7 +56,19 @@ exports.dynamicTableCellFilter = function() {
 	
 					 return function(grid, row, col, rowRenderIndex, colRenderIndex	){		
 								if(row.entity){
+								
+							
+										if(row.entity.csstype){
+										
+												return (row.entity.csstype)
+										}
+										
 										if(row.entity.stat){
+										
+										if(row.entity.stat=="Summary" ){
+												return ("summary_row")
+										}
+										
 											if(row.entity.stat=="Visits" ){
 												return ("bold")
 										}
@@ -801,11 +813,7 @@ month_num=0
 																																		return ("bold")
 																																}
 																																}
-																																	if(row.entity.csstype){
-																																	if(row.entity.csstype=="bold" ){
-																																		return ("bold")
-																																}
-																																}
+																																
 																															}
 																															
 																															
@@ -871,18 +879,14 @@ month_num=0
 																																	return ("red")
 																																}
 																															}
-																																if(row.entity.stat){
-																																	if(row.entity.stat=="Visits"){
-																																	console.log("bold")
-																																	return ("bold")
-																																}
+																															
+																																if(row.entity.csstype){
+																																
+																																	return (row.entity.csstype)
 																																}
 																																
-																																	if(row.entity.csstype){
-																																	if(row.entity.csstype=="bold" ){
-																																		return ("bold")
-																																}
-																																}
+																																
+																																
 																															}
 																															
 																															

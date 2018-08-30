@@ -475,6 +475,7 @@ get_kpis( function ( result) {
 	})
 
 
+
 res.json(returned_data)
 	
 })

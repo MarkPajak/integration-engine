@@ -443,30 +443,27 @@ Team.aggregate([
 		
 		
 		_.each(result,function(kpi,i){
-			_.each(result2,function(visits,ii){
-				_.each(welsomedesk,function(welcome,iii){		
-					if(kpi.kpi_venue==welcome.venue &&  kpi.kpi_month==welcome.month && kpi.kpi_year==welcome.year){
-						if(kpi.kpi_venue==visits.venue &&  kpi.kpi_month==visits.month && kpi.kpi_year==visits.year){
-						if(visits.kpi_venue==kpi.venue &&  visits.kpi_month==kpi.month && visits.kpi_year==kpi.year){
-						result[i].donations=kpi.donations
-						
-						//result[i].gift_aid_amountx=0
-						if(visits.gift_aid_amount){
-							result[i].gift_aid_amountx=visits.gift_aid_amount
-							
-						}
-							
-							
-						
-						}						
-							
-				
-							result[i].welcome=welcome.cash+welcome.card
-							result[i].combined=result[i].welcome+result[i].gift_aid_amountx+result[i].donations
-						
-						}
-					}
+		
+			result[i].combined=result[i].donations
+			result[i].donations=kpi.donations
 			
+			_.each(welsomedesk,function(welcome,iii){ //n.b. wont get through if none
+			if(kpi.kpi_venue==welcome.venue &&  kpi.kpi_month==welcome.month && kpi.kpi_year==welcome.year){
+				
+				result[i].welcome=welcome.cash+welcome.card
+				result[i].combined=result[i].welcome+result[i].donations
+			}
+			_.each(result2,function(visits,ii){			
+						if(kpi.kpi_venue==visits.venue &&  kpi.kpi_month==visits.month && kpi.kpi_year==visits.year){
+							if(visits.kpi_venue==kpi.venue &&  visits.kpi_month==kpi.month && visits.kpi_year==kpi.year){	
+							//result[i].gift_aid_amountx=0
+							if(visits.gift_aid_amount){
+								result[i].gift_aid_amountx=visits.gift_aid_amount
+								
+							}
+								//result[i].combined=result[i].welcome+result[i].gift_aid_amountx+result[i].donations	
+							}
+						}
 				})
 			})
 		})
