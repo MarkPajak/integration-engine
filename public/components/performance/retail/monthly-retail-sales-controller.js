@@ -31,11 +31,11 @@ exports.monthly_retail_sales_controller = function(getDateService,$route,$scope,
 		
 		 columnDefs.push(
 		 
-			//{ field: 'museum' ,cellFilter:'valueFilter',name: "Museum",width: "40", pinnedLeft:true,cellClass:dynamicTableCellFilter_retail},
 			{ field: 'stat' ,cellFilter:'valueFilter',name: "Statistic",width: "60", pinnedLeft:true,cellClass:dynamicTableCellFilter_retail},
 			{ field: 'comments' ,name: "comments",resizable: true,visible:false},
 			{ field: 'logger_user_name' ,name: "Logged by",resizable: true,visible:false},
 			{ field: 'date_logged', name: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',visible:false}
+			
 			)
 	
 			columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))
@@ -72,7 +72,7 @@ exports.monthly_retail_sales_controller = function(getDateService,$route,$scope,
   
 					columnDefs=[]
 					columnDefs.push(
-						//{ field: 'museum',cellFilter:'valueFilter' ,name: "Museum",width: "150", pinnedLeft:true,cellClass:dynamicTableCellFilter_retail},
+					
 						{ field: 'stat' ,cellFilter:'valueFilter',name: "Statistic",width: "180", pinnedLeft:true,cellClass:dynamicTableCellFilter_retail}		
 						)
 					columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))

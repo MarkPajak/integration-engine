@@ -28,7 +28,7 @@ router.get('/total', function(req, res, next) {
 		 
 					Kpi_aggregate.aggregate([
 					
-					{ $match : {museum_id: { $ne: null }} },
+					{ $match : {museum_id: { $ne: "" }} },
 					{$project:{"date":1,
 							   "value":1,
 							   "museum_id": 1,							  
@@ -80,13 +80,13 @@ router.get('/total', function(req, res, next) {
 												var financial_year_display=""
 												if(financial_yer_text=="this"){
 													financial_year_display=	year+"-"+((year+1).toString().substring(2))
-													//console.log('financial_year_display this',financial_year_display)
+													
 													returned_row[financial_year_display]=row[analysis_field]
 													}
 													else
 													{
 													financial_year_display=	(year-1)+"-"+(year.toString().substring(2))	
-													//console.log('financial_year_display',financial_year_display)
+													
 													returned_row[financial_year_display]+=row[analysis_field]
 												}
 

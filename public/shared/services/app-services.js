@@ -33,24 +33,25 @@ exports.dynamicTableCellFilter_retail= function() {
 	
 					 return function(grid, row, col, rowRenderIndex, colRenderIndex	){		
 								if(row.entity){
-											if(row.entity.csstype){
-											if(row.entity.csstype=="bold" ){
-												return ("bold")
+										if(row.entity.csstype){
+											
+												return (row.entity.csstype)
 										}
-											}
-										if(row.entity.stat){
+											
+										else if(row.entity.stat){
 											if(row.entity.typex=="retail" ){
 												return ("bold")
 										}
 										else
 											return ""
 										}
+										}
 								}
 										
 																																
 }
 
-}
+
 
 exports.dynamicTableCellFilter = function() {
 	
@@ -802,19 +803,28 @@ month_num=0
 																																	return ("red")
 																																}
 																															}
-																																if(row.entity.stat){
-																																	if(row.entity.typex=="retail"){
-																																	console.log("bold")
+																															}
+																																
+																															if(row.entity){
+																																if(row.entity.csstype){
+																																
+																																	return (row.entity.csstype)
+																																}
+																															}
+																															else if(row.entity.stat){
+																																if(row.entity.typex=="retail"){
+																																
 																																	return ("bold")
 																																}
-																																}
-																																if(row.entity.xtype){
-																																	if(row.entity.xtype=="donations" ){
-																																		return ("bold")
-																																}
-																																}
-																																
 																															}
+																															
+																															if(row.entity.xtype){
+																																if(row.entity.xtype=="donations" ){
+																																	return ("bold")
+																																}
+																															}
+																																
+																															
 																															
 																															
 																															
@@ -879,12 +889,12 @@ month_num=0
 																																	return ("red")
 																																}
 																															}
-																															
+																															if(row.entity){
 																																if(row.entity.csstype){
 																																
 																																	return (row.entity.csstype)
 																																}
-																																
+																																}
 																																
 																																
 																															}

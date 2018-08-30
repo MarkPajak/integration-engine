@@ -354,23 +354,17 @@ function get_kpis(cb){
 console.log('get get_kpis')
 
 Team.aggregate([
-		
+		{ $match : {museum_id: { $ne: "" }} },
 		{ $group: {
                 _id: { 
-				
-				
-				
+	
 				"kpi_year":{$year:route_functions.mongo_aggregator}, 
-				"kpi_month":{$month:route_functions.mongo_aggregator}, 
-				 
-					   kpi_venue:'$museum_id',
-					   
-					 },  
-				
+				"kpi_month":{$month:route_functions.mongo_aggregator}, 				 
+					   kpi_venue:'$museum_id',				   
+					 },  			
                non_vat_sales: {$sum: '$non_vat_sales' },
 			   total_sales: {$sum: '$total_sales' },
 			   number_transactions: { $sum:    "$no_transactions" } ,
-	
             }
 		 },
 		 
@@ -380,26 +374,19 @@ Team.aggregate([
 		
 
     ], function (err, result) {
-	
 
-	
-	
 	if(err) console.log(err)
-	
 	
 	Kpi_aggregate.aggregate([
 			
-
 		{ $group: {
                 _id: { year : {$year:route_functions.mongo_aggregator},         
 					   month :{$month:route_functions.mongo_aggregator},       
-					   venue:'$museum_id',
-					   
+					   venue:'$museum_id',				   
 					 },  
 				
                visits: { $sum:  "$value" } ,
-			
-		      
+			      
             }
 		 },
 
@@ -440,41 +427,61 @@ get_kpis( function ( result) {
 
 	_.each(venues,function(venue){
 		
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat=venue+ " Net sales"
-		returned_row.typex="retail"
-		returned_data.push(	route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"net_sales",venue))
-	var returned_row={}
-		returned_row.museum="last year"
-		returned_row.stat="last year"
-		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"last_year_total",venue))
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat="% last year"
-		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"last_year",venue))
-	
-	
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat="No. of transactions"
-		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"number_transactions",venue))
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat="Average transaction"
-		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"ATV",venue))
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat="Visits"
-		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"visits",venue))
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat="Sales conversion"
-		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"conversion",venue))
+			var returned_row={}
+				returned_row.museum=venue
+				returned_row.stat=venue+ " Net sales"
+				returned_row.typex="retail"
+				returned_data.push(	route_functions.wind_up_Stats_monthly_variable(		result,returned_row,"net_sales",venue))
+			var returned_row={}
+				returned_row.museum="last year"
+				returned_row.stat="last year"
+				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"last_year_total",venue))
+			var returned_row={}
+				returned_row.museum=venue
+				returned_row.stat="% last year"
+				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"last_year",venue))
+			var returned_row={}
+				returned_row.museum=venue
+				returned_row.stat="No. of transactions"
+				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"number_transactions",venue))
+			var returned_row={}
+				returned_row.museum=venue
+				returned_row.stat="Average transaction"
+				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"ATV",venue))
+			var returned_row={}
+				returned_row.museum=venue
+				returned_row.stat="Visits"
+				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"visits",venue))
+			var returned_row={}
+				returned_row.museum=venue
+				returned_row.stat="Sales conversion"
+				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"conversion",venue))
 	
 	})
 
-
+			var returned_row={}
+				returned_row.museum="Monthly total"
+				returned_row.stat="Monthly total"
+				returned_row.typex="retail"
+				returned_row.xtype="currency"
+				returned_row.cssclass="summary_row"
+				returned_row.csstype="summary_row"
+			
+		
+				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_sales",""))
+			
+			
+			var returned_row={}
+				returned_row.museum="Total"
+				returned_row.stat="Yearly Total"
+				returned_row.typex="retail"
+				returned_row.xtype="currency"
+				
+				returned_row.cssclass="summary_row"
+				returned_row.csstype="summary_row"
+		
+				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"yearly_total",""))
+		
 
 res.json(returned_data)
 	
