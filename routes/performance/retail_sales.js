@@ -481,6 +481,27 @@ get_kpis( function ( result) {
 				returned_row.csstype="summary_row"
 		
 				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"yearly_total",""))
+				
+				
+				var returned_row={}
+					returned_row.museum="Total"
+					returned_row.stat="Last Year"
+					returned_row.typex="retail"
+					returned_row.xtype="currency"
+					returned_row.cssclass="summary_row"
+					returned_row.csstype="summary_row"
+		
+				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_last_year",""))
+				
+				var returned_row={}
+					returned_row.museum="Total"
+					returned_row.stat="% difference"
+					returned_row.typex="retail"
+					returned_row.xtype="currency"
+					returned_row.cssclass="summary_row"
+					returned_row.csstype="summary_row"
+		
+				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"percentace_total_last_year",""))
 		
 
 res.json(returned_data)

@@ -16,6 +16,11 @@ exports.dynamicTableCellFilter_donations= function() {
 					 return function(grid, row, col, rowRenderIndex, colRenderIndex	){		
 								if(row.entity){
 										if(row.entity.csstype){
+											
+												return (row.entity.csstype)
+										}
+											
+										if(row.entity.csstype){
 											if(row.entity.csstype=="bold" ){
 												return ("bold")
 										}

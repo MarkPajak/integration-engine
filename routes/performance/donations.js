@@ -443,10 +443,13 @@ Team.aggregate([
 		
 		
 		_.each(result,function(kpi,i){
+			
+			
+			
 		
 			result[i].combined=result[i].donations
 			result[i].donations=kpi.donations
-			
+			result[i].welcome=0
 			_.each(welsomedesk,function(welcome,iii){ //n.b. wont get through if none
 			if(kpi.kpi_venue==welcome.venue &&  kpi.kpi_month==welcome.month && kpi.kpi_year==welcome.year){
 				
@@ -458,10 +461,11 @@ Team.aggregate([
 							if(visits.kpi_venue==kpi.venue &&  visits.kpi_month==kpi.month && visits.kpi_year==kpi.year){	
 							//result[i].gift_aid_amountx=0
 							if(visits.gift_aid_amount){
+								//result[i].donations+=visits.gift_aid_amount
 								result[i].gift_aid_amountx=visits.gift_aid_amount
 								
 							}
-								//result[i].combined=result[i].welcome+result[i].gift_aid_amountx+result[i].donations	
+								result[i].combined=result[i].welcome+result[i].gift_aid_amountx+result[i].donations	
 							}
 						}
 				})
@@ -586,7 +590,24 @@ get_kpis( function ( result) {
 		
 	})
 
-
+	var returned_row={}
+		returned_row.museum="Running Combined"
+		returned_row.stat="Monthly total"
+		returned_row.xtype="currency"
+		returned_row.cssclass="summary_row"
+		returned_row.typex="retail"
+		returned_row.csstype="summary_row"
+		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_donations",""))
+		
+			var returned_row={}
+			returned_row.museum="Yearly donations"
+			returned_row.stat="Yearly total"
+			returned_row.xtype="currency"
+			returned_row.typex="retail"
+			returned_row.cssclass="summary_row"
+			returned_row.csstype="summary_row"
+		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"yearly_donations",""))
+		
 res.json(returned_data)
 	
 })

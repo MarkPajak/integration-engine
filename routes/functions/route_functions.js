@@ -92,25 +92,17 @@ this.calendar_feed = function (events){
 					_.each(result,function(previous_data){
 								if(previous_data.combined){
 									
-								compare_previous_year = kpi.kpi_year-1
-								
-								console.log("test....")
-								if(previous_data.kpi_venue==kpi.kpi_venue &&  previous_data.kpi_year==compare_previous_year&&  previous_data.kpi_month==kpi.kpi_month  ){	
-								//console.log("checking previous sales for ",visits.venue)
-								//console.log('previous_data.kpi_year',previous_data.kpi_year)
-								//console.log('previous_data.net_sales',previous_data.net_sales)
-								
+									compare_previous_year = kpi.kpi_year-1						
+									if(previous_data.kpi_venue==kpi.kpi_venue &&  previous_data.kpi_year==compare_previous_year&&  previous_data.kpi_month==kpi.kpi_month  ){	
 									
-								if(previous_data.combined>0){
-									console.log(previous_data.net_sales,compare_previous_year,compare_previous_year)
-										result[i].last_year_total=previous_data.combined
-										result[i].last_year =((kpi.combined/previous_data.combined)*100-100).toFixed(2)+"%"			
-									
-								}
+									if(previous_data.combined>0){
+										
+											result[i].last_year_total=previous_data.combined
+											result[i].last_year =((kpi.combined/previous_data.combined)*100-100).toFixed(2)+"%"			
+										
+									}
 								
-								
-								
-								}
+									}
 								}
 							})
 							})
@@ -174,7 +166,29 @@ this.calendar_feed = function (events){
 				sales_for_month=0
 				returned_row[month+" "+year]=0
 			
-				if(analysis_field=="total_sales"){
+				if(analysis_field=="total_donations"){
+				
+				
+				
+						_.each(result,function(row){
+							if(!isNaN(parseInt(row['combined']	))){
+								if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year){
+									
+										months=moment.monthsShort() 
+										lastmonth=months.indexOf(month)-1
+										lastyear=years.indexOf(year)-1
+										returned_row[month+" "+year]+=parseInt(row['combined']	)										
+										returned_row.cssclass="bold"						
+										returned_row.typex="currency"
+							
+									
+								}
+							}
+						})
+				
+				}
+				
+				else if(analysis_field=="total_sales"){
 				
 				
 				
@@ -185,9 +199,7 @@ this.calendar_feed = function (events){
 										months=moment.monthsShort() 
 										lastmonth=months.indexOf(month)-1
 										lastyear=years.indexOf(year)-1
-
-										returned_row[month+" "+year]+=parseInt(row['net_sales']	)
-										
+										returned_row[month+" "+year]+=parseInt(row['net_sales']	)										
 										returned_row.cssclass="bold"						
 										returned_row.typex="currency"
 							
@@ -195,6 +207,56 @@ this.calendar_feed = function (events){
 								}
 							}
 						})
+				
+				}
+				
+				
+				else if(analysis_field=="yearly_donations"){
+				
+				
+				
+								_.each(result,function(row){
+				
+						if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year){
+							
+
+					
+								sales_for_month+=parseInt(row['combined'])
+								
+								months=moment.monthsShort() 
+								lastmonth=months.indexOf(month)-1
+								
+								if(month=="Apr"){
+									if(parseInt(row['combined'])){
+										if(returned_row[month+" "+year]){
+										returned_row[month+" "+year]+=parseInt(row['combined'])
+										}
+										else
+										{
+										returned_row[month+" "+year]=parseInt(row['combined'])	
+										}
+									}
+								}
+								
+								else if(returned_row[months[lastmonth]+" "+year]){
+									returned_row[month+" "+year]=returned_row[months[lastmonth]+" "+year]+sales_for_month
+								}
+								
+								lastyear=years.indexOf(year)-1
+								
+								if(month=="Jan"){
+									returned_row[month+" "+year]=returned_row["Dec "+ years[lastyear]]+sales_for_month
+								}
+								returned_row.cssclass="bold"						
+										returned_row.typex="currency"
+								
+								
+							
+								
+						}
+			
+					})
+				
 				
 				}
 				
@@ -231,6 +293,47 @@ this.calendar_feed = function (events){
 						}
 			
 					})
+				
+				}
+				
+						else if(analysis_field=="total_last_year"){
+				
+					_.each(result,function(row){
+				
+						if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year-1){
+					
+								sales_for_month+=parseInt(row['net_sales'])
+								
+								months=moment.monthsShort() 
+								lastmonth=months.indexOf(month)-1
+								
+								if(month=="Apr"){
+									returned_row[month+" "+year]+=parseInt(row['net_sales'])
+								}
+								
+								else if(returned_row[months[lastmonth]+" "+year]){
+									returned_row[month+" "+year]=returned_row[months[lastmonth]+" "+year]+sales_for_month
+								}
+								
+								lastyear=years.indexOf(year)-1
+								
+								if(month=="Jan"){
+									returned_row[month+" "+year]=returned_row["Dec "+ years[lastyear]]+sales_for_month
+								}
+								returned_row.cssclass="bold"						
+										returned_row.typex="currency"
+								
+								
+							
+								
+						}
+			
+					})
+				
+				}
+							else if(analysis_field=="percentace_total_last_year"){
+				
+		
 				
 				}
 				
@@ -358,13 +461,17 @@ this.calendar_feed = function (events){
 	var sites_total={}
 	var running_total={}
 	
-	
+	var running_total_last_year={}
+	var running_total_last_year_percentage={}
 		
 		var returned_row_compare_last_year={}
 		var returned_row_compare_last_year_total={}
 		
 		sites_total.museum="Total all sites"
+		
 		running_total.museum="Running total"
+		running_total_last_year.museum="Last Year"
+		running_total_last_year_percentage.museum="% difference"
 		
 			var years = [2015,2016,2017,2018,2019]
 			_.each(years,function(year){
@@ -375,6 +482,7 @@ this.calendar_feed = function (events){
 					if(running_total[month+" "+year]){
 						running_total[month+" "+year]=0
 					}
+				
 				}
 				
 			
@@ -389,22 +497,51 @@ this.calendar_feed = function (events){
 							if(sites_total[month+" "+year]){
 								sites_total[month+" "+year]=parseInt(sites_total[month+" "+year])
 							}
+						
+							
+							
+							
+							
+							
+							
 							sites_total[month+" "+year]+=parseInt(row.visits)
 							months=moment.monthsShort() 
 							lastmonth=months.indexOf(month)-1
 							
 							if(month=="Apr"){
 								running_total[month+" "+year]=sites_total[month+" "+year]
+								lastyear=years.indexOf(year)-1
+								if(sites_total[month+" "+years[lastyear]]){
+									running_total_last_year[month+" "+year]=sites_total[month+" "+years[lastyear]]
+									running_total_last_year_percentage[month+" "+year]=((running_total[month+" "+year]/running_total_last_year[month+" "+year])*100-100).toFixed(2)+"%"	
+								}
+							
 							}
 							else if(running_total[months[lastmonth]+" "+year]){
+								
 								running_total[month+" "+year]=running_total[months[lastmonth]+" "+year]+sites_total[month+" "+year]
+								lastyear=years.indexOf(year)-1
+								if(running_total[months[lastmonth]+" "+years[lastyear]] && sites_total[month+" "+years[lastyear]]){
+									running_total_last_year[month+" "+year]=running_total[months[lastmonth]+" "+years[lastyear]]+sites_total[month+" "+years[lastyear]]
+									running_total_last_year_percentage[month+" "+year]=((running_total[month+" "+year]/running_total_last_year[month+" "+year])*100-100).toFixed(2)+"%"	
+								}
+							
+							
 							}
 							
 							lastyear=years.indexOf(year)-1
+							last2year=years.indexOf(year)-2
 							if(month=="Jan"){
 								running_total[month+" "+year]=running_total["Dec "+ years[lastyear]]+sites_total[month+" "+year]
-							}
+				
+									if(running_total["Dec "+years[last2year]] && sites_total[month+" "+years[lastyear]]){
+										running_total_last_year[month+" "+year]=running_total["Dec "+years[last2year]]+sites_total[month+" "+years[lastyear]]
+										running_total_last_year_percentage[month+" "+year]=((running_total[month+" "+year]/running_total_last_year[month+" "+year])*100-100).toFixed(2)+"%"	
+									}
 							
+							}
+						
+								
 								
 							sites_total.stat="Visits"
 							running_total.stat="Visits"
@@ -418,6 +555,15 @@ this.calendar_feed = function (events){
 							sites_total.cellfilter="number:2"
 							running_total.cellfilter="number:2"
 							
+							running_total_last_year.stat="Visits"
+							running_total_last_year.cssclass="summary_row"
+							running_total_last_year.csstype="summary_row"
+							running_total_last_year.cellfilter="number:2"
+							
+							running_total_last_year_percentage.stat="Visits"
+							running_total_last_year_percentage.cssclass="summary_row"
+							running_total_last_year_percentage.csstype="summary_row"
+							running_total_last_year_percentage.cellfilter="number:2"
 							
 							for (compare_previous_years = 1; compare_previous_years <= 2; compare_previous_years++) { 
   
@@ -539,6 +685,12 @@ this.calendar_feed = function (events){
 		
 	if(running_total.museum){
 			returned_data.push(	running_total)
+	}
+	if(running_total_last_year.museum){
+			returned_data.push(	running_total_last_year)
+	}
+	if(running_total_last_year_percentage.museum){
+			returned_data.push(	running_total_last_year_percentage)
 	}
 		
 
