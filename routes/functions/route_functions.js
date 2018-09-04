@@ -160,11 +160,15 @@ this.calendar_feed = function (events){
 	  this.wind_up_Stats_monthly_variable=function(result,returned_row,analysis_field,venue){
 		 
 			var years = [2015,2016,2017,2018,2019]
-			
+			new_row=returned_row
+			new_rowx=returned_row
 			_.each(years,function(year){
 			_.each(moment.monthsShort(),function(month){
 				sales_for_month=0
+				sales_for_month_lt=0
 				returned_row[month+" "+year]=0
+				new_row[month+" "+year]=0
+				new_rowx[month+" "+year]=0
 			
 				if(analysis_field=="total_donations"){
 				
@@ -199,7 +203,7 @@ this.calendar_feed = function (events){
 										months=moment.monthsShort() 
 										lastmonth=months.indexOf(month)-1
 										lastyear=years.indexOf(year)-1
-										returned_row[month+" "+year]+=parseInt(row['net_sales']	)										
+										returned_row[month+" "+year]+=parseInt(row['net_sales'])										
 										returned_row.cssclass="bold"						
 										returned_row.typex="currency"
 							
@@ -295,48 +299,104 @@ this.calendar_feed = function (events){
 					})
 				
 				}
-				
-						else if(analysis_field=="total_last_year"){
+				else if(analysis_field=="total_last_year"){
 				
 					_.each(result,function(row){
 				
+
 						if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year-1){
 					
-								sales_for_month+=parseInt(row['net_sales'])
-								
+								sales_for_month+=parseInt(row['net_sales'])								
 								months=moment.monthsShort() 
 								lastmonth=months.indexOf(month)-1
+								lastyear=years.indexOf(year)-1
 								
 								if(month=="Apr"){
 									returned_row[month+" "+year]+=parseInt(row['net_sales'])
-								}
-								
+								}								
 								else if(returned_row[months[lastmonth]+" "+year]){
 									returned_row[month+" "+year]=returned_row[months[lastmonth]+" "+year]+sales_for_month
 								}
-								
-								lastyear=years.indexOf(year)-1
-								
 								if(month=="Jan"){
 									returned_row[month+" "+year]=returned_row["Dec "+ years[lastyear]]+sales_for_month
 								}
 								returned_row.cssclass="bold"						
-										returned_row.typex="currency"
-								
-								
-							
-								
+							    returned_row.typex="currency"
+						
 						}
 			
 					})
 				
 				}
-							else if(analysis_field=="percentace_total_last_year"){
-				
-		
-				
-				}
-				
+				else if(analysis_field=="percentace_total_last_year"){
+							
+							var plus_this_year=0
+							var last_year_plus=0
+							var cheesegrater=0
+							var percentage
+
+								
+							_.each(result,function(row){
+								lastyear=years.indexOf(year)-1	
+								months=moment.monthsShort() 
+								lastmonth=months.indexOf(month)-1
+								
+										if(month==moment.monthsShort(row.kpi_month-1) && row.kpi_year==year){	
+																						
+												if(month=="Apr"){			
+														plus_this_year+= parseInt(row['net_sales'])
+												}
+												else if(returned_row[months[lastmonth]+" "+year]){
+													plus_this_year=returned_row[months[lastmonth]+" "+year]+sales_for_month
+												}
+												if(month=="Jan"){
+													plus_this_year=returned_row["Dec "+ years[lastyear]]+sales_for_month
+												}
+																						
+										}	
+										
+										if(month==moment.monthsShort(row.kpi_month-1) && row.kpi_year==year-1){	
+												
+												lastyear=years.indexOf(year)-1		
+												sales_for_month+=parseInt(row['net_sales'])		
+												
+												if(month=="Apr"){	
+														
+														last_year_plus+=parseInt(row['net_sales'])
+														percentage =((plus_this_year/last_year_plus)*100-100).toFixed(2)
+														
+														console.log('percentage',percentage)
+														
+														if(!isNaN(percentage)){
+															returned_row[month+" "+year]=percentage+"%"										
+														}																										
+												}
+												
+												else if(returned_row[months[lastmonth]+" "+year]){
+													
+														plus_this_year=returned_row[months[lastmonth]+" "+year]+sales_for_month
+														percentage =((plus_this_year/last_year_plus)*100-100).toFixed(2)
+													
+														console.log('percentage 2',plus_this_year,last_year_plus,sales_for_month)
+														
+														if(!isNaN(percentage)){
+																returned_row[month+" "+year]=percentage+"%"										
+														}
+												}
+												/*
+												if(month=="Jan"){
+													plus_this_year=returned_row["Dec "+ years[lastyear]]+sales_for_month
+													percentage =((plus_this_year/last_year_plus)*100-100).toFixed(2)
+													console.log(percentage)
+														if(!isNaN(percentage)){
+															returned_row[month+" "+year]=percentage+"%"										
+													}
+												}
+*/												
+										}											
+							})
+			
+				}				
 				else
 				{
 				_.each(result,function(row){
