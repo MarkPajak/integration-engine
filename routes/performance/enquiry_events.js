@@ -1081,7 +1081,7 @@ get_kpis( function ( result) {
 				var returned_row={}
 					returned_row.team=venue
 					returned_row.kpi_type=kpi_type
-					returned_row.stat="_last_year"
+					returned_row.stat="% last year"
 					returned_data.push(	 wind_up_Stats(	result,returned_row,"_last_year",venue,"total_income"))
 		
 	
