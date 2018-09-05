@@ -43,7 +43,7 @@ this.calendar_feed = function (events){
 	this.mongo_aggregator=  { "$add": [ "$date_value", 7 * 60 * 60 * 1000 ] }         
 	this.mongo_aggregator2=  { "$add": [ "$date_logged", 7 * 60 * 60 * 1000 ] }     	
 	this.mongo_aggregator3=  { "$add": [ "$date_value_end", 7 * 60 * 60 * 1000 ] }     	
-	 this.retail_stats_weekly=function(result,result2){				   
+	this.retail_stats_weekly=function(result,result2){				   
 
 			_.each(result,function(kpi,i){
 			_.each(result2,function(visits,ii){
@@ -125,6 +125,7 @@ this.calendar_feed = function (events){
 									result[i].net_sales=((kpi.total_sales - kpi.non_vat_sales)/1.2+kpi.non_vat_sales).toFixed(2)
 									
 									result[i].vat_sales=(kpi.total_sales - kpi.non_vat_sales).toFixed(2)
+									
 									result[i].conversion=((kpi.number_transactions/visits.visits)*100).toFixed(2)+"%";
 									result[i].ATV=((kpi.total_sales - kpi.non_vat_sales)/kpi.number_transactions).toFixed(2)
 								}
@@ -459,6 +460,9 @@ this.calendar_feed = function (events){
 			_.each(years,function(year){
 			_.each(moment.monthsShort(),function(month){
 				returned_row[month+" "+year]=""
+						var checkmonth = new Date()
+									var checkmonth_num = checkmonth.getMonth()
+									lastmonth=months.indexOf(month)-1	
 					_.each(result,function(row){
 						if(month==moment.monthsShort(row._id.month-1) && booking_type==row._id.booking_type &&venue==row._id.venue &&row._id.year==year){
 							returned_row[month+" "+year]=row.visits
@@ -480,7 +484,11 @@ this.calendar_feed = function (events){
 									
 										returned_row_compare_last_year_total.museum=compare_previous_year+ " - " + year
 										returned_row_compare_last_year.museum="% difference" 
-										returned_row_compare_last_year[month+" "+year]=((row.visits/previous_data.visits)*100-100).toFixed(2)+"%";
+										
+										if(lastmonth<checkmonth_num-1){
+											returned_row_compare_last_year[month+" "+year]=((row.visits/previous_data.visits)*100-100).toFixed(2)+"%";
+										}
+										
 										returned_row_compare_last_year_total[month+" "+year]=previous_data.visits
 										if(currency){
 											returned_row_compare_last_year_total.typex="currency"
@@ -515,15 +523,11 @@ this.calendar_feed = function (events){
 	 this.wind_up_Stats_monthly=function(result,venues,currency){
 	 
 	 
-	var returned_data=[]
-	
-	
-	var sites_total={}
-	var running_total={}
-	
-	var running_total_last_year={}
-	var running_total_last_year_percentage={}
-		
+		var returned_data=[]
+		var sites_total={}
+		var running_total={}
+		var running_total_last_year={}
+		var running_total_last_year_percentage={}
 		var returned_row_compare_last_year={}
 		var returned_row_compare_last_year_total={}
 		
@@ -558,22 +562,24 @@ this.calendar_feed = function (events){
 								sites_total[month+" "+year]=parseInt(sites_total[month+" "+year])
 							}
 						
-							
-							
-							
-							
-							
+
 							
 							sites_total[month+" "+year]+=parseInt(row.visits)
 							months=moment.monthsShort() 
 							lastmonth=months.indexOf(month)-1
-							
+							var checkmonth = new Date()
+									var checkmonth_num = checkmonth.getMonth()
+									lastmonth=months.indexOf(month)-1
 							if(month=="Apr"){
 								running_total[month+" "+year]=sites_total[month+" "+year]
 								lastyear=years.indexOf(year)-1
 								if(sites_total[month+" "+years[lastyear]]){
 									running_total_last_year[month+" "+year]=sites_total[month+" "+years[lastyear]]
-									running_total_last_year_percentage[month+" "+year]=((running_total[month+" "+year]/running_total_last_year[month+" "+year])*100-100).toFixed(2)+"%"	
+									
+									
+									if(lastmonth<checkmonth_num-1){
+											running_total_last_year_percentage[month+" "+year]=((running_total[month+" "+year]/running_total_last_year[month+" "+year])*100-100).toFixed(2)+"%"	
+									}
 								}
 							
 							}
@@ -583,7 +589,9 @@ this.calendar_feed = function (events){
 								lastyear=years.indexOf(year)-1
 								if(running_total[months[lastmonth]+" "+years[lastyear]] && sites_total[month+" "+years[lastyear]]){
 									running_total_last_year[month+" "+year]=running_total[months[lastmonth]+" "+years[lastyear]]+sites_total[month+" "+years[lastyear]]
+									if(lastmonth<checkmonth_num-1){
 									running_total_last_year_percentage[month+" "+year]=((running_total[month+" "+year]/running_total_last_year[month+" "+year])*100-100).toFixed(2)+"%"	
+								}
 								}
 							
 							
@@ -596,12 +604,18 @@ this.calendar_feed = function (events){
 				
 									if(running_total["Dec "+years[last2year]] && sites_total[month+" "+years[lastyear]]){
 										running_total_last_year[month+" "+year]=running_total["Dec "+years[last2year]]+sites_total[month+" "+years[lastyear]]
+										if(lastmonth<checkmonth_num-1){
 										running_total_last_year_percentage[month+" "+year]=((running_total[month+" "+year]/running_total_last_year[month+" "+year])*100-100).toFixed(2)+"%"	
+									}
 									}
 							
 							}
 						
-								
+							months=moment.monthsShort() 
+							lastmonth=months.indexOf(month)-1
+							var checkmonth = new Date()
+									var checkmonth_num = checkmonth.getMonth()
+									lastmonth=months.indexOf(month)-1	
 								
 							sites_total.stat="Visits"
 							running_total.stat="Visits"
@@ -637,7 +651,9 @@ this.calendar_feed = function (events){
 											returned_row_compare_last_year_total.museum="last year"
 											returned_row_compare_last_year.museum="% difference" 											
 											returned_row_compare_last_year_total[month+" "+year]=previous_data.visits											
-											returned_row_compare_last_year[month+" "+year]=((row.visits/previous_data.visits)*100-100).toFixed(2)+"%";
+											if(lastmonth<checkmonth_num-1){
+												returned_row_compare_last_year[month+" "+year]=((row.visits/previous_data.visits)*100-100).toFixed(2)+"%";
+											}
 											
 											if(currency){
 												returned_row_compare_last_year_total.typex="currency"
@@ -675,7 +691,9 @@ this.calendar_feed = function (events){
 			_.each(years,function(year){
 			_.each(moment.monthsShort(),function(month){
 				returned_row[month+" "+year]=""
-				
+					var checkmonth = new Date()
+									var checkmonth_num = checkmonth.getMonth()
+									lastmonth=months.indexOf(month)-1	
 					_.each(result,function(row){
 					
 				
@@ -708,9 +726,9 @@ this.calendar_feed = function (events){
 										//returned_row_compare_last_year.cssclass="red"
 										
 										returned_row_compare_last_year_total[month+" "+year]=previous_data.visits
-										
+										if(lastmonth<checkmonth_num-1){
 										returned_row_compare_last_year[month+" "+year]=((row.visits/previous_data.visits)*100-100).toFixed(2)+"%";
-										
+										}
 										if(currency){
 											returned_row_compare_last_year_total.typex="currency"
 										}
