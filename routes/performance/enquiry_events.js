@@ -961,7 +961,7 @@ get_kpis( function ( result) {
 	
 	function wind_up_Stats(	result,returned_row,analysis_field,venue,kpi_type){
 		
-		
+		this_year_stats=[]
 			var years = [2016,2017,2018,2019]
 			_.each(years,function(year){
 			_.each(moment.monthsShort(),function(month){
@@ -970,48 +970,55 @@ get_kpis( function ( result) {
 					if(month==moment.monthsShort(row.kpi_month-1 )  && venue==row.kpi_venue &&row.kpi_year==year){
 						if(row[analysis_field]>0){
 							returned_row[month+" "+year]=row[analysis_field]  //n.b. needs to add up if already exists!
+							this_year_stats[month+" "+year]=row[analysis_field] 
+								if(analysis_field =="_last_year" ){
+									_.each(result,function(previous_data, i){
+													compare_previous_year = parseInt(year)-1
+														if(analysis_field =="_last_year"){	
+															if(previous_data.kpi_year==compare_previous_year  && moment.monthsShort(previous_data.kpi_month-1 ) == month){									
+															returned_row[month+" "+year]=previous_data.total_income
+															}
+														}
+									})							
+								}
+						
+						
 						}
 					}
 					
-								if(analysis_field =="last_year" || analysis_field =="% last year"){
-							
-								for (compare_previous_years = 1; compare_previous_years < 2; compare_previous_years++) { 
-								
-								_.each(result,function(previous_data){
-									
-								compare_previous_year = year-compare_previous_years
-									
-								
-								
-								if(previous_data.kpi_year==compare_previous_year && row.kpi_year==year && moment.monthsShort(previous_data.kpi_month-1 ) == month && month==  moment.monthsShort(row.kpi_month-1 ) && venue==row.kpi_venue && venue==previous_data.kpi_venue){	
-								
-								
-									returned_row.team=compare_previous_year+ " - " + year
-									
-									if(analysis_field =="% last year"){
-										if(row.total_income){
-											if(previous_data.total_income){
-												if(row.total_income + previous_data.total_income >0){
-													returned_row[month+" "+year]=((row.total_income/previous_data.total_income)*100-100).toFixed(0)+"%";
-												}
-											}
-										}
-									}
-									
-									if(analysis_field =="last_year"){										
-										returned_row[month+" "+year]=previous_data.total_income
-									}
+								if(analysis_field =="last_year" ){
+									_.each(result,function(previous_data, i){
+													compare_previous_year = parseInt(year)-1
+														if(analysis_field =="last_year"){	
+															if(previous_data.kpi_year==compare_previous_year  && moment.monthsShort(previous_data.kpi_month-1 ) == month){									
+															returned_row[month+" "+year]=previous_data.total_income
+															}
+														}
+									})							
 								}
-							
-							})
-								
-							
-							}
-								
-							}
 				})
 			})	
 		})
+		if(analysis_field =="_last_year" ){
+				_.each(years,function(year){
+					_.each(moment.monthsShort(),function(month){
+						returned_row[month+" "+year]=""
+						_.each(result,function(row){
+							if(month==moment.monthsShort(row.kpi_month-1 )  && venue==row.kpi_venue &&row.kpi_year==year){		
+								_.each(result,function(previous_data, i){
+										compare_previous_year = parseInt(year)-1
+												if(previous_data.kpi_year==compare_previous_year && moment.monthsShort(row.kpi_month-1 ) == month && moment.monthsShort(previous_data.kpi_month-1 ) == month){									
+													returned_row[month+" "+year]= (parseInt(row.total_income )/parseInt(previous_data.total_income)*100-100).toFixed(2)+"%";  
+												}
+													
+								})							
+
+							}
+					
+						})
+					})	
+		})
+		}
 		return(returned_row)
 	}
 	
@@ -1072,13 +1079,16 @@ get_kpis( function ( result) {
 					returned_data.push(	 wind_up_Stats(	result,returned_row,"last_year",venue,"total_income"))
 		
 				var returned_row={}
-					returned_row.museum=venue
+					returned_row.team=venue
 					returned_row.kpi_type=kpi_type
-					returned_row.stat="% last year"
-					returned_data.push(	 wind_up_Stats(	result,returned_row,"% last year",venue,"total_income"))
+					returned_row.stat="_last_year"
+					returned_data.push(	 wind_up_Stats(	result,returned_row,"_last_year",venue,"total_income"))
 		
-		//})
-	//})
+	
+
+	
+	
+	
 })
 
 res.json(returned_data)
