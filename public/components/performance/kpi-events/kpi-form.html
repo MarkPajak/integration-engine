@@ -71,9 +71,11 @@ You'll probably need to log in to be able to enter data
 					<option value="partnership">partnership</option>
 					<option value="partnership">project</option>
 					<option value="event">event</option>
-					<option ng-show="user.team=='MODERN RECORDS' || user.group=='ADMIN'" value="loan">loan</option>
-					<option ng-show="user.team=='MODERN RECORD' || user.group=='ADMIN'" value="deposit">deposit</option>
-					<option ng-show="user.team=='MODERN RECORDS' || user.group=='ADMIN'" value="destruction">destruction</option>
+					
+					<option ng-show="user.team=='MODERN RECORDS' || user.group=='ADMIN'" value="Items loaned out">Items loaned out</option>
+					<option ng-show="user.team=='MODERN RECORD' || user.group=='ADMIN'" value="Items returned">Items returned</option>
+					<option ng-show="user.team=='MODERN RECORDS' || user.group=='ADMIN'" value="Items destroyed">Items destroyed</option>
+					<option ng-show="user.team=='MODERN RECORDS' || user.group=='ADMIN'" value="New deposits">New deposits</option>
 								
 								
 					<option ng-show="user.team=='FILM OFFICE' || user.group=='ADMIN'" value="unique web visits">unique web visits</option>
