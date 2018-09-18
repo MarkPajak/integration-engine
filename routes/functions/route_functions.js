@@ -299,6 +299,40 @@ this.calendar_feed = function (events){
 					})
 				
 				}
+				else if(analysis_field=="total_donations_last_year"){
+				
+					_.each(result,function(row){
+				
+
+						if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year-1){
+					
+								sales_for_month+=parseInt(row['combined'])	
+								months=moment.monthsShort() 
+								lastmonth=months.indexOf(month)-1
+								lastyear=years.indexOf(year)-1
+								
+								if(month=="Apr"){
+								
+								if(!returned_row[month+" "+year]) returned_row[month+" "+year]=0
+									if(row['combined']){
+										returned_row[month+" "+year]+=parseInt(row['combined'])
+									}
+								}								
+								else if(returned_row[months[lastmonth]+" "+year]){
+									returned_row[month+" "+year]=returned_row[months[lastmonth]+" "+year]+sales_for_month
+								}
+								if(month=="Jan"){
+									returned_row[month+" "+year]=returned_row["Dec "+ years[lastyear]]+sales_for_month
+								}
+								returned_row.cssclass="bold"						
+							    returned_row.typex="currency"
+								
+						
+						}
+			
+					})
+				
+				}
 				else if(analysis_field=="total_last_year"){
 				
 					_.each(result,function(row){
@@ -446,7 +480,38 @@ this.calendar_feed = function (events){
 		
 		
 	}
-	
+	 this.ad_percentage_last_year=function(returned_data){
+				_.each(returned_data,function(row){
+					
+							var new_row = {}
+								new_row.museum="Total"
+								new_row.stat="% difference"
+								new_row.typex="retail"
+								new_row.xtype="currency"
+								new_row.cssclass="summary_row"
+								new_row.csstype="summary_row"
+								new_row.stat="% difference"	
+								
+								if(row.stat=="Yearly Total"){					
+									for(var key in row) {
+										_.each(returned_data,function(rowX){
+											for(var keyX in rowX) {
+												if(rowX.stat=="Last Year" && key ==keyX ){	
+													if(row[key]>0 && rowX[keyX]>0){
+														//need to detect if it is a full month
+														percantage=((key,row[key]/rowX[keyX])*100-100).toFixed(2)+"%";
+														new_row[key]=percantage
+													}
+												}
+											}
+										})
+									}
+										returned_data.push(new_row)
+								}
+							
+				})	
+			//	return (new_row)
+	}
 	
 		 this.wind_up_Stats_monthly_venue=function(result,venues,booking_type,currency){
 		 

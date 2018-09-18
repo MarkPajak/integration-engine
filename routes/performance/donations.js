@@ -169,7 +169,9 @@ router.get('/total', function(req, res, next) {
 
 						})
 
-
+					route_functions.ad_percentage_last_year(returned_data)
+		
+					
 					res.json(returned_data)
 			
 		})
@@ -295,10 +297,7 @@ get_kpis( function ( result) {
 			_.each(years,function(year){
 			for (week = 0; week < moment().isoWeeksInYear(); week++) { 
 				week_value = moment().day("Monday").year(year).week(week).format('DD/MM/YY')
-		
 				returned_row[week_value]=""
-			
-			
 				_.each(result,function(row){
 					if(week==row.kpi_week &&venue==row.kpi_venue &&row.kpi_year==year){
 						returned_row[week_value]=row[analysis_field]
@@ -444,9 +443,7 @@ Team.aggregate([
 		
 		_.each(result,function(kpi,i){
 			
-			
-			
-		
+
 			result[i].combined=result[i].donations
 			result[i].donations=kpi.donations
 			result[i].welcome=0
@@ -470,6 +467,8 @@ Team.aggregate([
 						}
 				})
 			})
+			
+			
 		})
 		
 		
@@ -583,10 +582,7 @@ get_kpis( function ( result) {
 		returned_row.museum=venue
 		returned_row.stat="% last year"
 		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"last_year",venue))
-
-		
-
-		
+	
 		
 	})
 
@@ -597,16 +593,29 @@ get_kpis( function ( result) {
 		returned_row.cssclass="summary_row"
 		returned_row.typex="retail"
 		returned_row.csstype="summary_row"
-		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_donations",""))
+	returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_donations",""))
 		
-			var returned_row={}
+	var returned_row={}
 			returned_row.museum="Yearly donations"
-			returned_row.stat="Yearly total"
+			returned_row.stat="Yearly Total"
 			returned_row.xtype="currency"
 			returned_row.typex="retail"
 			returned_row.cssclass="summary_row"
 			returned_row.csstype="summary_row"
 		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"yearly_donations",""))
+		
+	var returned_row={}
+			returned_row.museum="Last year"
+			returned_row.stat="Last Year"
+			returned_row.xtype="currency"
+			returned_row.typex="retail"
+			returned_row.cssclass="summary_row"
+			returned_row.csstype="summary_row"
+		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_donations_last_year",""))
+		
+		
+		route_functions.ad_percentage_last_year(returned_data)
+		
 		
 res.json(returned_data)
 	
