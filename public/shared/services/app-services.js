@@ -213,6 +213,8 @@ var myScope
 								return data_table_reload.getDate();
 
 
+								
+								
 			},
 			
 		   function (value) {
