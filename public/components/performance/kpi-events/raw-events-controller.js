@@ -40,13 +40,13 @@ exports.raw_kpi_events_controller = function($route,$scope, get_table_data_team,
 			)
 			
 			$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
-			get_table_data_team.getData(moment(new Date()).subtract({'months':100})._d,$scope)
+			get_table_data_team.getData(moment(new Date()).subtract({'months':1000000000000000000000000})._d,$scope)
 				
 				
 			$scope.$watch('changed', function (newValue) {
 				if(newValue>0){
 					
-					get_table_data_team.getData(moment(new Date()).subtract({'months':10})._d,$scope)
+					get_table_data_team.getData(moment(new Date()).subtract({'months':1000000000000000000000000})._d,$scope)
 					//$scope.tableChanged++
 				}				
 			})
