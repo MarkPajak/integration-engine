@@ -1407,7 +1407,16 @@ Team.aggregate(
 			event_name: 1,
 			community_group:1,
 			date_value:1,	
-			date_value_end: 1,
+			date_value_end: {
+					$concat:[
+							{$substr:[{$year:"$date_value_end"},0,4]},
+							"/",
+							{$substr:[{$month:"$date_value_end"},0,4]},
+							"/",
+							{$substr:[{$dayOfMonth:"$date_value_end"},0,4]} 
+							]
+							}
+               ,
 			date_logged: 1,
 			comments: 1,
 			logger_user_name: 1,			

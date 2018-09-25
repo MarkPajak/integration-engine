@@ -211,7 +211,7 @@ Team.aggregate([
             }
 		},
 
-	 { $project : {venue:"$_id.venue", session_type:"$_id.session_type", total_income:"$total_income",total_sessions:"$total_sessions", total_teachers:"$total_teachers",total_children:"$total_children",kpi_year :"$_id.year", kpi_month :"$_id.month"}  },
+	{ $project : {venue:"$_id.venue", session_type:"$_id.session_type", total_income:"$total_income",total_sessions:"$total_sessions", total_teachers:"$total_teachers",total_children:"$total_children",kpi_year :"$_id.year", kpi_month :"$_id.month"}  },
 	{ $sort : { total_sessions : -1 } }
 		
 
@@ -259,7 +259,7 @@ if(req.query.cache){
 	
 	var query={ type: 'monthly_learning', row_name: req.params.session_type }
  
-    Cache.findOne(query, {}, { sort: { 'date_cached' : 1 } })    
+    Cache.findOne(query, {}, { sort: { 'date_cached' : -1 } })    
   
   
 	   .populate('leave_taken')
@@ -457,7 +457,59 @@ get_kpis( function ( result) {
 				
 			//})
 		})
+				var returned_row={}
+				returned_row.museum="Yearly learning"
+				returned_row.stat="Sessions - Total"
+				//returned_row.xtype="currency"
+				//returned_row.typex="retail"
+				returned_row.cssclass="summary_row"
+				returned_row.csstype="summary_row"
+				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"yearly_learning",""))
 
+
+				var returned_row={}
+				returned_row.museum="Children - Last year"
+				returned_row.stat="Children - Last year"
+				//returned_row.xtype="currency"
+				//returned_row.typex="retail"
+				returned_row.cssclass="summary_row"
+				returned_row.csstype="summary_row"
+				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_learning_last_year",""))
+				
+				route_functions.ad_percentage_last_year_learning(returned_data)
+					
+					
+				var returned_row={}
+				returned_row.museum="Income - total"
+				returned_row.stat="Income - total"
+				returned_row.xtype="currency"
+				//returned_row.typex="retail"
+				returned_row.cssclass="summary_row"
+				returned_row.csstype="summary_row"
+				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"yearly_learning_income",""))
+
+				var returned_row={}
+				returned_row.museum="Income -  last year"
+				returned_row.stat="Income -  last year"
+				returned_row.xtype="currency"
+				//returned_row.typex="retail"
+				returned_row.cssclass="summary_row"
+				returned_row.csstype="summary_row"
+				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_learing_income_last_year",""))
+
+				
+				route_functions.ad_percentage_last_year_income(returned_data)
+				
+				
+				
+				
+				
+				
+				
+		
+		
+		
+	
 	var datacache = [{ type: 'monthly_learning', row_name: req.params.session_type , date_cached: new Date(), cache:returned_data }];
 	
 	
