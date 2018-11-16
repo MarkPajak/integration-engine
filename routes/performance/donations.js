@@ -578,7 +578,8 @@ get_kpis( function ( result) {
 		returned_row.xtype="currency"
 		
 		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(result,returned_row,"last_year_total",venue))
-	var returned_row={}
+
+		var returned_row={}
 		returned_row.museum=venue
 		returned_row.stat="% last year"
 		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"last_year",venue))

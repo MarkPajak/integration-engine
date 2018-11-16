@@ -93,19 +93,19 @@ this.calendar_feed = function (events){
 								if(previous_data.combined){
 									
 									compare_previous_year = kpi.kpi_year-1						
-									if(previous_data.kpi_venue==kpi.kpi_venue &&  previous_data.kpi_year==compare_previous_year&&  previous_data.kpi_month==kpi.kpi_month  ){	
+									if(previous_data.kpi_venue==kpi.kpi_venue &&  previous_data.kpi_year==compare_previous_year &&  previous_data.kpi_month==kpi.kpi_month  ){	
 									
-									if(previous_data.combined>0){
+									//if(previous_data.combined){
 										
 											result[i].last_year_total=previous_data.combined
 											result[i].last_year =((kpi.combined/previous_data.combined)*100-100).toFixed(2)+"%"			
 										
-									}
+									//}
 								
 									}
 								}
-							})
-							})
+					})
+				})
 						
 							
 	return result
@@ -213,8 +213,55 @@ this.calendar_feed = function (events){
 						})
 				
 				}
+						else if(analysis_field=="yearly_sessions"){
 				
-						else if(analysis_field=="yearly_learning"){
+				
+				
+								_.each(result,function(row){
+				
+						if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year){
+							
+
+					
+								sales_for_month+=parseInt(row['total_sessions'])
+								
+								months=moment.monthsShort() 
+								lastmonth=months.indexOf(month)-1
+								
+								if(month=="Apr"){
+									if(parseInt(row['total_sessions'])){
+										if(returned_row[month+" "+year]){
+										returned_row[month+" "+year]+=parseInt(row['total_sessions'])
+										}
+										else
+										{
+										returned_row[month+" "+year]=parseInt(row['total_sessions'])	
+										}
+									}
+								}
+								
+								else if(returned_row[months[lastmonth]+" "+year]){
+									returned_row[month+" "+year]=returned_row[months[lastmonth]+" "+year]+sales_for_month
+								}
+								
+								lastyear=years.indexOf(year)-1
+								
+								if(month=="Jan"){
+									returned_row[month+" "+year]=returned_row["Dec "+ years[lastyear]]+sales_for_month
+								}
+								returned_row.cssclass="bold"						
+									//	returned_row.typex="currency"
+								
+								
+							
+								
+						}
+			
+					})
+				
+				
+				}
+						else if(analysis_field=="yearly_children"){
 				
 				
 				
@@ -585,7 +632,7 @@ this.calendar_feed = function (events){
 															returned_row[month+" "+year]=percentage+"%"										
 													}
 												}
-*/												
+												*/												
 										}											
 							})
 			
@@ -757,7 +804,7 @@ this.calendar_feed = function (events){
 								new_row.csstype="summary_row"
 								new_row.stat="% difference"	
 								
-								if(row.stat=="Sessions - Total"){					
+								if(row.stat=="Children - Total"){					
 									for(var key in row) {
 										_.each(returned_data,function(rowX){
 											for(var keyX in rowX) {

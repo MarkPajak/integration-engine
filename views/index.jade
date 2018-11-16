@@ -7,6 +7,17 @@ block content
 			
 			.view-container
 				.page.pageClass(ng-click='screensaverOff()', autoscroll='true', class='{{ }}', ng-view='')
+				// Global site tag (gtag.js) - Google Analytics
+				script(async='', src='https://www.googletagmanager.com/gtag/js?id=UA-129302729-1')
+				script.
+					window.dataLayer = window.dataLayer || [];
+					function gtag(){dataLayer.push(arguments);}
+					gtag('js', new Date());
+					gtag('config', 'UA-129302729-1');
+				script.
+					(function(t,e,s,o){var n,c,l;t.SMCX=t.SMCX||[],e.getElementById(o)||(n=e.getElementsByTagName(s),c=n[n.length-1],l=e.createElement(s),l.type="text/javascript",l.async=!0,l.id=o,l.src=["https:"===location.protocol?"https://":"http://","widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgd40_2BjOGTgGy4uRb3U9EJnpnfoUxGZCRmcXyLXPyVkHPm.js"].join(""),c.parentNode.insertBefore(l,c))})(window,document,"script","smcx-sdk");
+
+ 
 				
 				
 			

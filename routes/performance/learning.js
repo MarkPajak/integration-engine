@@ -188,6 +188,7 @@ Team.aggregate([
 			
 		{ $match: { session_type:req.params.session_type  ,		
 					
+						age_group:{$ne: "[1.25] Adult"},
 						date_value: {$gte: new Date("2017-04-01")}}
 		},
 		
@@ -458,13 +459,22 @@ get_kpis( function ( result) {
 			//})
 		})
 				var returned_row={}
-				returned_row.museum="Yearly learning"
+				returned_row.museum="Yearly sessions"
 				returned_row.stat="Sessions - Total"
 				//returned_row.xtype="currency"
 				//returned_row.typex="retail"
 				returned_row.cssclass="summary_row"
 				returned_row.csstype="summary_row"
-				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"yearly_learning",""))
+				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"yearly_sessions",""))
+				
+				var returned_row={}
+				returned_row.museum="Yearly learning"
+				returned_row.stat="Children - Total"
+				//returned_row.xtype="currency"
+				//returned_row.typex="retail"
+				returned_row.cssclass="summary_row"
+				returned_row.csstype="summary_row"
+				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"yearly_children",""))
 
 
 				var returned_row={}
@@ -500,9 +510,56 @@ get_kpis( function ( result) {
 				
 				route_functions.ad_percentage_last_year_income(returned_data)
 				
+
+				_.each(returned_data,function(row,i){
 				
-				
-				
+				_.each([2015,2016,2017,2018,2019,2020,2021,2022],function(num){
+
+row[num+" Yearly total"]="cheese"
+
+if(row["Apr "+num]){
+	row[num+" Yearly total"]=parseInt(row["Apr "+num])
+}		
+if(row["May "+num]){			
+	row[num+" Yearly total"]+=parseInt(row["May "+num])
+}
+if(row["Jun "+num]){					
+	row[num+" Yearly total"]+=parseInt(row["Jun "+num])	
+}
+if(row["Jul "+num]){					
+	row[num+" Yearly total"]+=parseInt(row["Jul "+num])
+}					
+if(row["Aug "+num]){					
+	row[num+" Yearly total"]+=parseInt(row["Aug +"+num])	
+}
+if(row["Sept "+num]){					
+	row[num+" Yearly total"]+=parseInt(row["Sept "+num]	)
+}
+if(row["Oct "+num]){					
+	row[num+" Yearly total"]+=parseInt(row["Oct "+num])	
+}					
+if(row["Nov "+num]){					
+	row[num+" Yearly total"]+=parseInt(row["Nov "+num])
+}					
+if(row["Dec "+num]){					
+	row[num+" Yearly total"]+=parseInt(row["Dec "+num])
+}					
+if(row["Jan "+(num+1)]){					
+	row[num+" Yearly total"]+=parseInt(row["Jan "+(num+1)])
+}					
+if(row["Feb "+(num+1)]){					
+	row[num+" Yearly total"]+=parseInt(row["Feb "+(num+1)])	
+}
+if(row["Mar "+(num+1)]){					
+	row[num+" Yearly total"]+=parseInt(row["Mar "+(num+1)])
+}					
+					
+					
+					
+					
+				})
+				console.log(row)
+				})
 				
 				
 				

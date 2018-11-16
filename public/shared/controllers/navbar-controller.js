@@ -518,6 +518,7 @@ enter_data.push(record_exhibitions_pwyt)
 enter_data.push(record_events)
 enter_data.push(record_kpi_events)
 enter_data.push(record_venue_hire)
+enter_data.push(record_operations)
 enter_data.push(record_teg)
 var resources=[]
 
