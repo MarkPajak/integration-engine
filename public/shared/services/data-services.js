@@ -340,6 +340,31 @@ exports.Monthly_venue_hire =  function($resource){
        
 
   }
+  
+  
+  
+          exports.Yearly_donations_other =  function($resource){
+	  
+	return $resource('/donations-other/total',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+       
+
+  } 
+    exports.Monthly_donations_other =  function($resource){
+	  
+	  
+	return $resource('/donations-other/all',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+       
+
+  } 
+  
+  
+  
          exports.Yearly_donations =  function($resource){
 	  
 	return $resource('/donations/total',{ }, {
@@ -359,6 +384,61 @@ exports.Monthly_venue_hire =  function($resource){
        
 
   } 
+  
+  
+  
+  exports.Yearly_patron =  function($resource){
+	  
+	return $resource('/patron/total',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+       
+
+  } 
+    exports.Monthly_patron =  function($resource){
+	  
+	  
+	return $resource('/patron/all',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+       
+
+  }
+  
+  
+   exports.Yearly_corporate =  function($resource){
+	  
+	return $resource('/corporate/total',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+       
+
+  } 
+    exports.Monthly_corporate =  function($resource){
+	  
+	  
+	return $resource('/corporate/all',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+       
+
+  }
+  
+   exports.Monthly_site_permissions =  function($resource){
+	  
+	  
+	return $resource('/site-permissions/all',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+       
+
+  }
+  
      exports.Weekly_donations =  function($resource){
 	  
 	  
@@ -704,7 +784,7 @@ exports.Monthly_venue_hire =  function($resource){
           });
  }
  
-  exports.Raw_donations =  function($resource){
+   exports.Raw_donations =  function($resource){
 	 
 		 
             return $resource('/donations/:id/:museum_id/:date_value/:donation_box_no/:exact/:end_value', null,
@@ -713,6 +793,59 @@ exports.Monthly_venue_hire =  function($resource){
 			  'query':  {method:'GET', isArray:true}, // get list all records
 			  'remove': {method:'DELETE'}, // remove record
 			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+ }
+ 
+     exports.Raw_site_permissions =  function($resource){
+	 
+		 
+              return $resource('/site-permissions/:id/:type/:date_value/:donation_box_no/:exact/:end_value', null,
+			{ 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray:true}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+ }
+    exports.Raw_donations_other =  function($resource){
+	 
+		 
+            return $resource('/donations-other/:id/:museum_id/:date_value/:type/:exact/:end_value', null,
+			{ 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray:true}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+ }
+ 
+ 
+ 
+   exports.Raw_corporate =  function($resource){
+	 
+		 
+            return $resource('/corporate/:id/:type/:date_value/:donation_box_no/:exact/:end_value', null,
+			{ 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray:true}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+ }
+ 
+  exports.Raw_patron =  function($resource){
+	 
+		 
+            return $resource('/patron/:id/:type/:date_value/:donation_box_no/:exact/:end_value', null,
+			{ 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray:true}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			  'update': { method:'PUT' },
 			  'delete': {method:'DELETE'} // same, remove record
           });
  }

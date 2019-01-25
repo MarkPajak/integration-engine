@@ -1,11 +1,11 @@
-exports.monthly_donations_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_donations,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,data_table_reload,table_security,dynamicTableCellFilter_donations
+exports.monthly_patron_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_patron,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,data_table_reload,table_security,dynamicTableCellFilter_patron
     ) {
 		
 		
 			$scope.chart_class = "col-md-8 col-lg-8 col-sm-5 pull-right"
 			$scope.table_class = "col-md-12 col-lg-12 col-sm-5"	
 			$scope.chart_heading = "Fundraised income  by month"
-			$scope.background_colour="donations"
+			$scope.background_colour="patron"
 		$scope.show_all_Button=false
 		console.log('controller go')
 		$scope.table_heading = "Monthly Fundraised income"
@@ -16,8 +16,8 @@ exports.monthly_donations_controller = function(getDateService,$route,$scope, $h
 		var columnDefs= []
 			$scope.filter_pie=[]
 			columnDefs.push(
-		//	{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "100", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations},
-			{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations}
+		//	{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "100", pinnedLeft:true,cellClass:dynamicTableCellFilter_patron},
+			{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_patron}
 					
 			)
 			dates=getDateService.getDate()
@@ -29,10 +29,10 @@ exports.monthly_donations_controller = function(getDateService,$route,$scope, $h
 	
 			
 			$scope.museums  =[]
-			$scope.selected_chart_stats=["Donations"]
+			$scope.selected_chart_stats=["patron"]
 			
 			
-			Monthly_donations.query({}, function(team) {
+			Monthly_patron.query({}, function(team) {
 				$scope.rows=[]
 				$scope.data_rows=[]
 				$scope._rows=[]
@@ -42,8 +42,8 @@ exports.monthly_donations_controller = function(getDateService,$route,$scope, $h
 							if($scope.museums.indexOf(row.museum)==-1){$scope.museums.push(row.museum)}
 							
 					$scope._rows.push(row)
-					if(row.stat=="Donations"){
-						console.log("Donations")
+					if(row.stat=="patron"){
+						console.log("patron")
 						$scope.data_rows.push(row)
 						
 					}
@@ -81,8 +81,8 @@ exports.monthly_donations_controller = function(getDateService,$route,$scope, $h
   
 					columnDefs=[]
 				columnDefs.push(	
-				//{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "100", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations},
-			{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations}
+				//{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "100", pinnedLeft:true,cellClass:dynamicTableCellFilter_patron},
+			{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_patron}
 					)
 					columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))
 					$scope.gridOptions.columnDefs=columnDefs

@@ -30,7 +30,7 @@ router.get('/all', function(req, res, next) {
 function get_kpis(cb){
 
 Team.aggregate([
- 
+		 { $match : {museum_id: { $ne: "" }} },
 		 { $group: {
                 _id: {
 				 "year": { "$year": route_functions.mongo_aggregator }, 
@@ -81,7 +81,7 @@ get_kpis( function ( result) {
 	if(venue=="") return;
 		var returned_row={}
 		returned_row.museum=venue
-					var years = [2014,2015,2016,2017,2018,2019]
+			var years = [2016,2017,2018,2019,2020,2021,2022,2023]
 			_.each(years,function(year){
 			_.each(moment.monthsShort(),function(month){
 			

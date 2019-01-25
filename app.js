@@ -178,6 +178,13 @@ var venue_hire = require('./routes/performance/venue_hire')
 
 var retail_sales = require('./routes/performance/retail_sales')
 var donations = require('./routes/performance/donations')
+var donations_other = require('./routes/performance/donations_other')
+var corporate = require('./routes/performance/corporate')
+
+var patron = require('./routes/performance/patron')
+
+var site_permissions = require('./routes/performance/site_permissions')
+
 var giftaid = require('./routes/performance/giftaid')
 var allgiftaid = require('./routes/performance/all_giftaid')
 var welcomedesk = require('./routes/performance/welcomedesk')
@@ -276,9 +283,14 @@ app.use('/community_group', community_group);
 
 app.use('/retail_sales', retail_sales);
 app.use('/donations', donations);
+app.use('/donations-other', donations_other);
+
+
+app.use('/corporate', corporate);
+app.use('/patron', patron);
 app.use('/giftaid', giftaid);
 app.use('/allgiftaid', allgiftaid);
-
+app.use('/site-permissions', site_permissions);
 
 app.use('/welcomedesk', welcomedesk);
 app.use('/learning', learning);

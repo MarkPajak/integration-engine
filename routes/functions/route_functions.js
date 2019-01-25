@@ -87,26 +87,27 @@ this.calendar_feed = function (events){
 			
 			
 	
-
+				var years = [2016,2017,2018,2019,2020,2021,2022,2023]
 				_.each(result,function(kpi,i){
-					_.each(result,function(previous_data){
-								if(previous_data.combined){
-									
-									compare_previous_year = kpi.kpi_year-1						
-									if(previous_data.kpi_venue==kpi.kpi_venue &&  previous_data.kpi_year==compare_previous_year &&  previous_data.kpi_month==kpi.kpi_month  ){	
-									
-									//if(previous_data.combined){
+					_.each(years,function(year){
+						_.each(result,function(previous_data){
+									if(previous_data.combined){
 										
-											result[i].last_year_total=previous_data.combined
-											result[i].last_year =((kpi.combined/previous_data.combined)*100-100).toFixed(2)+"%"			
+										compare_previous_year = year-1						
+										if(previous_data.kpi_venue==kpi.kpi_venue &&  kpi.kpi_year== year && previous_data.kpi_year==compare_previous_year &&  previous_data.kpi_month==kpi.kpi_month  ){	
 										
-									//}
-								
+										//if(previous_data.combined){
+											
+												result[i].last_year_total=previous_data.combined
+												result[i].last_year =((kpi.combined/previous_data.combined)*100-100).toFixed(2)+"%"			
+											
+										//}
+									
+										}
 									}
-								}
+						})
 					})
-				})
-						
+				})	
 							
 	return result
 	 }
@@ -159,7 +160,7 @@ this.calendar_feed = function (events){
 	 
 	  this.wind_up_Stats_monthly_variable=function(result,returned_row,analysis_field,venue){
 		 
-			var years = [2015,2016,2017,2018,2019]
+			var years = [2015,2016,2017,2018,2019,2020,2021,2022]
 			new_row=returned_row
 			new_rowx=returned_row
 			_.each(years,function(year){
@@ -170,6 +171,9 @@ this.calendar_feed = function (events){
 				new_row[month+" "+year]=0
 				new_rowx[month+" "+year]=0
 			
+			
+		
+
 				if(analysis_field=="total_donations"){
 				
 				
@@ -213,7 +217,7 @@ this.calendar_feed = function (events){
 						})
 				
 				}
-						else if(analysis_field=="yearly_sessions"){
+				else if(analysis_field=="yearly_sessions"){
 				
 				
 				
@@ -261,7 +265,7 @@ this.calendar_feed = function (events){
 				
 				
 				}
-						else if(analysis_field=="yearly_children"){
+				else if(analysis_field=="yearly_children"){
 				
 				
 				
@@ -393,7 +397,7 @@ this.calendar_feed = function (events){
 					})
 				
 				}
-						else if(analysis_field=="total_learning_last_year"){
+				else if(analysis_field=="total_learning_last_year"){
 				
 					_.each(result,function(row){
 				
@@ -532,6 +536,33 @@ this.calendar_feed = function (events){
 				
 				}
 				
+					else if(analysis_field=="site_pemrissions_total_last_year"){
+				
+					_.each(result,function(row){
+									if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year-1){
+					
+								sales_for_month+=parseInt(row['income_site_permissions'])								
+								months=moment.monthsShort() 
+								lastmonth=months.indexOf(month)-1
+								lastyear=years.indexOf(year)-1
+								
+								if(month=="Apr"){
+									returned_row[month+" "+year]+=parseInt(row['income_site_permissions'])
+								}								
+								else if(returned_row[months[lastmonth]+" "+year]){
+									returned_row[month+" "+year]=returned_row[months[lastmonth]+" "+year]+sales_for_month
+								}
+								if(month=="Jan"){
+									returned_row[month+" "+year]=returned_row["Dec "+ years[lastyear]]+sales_for_month
+								}
+								returned_row.cssclass="bold"						
+							    returned_row.typex="currency"
+						
+						}
+			
+					})
+				
+				}
 				
 				else if(analysis_field=="total_last_year"){
 				
@@ -633,6 +664,85 @@ this.calendar_feed = function (events){
 													}
 												}
 												*/												
+										}											
+							})
+			
+				}	
+						else if(analysis_field=="percentace_total_last_year_site_permissions"){
+						
+							var plus_this_year=0
+							var last_year_plus=0
+							var cheesegrater=0
+							var percentage
+
+								
+							_.each(result,function(row){
+								lastyear=years.indexOf(year)-1	
+								months=moment.monthsShort() 
+								lastmonth=months.indexOf(month)-1
+									
+										if(month==moment.monthsShort(row.kpi_month-1) && row.kpi_year==year){	
+																						
+												if(month=="Apr"){			
+														plus_this_year+= parseInt(row['income_site_permissions'])
+												}
+												else if(returned_row[months[lastmonth]+" "+year]){
+													plus_this_year=returned_row[months[lastmonth]+" "+year]+sales_for_month
+												}
+												if(month=="Jan"){
+													plus_this_year=returned_row["Dec "+ years[lastyear]]+sales_for_month
+												}
+													console.log('plus_this_year',plus_this_year)										
+										}	
+											
+											
+										if(month==moment.monthsShort(row.kpi_month-1) && row.kpi_year==year-1){	
+											
+												lastyear=years.indexOf(year)-1		
+												sales_for_month+=parseInt(row['income_site_permissions'])		
+												
+												if(month=="Apr"){	
+														
+														last_year_plus+=parseInt(row['income_site_permissions'])
+														
+														console.log('last_year_plus',last_year_plus)
+														if(plus_this_year>0){
+															percentage =((plus_this_year/last_year_plus)*100-100).toFixed(2)
+														}
+														
+														console.log('percentage',percentage)
+														
+														if(!isNaN(percentage)){
+
+															returned_row[month+" "+year]=percentage+"%"										
+														}																										
+												}
+												
+												else if(returned_row[months[lastmonth]+" "+year]){
+													
+														plus_this_year=returned_row[months[lastmonth]+" "+year]+sales_for_month
+														if(plus_this_year>0){
+															percentage =((plus_this_year/last_year_plus)*100-100).toFixed(2)
+														}
+														
+														
+														if(!isNaN(percentage)){
+																
+															if(lastmonth<checkmonth_num-1){
+																returned_row[month+" "+year]=percentage+"%"	
+															}																
+														}
+												}
+												/*
+												if(month=="Jan"){
+													plus_this_year=returned_row["Dec "+ years[lastyear]]+sales_for_month
+													percentage =((plus_this_year/last_year_plus)*100-100).toFixed(2)
+													console.log(percentage)
+														if(!isNaN(percentage)){
+															returned_row[month+" "+year]=percentage+"%"										
+													}
+												}
+*/												
 										}											
 							})
 			
@@ -868,13 +978,13 @@ this.calendar_feed = function (events){
 		var returned_row_compare_last_year_total={}
 		returned_row.museum=venue
 		
-			var years = [2015,2016,2017,2018,2019]
+			var years = [2015,2016,2017,2018,2019,2020,2021,2022]
 			_.each(years,function(year){
 			_.each(moment.monthsShort(),function(month){
 				returned_row[month+" "+year]=""
 						var checkmonth = new Date()
 									var checkmonth_num = checkmonth.getMonth()
-									lastmonth=months.indexOf(month)-1	
+									lastmonth=moment.monthsShort().indexOf(month)-1	
 					_.each(result,function(row){
 						if(month==moment.monthsShort(row._id.month-1) && booking_type==row._id.booking_type &&venue==row._id.venue &&row._id.year==year){
 							returned_row[month+" "+year]=row.visits

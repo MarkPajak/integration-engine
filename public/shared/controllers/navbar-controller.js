@@ -42,6 +42,7 @@ $scope.user_groups['DEVELOPMENT']=[]
 $scope.user_groups['VENUE HIRE']=[]	 
 $scope.user_groups['LEARNING']=[]	
 $scope.user_groups['EXHIBITIONS']=[]	
+$scope.user_groups['SITE PERMISSIONS']=[]	
 $scope.user_groups['OPERATIONS']=[]
 $scope.user_groups['COMMERCIAL']=[]
 	
@@ -74,7 +75,7 @@ var add_posters 		= {teamx:"_DONATIONS" ,link:"add-poster",value:"Add poster"}
 
 var room_hire = {teamx:"_DONATIONS" ,link:"room-hire",value:"Room booking timeline"}
 var equipment_booking_timeline = {teamx:"_DONATIONS" ,link:"equipment-timeline",value:"Equipment booking timeline"}
-var participation = {teamx:"_DONATIONS" ,link:"participation-dashboard",value:"Participation dashboard"}
+var participation = {teamx:"_PARTICIPATION" ,link:"participation-dashboard",value:"Participation dashboard"}
 
 
 var performance = {teamx:"VISITS" ,link:"record-visitor-numbers",value:"Record visitor figures"}
@@ -83,10 +84,30 @@ var raw_retail_sales = {teamx:"RETAIL" ,link:"raw-retail-sales",value:"Raw retai
 var monthly_retail_sales = {teamx:"RETAIL" ,link:"monthly-retail-sales",value:"Monthly retail sales"}
 
 
+var record_donations_other =		{teamx:"DONATIONS" ,link:"record-donations-other",value:"Record other donations"}
+var donations_other = 				 {teamx:"DONATIONS" ,link:"raw-donations-other",value:"Raw other donation data"}
+var monthly_donations_other = 		 {teamx:"DONATIONS" ,link:"monthly-donations-other",value:"Monthly other donations"}
+
+
+
+var record_site_permissions=		{teamx:"SITE PERMISSIONS" ,link:"record-site-permissions",value:"Record  site permissions"}
+var site_permissions = 				 {teamx:"SITE PERMISSIONS" ,link:"raw-site-permissions",value:"Raw site permissions data"}
+var monthly_site_permissions = 		 {teamx:"SITE PERMISSIONS" ,link:"monthly-site-permissions",value:"Monthly site permissions"}
+
+
 
 var record_donations =			 {teamx:"DONATIONS" ,link:"record-donations",value:"Record donations"}
 var donations = 				 {teamx:"DONATIONS" ,link:"raw-donations",value:"Raw donation data"}
 var monthly_donations = 		 {teamx:"DONATIONS" ,link:"monthly-donations",value:"Monthly donations"}
+
+var record_patron =			 {teamx:"DONATIONS" ,link:"record-patron",value:"Record patron"}
+var patron = 				 {teamx:"DONATIONS" ,link:"raw-patron",value:"Raw patron data"}
+var monthly_patron = 		 {teamx:"DONATIONS" ,link:"monthly-patron",value:"Monthly patron"}
+
+var record_corporate =			 {teamx:"DONATIONS" ,link:"record-corporate",value:"Record corporate"}
+var corporate = 				 {teamx:"DONATIONS" ,link:"raw-corporate",value:"Raw patron data"}
+var monthly_corporate = 		 {teamx:"DONATIONS" ,link:"monthly-corporate",value:"Monthly corporate"}
+
 
 
 var transformation_kpis = 		 {teamx:"TEAM" ,link:"transformation-kpis",value:"Transformation"}
@@ -127,6 +148,8 @@ var monthly_visits = {teamx:"VISITS" ,link:"monthly-visits",value:"Monthly visit
 var record_venue_hire = {teamx:"VENUE HIRE" ,link:"record-venue-hire",value:"Record venue hire"}
 var raw_venue_hire = {teamx:"VENUE HIRE" ,link:"raw-venue-hire",value:"Raw venue hire"}
 var monthly_venue_hire = {teamx:"VENUE HIRE"  ,link:"monthly-venue-hire",value:"Monthly venue hire"}
+
+
 
 
 
@@ -179,7 +202,10 @@ $scope.user_groups['COMMERCIAL'].performance=performance_data
 var enter_data=[]
 //enter_data.push(performance)
 //enter_data.push(record_retail_sales)
+enter_data.push(record_corporate)
+enter_data.push(record_patron)
 enter_data.push(record_donations)
+enter_data.push(record_donations_other)
 enter_data.push(record_giftaid)
 enter_data.push(record_welcomedesk)
 enter_data.push(record_events)
@@ -200,12 +226,17 @@ performance_data.push(monthly_retail_sales)
 performance_data.push(raw_giftaid)
 performance_data.push(monthly_giftaid)
 performance_data.push(monthly_donations)
+performance_data.push(monthly_donations_other)
+performance_data.push(monthly_patron)
+performance_data.push(monthly_corporate)
 performance_data.push(transformation_kpis)
 performance_data.push(engagement_kpis)
 performance_data.push(collections_kpis)
 
 
 performance_data.push(donations)
+
+performance_data.push(donations_other)
 performance_data.push(monthly_welcomedesk)
 performance_data.push(raw_welcomedesk)
 
@@ -231,11 +262,45 @@ $scope.user_groups['DEVELOPMENT'].performance=performance_data
 
 
 
+
+var enter_data=[]
+
+enter_data.push(record_site_permissions)
+
+
+var performance_data=[]
+performance_data.push(raw_visits)
+performance_data.push(monthly_visits)
+
+
+performance_data.push(monthly_site_permissions)
+performance_data.push(site_permissions)
+
+performance_data.push(events)
+
+
+$scope.user_groups['SITE PERMISSIONS'].permissions=default_permissions
+$scope.user_groups['SITE PERMISSIONS'].views=[]
+$scope.user_groups['SITE PERMISSIONS'].enter_data=[]
+$scope.user_groups['SITE PERMISSIONS'].resources=[]
+
+$scope.user_groups['SITE PERMISSIONS'].views.push(masterkpi)
+$scope.user_groups['SITE PERMISSIONS'].views.push(timeline)
+$scope.user_groups['SITE PERMISSIONS'].views.push(analyser)
+
+
+
+$scope.user_groups['SITE PERMISSIONS'].enter_data=enter_data
+$scope.user_groups['SITE PERMISSIONS'].performance=performance_data
  
 var enter_data=[]
 enter_data.push(performance)
 enter_data.push(record_retail_sales)
 enter_data.push(record_donations)
+enter_data.push(record_site_permissions)
+enter_data.push(record_donations_other)
+enter_data.push(record_corporate)
+enter_data.push(record_patron)
 enter_data.push(record_giftaid)
 enter_data.push(record_welcomedesk)
 enter_data.push(record_learning)
@@ -257,14 +322,17 @@ performance_data.push(raw_venue_hire)
 performance_data.push(monthly_venue_hire)
 performance_data.push(raw_retail_sales)
 performance_data.push(monthly_retail_sales)
-//performance_data.push(raw_turnstiles)
-//performance_data.push(monthly_turnstiles)
+performance_data.push(monthly_site_permissions)
+performance_data.push(site_permissions)
 performance_data.push(raw_giftaid)
 performance_data.push(monthly_giftaid)
 performance_data.push(monthly_donations)
-
+performance_data.push(monthly_patron)
+performance_data.push(monthly_corporate)
 
 performance_data.push(donations)
+performance_data.push(corporate)
+performance_data.push(patron)
 performance_data.push(raw_welcomedesk)
 performance_data.push(monthly_welcomedesk)
 performance_data.push(participation)

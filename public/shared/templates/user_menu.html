@@ -48,9 +48,14 @@
            <li   ng-repeat="view in user.performance | filter:{ teamx:'RETAIL'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
          </ul>
      </li>
-	 
+	 	 <li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">Site permissions <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+           <li   ng-repeat="view in user.performance | filter:{ teamx:'SITE PERMISSIONS'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+         </ul>
+     </li>
 	 <li class="dropdown-submenu">
-        <a class="test" tabindex="-1" href="#">Donations <span class="caret"></span></a>
+        <a class="test" tabindex="-1" href="#">Fundraised income <span class="caret"></span></a>
         <ul class="dropdown-menu">
            <li   ng-repeat="view in user.performance | filter:{ teamx:'DONATIONS'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
          </ul>
@@ -125,9 +130,14 @@
            <li   ng-repeat="view in user.enter_data | filter:{ teamx:'RETAIL'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
          </ul>
      </li>
-	 
+	 	 <li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">Site permissions <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+           <li   ng-repeat="view in user.enter_data | filter:{ teamx:'SITE PERMISSIONS'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+         </ul>
+     </li>
 	 <li class="dropdown-submenu">
-        <a class="test" tabindex="-1" href="#">Donations <span class="caret"></span></a>
+        <a class="test" tabindex="-1" href="#">Fundraised income <span class="caret"></span></a>
         <ul class="dropdown-menu">
            <li   ng-repeat="view in user.enter_data | filter:{ teamx:'DONATIONS'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
          </ul>

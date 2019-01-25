@@ -1,4 +1,4 @@
-exports.monthly_giftaid_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_giftaid,grid_ui_settings,table_security
+exports.monthly_giftaid_controller = function(getDateService,$route,$scope, $http, $q, $routeParams,monthly_data_table_columns_retail, dynamicTableCellFilter_donations,$location,$rootScope, Monthly_giftaid,grid_ui_settings,table_security
     ) {
 		
 		
@@ -8,27 +8,23 @@ exports.monthly_giftaid_controller = function($route,$scope, $http, $q, $routePa
 	//console.log($route.routes)
 		$scope.gridOptions=[]
 		$scope.gridOptions.data=[]
+		
+					dates=getDateService.getDate()
+		$scope.start_date=dates[0]
+		$scope.end_date=dates[1]
+		$scope.table_heading = "Monthly donations gift aid"
 		var columnDefs= []
 		$rootScope.canEdit_table=false
-		
-
-		 columnDefs.push(
-					{ field: 'museum' ,name: "Museum",width: "150", pinnedLeft:true},
-			//{ field: 'stat' ,name: "Statistic",width: "180"},
-			{ field: 'Apr 2017',name: "Apr 17",width: "80"},
-			{ field: 'May 2017',name: "May 17",width: "80"},
-			{ field: 'Jun 2017',name: "Jun 17",width: "80"},
-			{ field: 'Jul 2017' ,name: "Jul 17",width: "80"},
-			{ field: 'Aug 2017',name: "Aug 17",width: "80"},
-			{ field: 'Sep 2017' ,name: "Sep 17",width: "80"},
-			{ field: 'Oct 2017' ,name: "Oct 17",width: "80"},
-			{ field: 'Nov 2017' ,name: "Nov 17",width: "80"},
-			{ field: 'Dec 2017' ,name: "Dec 17",width: "80"},
-			{ field: 'Jan 2018',name: "Jan 18",width: "80"},
-			{ field: 'Feb 2018' ,name: "Feb 18",width: "80"},
-			{ field: 'Mar 2018' ,name: "Mar 18",width: "80"}
-			
+			var columnDefs= []
+			$scope.filter_pie=[]
+			columnDefs.push(
+			{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "100", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations}//,
+			//{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations}
+					
 			)
+
+		 	columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))
+			console.log('columnDefs',columnDefs)		
 			
 	$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
 

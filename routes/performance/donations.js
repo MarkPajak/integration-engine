@@ -8,7 +8,8 @@ Route_permissions= require('../functions/route_permissions.js');
 route_permissions=new Route_permissions()
 Api_calls= require('../functions/standard_api_calls.js');
 
-
+	var venues=[]
+	var types=[]
 var isAuthenticated = function (req, res, next) {
 	console.log('if user is authenticated in the session, call the next() to call the next request handler ')
 	// Passport adds this method to request object. A middleware is allowed to add properties to
@@ -23,6 +24,9 @@ var isAuthenticated = function (req, res, next) {
 var Team = require('../../models/performance/Donations.js');
 var Gidftaid = require('../../models/performance/Giftaid.js');
 var Welcomedesk = require('../../models/performance/Welcomedesk.js');
+var Patron = require('../../models/performance/Patron.js');
+var Corporate = require('../../models/performance/Corporate.js');
+var Donations_other = require('../../models/performance/Donations_other.js');
 //aggregation
 
 
@@ -287,7 +291,7 @@ get_kpis( function ( result) {
 	var venues=[]
 	_.each(result,function(row){
 		if(venues.indexOf(row.kpi_venue)==-1){
-			console.log('adding venue ',row.kpi_venue)
+		//	console.log('adding venue ',row.kpi_venue)
 			venues.push(row.kpi_venue)
 		}
 	})
@@ -369,17 +373,13 @@ Team.aggregate([
 
 						"kpi_year": { "$year":  route_functions.mongo_aggregator }, 
 						"kpi_month": { "$month":route_functions.mongo_aggregator }, 					   
-					   kpi_venue:'$museum_id',
-					   
-					 },  
-				
+					   kpi_venue:'$museum_id',  
+					 },  			
                 donations: {$sum: '$donation_box_amount' }
-			 
-		      
             }
 		 },
-	{ $sort : { "donations" : -1} }	,
-	 { $project : {kpi_venue:"$_id.kpi_venue", kpi_year :"$_id.kpi_year", kpi_month :"$_id.kpi_month", donations:"$donations"}  },
+		{ $sort : { "donations" : -1} }	,
+		{ $project : {kpi_venue:"$_id.kpi_venue", kpi_year :"$_id.kpi_year", kpi_month :"$_id.kpi_month", donations:"$donations"}  },
 
 		
 
@@ -406,7 +406,7 @@ Team.aggregate([
 	 { $project : {venue:"$_id.venue", year :"$_id.year", month :"$_id.month",donations:'$donations', gift_aid_amount:"$gift_aid_amount", no_envelopes:"$no_envelopes"}  },
 
 		
-	  ], function (err, result2) {
+	  ], function (err, gift_aid_amount) {
 		  
 		  
 		Welcomedesk.aggregate([
@@ -424,69 +424,277 @@ Team.aggregate([
      
 	 cash :  { $sum:  '$cash' },
 	 card :  { $sum:   '$card' },	
-		      
+	 giftaid_amount :  { $sum:   '$giftaid_amount' },		      
             }
 		 },
 
-	 { $project : {venue:"$_id.venue", year :"$_id.year", month :"$_id.month",donations:'$donations', cash:"$cash", card:"$card"}  },
+	 { $project : {venue:"$_id.venue", year :"$_id.year", month :"$_id.month",donations:'$donations', cash:"$cash", card:"$card", giftaid_amount:"$giftaid_amount"}  },
 
 		
-	  ], function (err, welsomedesk) {	  
-		  
-		  
-		  
-	
-        if (err) {
-            console.log(err);
-        } else {
-		
-		
-		_.each(result,function(kpi,i){
+	  ], function (err, welsomedesk) {	
+
+Patron.aggregate([
 			
 
-			result[i].combined=result[i].donations
-			result[i].donations=kpi.donations
-			result[i].welcome=0
-			_.each(welsomedesk,function(welcome,iii){ //n.b. wont get through if none
-			if(kpi.kpi_venue==welcome.venue &&  kpi.kpi_month==welcome.month && kpi.kpi_year==welcome.year){
+
+		{ $group: {
+                _id: { 
+
+						"kpi_year": { "$year":  route_functions.mongo_aggregator }, 
+						"kpi_month": { "$month":route_functions.mongo_aggregator }, 					   
+					  // type:'$type',
+					   
+					 },  
 				
-				result[i].welcome=welcome.cash+welcome.card
-				result[i].combined=result[i].welcome+result[i].donations
-			}
-			_.each(result2,function(visits,ii){			
-						if(kpi.kpi_venue==visits.venue &&  kpi.kpi_month==visits.month && kpi.kpi_year==visits.year){
-							if(visits.kpi_venue==kpi.venue &&  visits.kpi_month==kpi.month && visits.kpi_year==kpi.year){	
-							//result[i].gift_aid_amountx=0
-							if(visits.gift_aid_amount){
-								//result[i].donations+=visits.gift_aid_amount
-								result[i].gift_aid_amountx=visits.gift_aid_amount
-								
-							}
-								result[i].combined=result[i].welcome+result[i].gift_aid_amountx+result[i].donations	
-							}
-						}
-				})
+                donations: {$sum: '$donation_box_amount' }
+			 
+		      
+            }
+		 },
+		{ $sort : { "donations" : -1} }	,
+		{ $project : { year :"$_id.kpi_year", month :"$_id.kpi_month", donations:"$donations"}  },
+
+		
+
+    ], function (err, Patron) {	  
+		
+		  
+		  Corporate.aggregate([
+			
+
+
+		{ $group: {
+                _id: { 
+
+						"kpi_year": { "$year":  route_functions.mongo_aggregator }, 
+						"kpi_month": { "$month":route_functions.mongo_aggregator }, 					   
+					   type:'$type',
+					   
+					 },  
+				
+                donations: {$sum: '$donation_box_amount' }
+			 
+		      
+            }
+		 },
+		{ $sort : { "donations" : -1} }	,
+		{ $project : {type:"$_id.type", year :"$_id.kpi_year", month :"$_id.kpi_month", donations:"$donations"}  },
+
+		
+
+    ], function (err, Corporate) {	  
+		
+		
+		  Donations_other.aggregate([
+			
+
+
+		{ $group: {
+                _id: { 
+
+						"kpi_year": { "$year":  route_functions.mongo_aggregator }, 
+						"kpi_month": { "$month":route_functions.mongo_aggregator }, 					   
+					   type:'$type',
+					    venue:'$museum_id',
+					   
+					 },  
+				
+                donations: {$sum: '$donation_box_amount' }
+			 
+		      
+            }
+		 },
+		{ $sort : { "donations" : -1} }	,
+		{ $project : {type:"$_id.type", venue:"$_id.venue", year :"$_id.kpi_year", month :"$_id.kpi_month", donations:"$donations"}  },
+
+		
+
+    ], function (err, Donations_other) {	  	
+				
+				
+		 
+			_.each(result,function(row){
+				if(venues.indexOf(row.kpi_venue)==-1){
+					//console.log('adding venue ',row.kpi_venue)
+					if(row.kpi_venue=="") return;
+					venues.push(row.kpi_venue)
+				}
+			}) 
+			
+			venues.push("Patron" )
+			
+			_.each(Corporate,function(corporate,i){
+			if(venues.indexOf(corporate.type)==-1){
+				if(corporate.type=="") return;
+								//	console.log('adding  types  ',corporate.type)
+									venues.push(corporate.type)
+					}
+			})
+				
+		_.each(Donations_other,function(corporate,i){
+			if(types.indexOf(corporate.type)==-1){
+				if(corporate.type=="") return;
+								//	console.log('adding  types  ',corporate.type)
+									types.push(corporate.type)
+					}
 			})
 			
 			
-		})
+			
+			if (err) {
+				console.log(err);
+			} else {
 		
-		
+				newresults=[]
+	
+				var years = [2016,2017,2018,2019,2020,2021,2022,2023]
+				
+				_.each(venues,function(venue){
+				_.each(years,function(year){
+				_.each(moment.monthsShort(),function(month,m){
+				
+				var newresult={}
+				newresult.kpi_year=year
+				newresult.kpi_month=m+1
+				newresult.kpi_venue=venue
+				newresults.push(newresult)
+
+				})	
+				})
+				})
+			
+			_.each(newresults,function(newres,xx){
+				
+				
+				newresults[xx].combined=0
+				newresults[xx].donations=0
+				newresults[xx].welcome=0
+				newresults[xx].gift_aid_amountx=0
+				newresults[xx].donations_other=0
+					_.each(venues,function(venue){
+					_.each(years,function(year){
+					_.each(moment.monthsShort(),function(month, m){
+						
+						
+						
+						_.each(result,function(kpi,i){
+						//n.b. not data for some months or years so will need to create these and loop - see monthly gift aid
+						if(newres.kpi_venue==venue &&  newres.kpi_month==m+1 && newres.kpi_year==year){								
+							if(kpi.kpi_venue==venue &&  kpi.kpi_month==m+1 && kpi.kpi_year==year){
+							
+											if(venue=="") return;	
+
+							_.each(types,function(type){
+								_.each(Donations_other,function(other,i){
+															
+									//n.b. not data for some months or years so will need to create these and loop - see monthly gift aid
+									if(other.venue==venue &&  newres.kpi_venue==venue && other.type== type && newres.kpi_month==m+1 && newres.kpi_year==year){		
+										if( other.month==m+1 && other.year==year){
+														console.log('here')
+														newresults[xx].donations_other=other.donations	
+														newresults[xx].type=other.type															
+														
+											}
+										}								
+									})
+							})
+
+											
+											newresults[xx].combined=kpi.donations
+											newresults[xx].donations=kpi.donations
+								}
+							}								
+						})
+				
+							 		//this will only join where same month - what about months not included.	
+						_.each(welsomedesk,function(welcome,ii){
+							if(welcome.venue==venue &&  welcome.month==m+1 && welcome.year==year){
+								if(newres.kpi_venue==venue &&  newres.kpi_month==m+1 && newres.kpi_year==year){	
+									//console.log(venue)
+										newresults[xx].welcome=welcome.cash+welcome.card	
+										newresults[xx].welcome_gift_aid=welcome.giftaid_amount*1.25											
+									//console.log(	newresults[xx])
+										newresults[xx].combined=newresults[xx].donations_other+newresults[xx].welcome+newresults[xx].gift_aid_amountx+newresults[xx].donations	+newresults[xx].dowelcome_gift_aidations	
+								}
+							}								
+						})
+						
+						
+						//this will only join where same month - what about months not included.	
+						_.each(gift_aid_amount,function(visits,ii){
+							if(visits.venue==venue &&  visits.month==m+1 && visits.year==year){	
+							if(newres.kpi_venue==venue &&  newres.kpi_month==m+1 && newres.kpi_year==year){	
+								//console.log(venue)
+									newresults[xx].gift_aid_amountx=visits.gift_aid_amount	*1.25							
+								//console.log(	newresults[xx])
+									newresults[xx].combined=newresults[xx].welcome+newresults[xx].gift_aid_amountx+newresults[xx].donations	
+							}							
+							}								
+						})	
+
+							
+									
+									
+
+						_.each(Patron,function(patron,i){
+															
+									//n.b. not data for some months or years so will need to create these and loop - see monthly gift aid
+									if( newres.kpi_venue=="Patron" && venue=="Patron" && newres.kpi_month==m+1 && newres.kpi_year==year){		
+										if( patron.month==m+1 && patron.year==year){
+														
+														newresults[xx].kpi_venue="Patron"					
+														newresults[xx].combined=patron.donations
+														newresults[xx].donations=patron.donations
+											}
+										}								
+									})
+
+									
+													_.each(Corporate,function(corporate,i){
+				
+										//n.b. not data for some months or years so will need to create these and loop - see monthly gift aid
+										if( newres.kpi_venue==venue && venue==corporate.type && newres.kpi_month==m+1 && newres.kpi_year==year){		
+										
+											if( corporate.month==m+1 && corporate.year==year){
+											
+															//newresults[xx].kpi_venue=corporate.type						
+															newresults[xx].combined=corporate.donations
+															newresults[xx].donations=corporate.donations
+															
+															
+												}
+											}								
+							
+						
+						
+						})
+									
+									
+									})
+								})
+							})
+			
+								
+					
+
+				
+				
+			})
 //res.json(result)
 
 if(req.params.csv){
 
 
- res.setHeader('Content-disposition', 'attachment; filename=donations.csv');
-  res.set('Content-Type', 'text/csv');
-  res.status(200).send(result);
+	res.setHeader('Content-disposition', 'attachment; filename=donations.csv');
+	res.set('Content-Type', 'text/csv');
+	res.status(200).send(newresults);
 
 
 }
 else
 {
 
-	cb(route_functions.donations_stats_monthly(result,result2,welsomedesk))
+	cb(route_functions.donations_stats_monthly(newresults,gift_aid_amount,welsomedesk))
 }
 		   	//mongoose.connection.close()	
         }
@@ -494,6 +702,8 @@ else
     });
 	    });
 		 });
+		  }); });
+		   });
 }
 
 get_kpis( function ( result) {
@@ -508,33 +718,38 @@ get_kpis( function ( result) {
 	var venues=[]
 	_.each(result,function(row){
 		if(venues.indexOf(row.kpi_venue)==-1){
-			console.log('adding venue ',row.kpi_venue)
+			console.log('adding income stream  ',row.kpi_venue)
 			venues.push(row.kpi_venue)
 		}
 	})
 	
-	function wind_up_Stats(	result,returned_row,analysis_field,venue){
-	 years = [2014,2015,2016,2017,2018,2019]
+	function wind_up_Stats(	result,returned_row,analysis_field,venue,type){
+		
+			type=type || ""
+			years = [2014,2015,2016,2017,2018,2019,2010,2021,2022]
 			returned_row.delete_row=true
 			_.each(years,function(year){
-			_.each(moment.monthsShort(),function(month){
-			
+			_.each(moment.monthsShort(),function(month){			
 			returned_row[month+" "+year]=""
 				_.each(result,function(row){
-					if(month==moment.monthsShort(row.kpi_month-1) &&venue==row.kpi_venue &&row.kpi_year==year){
+					if(month==moment.monthsShort(row.kpi_month-1) && venue==row.kpi_venue &&row.kpi_year==year){
+						
+						if( row.type && type!="" && row.type !=type) return;
+						
 						if( !isNaN(row[analysis_field])&& row[analysis_field]>0){
 							returned_row.delete_row=false
 						}
 						returned_row[month+" "+year]=row[analysis_field]
 						
 					}
-				})
+					})
+				})			
 			})
-			
-			
-			
-		})
+		
+		
 		return(returned_row)
+		
+		
 	}
 	
 	
@@ -542,41 +757,83 @@ get_kpis( function ( result) {
 	var returned_data=[]
 
 	_.each(venues,function(venue){
+		
+		
 		var returned_row={}
 		returned_row.museum=venue
 		returned_row.stat=venue+ " Combined total"
 		returned_row.xtype="currency"
 		returned_row.csstype="bold"
-		returned_data.push(	 wind_up_Stats(	result,returned_row,"combined",venue))	
-
-	var returned_row={}
+		
+		row= wind_up_Stats(	result,returned_row,"combined",venue)	
+		if(row.delete_row==false){
+			returned_data.push(	row)	
+		}
+		
+		
+		var returned_row={}
 		returned_row.museum=venue
 		returned_row.stat="Donations"
 		returned_row.xtype="currency"
-		returned_data.push(	 wind_up_Stats(	result,returned_row,"donations",venue))
+		row=wind_up_Stats(	result,returned_row,"donations",venue)
 		
-	var returned_row={}
+		
+		if(row.delete_row==false){
+			returned_data.push(row)
+		}
+		
+		
+		
+		
+		var returned_row={}
 		returned_row.museum=venue
-		returned_row.stat="Gift Aid Amount"
+		returned_row.stat="Gift Aid Amount + 25%"
 		returned_row.xtype="currency"
-		returned_data.push(	 wind_up_Stats(	result,returned_row,"gift_aid_amountx",venue))
+		row = wind_up_Stats(	result,returned_row,"gift_aid_amountx",venue)
 		
-		
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat="Welcome ex tax"
-		returned_row.xtype="currency"
-		row =  wind_up_Stats(	result,returned_row,"welcome",venue)
-		console.log(row)
 		if(row.delete_row==false){
 			returned_data.push(	row)
 		}
-
-	var returned_row={}
+		
+		var returned_row={}
+		returned_row.museum=venue
+		returned_row.stat="Welcome"
+		returned_row.xtype="currency"
+		row =  wind_up_Stats(result,returned_row,"welcome",venue)
+	
+		if(row.delete_row==false){
+			returned_data.push(	row)
+		}
+		
+		var returned_row={}
+		returned_row.museum=venue
+		returned_row.stat="welcome_gift_aid + 25%"
+		returned_row.xtype="currency"
+		row =  wind_up_Stats(result,returned_row,"welcome_gift_aid",venue)
+	
+		if(row.delete_row==false){
+			returned_data.push(	row)
+		}
+		
+		_.each(types,function(type){
+		
+				var returned_row={}
+				returned_row.museum=venue
+				returned_row.stat=type
+				returned_row.xtype="currency"
+				row =  wind_up_Stats(result,returned_row,"donations_other",venue,type)
+			
+				if(row.delete_row==false){
+					returned_data.push(	row)
+				}
+		
+		})
+		
+		
+		var returned_row={}
 		returned_row.museum="last year"
 		returned_row.stat="last year"
-		returned_row.xtype="currency"
-		
+		returned_row.xtype="currency"		
 		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(result,returned_row,"last_year_total",venue))
 
 		var returned_row={}

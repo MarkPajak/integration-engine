@@ -19,8 +19,8 @@ var isAuthenticated = function (req, res, next) {
 	return false
 }
 
-var Team = require('../../models/performance/Giftaid.js');
-var Welcome_desk_gift_aid = require('../../models/performance/Welcomedesk.js');
+var Team = require('../../models/performance/Patron.js');
+
 
 
 //aggregation
@@ -30,59 +30,41 @@ router.get('/all', function(req, res, next) {
 function get_kpis(cb){
 
 Team.aggregate([
-		{ $match : {museum_id: { $ne: "" }} },
+		 { $match : {type: { $ne: "" }} },
 		 { $group: {
                 _id: {
-						"year": { "$year": route_functions.mongo_aggregator }, 
+				 "year": { "$year": route_functions.mongo_aggregator }, 
 						"month": { "$month": route_functions.mongo_aggregator }, 
-							      
+				
+				
+				
+				      
 					   venue:'$museum_id'
 					 },  
-               amount: {$sum: '$amount' },
-			   no_envelopes: {$sum: '$no_envelopes' }
-   
+               amount: {$sum: '$amount' }
             }
 		 }			
 
     ], function (err, result) {
-	
-	
-	Welcome_desk_gift_aid.aggregate([
-  { $match : {museum_id: { $ne: "" }} },
-		 { $group: {
-                _id: {
-				
-					"year": { "$year": route_functions.mongo_aggregator }, 
-					"month": { "$month": route_functions.mongo_aggregator }, 
-	      
-					   venue:'$museum_id'
-					 },  
-               amount: {$sum: '$giftaid_amount' },
-			   no_envelopes: {$sum: '$no_giftaid_envelopes' }
-			   
-			 
-            }
-		 }			
-
-    ], function (err, result2) {
-	
-
         if (err) {
             console.log(err);
         } else {
 
-		cb(result,result2)
+		cb(result)
 		   	//mongoose.connection.close()	
         }
 		
     });
-	
-	 });
 }
 
-get_kpis( function ( result,result2) {
+get_kpis( function ( result) {
 	
 
+	
+	
+	
+
+	
 	//load venues
 	var venues=[]
 	_.each(result,function(row){
@@ -96,36 +78,18 @@ get_kpis( function ( result,result2) {
 	var returned_data=[]
 
 	_.each(venues,function(venue){
-	
 	if(venue=="") return;
 		var returned_row={}
 		returned_row.museum=venue
-				var years = [2016,2017,2018,2019,2020,2021,2022,2023]
+			var years = [2016,2017,2018,2019,2020,2021,2022,2023]
 			_.each(years,function(year){
 			_.each(moment.monthsShort(),function(month){
 			
 			returned_row[month+" "+year]=""
-					_.each(result,function(row){
-			
-						if(month==moment.monthsShort(row._id.month-1) &&venue==row._id.venue &&row._id.year==year){
-							if(returned_row[month+" "+year]!=""){
-								returned_row[month+" "+year]=parseInt(		returned_row[month+" "+year]) 
-							}
-							
-							returned_row[month+" "+year]+=parseInt(row.amount) 
-							
-						}
-				
-					})
-					_.each(result2,function(welcomedesk_gift_aid){
-				
-						if(month==moment.monthsShort(welcomedesk_gift_aid._id.month-1) &&venue==welcomedesk_gift_aid._id.venue &&welcomedesk_gift_aid._id.year==year){
-							if(returned_row[month+" "+year]!=""){
-								returned_row[month+" "+year]=parseInt(		returned_row[month+" "+year]) 
-							}
-							returned_row[month+" "+year]+=parseInt(welcomedesk_gift_aid.amount)
-						}
-
+				_.each(result,function(row){
+					if(month==moment.monthsShort(row._id.month-1) &&venue==row._id.venue &&row._id.year==year){
+						returned_row[month+" "+year]=row.amount
+					}
 				})
 			})
 			
@@ -187,7 +151,7 @@ router.get('/csv', function(req, res, next) {
   })
 });
 
-router.get('/:museum_id/:date_value/:exact',isAuthenticated, function(req, res, next) {
+router.get('/:type/:date_value/:donation_box_no/:exact/:end_value',isAuthenticated, function(req, res, next) {
 
 var query = {}
 
@@ -201,11 +165,11 @@ else
   _.extend(query,{date_value:req.params.date_value})
 }
 
-if(decodeURIComponent(req.params.museum_id)!="#"){
- _.extend(query,{museum_id: decodeURIComponent(req.params.museum_id)})
+if(decodeURIComponent(req.params.type)!="#"){
+ _.extend(query,{type: decodeURIComponent(req.params.type)})
 }
 
-if(decodeURIComponent(req.params.museum_id)!="#"){
+if(decodeURIComponent(req.params.type)!="#"){
  _.extend(query,{donation_box_no: req.params.donation_box_no})
 }
   Team.find(query)

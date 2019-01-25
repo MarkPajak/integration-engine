@@ -153,7 +153,104 @@ exports.venuehireDashboard = function() {
     templateUrl: './components/performance/venue-hire/dashboard.html'
   }
 	}	
+	
+	
+	
+					exports.yearlyCorporate = function() {
+  return {
+	    restrict: "E",
+    scope: {},
+   controller: 'yearly_corporate_controller',
+   templateUrl: './shared/templates/data_table.html'
+  }
+	}
+		exports.rawCorporate = function() {
+  return {
+   controller: 'raw_corporate_controller',
+     templateUrl: './shared/templates/data_table.html'
+  }
+	}
+	
 		
+exports.dataCorporate = function() {
+  return {
+ //  controller: 'raw_welcomedesk_controller',
+    templateUrl: './components/performance/corporate/data.html'
+  }
+}
+
+	
+	
+		exports.monthlyCorporate = function() {
+  return {
+
+   controller: 'monthly_corporate_controller',
+   templateUrl: './shared/templates/data_table.html'
+  }
+	}
+	
+		exports.recordCorporate = function() {
+  return {
+   controller: 'corporate_performance_form',
+    templateUrl: './components/performance/corporate/kpi-form.html'
+  }
+}
+exports.corporateFormdata = function() {
+  return {
+
+   templateUrl: './components/performance/corporate/kpi-form-and-data.html'
+  }
+}
+	
+	
+
+					exports.yearlyPatron = function() {
+  return {
+	    restrict: "E",
+    scope: {},
+   controller: 'yearly_patron_controller',
+   templateUrl: './shared/templates/data_table.html'
+  }
+	}
+		exports.rawPatron = function() {
+  return {
+   controller: 'raw_patron_controller',
+     templateUrl: './shared/templates/data_table.html'
+  }
+	}
+	
+		
+exports.dataPatron = function() {
+  return {
+ //  controller: 'raw_welcomedesk_controller',
+    templateUrl: './components/performance/patron/data.html'
+  }
+}
+
+	
+	
+		exports.monthlyPatron = function() {
+  return {
+
+   controller: 'monthly_patron_controller',
+   templateUrl: './shared/templates/data_table.html'
+  }
+	}
+	
+		exports.recordPatron = function() {
+  return {
+   controller: 'patron_performance_form',
+    templateUrl: './components/performance/patron/kpi-form.html'
+  }
+}
+exports.patronFormdata = function() {
+  return {
+
+   templateUrl: './components/performance/patron/kpi-form-and-data.html'
+  }
+}
+
+	
 	
 				exports.donationsDashboard = function() {
   return {
@@ -356,6 +453,79 @@ exports.dataGiftaid = function() {
   }
 	}
 	
+						exports.yearlyDonationsother = function() {
+  return {
+	    restrict: "E",
+    scope: {},
+   controller: 'yearly_donations_other_controller',
+   templateUrl: './shared/templates/data_table.html'
+  }
+	}
+		exports.rawDonationsother = function() {
+  return {
+   controller: 'raw_donations_other_controller',
+     templateUrl: './shared/templates/data_table.html'
+  }
+	}
+	
+		
+exports.dataDonationsother = function() {
+  return {
+ //  controller: 'raw_welcomedesk_controller',
+    templateUrl: './components/performance/donations-other/data.html'
+  }
+}
+
+	
+	
+		exports.monthlyDonationsother = function() {
+  return {
+
+   controller: 'monthly_donations_other_controller',
+   templateUrl: './shared/templates/data_table.html'
+  }
+	}
+	
+	
+	
+					exports.yearlySitepermissions = function() {
+  return {
+	    restrict: "E",
+    scope: {},
+   controller: 'yearly_sitepermissions_controller',
+   templateUrl: './shared/templates/data_table.html'
+  }
+	}
+		exports.rawSitepermissions = function() {
+  return {
+   controller: 'raw_site_permissions_controller',
+     templateUrl: './shared/templates/data_table.html'
+  }
+	}
+	
+		
+exports.dataSitepermissions= function() {
+  return {
+ //  controller: 'raw_welcomedesk_controller',
+    templateUrl: './components/performance/site_permissions/data.html'
+  }
+}
+
+	
+	
+		exports.monthlySitepermissions = function() {
+  return {
+
+   controller: 'monthly_site_permissions_controller',
+   templateUrl: './shared/templates/data_table.html'
+  }
+	}	
+	
+	
+	
+	
+	
+	
 					exports.yearlyDonations = function() {
   return {
 	    restrict: "E",
@@ -404,6 +574,18 @@ exports.dataDonations = function() {
 	}
 	
 
+exports.donationsotherFormdata = function() {
+  return {
+
+   templateUrl: './components/performance/donations-other/kpi-form-and-data.html'
+  }
+}
+	exports.recordDonationsother = function() {
+  return {
+   controller: 'donations_other_performance_form',
+    templateUrl: './components/performance/donations-other/kpi-form.html'
+  }
+}
 	exports.recordDonations = function() {
   return {
    controller: 'donations_performance_form',
@@ -416,7 +598,12 @@ exports.donationsFormdata = function() {
    templateUrl: './components/performance/donations/kpi-form-and-data.html'
   }
 }
+exports.sitepermissionsFormdata = function() {
+  return {
 
+   templateUrl: './components/performance/site_permissions/kpi-form-and-data.html'
+  }
+}
 	
 exports.kpiForm = function() {
   return {
@@ -592,7 +779,13 @@ exports.recordTeg  = function() {
    templateUrl: './shared/templates/data_table.html'
   }
 	}
-	
+					exports.sitepermissionsDashboard = function() {
+  return {
+     controller: 'dashboard_controller',
+    templateUrl: './components/performance/site_permissions/dashboard.html'
+  }
+	}
+		
 				exports.tegDashboard = function() {
   return {
      controller: 'dashboard_controller',
@@ -773,6 +966,12 @@ exports.targetAudience = function() {
   }
 	}
 	
+			exports.recordSitepermissions = function() {
+  return {
+   controller: 'site_permissions_performance_form',
+      templateUrl: './components/performance/site_permissions/kpi-form.html'
+  }
+	}
 	
 		
 		exports.recordEvents = function() {

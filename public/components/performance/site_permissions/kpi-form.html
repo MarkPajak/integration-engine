@@ -1,0 +1,76 @@
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <style>
+  .panel > .panel-heading {
+    background-image: none;
+    background-color: red;
+    color: white;
+
+}
+  .panel > .panel-body {
+ 
+    background-color: white;
+
+}
+
+
+</style>
+	
+<div  ng-show="user.username" class="panel panel-default col-xs-3 col-sm-3 col-md-3">
+<div class="panel-heading">Enter data</div>
+	<div class="panel-body">
+		<form name="visit_form"  id="visit_form">
+
+		
+		
+		
+			  <div class="form-group">
+				<label for="comments">Date of income</label>
+				<input type = "date" class="form-control input-lg" id="date_value" rows="3"></input>
+			  </div>
+			  
+			    <div class="form-group">
+				<label for="comments">audience_figures</label>
+				<input  step="any" type = "number" class="form-control input-lg" id="audience_figures" rows="3"></input>
+			  </div>
+			  
+			    
+		
+			   <div class="form-group">
+				<label for="comments">no_cancelled_events</label>
+				<input  step="any" type = "number" class="form-control input-lg" id="no_cancelled_events" rows="3"></input>
+			  </div>
+			  
+			  <div class="form-group">
+				<label for="comments">no_events</label>
+				<input  step="any" type = "number" class="form-control input-lg" id="no_events" rows="3"></input>
+			  </div>
+			  
+			  
+					    <div class="form-group">
+				<label for="comments">income_bcc</label>
+				<input  step="any" type = "number" class="form-control input-lg" id="income_bcc" rows="3"></input>
+			  </div>
+			  
+	    <div class="form-group">
+				<label for="comments">income_site_permissions</label>
+				<input  step="any" type = "number" class="form-control input-lg" id="income_site_permissions" rows="3"></input>
+			  </div>
+			  			  
+			 
+
+			  <div class="form-group">
+				<label for="comments">Comments</label>
+				<textarea class="form-control input-lg" id="comments" rows="3"></textarea>
+			  </div>
+			   <button id="form_submit_button" name="form_submit_button" ng-click="onSubmit()" type="button" class="btn btn-primary submit-button" ng-disabled="vm.form.$invalid">Submit</button>
+			   <button type="button" class="btn btn-lg input-lg btn-default input-lg" ng-click="vm.options.resetModel()">Reset</button>
+		</form>
+	</div>
+</div>
+
+  <script>
+  $( function() {
+   if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent))
+    $( "#date_value" ).datepicker();
+  } );
+  </script>

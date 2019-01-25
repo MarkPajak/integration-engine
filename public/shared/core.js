@@ -104,6 +104,32 @@ var raw_donations_controller = require('../components/performance/donations/raw-
 var donations_performance_form = require('../components/performance/donations/performance-form-controller');
 
 
+var yearly_donations_other_controller = require('../components/performance/donations-other/yearly-donations_other-controller');
+var monthly_donations_other_controller = require('../components/performance/donations-other/monthly-donations_other-controller');
+var raw_donations_other_controller = require('../components/performance/donations-other/raw-donations_other-controller');
+var donations_other_performance_form = require('../components/performance/donations-other/performance-form-controller');
+
+
+
+
+var yearly_corporate_controller = require('../components/performance/corporate/yearly-corporate-controller');
+var monthly_corporate_controller = require('../components/performance/corporate/monthly-corporate-controller');
+var raw_corporate_controller = require('../components/performance/corporate/raw-corporate-controller');
+var corporate_performance_form = require('../components/performance/corporate/performance-form-controller');
+
+
+var yearly_patron_controller = require('../components/performance/patron/yearly-patron-controller');
+var monthly_patron_controller = require('../components/performance/patron/monthly-patron-controller');
+var raw_patron_controller = require('../components/performance/patron/raw-patron-controller');
+var patron_performance_form = require('../components/performance/patron/performance-form-controller');
+
+
+var yearly_site_permissions_controller = require('../components/performance/site_permissions/yearly-site_permissions-controller');
+var monthly_site_permissions_controller = require('../components/performance/site_permissions/monthly-site_permissions-controller');
+var raw_site_permissions_controller = require('../components/performance/site_permissions/raw-site_permissions-controller');
+var site_permissions_performance_form = require('../components/performance/site_permissions/performance-form-controller');
+
+
 var yearly_operations_controller = require('../components/performance/operations/yearly-operations-controller');
 var monthly_operationss_controller = require('../components/performance/operations/monthly-operations-controller');
 var raw_operations_controller = require('../components/performance/operations/raw-operations-controller');
@@ -389,16 +415,12 @@ _.each(monthly_welcomedesk_controller, function(controller, name) {
 _.each(yearly_welcomedesk_controller, function(controller, name) {
   app.controller(name, controller);
 });
-
 _.each(raw_welcomedesk_controller, function(controller, name) {
   app.controller(name, controller);
 });
-
 _.each(welcomedesk_performance_form, function(controller, name) {
   app.controller(name, controller);
 });
-
-
 _.each(yearly_learning_controller, function(controller, name) {
   app.controller(name, controller);
 });
@@ -612,6 +634,25 @@ _.each(monthly_retail_sales_controller, function(controller, name) {
 _.each(raw_retail_sales_controller, function(controller, name) {
   app.controller(name, controller);
 });
+
+
+_.each(raw_corporate_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(yearly_corporate_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(monthly_corporate_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(corporate_performance_form, function(controller, name) {
+  app.controller(name, controller);
+});
+
+
 _.each(raw_donations_controller, function(controller, name) {
   app.controller(name, controller);
 });
@@ -623,7 +664,51 @@ _.each(yearly_donations_controller, function(controller, name) {
 _.each(monthly_donations_controller, function(controller, name) {
   app.controller(name, controller);
 });
+
+
+_.each(yearly_site_permissions_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+_.each(monthly_site_permissions_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+_.each(raw_site_permissions_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+_.each(site_permissions_performance_form, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(patron_performance_form, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(raw_patron_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(yearly_patron_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(monthly_patron_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
 _.each(donations_performance_form, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(yearly_donations_other_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+_.each(monthly_donations_other_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+_.each(raw_donations_other_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+_.each(donations_other_performance_form, function(controller, name) {
   app.controller(name, controller);
 });
 
@@ -1269,6 +1354,55 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
                template: '<donations-Formdata></donations-Formdata>'
            })
 		   
+		    .when('/record-donations-other', {
+               template: '<donationsother-Formdata></donationsother-Formdata>'
+           })
+		   
+		   .when('/raw-donations', {
+                 templateUrl: './components/performance/donations/data.html'
+           })
+		   
+		   .when('/monthly-donations', {
+               template: '<donations-dashboard></donations-dashboard>'
+           })
+		   
+		      .when('/record-patron', {
+               template: '<patron-Formdata></patron-Formdata>'
+           })
+		   
+		   .when('/raw-patron', {
+                 templateUrl: './components/performance/patron/data.html'
+           })
+		   
+		   .when('/monthly-patron', {
+               template: '<patron-dashboard></patron-dashboard>'
+           })
+		   
+		   	     .when('/record-site-permissions', {
+               template: '<sitepermissions-Formdata></sitepermissions-Formdata>'
+           })
+		   
+		   .when('/raw-site-permissions', {
+                 templateUrl: './components/performance/site_permissions/data.html'
+           })
+		   
+		   .when('/monthly-site-permissions', {
+               template: '<sitepermissions-dashboard></sitepermissions-dashboard>'
+           })
+		   
+		   
+		   
+		     .when('/record-corporate', {
+               template: '<corporate-Formdata></corporate-Formdata>'
+           })
+		   
+		   .when('/raw-corporate', {
+                 templateUrl: './components/performance/corporate/data.html'
+           })
+		   
+		   .when('/monthly-corporate', {
+               template: '<corporate-dashboard></corporate-dashboard>'
+           })
 		   
 		   	.when('/raw-donations', {
                  templateUrl: './components/performance/donations/data.html'
@@ -1278,6 +1412,13 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
                template: '<donations-dashboard></donations-dashboard>'
            })
 		   
+		      	.when('/raw-donations-other', {
+                 templateUrl: './components/performance/donations-other/data.html'
+           })
+		   
+			.when('/monthly-donations-other', {
+               template: '<donations_other-dashboard></donations_other-dashboard>'
+           })
 		   
 		   
 		   .when('/record-events', {
