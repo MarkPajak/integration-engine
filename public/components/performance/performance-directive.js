@@ -515,7 +515,11 @@ exports.dataSitepermissions= function() {
 	
 		exports.monthlySitepermissions = function() {
   return {
-
+  restrict: "E",
+	   scope: {
+           
+        },
+       
    controller: 'monthly_site_permissions_controller',
    templateUrl: './shared/templates/data_table.html'
   }
@@ -553,7 +557,10 @@ exports.dataDonations = function() {
 	
 		exports.monthlyDonations = function() {
   return {
-
+  restrict: "E",
+	   scope: {
+           
+        },
    controller: 'monthly_donations_controller',
    templateUrl: './shared/templates/data_table.html'
   }
@@ -872,7 +879,13 @@ exports.standardkpieventstransformationDashboard = function() {
   }
 	}
 	
-	
+exports.standardkpieventsengagementDashboard = function() {
+  return {
+     controller: 'dashboard_controller',
+    templateUrl: './components/performance/team-kpis/engagement-dashboard.html'
+  }
+	}
+		
 	
 exports.teamStandardkpievents = function() {
 

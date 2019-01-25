@@ -10962,7 +10962,7 @@ exports.monthly_donations_controller = function(getDateService,$route,$scope, $h
 			$scope.selected_chart_stats=["Donations"]
 			
 			
-			Monthly_donations.query({}, function(team) {
+			Monthly_donations.query({cache:true}, function(team) {
 				$scope.rows=[]
 				$scope.data_rows=[]
 				$scope._rows=[]
@@ -16141,7 +16141,11 @@ exports.dataSitepermissions= function() {
 	
 		exports.monthlySitepermissions = function() {
   return {
-
+  restrict: "E",
+	   scope: {
+           
+        },
+       
    controller: 'monthly_site_permissions_controller',
    templateUrl: './shared/templates/data_table.html'
   }
@@ -16179,7 +16183,10 @@ exports.dataDonations = function() {
 	
 		exports.monthlyDonations = function() {
   return {
-
+  restrict: "E",
+	   scope: {
+           
+        },
    controller: 'monthly_donations_controller',
    templateUrl: './shared/templates/data_table.html'
   }
@@ -16498,7 +16505,13 @@ exports.standardkpieventstransformationDashboard = function() {
   }
 	}
 	
-	
+exports.standardkpieventsengagementDashboard = function() {
+  return {
+     controller: 'dashboard_controller',
+    templateUrl: './components/performance/team-kpis/engagement-dashboard.html'
+  }
+	}
+		
 	
 exports.teamStandardkpievents = function() {
 
@@ -28079,7 +28092,7 @@ $scope.user_groups['DEVELOPMENT']=[]
 $scope.user_groups['VENUE HIRE']=[]	 
 $scope.user_groups['LEARNING']=[]	
 $scope.user_groups['EXHIBITIONS']=[]	
-$scope.user_groups['SITE PERMISSIONS']=[]	
+$scope.user_groups['ARTS AND EVENTS']=[]	
 $scope.user_groups['OPERATIONS']=[]
 $scope.user_groups['COMMERCIAL']=[]
 	
@@ -28127,9 +28140,9 @@ var monthly_donations_other = 		 {teamx:"DONATIONS" ,link:"monthly-donations-oth
 
 
 
-var record_site_permissions=		{teamx:"SITE PERMISSIONS" ,link:"record-site-permissions",value:"Record  site permissions"}
-var site_permissions = 				 {teamx:"SITE PERMISSIONS" ,link:"raw-site-permissions",value:"Raw site permissions data"}
-var monthly_site_permissions = 		 {teamx:"SITE PERMISSIONS" ,link:"monthly-site-permissions",value:"Monthly site permissions"}
+var record_site_permissions=		{teamx:"ARTS AND EVENTS" ,link:"record-site-permissions",value:"Record  site permissions"}
+var site_permissions = 				 {teamx:"ARTS AND EVENTS" ,link:"raw-site-permissions",value:"Raw site permissions data"}
+var monthly_site_permissions = 		 {teamx:"ARTS AND EVENTS" ,link:"monthly-site-permissions",value:"Monthly site permissions"}
 
 
 
@@ -28148,8 +28161,8 @@ var monthly_corporate = 		 {teamx:"DONATIONS" ,link:"monthly-corporate",value:"M
 
 
 var transformation_kpis = 		 {teamx:"TEAM" ,link:"transformation-kpis",value:"Transformation"}
-var engagement_kpis = 		 {teamx:"TEAM" ,link:"transformation-kpis",value:"Engagement"}
-var collections_kpis = 		 {teamx:"TEAM" ,link:"transformation-kpis",value:"Collections"}
+var engagement_kpis = 		 {teamx:"TEAM" ,link:"engagement-kpis",value:"Engagement"}
+var collections_kpis = 		 {teamx:"TEAM" ,link:"collections-kpis",value:"Collections"}
 
 var record_operations = {teamx:"OPERATIONS" ,link:"record-operations",value:"Record operations"}
 var operations = {teamx:"OPERATIONS" ,link:"raw-operations",value:"OPERATIONS: Raw operations data"}
@@ -28316,19 +28329,19 @@ performance_data.push(site_permissions)
 performance_data.push(events)
 
 
-$scope.user_groups['SITE PERMISSIONS'].permissions=default_permissions
-$scope.user_groups['SITE PERMISSIONS'].views=[]
-$scope.user_groups['SITE PERMISSIONS'].enter_data=[]
-$scope.user_groups['SITE PERMISSIONS'].resources=[]
+$scope.user_groups['ARTS AND EVENTS'].permissions=default_permissions
+$scope.user_groups['ARTS AND EVENTS'].views=[]
+$scope.user_groups['ARTS AND EVENTS'].enter_data=[]
+$scope.user_groups['ARTS AND EVENTS'].resources=[]
 
-$scope.user_groups['SITE PERMISSIONS'].views.push(masterkpi)
-$scope.user_groups['SITE PERMISSIONS'].views.push(timeline)
-$scope.user_groups['SITE PERMISSIONS'].views.push(analyser)
+$scope.user_groups['ARTS AND EVENTS'].views.push(masterkpi)
+$scope.user_groups['ARTS AND EVENTS'].views.push(timeline)
+$scope.user_groups['ARTS AND EVENTS'].views.push(analyser)
 
 
 
-$scope.user_groups['SITE PERMISSIONS'].enter_data=enter_data
-$scope.user_groups['SITE PERMISSIONS'].performance=performance_data
+$scope.user_groups['ARTS AND EVENTS'].enter_data=enter_data
+$scope.user_groups['ARTS AND EVENTS'].performance=performance_data
  
 var enter_data=[]
 enter_data.push(performance)
@@ -30493,7 +30506,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
           
         }])
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_95c19023.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_b44f89d3.js","/")
 },{"../components/exhibitions/directive":8,"../components/exhibitions/music/monthly-votes-controller":9,"../components/exhibitions/music/raw-votes-controller":10,"../components/exhibitions/music/votes-form-controller":11,"../components/iframe/iframe-controller":12,"../components/iframe/iframe-directive":13,"../components/machine-monitor/dashboard-controller":14,"../components/machine-monitor/dead-controller":15,"../components/machine-monitor/downtime-controller":16,"../components/machine-monitor/downtime-services":17,"../components/machine-monitor/feedback-controller":18,"../components/machine-monitor/feedback-services":19,"../components/machine-monitor/satisfaction-controller":20,"../components/member/member-controller":21,"../components/performance/analyser/analyser-controller":22,"../components/performance/corporate/monthly-corporate-controller":23,"../components/performance/corporate/performance-form-controller":24,"../components/performance/corporate/raw-corporate-controller":25,"../components/performance/corporate/yearly-corporate-controller":26,"../components/performance/dashboard-controllers":27,"../components/performance/donations-other/monthly-donations_other-controller":28,"../components/performance/donations-other/performance-form-controller":29,"../components/performance/donations-other/raw-donations_other-controller":30,"../components/performance/donations-other/yearly-donations_other-controller":31,"../components/performance/donations/monthly-donations-controller":32,"../components/performance/donations/performance-form-controller":33,"../components/performance/donations/raw-donations-controller":34,"../components/performance/donations/yearly-donations-controller":35,"../components/performance/events/monthly-events-controller":36,"../components/performance/events/performance-form-controller":37,"../components/performance/events/raw-events-controller":38,"../components/performance/events/yearly-events-controller":39,"../components/performance/exhibitions-pwyt/monthly-donations-controller":40,"../components/performance/exhibitions-pwyt/performance-form-controller":41,"../components/performance/exhibitions-pwyt/raw-donations-controller":42,"../components/performance/exhibitions/exhibitions-summary-controller":43,"../components/performance/gallery-visits/exhibitions-teg-controller":44,"../components/performance/gallery-visits/monthly-teg-controller":45,"../components/performance/gallery-visits/performance-form-controller":46,"../components/performance/gallery-visits/raw-teg-controller":47,"../components/performance/gallery-visits/weekly-teg-controller":48,"../components/performance/gallery-visits/yearly-teg-controller":49,"../components/performance/gift-aid/monthly-allgiftaid-controller":50,"../components/performance/gift-aid/monthly-giftaid-controller":51,"../components/performance/gift-aid/performance-form-controller":52,"../components/performance/gift-aid/raw-giftaid-controller":53,"../components/performance/home/kpi-home-controller":54,"../components/performance/home/master-kpi-home-controller":55,"../components/performance/kpi-events/monthly-events-controller":56,"../components/performance/kpi-events/performance-form-controller":57,"../components/performance/kpi-events/raw-events-controller":58,"../components/performance/kpi-events/standard-monthly-events-controller":59,"../components/performance/learning/age-learning-controller":60,"../components/performance/learning/monthly-learning-controller":61,"../components/performance/learning/performance-form-controller":62,"../components/performance/learning/raw-learning-controller":63,"../components/performance/learning/yearly-learning-controller":64,"../components/performance/operations/monthly-operations-controller":65,"../components/performance/operations/performance-form-controller":66,"../components/performance/operations/raw-operations-controller":67,"../components/performance/operations/yearly-operations-controller":68,"../components/performance/participation/monthly-participation-controller":69,"../components/performance/participation/performance-form-controller":70,"../components/performance/participation/raw-participation-controller":71,"../components/performance/participation/target-audience-controller":72,"../components/performance/participation/yearly-participation-controller":73,"../components/performance/patron/monthly-patron-controller":74,"../components/performance/patron/performance-form-controller":75,"../components/performance/patron/raw-patron-controller":76,"../components/performance/patron/yearly-patron-controller":77,"../components/performance/performance-directive":78,"../components/performance/retail/monthly-retail-sales-controller":79,"../components/performance/retail/performance-form-controller":80,"../components/performance/retail/raw-retail-sales-controller":81,"../components/performance/retail/yearly-retail-sales-controller":82,"../components/performance/site_permissions/monthly-site_permissions-controller":83,"../components/performance/site_permissions/performance-form-controller":84,"../components/performance/site_permissions/raw-site_permissions-controller":85,"../components/performance/site_permissions/yearly-site_permissions-controller":86,"../components/performance/team-kpis/standard-monthly-events-controller":87,"../components/performance/turnstiles/monthly-turnstiles-controller":88,"../components/performance/turnstiles/raw-turnstiles-controller":89,"../components/performance/venue-hire/monthly-visits-controller":90,"../components/performance/venue-hire/raw-visits-controller":91,"../components/performance/venue-hire/visits-form-controller":92,"../components/performance/venue-hire/yearly-visits-controller":93,"../components/performance/visits/monthly-visits-controller":94,"../components/performance/visits/raw-visits-controller":95,"../components/performance/visits/visits-form-controller":96,"../components/performance/visits/yearly-visits-controller":97,"../components/performance/welcome-desk/monthly-welcomedesk-controller":98,"../components/performance/welcome-desk/performance-form-controller":99,"../components/performance/welcome-desk/raw-welcomedesk-controller":100,"../components/performance/welcome-desk/yearly-welcomedesk-controller":101,"../components/resource-bookings/bookings/edit-form-controller":102,"../components/resource-bookings/bookings/form-controller":103,"../components/resource-bookings/bookings/monthly-bookings-controller":104,"../components/resource-bookings/bookings/raw-bookings-controller":105,"../components/resource-bookings/bookings/recurring-events-controller":106,"../components/resource-bookings/bookings/yearly-bookings-controller":107,"../components/resource-bookings/directive":108,"../components/resource-bookings/equipment/form-controller":109,"../components/resource-bookings/equipment/raw-equipment-controller":110,"../components/resource-bookings/rooms/form-controller":111,"../components/resource-bookings/rooms/raw-rooms-controller":112,"../components/resource-bookings/timeline-resources-controller":113,"../components/resource-bookings/timeline-resources-services":114,"../components/shopify/shopify-controller":115,"../components/shopify/shopify-directive":116,"../components/shopify/shopify-monthly-controller":117,"../components/signage/directive":118,"../components/signage/posters/form-controller":119,"../components/signage/posters/raw-poster-controller":120,"../components/team/app-controllers":121,"../components/team/form-controller":122,"../components/team/leave-controller":123,"../components/team/team-controller":124,"../components/tech-support/tech-support-controller":125,"../components/tech-support/tech-support-directive":126,"../components/tech-support/trello-services":127,"../components/timeline-settings/raw-timeline-settings-controller":128,"../components/timeline-settings/settings-form-controller":129,"../components/timeline-settings/timeline-settings-directive":130,"../components/timeline/timeline-bookings-services":131,"../components/timeline/timeline-controller":132,"../components/timeline/timeline-directive":133,"../components/timeline/timeline-exhibitions-services":134,"../components/timeline/timeline-googlesheets-services":135,"../components/timeline/timeline-installs-services":136,"../components/timeline/timeline-learning-bookings-services":137,"../components/timeline/timeline-leave-services":138,"../components/timeline/timeline-loans-services":139,"../components/timeline/timeline-services":140,"../components/timeline/timeline-shopify-services":141,"../components/timeline/timeline-visitor-figures-services":142,"../components/turnstiles/turnstiles-controller":143,"../components/turnstiles/turnstiles-directive":144,"../components/user-admin/users-controller":145,"../components/user-admin/users-directive":146,"../shared/controllers/colourkey-controller":147,"../shared/controllers/controllers":148,"../shared/controllers/navbar-controller":149,"../shared/controllers/tablefilter-controller":150,"../shared/directives/directives":151,"../shared/services/app-services":153,"../shared/services/data-services":154,"async":1,"b55mWE":4,"buffer":3,"underscore":7}],153:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 

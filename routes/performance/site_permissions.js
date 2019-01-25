@@ -154,16 +154,13 @@ get_kpis( function ( result) {
 		returned_row.stat="Audience figures"
 		returned_data.push(	 wind_up_Stats(	result,returned_row,"audience_figures",venue))
 		
-	var returned_row={}
-		returned_row.museum=venue
-		returned_row.stat="Total income to BCC"
-			returned_row.xtype="currency"
-		returned_data.push(	 wind_up_Stats(	result,returned_row,"income_bcc",venue))
+
 		
 	var returned_row={}
 		returned_row.museum=venue
 		returned_row.stat="Site permissions 15%"
 			returned_row.xtype="currency"
+			
 		returned_data.push(	 wind_up_Stats(	result,returned_row,"income_site_permissions",venue))
 		
 			var returned_row={}
@@ -172,26 +169,32 @@ get_kpis( function ( result) {
 			returned_row.xtype="currency"
 		returned_data.push(	 wind_up_Stats(	result,returned_row,"income_parks",venue))
 	
-	
-		var returned_row={}
-		returned_row.museum="last year"
-		returned_row.stat="last year"
-		returned_row.xtype="currency"
-		
-		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(result,returned_row,"site_pemrissions_total_last_year",venue))
-
 		var returned_row={}
 		returned_row.museum=venue
-		returned_row.stat="% last year"
-		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"percentace_total_last_year_site_permissions",venue))
-	
+		returned_row.stat="Total income to BCC"
+		returned_row.cssclass="bold"
+			returned_row.xtype="currency"
 			
+			returned_row.cssclass="summary_row"
+			returned_row.csstype="summary_row"
+		returned_data.push(	 wind_up_Stats(	result,returned_row,"income_bcc",venue))
+		
+		var returned_row={}
+		returned_row.museum="Last year"
+		returned_row.stat="Last year"
+		returned_row.xtype="currency"
+		returned_row.cssclass="summary_row"
+		returned_row.cssclass="summary_row"
+			returned_row.csstype="summary_row"
+		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(result,returned_row,"site_pemrissions_total_last_year",venue))
+
+	
 		
 				
 					
 
 	})
-
+		route_functions.ad_percentage_last_year_sitepermissions(returned_data)	
 		res.json(returned_data)
 			
 		})

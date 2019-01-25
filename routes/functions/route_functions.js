@@ -161,6 +161,8 @@ this.calendar_feed = function (events){
 	  this.wind_up_Stats_monthly_variable=function(result,returned_row,analysis_field,venue){
 		 
 			var years = [2015,2016,2017,2018,2019,2020,2021,2022]
+			var checkmonth = new Date()
+				var checkmonth_num = checkmonth.getMonth()
 			new_row=returned_row
 			new_rowx=returned_row
 			_.each(years,function(year){
@@ -555,6 +557,8 @@ this.calendar_feed = function (events){
 								if(month=="Jan"){
 									returned_row[month+" "+year]=returned_row["Dec "+ years[lastyear]]+sales_for_month
 								}
+								else
+									returned_row[month+" "+year]=returned_row["Dec "+ years[lastyear]]+sales_for_month
 								returned_row.cssclass="bold"						
 							    returned_row.typex="currency"
 						
@@ -611,7 +615,7 @@ this.calendar_feed = function (events){
 										if(month==moment.monthsShort(row.kpi_month-1) && row.kpi_year==year){	
 																						
 												if(month=="Apr"){			
-														plus_this_year+= parseInt(row['total_children'])
+													plus_this_year+= parseInt(row['total_children'])
 												}
 												else if(returned_row[months[lastmonth]+" "+year]){
 													plus_this_year=returned_row[months[lastmonth]+" "+year]+sales_for_month
@@ -654,6 +658,8 @@ this.calendar_feed = function (events){
 															}																
 														}
 										}
+										
+										
 												/*
 												if(month=="Jan"){
 													plus_this_year=returned_row["Dec "+ years[lastyear]]+sales_for_month
@@ -670,7 +676,7 @@ this.calendar_feed = function (events){
 				}	
 						else if(analysis_field=="percentace_total_last_year_site_permissions"){
 						
-							var plus_this_year=0
+								var plus_this_year=0
 							var last_year_plus=0
 							var cheesegrater=0
 							var percentage
@@ -680,35 +686,34 @@ this.calendar_feed = function (events){
 								lastyear=years.indexOf(year)-1	
 								months=moment.monthsShort() 
 								lastmonth=months.indexOf(month)-1
-									
+								
 										if(month==moment.monthsShort(row.kpi_month-1) && row.kpi_year==year){	
 																						
-												if(month=="Apr"){			
-														plus_this_year+= parseInt(row['income_site_permissions'])
-												}
-												else if(returned_row[months[lastmonth]+" "+year]){
-													plus_this_year=returned_row[months[lastmonth]+" "+year]+sales_for_month
-												}
-												if(month=="Jan"){
-													plus_this_year=returned_row["Dec "+ years[lastyear]]+sales_for_month
-												}
-													console.log('plus_this_year',plus_this_year)										
+													if(month=="Apr"){
+									plus_this_year+=parseInt(row['income_site_permissions'])
+								}								
+								else if(returned_row[months[lastmonth]+" "+year]){
+									plus_this_year=returned_row[months[lastmonth]+" "+year]+sales_for_month
+								}
+								if(month=="Jan"){
+									plus_this_year=returned_row["Dec "+ years[lastyear]]+sales_for_month
+								}
+								else
+									plus_this_year=returned_row["Dec "+ years[lastyear]]+sales_for_month
+						console.log('plus_this_year',plus_this_year)
+													
+																						
 										}	
-											
-											
+										
 										if(month==moment.monthsShort(row.kpi_month-1) && row.kpi_year==year-1){	
-											
+												
 												lastyear=years.indexOf(year)-1		
 												sales_for_month+=parseInt(row['income_site_permissions'])		
 												
 												if(month=="Apr"){	
 														
 														last_year_plus+=parseInt(row['income_site_permissions'])
-														
-														console.log('last_year_plus',last_year_plus)
-														if(plus_this_year>0){
-															percentage =((plus_this_year/last_year_plus)*100-100).toFixed(2)
-														}
+														percentage =((plus_this_year/last_year_plus)*100-100).toFixed(2)
 														
 														console.log('percentage',percentage)
 														
@@ -721,10 +726,9 @@ this.calendar_feed = function (events){
 												else if(returned_row[months[lastmonth]+" "+year]){
 													
 														plus_this_year=returned_row[months[lastmonth]+" "+year]+sales_for_month
-														if(plus_this_year>0){
-															percentage =((plus_this_year/last_year_plus)*100-100).toFixed(2)
-														}
-														
+														percentage =((plus_this_year/last_year_plus)*100-100).toFixed(2)
+													
+														console.log('percentage 2',plus_this_year,last_year_plus,sales_for_month)
 														
 														if(!isNaN(percentage)){
 																
@@ -866,7 +870,42 @@ this.calendar_feed = function (events){
 		
 	}
 	
+		this.ad_percentage_last_year_sitepermissions=function(returned_data){
+
+					_.each(returned_data,function(row){
+					
+							var new_row = {}
+								new_row.museum="Total income to BCC"
+								new_row.stat="% difference"
+								new_row.typex="retail"
+								new_row.xtype="currency"
+								new_row.cssclass="summary_row"
+								new_row.csstype="summary_row"
+								new_row.stat="% difference"	
+								
+								if(row.stat=="Total income to BCC"){					
+									for(var key in row) {
+										_.each(returned_data,function(rowX){
+											for(var keyX in rowX) {
+												if(rowX.stat=="Last year" && key ==keyX ){	
+													if(row[key]>0 && rowX[keyX]>0){
+														//need to detect if it is a full month
+														
+														percantage=((key,row[key]/rowX[keyX])*100-100).toFixed(2)+"%";
+														
+														new_row[key]=percantage
+													}
+												}
+											}
+										})
+									}
+										returned_data.push(new_row)
+								}
+							
+				})	
+			//	return (new_row)
 	
+	}
 	
 	this.ad_percentage_last_year_income=function(returned_data){
 	
@@ -1310,7 +1349,7 @@ this.calendar_feed = function (events){
 		var returned_row_compare_last_year={}
 		returned_row.museum=venue
 		
-			var years = [2015,2016,2017,2018,2019]
+			var years = [2015,2016,2017,2018,2019,2020,2021,2022]
 			_.each(years,function(year){
 			for (week = 0; week < moment().isoWeeksInYear(); week++) { 	
 				returned_row[moment().day("Monday").year(year).week(week).format('DD/MM/YY')]=""

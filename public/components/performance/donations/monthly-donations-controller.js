@@ -32,7 +32,7 @@ exports.monthly_donations_controller = function(getDateService,$route,$scope, $h
 			$scope.selected_chart_stats=["Donations"]
 			
 			
-			Monthly_donations.query({}, function(team) {
+			Monthly_donations.query({cache:true}, function(team) {
 				$scope.rows=[]
 				$scope.data_rows=[]
 				$scope._rows=[]

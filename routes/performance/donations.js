@@ -27,6 +27,7 @@ var Welcomedesk = require('../../models/performance/Welcomedesk.js');
 var Patron = require('../../models/performance/Patron.js');
 var Corporate = require('../../models/performance/Corporate.js');
 var Donations_other = require('../../models/performance/Donations_other.js');
+var Cache = require('../../models/cache/cache.js');
 //aggregation
 
 
@@ -361,6 +362,14 @@ res.json(returned_data)
 });
 /* GET /todos listing. */
 router.get('/all', function(req, res, next) {
+	
+	
+	
+	
+	
+	
+	
+	
 
 function get_kpis(cb){
 
@@ -581,26 +590,24 @@ Patron.aggregate([
 						//n.b. not data for some months or years so will need to create these and loop - see monthly gift aid
 						if(newres.kpi_venue==venue &&  newres.kpi_month==m+1 && newres.kpi_year==year){								
 							if(kpi.kpi_venue==venue &&  kpi.kpi_month==m+1 && kpi.kpi_year==year){
-							
-											if(venue=="") return;	
-
-							_.each(types,function(type){
-								_.each(Donations_other,function(other,i){
-															
-									//n.b. not data for some months or years so will need to create these and loop - see monthly gift aid
-									if(other.venue==venue &&  newres.kpi_venue==venue && other.type== type && newres.kpi_month==m+1 && newres.kpi_year==year){		
-										if( other.month==m+1 && other.year==year){
-														console.log('here')
-														newresults[xx].donations_other=other.donations	
-														newresults[xx].type=other.type															
-														
-											}
-										}								
+								if(venue=="") return;
+									_.each(types,function(type){
+										_.each(Donations_other,function(other,i){
+											//n.b. not data for some months or years so will need to create these and loop - see monthly gift aid
+											if(other.venue==venue &&  newres.kpi_venue==venue && other.type== type && newres.kpi_month==m+1 && newres.kpi_year==year){		
+												if( other.month==m+1 && other.year==year){
+																
+																newresults[xx].donations_other=other.donations	
+																newresults[xx].type=other.type
+																newresults[xx].combined=other.donations																	
+																
+													}
+												}								
+										})
 									})
-							})
 
 											
-											newresults[xx].combined=kpi.donations
+											newresults[xx].combined+=kpi.donations
 											newresults[xx].donations=kpi.donations
 								}
 							}								
@@ -610,11 +617,11 @@ Patron.aggregate([
 						_.each(welsomedesk,function(welcome,ii){
 							if(welcome.venue==venue &&  welcome.month==m+1 && welcome.year==year){
 								if(newres.kpi_venue==venue &&  newres.kpi_month==m+1 && newres.kpi_year==year){	
-									//console.log(venue)
+								
 										newresults[xx].welcome=welcome.cash+welcome.card	
-										newresults[xx].welcome_gift_aid=welcome.giftaid_amount*1.25											
-									//console.log(	newresults[xx])
-										newresults[xx].combined=newresults[xx].donations_other+newresults[xx].welcome+newresults[xx].gift_aid_amountx+newresults[xx].donations	+newresults[xx].dowelcome_gift_aidations	
+										newresults[xx].welcome_gift_aid=welcome.giftaid_amount*1.25	
+										newresults[xx].combined=newresults[xx].donations_other+newresults[xx].welcome+newresults[xx].gift_aid_amountx+newresults[xx].donations		
+								
 								}
 							}								
 						})
@@ -706,6 +713,49 @@ else
 		   });
 }
 
+
+
+
+if(req.query.cache){
+	
+	var query={ type: 'monthly_development', row_name: "cheese" }
+ 
+    Cache.findOne(query, {}, { sort: { 'date_cached' : -1 } })    
+  
+  
+	   .populate('leave_taken')
+	     .sort({date_value: 'desc'})
+	   .exec (  function (err, todos) {
+    if (err) return next(err);
+	
+	var data_to_return = []
+	
+	
+		data_to_return=todos.cache
+
+	
+	if(req.params.csv){
+			res.setHeader('Content-disposition', 'attachment; filename=data.csv');
+			res.set('Content-Type', 'text/csv');
+			var fields = ['museum_id', 'date_value', 'value'];
+			var csv = json2csv({ data: todos, fields: fields });
+			res.status(200).send(csv);
+
+	}
+	else
+	{
+		res.json(data_to_return);
+	}
+  })
+
+}
+
+else
+	
+{
+
+var months=moment.monthsShort()
+
 get_kpis( function ( result) {
 	
 
@@ -718,7 +768,7 @@ get_kpis( function ( result) {
 	var venues=[]
 	_.each(result,function(row){
 		if(venues.indexOf(row.kpi_venue)==-1){
-			console.log('adding income stream  ',row.kpi_venue)
+			//console.log('adding income stream  ',row.kpi_venue)
 			venues.push(row.kpi_venue)
 		}
 	})
@@ -874,12 +924,22 @@ get_kpis( function ( result) {
 		
 		route_functions.ad_percentage_last_year(returned_data)
 		
-		
+		 	var datacache = [{ type: 'monthly_development', row_name: "cheese" , date_cached: new Date(), cache:returned_data }];
+    // save multiple documents to the collection referenced by Book Model
+    Cache.collection.insert(datacache, function (err, docs) {
+      if (err){ 
+          return console.error(err);
+      } else {
+        console.log("Multiple documents inserted to Collection");
+      }
+    });
+	
+	
 res.json(returned_data)
 	
 })
 
-
+}
 
 });
 
@@ -894,6 +954,7 @@ router.get('/', function(req, res, next) {
     
 	if(req.params.csv){
 
+	
 
  res.setHeader('Content-disposition', 'attachment; filename=donations.csv');
   res.set('Content-Type', 'text/csv');

@@ -42,7 +42,7 @@ $scope.user_groups['DEVELOPMENT']=[]
 $scope.user_groups['VENUE HIRE']=[]	 
 $scope.user_groups['LEARNING']=[]	
 $scope.user_groups['EXHIBITIONS']=[]	
-$scope.user_groups['SITE PERMISSIONS']=[]	
+$scope.user_groups['ARTS AND EVENTS']=[]	
 $scope.user_groups['OPERATIONS']=[]
 $scope.user_groups['COMMERCIAL']=[]
 	
@@ -90,9 +90,9 @@ var monthly_donations_other = 		 {teamx:"DONATIONS" ,link:"monthly-donations-oth
 
 
 
-var record_site_permissions=		{teamx:"SITE PERMISSIONS" ,link:"record-site-permissions",value:"Record  site permissions"}
-var site_permissions = 				 {teamx:"SITE PERMISSIONS" ,link:"raw-site-permissions",value:"Raw site permissions data"}
-var monthly_site_permissions = 		 {teamx:"SITE PERMISSIONS" ,link:"monthly-site-permissions",value:"Monthly site permissions"}
+var record_site_permissions=		{teamx:"ARTS AND EVENTS" ,link:"record-site-permissions",value:"Record  site permissions"}
+var site_permissions = 				 {teamx:"ARTS AND EVENTS" ,link:"raw-site-permissions",value:"Raw site permissions data"}
+var monthly_site_permissions = 		 {teamx:"ARTS AND EVENTS" ,link:"monthly-site-permissions",value:"Monthly site permissions"}
 
 
 
@@ -111,8 +111,8 @@ var monthly_corporate = 		 {teamx:"DONATIONS" ,link:"monthly-corporate",value:"M
 
 
 var transformation_kpis = 		 {teamx:"TEAM" ,link:"transformation-kpis",value:"Transformation"}
-var engagement_kpis = 		 {teamx:"TEAM" ,link:"transformation-kpis",value:"Engagement"}
-var collections_kpis = 		 {teamx:"TEAM" ,link:"transformation-kpis",value:"Collections"}
+var engagement_kpis = 		 {teamx:"TEAM" ,link:"engagement-kpis",value:"Engagement"}
+var collections_kpis = 		 {teamx:"TEAM" ,link:"collections-kpis",value:"Collections"}
 
 var record_operations = {teamx:"OPERATIONS" ,link:"record-operations",value:"Record operations"}
 var operations = {teamx:"OPERATIONS" ,link:"raw-operations",value:"OPERATIONS: Raw operations data"}
@@ -279,19 +279,19 @@ performance_data.push(site_permissions)
 performance_data.push(events)
 
 
-$scope.user_groups['SITE PERMISSIONS'].permissions=default_permissions
-$scope.user_groups['SITE PERMISSIONS'].views=[]
-$scope.user_groups['SITE PERMISSIONS'].enter_data=[]
-$scope.user_groups['SITE PERMISSIONS'].resources=[]
+$scope.user_groups['ARTS AND EVENTS'].permissions=default_permissions
+$scope.user_groups['ARTS AND EVENTS'].views=[]
+$scope.user_groups['ARTS AND EVENTS'].enter_data=[]
+$scope.user_groups['ARTS AND EVENTS'].resources=[]
 
-$scope.user_groups['SITE PERMISSIONS'].views.push(masterkpi)
-$scope.user_groups['SITE PERMISSIONS'].views.push(timeline)
-$scope.user_groups['SITE PERMISSIONS'].views.push(analyser)
+$scope.user_groups['ARTS AND EVENTS'].views.push(masterkpi)
+$scope.user_groups['ARTS AND EVENTS'].views.push(timeline)
+$scope.user_groups['ARTS AND EVENTS'].views.push(analyser)
 
 
 
-$scope.user_groups['SITE PERMISSIONS'].enter_data=enter_data
-$scope.user_groups['SITE PERMISSIONS'].performance=performance_data
+$scope.user_groups['ARTS AND EVENTS'].enter_data=enter_data
+$scope.user_groups['ARTS AND EVENTS'].performance=performance_data
  
 var enter_data=[]
 enter_data.push(performance)
