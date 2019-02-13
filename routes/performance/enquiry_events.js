@@ -111,7 +111,7 @@ get_kpis( function ( result) {
 	function wind_up_Stats(	result,returned_row,analysis_field,target_groups){
 		
 		
-				var years = [2014,2015,2016,2017,2018,2019]
+				var years = [2014,2015,2016,2017,2018,2019,2020,2021,2022]
 								_.each(years,function(year){
 									var financial_yesr_text = ["last","this"]
 									_.each(financial_yesr_text,function(financial_yer_text){
@@ -850,7 +850,7 @@ Team.aggregate([
 
 					      
 					    venue:'$team_id',
-						//kpi_type:'$kpi_type',
+						kpi_type:'$kpi_type',
 					   // age_group:'$age_group',
 						
 					   
@@ -858,6 +858,7 @@ Team.aggregate([
 				
 					total_sessions: {$sum: '$no_sessions' },  //add more if you change the data entry field
 					total_people: {$sum: '$no_visits' },
+					kpi_value: {$sum: '$kpi_value' },
 					total_enquiries: {$sum: '$no_enquiries' },
 					//total_children: {$sum: '$total_children' },
 					//total_teachers: {$sum: '$total_teachers' },
@@ -867,7 +868,7 @@ Team.aggregate([
             }
 		 },
 
-	 { $project : {venue:"$_id.venue",  total_enquiries:"$total_enquiries",total_people:"$total_people",total_income:"$total_income",total_sessions:"$total_sessions",kpi_year :"$_id.year", kpi_month :"$_id.month"}  }//,
+	 { $project : {venue:"$_id.venue", kpi_type:"$_id.kpi_type", kpi_value:"$kpi_value", total_enquiries:"$total_enquiries",total_people:"$total_people",total_income:"$total_income",total_sessions:"$total_sessions",kpi_year :"$_id.year", kpi_month :"$_id.month"}  }//,
 	//{ $sort : { age_group : 1 } }
 		
 
@@ -962,13 +963,14 @@ get_kpis( function ( result) {
 	function wind_up_Stats(	result,returned_row,analysis_field,venue,kpi_type){
 		
 		this_year_stats=[]
-			var years = [2016,2017,2018,2019]
+			var years = [2016,2017,2018,2019,2020,2021,2022]
 			_.each(years,function(year){
 			_.each(moment.monthsShort(),function(month){
 				returned_row[month+" "+year]=""
 				_.each(result,function(row){
 					if(month==moment.monthsShort(row.kpi_month-1 )  && venue==row.kpi_venue &&row.kpi_year==year){
 						if(row[analysis_field]>0){
+							console.log(row)
 							returned_row[month+" "+year]=row[analysis_field]  //n.b. needs to add up if already exists!
 							this_year_stats[month+" "+year]=row[analysis_field] 
 								if(analysis_field =="_last_year" ){
@@ -977,6 +979,24 @@ get_kpis( function ( result) {
 														if(analysis_field =="_last_year"){	
 															if(previous_data.kpi_year==compare_previous_year  && moment.monthsShort(previous_data.kpi_month-1 ) == month){									
 															returned_row[month+" "+year]=previous_data.total_income
+															}
+														}
+									})							
+								}
+						
+						
+						}
+						
+							if(analysis_field=="kpi_type" && row.kpi_type==kpi_type){
+							console.log(row)
+							returned_row[month+" "+year]=row.total_sessions  //n.b. needs to add up if already exists!
+							this_year_stats[month+" "+year]=row.total_sessions
+								if(analysis_field =="_last_year" ){
+									_.each(result,function(previous_data, i){
+													compare_previous_year = parseInt(year)-1
+														if(analysis_field =="_last_year"){	
+															if(previous_data.kpi_year==compare_previous_year  && moment.monthsShort(previous_data.kpi_month-1 ) == month){									
+															//returned_row[month+" "+year]=previous_data.total_income
 															}
 														}
 									})							
@@ -1069,6 +1089,15 @@ get_kpis( function ( result) {
 		//	returned_row.stat=kpi_type
 			returned_data.push(	 wind_up_Stats(	result,returned_row,"total_enquiries",venue))
 
+			_.each(kpi_types,function(kpi_type){
+					var returned_row={}
+						returned_row.team=venue
+						returned_row.stat=kpi_type
+						returned_row.session_type=""
+						//returned_row.stat=kpi_type
+						returned_data.push(	 wind_up_Stats(	result,returned_row,"kpi_type",venue,kpi_type))
+			})
+	
 
 
 
