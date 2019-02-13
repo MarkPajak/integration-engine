@@ -112,7 +112,7 @@ $.getJSON('https://sheets.googleapis.com/v4/spreadsheets/1dZ1UMfIbNpbUEgGLy7nLeE
 					}
 		
 				})
-				whizz_number( $scope.objects_used,'digitised-objects')
+				whizz_number( $scope.digitised,'digitised-objects')
 				whizz_number( $scope.objects_used,'objects-used')
 				whizz_number( $scope.filming_days,'filming-days')
 				
