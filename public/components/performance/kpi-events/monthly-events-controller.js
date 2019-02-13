@@ -49,7 +49,8 @@ function isNumeric(n) {
 			$scope.data_columns.push("date")
 			
 			$scope.get_data=function(event_type){
-			console.log('get_data')
+
+				console.log('get_data cheese')
 			Monthly_kpi_events.query( { "team_id":$scope.user.team,"kpi_type":"#"}, function(team) {
 		console.log('team',team)
 				$scope.rows=[]

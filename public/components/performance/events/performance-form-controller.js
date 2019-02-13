@@ -6,6 +6,7 @@ $scope.scope = $scope;
 $scope.events = [];
 $scope.selected_event=[]
 $scope.museums=[]
+$scope.types=[]
 $scope.extraQuery = { "on_site_off_site":"#"}
 
 	$scope.event_lead = 		$scope.user.firstName+" "+$scope.user.lastName
@@ -42,7 +43,15 @@ $scope.museums.push({value:"RED-LODGE",name:'The Red Lodge'});
 $scope.museums.push({value:"BLAISE",name:'Blaise Museum'});
 $scope.museums.push({value:"BRISTOL-ARCHIVES",name:'Bristol Archives'});
 $scope.museums.push({value:"ROMAN-VILLA",name:'Kings Weston Roman Villas'});	
-		
+
+$scope.types.push({value:"Adult Workshop",name:'Adult Workshop'});
+$scope.types.push({value:"Family Activity/Workshop",name:'Family Activity/Workshop'});		
+$scope.types.push({value:"Festival",name:'Festival'});	
+$scope.types.push({value:"Lecture",name:'Lecture'});				
+$scope.types.push({value:"Talk/Tour",name:'Talk/Tour'});
+$scope.types.push({value:"Walk",name:'Walk'});
+$scope.types.push({value:"Working-Exhibits",name:'Working-Exhibits'});
+$scope.types.push({value:"Other / Special event",name:'Other / Special event'});		
 
 	 Community_groups.query({}, function(groups) {
  
@@ -211,6 +220,7 @@ function sortJSON(data, key, way) {
 			on_site_off_site: visit_form.on_site_off_site.value,
 			target_groups:$scope.selection,
 			event_name: $('#event_name').find("option:selected").text(),
+			event_type:visit_form.events.value,
 			age_group: visit_form.age_group.value,
 			no_sessions: visit_form.no_sessions.value,
 			event_lead: visit_form.event_lead.value,

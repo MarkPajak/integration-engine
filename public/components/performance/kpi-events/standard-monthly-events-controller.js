@@ -44,7 +44,7 @@ exports.standard_monthly_kpi_events_controller = function($route,$scope, $http, 
 				
 		
 		get_data=function(){
-			console.log('get_data')
+		
 			Monthly_standard_kpi_events.query( { "team_id":$scope.user.team,"kpi_type":"#"}, function(team) {
 				$scope.rows=[]
 				$scope._rows=[]

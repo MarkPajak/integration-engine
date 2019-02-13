@@ -59,7 +59,7 @@ function sortJSON(data, key, way) {
     });
 }
 
-
+/*
 	 Emu_events.getData().then(function(response){
 	 
 			past_events=[]
@@ -81,7 +81,7 @@ compare_date.setFullYear( compare_date.getFullYear() - 1 );
 		
 	 });
 
- 
+ */
     $scope.add = function (newValue) {
 		
         var obj = {};

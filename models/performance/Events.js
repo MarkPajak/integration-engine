@@ -17,7 +17,8 @@ var Events_kpi = new mongoose.Schema({
 		
 			id: String,
 			museum_id: { type: String, required: true},						
-			kpi_type: { type: String },				
+			kpi_type: { type: String },	
+			event_type: { type: String, Default: "n"},					
 			on_site_off_site: { type: String, required: true},
 			event_lead: { type: String},				
 			age_groups:  [age_groupDoc],

@@ -586,6 +586,36 @@ Patron.aggregate([
 						
 						
 						
+						
+									//_.each(result,function(kpi,i){
+						//n.b. not data for some months or years so will need to create these and loop - see monthly gift aid
+						if(newres.kpi_venue==venue &&  newres.kpi_month==m+1 && newres.kpi_year==year){								
+							//if(kpi.kpi_venue==venue &&  kpi.kpi_month==m+1 && kpi.kpi_year==year){
+								if(venue=="") return;
+									_.each(types,function(type){
+										_.each(Donations_other,function(other,i){
+											//n.b. not data for some months or years so will need to create these and loop - see monthly gift aid
+											if(other.venue==venue &&  newres.kpi_venue==venue && other.type== type && newres.kpi_month==m+1 && newres.kpi_year==year){		
+												if( other.month==m+1 && other.year==year){
+																
+																newresults[xx].donations_other=other.donations	
+																newresults[xx].type=other.type
+																newresults[xx].combined=other.donations																	
+																
+													}
+												}								
+										})
+									})
+
+											
+											//newresults[xx].combined+=kpi.donations
+											//newresults[xx].donations=kpi.donations
+								//}
+							}								
+					//	})
+						
+						
+						
 						_.each(result,function(kpi,i){
 						//n.b. not data for some months or years so will need to create these and loop - see monthly gift aid
 						if(newres.kpi_venue==venue &&  newres.kpi_month==m+1 && newres.kpi_year==year){								
@@ -597,9 +627,9 @@ Patron.aggregate([
 											if(other.venue==venue &&  newres.kpi_venue==venue && other.type== type && newres.kpi_month==m+1 && newres.kpi_year==year){		
 												if( other.month==m+1 && other.year==year){
 																
-																newresults[xx].donations_other=other.donations	
-																newresults[xx].type=other.type
-																newresults[xx].combined=other.donations																	
+																//newresults[xx].donations_other=other.donations	
+																//newresults[xx].type=other.type
+																//newresults[xx].combined=other.donations																	
 																
 													}
 												}								
@@ -776,7 +806,7 @@ get_kpis( function ( result) {
 	function wind_up_Stats(	result,returned_row,analysis_field,venue,type){
 		
 			type=type || ""
-			years = [2014,2015,2016,2017,2018,2019,2010,2021,2022]
+			years = [2017,2018,2019,2010,2021,2022]
 			returned_row.delete_row=true
 			_.each(years,function(year){
 			_.each(moment.monthsShort(),function(month){			
@@ -857,7 +887,7 @@ get_kpis( function ( result) {
 		
 		var returned_row={}
 		returned_row.museum=venue
-		returned_row.stat="welcome_gift_aid + 25%"
+		returned_row.stat="Welcome gift aid + 25%"
 		returned_row.xtype="currency"
 		row =  wind_up_Stats(result,returned_row,"welcome_gift_aid",venue)
 	

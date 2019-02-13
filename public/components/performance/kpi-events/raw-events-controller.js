@@ -1,23 +1,25 @@
 	
 
 
-exports.raw_kpi_events_controller = function($route,$scope, get_table_data_team,$http, $q, $routeParams, $location,$rootScope, Raw_kpi_events,data_table_reload,AuthService,grid_ui_settings,table_security
+exports.raw_kpi_events_controller = function($route,$scope, AuthService,get_table_data_team,$http, $q, $routeParams, $location,$rootScope, Raw_kpi_events,data_table_reload,AuthService,grid_ui_settings,table_security
     ) {
+		$scope.gridOptions=[]
+		$scope.gridOptions.data=[]
+		$scope.table_class="col-md-5 col-5-12col-sm-5"
+		$scope.show_all_Button=true
 	
-	
-
+ // AuthService.isLoggedIn().then(function(user){
 	
 		
-		$scope.table_class="col-md-12 col-lg-12col-sm-12"
-		$scope.show_all_Button=true
+		
 		$scope.featured_collection=Raw_kpi_events
 		$rootScope.featured_collection=Raw_kpi_events
 		$scope.table_heading = "Raw data (editable)"
 		$rootScope.canEdit_table=true
-		$scope.gridOptions=[]
-		$scope.gridOptions.data=[]
+	
 		
 		var teamfilter = $scope.user.team
+		console.log('teamfilter',teamfilter)
 		if($scope.user.group=="ADMIN") teamfilter ="#"
 		
 		$scope.extraQuery = { "team_id":teamfilter,"kpi_type":"#"}
@@ -40,7 +42,7 @@ exports.raw_kpi_events_controller = function($route,$scope, get_table_data_team,
 			)
 			
 			$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
-			get_table_data_team.getData(moment(new Date()).subtract({'months':100000})._d,$scope)
+			get_table_data_team.getData(moment(new Date()).subtract({'months':10000})._d,$scope)
 				
 				
 			$scope.$watch('changed', function (newValue) {
@@ -52,10 +54,16 @@ exports.raw_kpi_events_controller = function($route,$scope, get_table_data_team,
 					
 					
 					get_table_data_team.getData(moment(new Date()).subtract({'months':100000})._d,$scope)
-					//$scope.tableChanged++
+					$scope.tableChanged++
 				}				
-			})
-}			
+  //})
+
+})
+	
+
+	}
+
+			
 
 
 

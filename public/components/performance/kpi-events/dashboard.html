@@ -1,8 +1,20 @@
+<style>
+
+raw-events{
+
+    position: absolute;
+   // left: 20px;
+	 width: 67%;
+
+
+}
+
+</style>
+
 <table-filter ></table-filter>
-<yearly-events></yearly-events>
-<line-chart></line-chart>
-<option-select2></option-select2>
-<monthly-events ng-hide="formData.monthWeek=='week'"></monthly-events>
+<monthly-standardkpievents tableChanged="tableChanged" changed="changed" user="user" ng-hide="formData.monthWeek=='week'"></monthly-standardkpievents>
+<monthly-kpievents   tableChanged="tableChanged" changed="changed" user="user"></monthly-kpievents>
+<raw-kpievents       changed="changed" user="user"></raw-kpievents>
 
 
 

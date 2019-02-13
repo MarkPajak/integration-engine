@@ -273,7 +273,7 @@ get_kpis( function ( result) {
 	function wind_up_Stats(	result,returned_row,analysis_field,community_group){
 		
 		
-				var years = [2014,2015,2016,2017,2018,2019]
+				var years = [2014,2015,2016,2017,2018,2019,2020,2021,2022]
 								_.each(years,function(year){
 									var financial_yesr_text = ["last","this"]
 									_.each(financial_yesr_text,function(financial_yer_text){
@@ -1058,7 +1058,23 @@ get_kpis( function ( result) {
 		//	returned_row.stat=kpi_type
 			returned_data.push(	 wind_up_Stats(	result,returned_row,"total_income",venue))
 										
+			
 			var returned_row={}
+			returned_row.team=venue
+			returned_row.kpi_type="total_enquiries"
+			returned_row.stat="Enquiries"
+			//returned_row.typex="currency"
+						returned_row.csstype="bold"
+			//returned_row.session_type=session_type
+		//	returned_row.stat=kpi_type
+			returned_data.push(	 wind_up_Stats(	result,returned_row,"total_enquiries",venue))
+
+
+
+
+
+
+		var returned_row={}
 			returned_row.team=venue
 			returned_row.kpi_type="total_people"
 			//returned_row.session_type=session_type

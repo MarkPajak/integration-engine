@@ -159,7 +159,7 @@ exports.table_security = function(AuthService,$rootScope) {
 
 }
 	exports.get_table_data_team = function($rootScope,data_table_reload) {	
-console.log('exports.get_table_data_team')
+
 
 
 var self = this
@@ -169,6 +169,7 @@ var myScope
 
 			
 			array.filter_x= function(filter_key,filter_value,$scope){
+					console.log('filter_x')
 			
 		
 			
@@ -230,9 +231,9 @@ var myScope
 			
 			
 			array.getData= function(filterdate,$scope){
-			console.log('getData')
-			console.log('filterdate',filterdate)
 		
+			//console.log('filterdate',filterdate)
+		//	console.log('getData')
 			if($scope){
 			myScope=$scope
 			}
@@ -279,7 +280,7 @@ var myScope
 																		
 									
 								if(moment(row.date_value)._d>=moment(filterdate)._d  && row.team_id!=""){					
-									
+									console.log('pushing row',row)
 									$scope._rows.push(row)
 									
 								}
@@ -316,6 +317,7 @@ var myScope
 					})	
 					
 			$rootScope.alldata=function (val) {
+					console.log('alldata')
 
 						if (val=="month"){
 						
@@ -349,6 +351,7 @@ var myScope
 			
 			
 			$rootScope.dynamic_filter=function (filter_key,filter_value) {
+				console.log('dynamic_filter')
 			
 			array.filter_x(filter_key,filter_value,myScope)
 			
@@ -954,6 +957,7 @@ array.build  = function (scope,start_date,end_date) {
 
 			_.each(scope.data_columns,function(column_name){	
 			//n.b. fields now need to be data label names so only one date column needed
+			
 				columns.push({ field: column_name,width: "80"})
 				//scope.filter_pie.push({value:month+" "+year,name:month+" "+year})
 			})
@@ -1079,12 +1083,12 @@ array.build  = function (scope,start_date,end_date) {
  var firstrun=true
 	for (year = start; year <= end; year++) { 
 month_num=0
+
 			_.each(moment.monthsShort(),function(month){	
 			month_num++
-
-			console.log('start_month',start_month)
-			console.log('monthNames.indexOf(month)',monthNames.indexOf(month))
-			console.log(year==end && month_num>monthNames.indexOf(month))
+if(month_num==4){
+			columns.push({ field: "Total "+year ,width: "100"})
+}
 			if(firstrun==true && month!=monthNames[start_month] || year==end && month_num>start_month) return;
 				columns.push({ cellFilter:  'valueFilter:row.entity', field: month+" "+year,	name: month+" "+year.toString().substring(2),width: "100",	  cellClass: function(grid, row, col, rowRenderIndex, colRenderIndex) {
 																															
@@ -1379,7 +1383,7 @@ exports.trello = function($http) {
 
 exports.get_trello_board = function (Team,Tallys,date_calc,$http,$rootScope) {	
 
-
+console.log('get_trello_board')
     var urlBase =  'https://trello.com/b/GHES2npy/tarantulas.json';
     var trello = []
 	var trello_data=[]

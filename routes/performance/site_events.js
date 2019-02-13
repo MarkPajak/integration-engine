@@ -1299,13 +1299,14 @@ router.get('/target/:csv', function(req, res, next) {
 								on_site_off_site : 1 ,
 								target_groups : 1,
 								event_name:1,
+								event_type:1,
 								date: { $dateToString: { format: "%d/%m/%Y", date: route_functions.mongo_aggregator } }							  
 										
 					}}
 					, { $unwind :'$target_groups' },
 					
 					{
-					$project:{museum_id : 1 ,date : 1 ,on_site_off_site : 1 ,event_name:1,name :'$target_groups.name'}
+					$project:{museum_id : 1 ,date : 1 ,on_site_off_site : 1 ,event_name:1,event_type:1,name :'$target_groups.name'}
 					}])
 	   .exec (  function (err, todos) {
     if (err) return next(err);
@@ -1330,6 +1331,7 @@ router.get('/:csv', function(req, res, next) {
 								on_site_off_site : 1 ,
 								age_groups : 1,
 								event_name:1,
+								event_type:1,
 								no_sessions:1,
 								date: { $dateToString: { format: "%d/%m/%Y", date: route_functions.mongo_aggregator } }							  
 										
@@ -1337,7 +1339,7 @@ router.get('/:csv', function(req, res, next) {
 					, { $unwind :'$age_groups' },
 					
 					{
-					$project:{museum_id : 1 ,date : 1 ,on_site_off_site : 1 ,no_sessions : 1 ,event_name:1,name :'$age_groups.name' ,count :'$age_groups.count' }
+					$project:{museum_id : 1 ,date : 1 ,on_site_off_site : 1 ,no_sessions : 1 ,event_name:1,event_type:1,name :'$age_groups.name' ,count :'$age_groups.count' }
 					}])
 	   .exec (  function (err, todos) {
     if (err) return next(err);
@@ -1405,6 +1407,7 @@ Team.aggregate(
 			age_groups:  1,
 			target_groups: 1,
 			event_name: 1,
+			event_type: 1,
 			community_group:1,
 			date_value:1,	
 			date_value_end: {
@@ -1467,6 +1470,7 @@ Team.aggregate(
 							"event_lead": { "$first": "$event_lead"},
 							"target_groups": { "$first": "$target_groups"},
 							"event_name": { "$first": "$event_name"},
+							"event_type": { "$first": "$event_type"},
 							"community_group": { "$first": "$community_group"},
 							"date_value": { "$first": "$date_value"},
 							"date_value_end": { "$first": "$date_value_end"},

@@ -856,17 +856,23 @@ exports.recordTeg  = function() {
 	}
 
 	
-			exports.rawKpievents = function() {
+			exports.rawKpieventsx = function() {
   return {
+	 
+	
+			   restrict: 'E',
+		 scope: {
+			user: '=',changed:'=',tableChanged:'='
+			  },
+			   link: function(scope, element, attrs) {
+			   
+				team=attrs.team
 
-         restrict: "E",
-		
-		   
-   scope: {
-		user: '=',changed:'=',tableChanged:'='
-		
-        },
-		
+				console.log(attrs)
+				
+				//scope.init(team)
+				
+			  },
    controller: 'raw_kpi_events_controller',
      templateUrl: './shared/templates/data_table.html'
   }
@@ -886,6 +892,15 @@ exports.standardkpieventsengagementDashboard = function() {
   }
 	}
 		
+	exports.standardkpieventscollectionsDashboard = function() {
+  return {
+     controller: 'dashboard_controller',
+    templateUrl: './components/performance/team-kpis/collections-dashboard.html'
+  }
+	}
+	
+	
+	
 	
 exports.teamStandardkpievents = function() {
 
@@ -922,7 +937,7 @@ exports.teamStandardkpievents = function() {
 
 		console.log(attrs)
 		
-		scope.init(event_type)
+		//scope.init(event_type)
 		
       },
    controller: 'standard_monthly_kpi_events_controller',

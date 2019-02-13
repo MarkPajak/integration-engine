@@ -19,6 +19,7 @@ exports.raw_events_controller = function($route,$scope, $http, $q, $routeParams,
 				{ field: 'no_sessions',name: "No. sessions" ,resizable: true,width:100},
 			{ field: 'event_lead',name: "Event Lead" ,resizable: true,width:140},		
 			{ field: 'event_name',name: "Name of Event" ,resizable: true,width:250},	
+			{ field: 'event_type',name: "Type of Event" ,resizable: true,width:250},	
 			//{ field: 'community_group',name: "Community Group" ,resizable: true,width:250},	
 			
 			
