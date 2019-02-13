@@ -563,7 +563,17 @@ exports.Monthly_venue_hire =  function($resource){
 			  'delete': {method:'DELETE'} // same, remove record
           });
  }
- 
+     exports.get_team_kpis =  function($resource){
+	 
+            return $resource('kpi_events', null,
+			{ 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray:true}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			  'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+			});
+ }
     exports.get_kpis =  function($resource){
 	 
             return $resource('kpi_aggregate/kpis', null,

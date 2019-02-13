@@ -1,4 +1,4 @@
-exports.kpi_home_controller = function(get_kpis,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Raw_events,data_table_reload,AuthService,grid_ui_settings,get_table_data,table_security
+exports.kpi_home_controller = function(get_kpis,get_team_kpis,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Raw_events,data_table_reload,AuthService,grid_ui_settings,get_table_data,table_security
     ) {
 		
 	
@@ -48,7 +48,100 @@ $.getJSON('https://sheets.googleapis.com/v4/spreadsheets/1dZ1UMfIbNpbUEgGLy7nLeE
 		
 		console.log('current month',current_month)
 		
+					get_team_kpis.query({}, function(team) {
+						
+						
+				$scope.rows=[]
+				$scope._rows=[]
+				$scope.visits=0
+				$scope.visits_num=0
+				$scope.lte_visits=0
+				$scope.lte_visits_num=0
+				$scope.filming_days=0
+				$scope.digitised=0
+				$scope.objects_used=0
+				
+				
+				_.each(team,function(row){
+					
+					console.log('kpi_row',row)
+				row._id=[]
+			
+				 row._id.year=moment(new Date(row.date_value_end)).format("YYYY")
+				 row._id.month=moment(new Date(row.date_value_end)).format("MM")	
+							
+					if(row._id.year && row.kpi_type=="objects used this month"){
+							if( row._id.month>3&&current_month<=3 && (current_year-1).toString()==row._id.year.toString()){
+								$scope.objects_used+=row.no_sessions							
+							}							
+							if(current_month>3 && current_year.toString()==row._id.year.toString()){
+								$scope.objects_used+=row.no_sessions			
+							}
+							if(row._id.month<=3&& current_month<=3 && current_year.toString()==row._id.year.toString()){
+								$scope.objects_used+=row.no_sessions		
+							}
+
+					}
 		
+					if(row._id.year && row.kpi_type=="New emu object records"){
+							if( row._id.month>3&&current_month<=3 && (current_year-1).toString()==row._id.year.toString()){
+								$scope.digitised+=row.no_sessions							
+							}							
+							if(current_month>3 && current_year.toString()==row._id.year.toString()){
+								$scope.digitised+=row.no_sessions			
+							}
+							if(row._id.month<=3&& current_month<=3 && current_year.toString()==row._id.year.toString()){
+								$scope.digitised+=row.no_sessions		
+							}
+
+					}
+				
+					
+					
+					if(row._id.year && row.kpi_type=="filming days"){
+							if( row._id.month>3&&current_month<=3 && (current_year-1).toString()==row._id.year.toString()){
+								$scope.filming_days+=row.no_sessions							
+							}							
+							if(current_month>3 && current_year.toString()==row._id.year.toString()){
+								$scope.filming_days+=row.no_sessions			
+							}
+							if(row._id.month<=3&& current_month<=3 && current_year.toString()==row._id.year.toString()){
+								$scope.filming_days+=row.no_sessions		
+							}
+
+					}
+		
+				})
+				whizz_number( $scope.objects_used,'digitised-objects')
+				whizz_number( $scope.objects_used,'objects-used')
+				whizz_number( $scope.filming_days,'filming-days')
+				
+			$scope.message=""
+		
+				
+			if($scope.lte_visits_num < $scope.visits_num){
+				
+				$scope.plus=true
+				$scope.percantage= Math.round( (($scope.visits_num / $scope.lte_visits_num)*100)-100 )
+				console.log('$scope.percantage',$scope.percantage)
+				whizz_number($scope.percantage,'diff-level1')
+	
+			}
+			
+			if($scope.lte_visits_num > $scope.visits_num){
+			
+				$scope.plus=false
+				$scope.percantage= $scope.lte_visits_num - $scope.visits_num
+				console.log('$scope.percantage',$scope.percantage)
+				whizz_number( $scope.percantage,'diff-level2')
+				
+			
+			}
+
+		
+
+		
+})	
 				
 			get_kpis.query({}, function(team) {
 				$scope.rows=[]
