@@ -18,27 +18,41 @@ var isAuthenticated = function (req, res, next) {
 
 //aggregation
 /* GET /todos listing. */
-router.get('/daily', function(req, res, next) {
+router.get('/tally', function(req, res, next) {
 
 function get_kpis(cb){
 
-Ticket_scan.aggregate([
+Likes_log.aggregate([
  { $sort : { date : -1 } },
-		{ $match:{result:"open" }},
+ 	{ $match : {satisfaction: { $ne: null}} },
+ 		{$project:{
+							   "kiosk":1,
+							   "satisfaction": 1,							  
+														
+										
+					}
+			
+					},
+	
 		 { $group: {
-                _id: { date: {$dateToString: { format: "%Y-%m-%d",date:  "$date"}  },				   
-					   exhibition_id:'$exhibition_id',
-					    record_id:'$record_id',
+                _id: { 				   
+					   kiosk:'$kiosk',
+					    satisfaction:'$satisfaction',
 						
 					 }, 
 			
                likes_tally: { $sum: 1 }
             }
+			
 		 },
-{$project:{"date_value":"$_id.date",
-"likes_tally":"$likes_tally",
-"record_id":"$_id.record_id",	
-"exhibition_id":"$_id.exhibition_id"	}}	
+	{$project:{
+							  
+							  _id : 0 ,  "kiosk":"$_id.kiosk",
+							    "satisfaction":"$_id.satisfaction",
+							   	"likes_tally": 1,									   
+														
+										
+	}},
 
     ], function (err, result) {
         if (err) {
