@@ -63,12 +63,14 @@ exports.monthly_visitor_numbers_controller = function(getDateService,$route,$sco
 		
 			$scope.gridOptions.data=$scope._rows;
 			
-			/*
+			
 			_.each($scope._rows,function(row,i){	
 			
 					
-					 start=moment($scope.start_date).year()
-					end=moment($scope.end_date).year()
+					 start=moment($scope.start_date).year()-1
+					end=moment($scope.end_date).year()+1 //financial year compared to this month stuff
+					
+					
 					start_month=moment($scope.start_date).month()
 					end_month=moment($scope.end_date).month()
  
@@ -77,7 +79,7 @@ exports.monthly_visitor_numbers_controller = function(getDateService,$route,$sco
 						  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
 						  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-						for (year = start; year <= end; year++) { 
+						for (year = start-1; year <= end; year++) { 
 						month_num=0
 						var total = 0
 						_.each(moment.monthsShort(),function(month){
@@ -86,14 +88,21 @@ exports.monthly_visitor_numbers_controller = function(getDateService,$route,$sco
 					if( row[month+" "+year]){
 					if(start_month==3){
 						
-						//$scope._rows[i]["Total " + year]=total
-						console.log('row',row)
+						
+					//	console.log('row',row)
 						total=  row[month+" "+year]
+						if(!isNaN(total)){
+						console.log('	adding total for ',row[month+" "+year])
+						$scope._rows[i]["Total " + year]=total
+					}
 					}
 					
 					else
 					{
-						//total+=  row[month+" "+year]
+						if(!isNaN(row[month+" "+year])){
+							
+						total+=  row[month+" "+year]
+						}
 					}
 					}
 						
@@ -105,7 +114,7 @@ exports.monthly_visitor_numbers_controller = function(getDateService,$route,$sco
 				
 				
 			})	
-			*/
+			
 			
  $scope.genericMap = function(hash){
         return function(input){

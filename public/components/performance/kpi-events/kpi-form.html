@@ -63,14 +63,17 @@ You'll probably need to log in to be able to enter data
 			 
 			</div>
 		
-				  <div class="form-group">
-				   <div   class="col-xs-6">
+<div class="form-group">
+
+<div   class="col-xs-6">
 				<label for="exampleSelect1">KPI Type</label>
 				<select class="form-control input-lg" id="kpi_type" ng-model="kpiValue" ng-change="kpi_type_update(kpiValue)">
 					<option value="Total sessions">sessions</option>
 					<option value="partnership">partnership</option>
 					<option value="partnership">project</option>
 					<option value="event">event</option>
+					
+					<option ng-show="user.team=='PARTICIPATION' || user.group=='ADMIN'" value="Volunteer hours">Volunteer hours</option>
 					
 					<option ng-show="user.team=='MODERN RECORDS' || user.group=='ADMIN'" value="Items loaned out">Items loaned out</option>
 					<option ng-show="user.team=='MODERN RECORD' || user.group=='ADMIN'" value="Items returned">Items returned</option>
@@ -101,7 +104,7 @@ You'll probably need to log in to be able to enter data
 					<option value="other">other</option>
 				
 				</select required>
-			</div>
+</div>
 			  	<div class=" col-xs-6">
 							<label class="pull-left">No. of {{selectedkpiValue}}s</label>
 							<input type="number" class="form-control input-lg" id="no_sessions" name="no_sessions" value="1">
@@ -110,7 +113,8 @@ You'll probably need to log in to be able to enter data
 					</br>
 			 	    <br>
 					</br>
-					  </div>
+
+</div>
 					
 					<div class="form-group">
 						<label for="comments">Name/ Description of {{selectedkpiValue}}</label>

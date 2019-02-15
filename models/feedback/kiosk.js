@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 
 var kiosk_feedback = new mongoose.Schema({
 			
-		satisfaction: { type: String },
+		satisfaction: { type: String ,required:true},
 		date: { type: Date, default :new Date()},
 		kiosk: { type: String,required:true},
 		description: { type: String}

@@ -1275,6 +1275,9 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
 		   .when('/raw-exhibitions-income', {
                template: '<data-exhibitionspwyt></data-exhibitionspwyt>'
            })
+		      .when('/raw-exhibitions-pwyt', {
+               template: '<datax-exhibitionspwyt></datax-exhibitionspwyt>'
+           })
 		   
 		   //team kpis
 		    .when('/transformation-kpis', {
