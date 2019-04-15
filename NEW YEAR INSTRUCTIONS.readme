@@ -1,4 +1,4 @@
 //NEW FINANCIAL YEAR INSTRUCTIONS
 
-update /public/shared/controllers/controllers.js
+update /public/shared/controllers/controllers.js * tablefilter-controller
 $scope.start_date=new Date("04/01/2019") 
