@@ -162,7 +162,8 @@ this.calendar_feed = function (events){
 		 
 			var years = [2015,2016,2017,2018,2019,2020,2021,2022]
 			var checkmonth = new Date()
-				var checkmonth_num = checkmonth.getMonth()
+			var checkmonth_num = checkmonth.getMonth()
+			
 			new_row=returned_row
 			new_rowx=returned_row
 			_.each(years,function(year){
@@ -847,7 +848,7 @@ this.calendar_feed = function (events){
 	 this.wind_up_Stats_weekly_variable=function(result,returned_row,analysis_field,venue){
 		 
 			
-			var years = [2015,2016,2017,2018,2019]
+			var years = [2015,2016,2017,2018,2019,2020]
 			_.each(years,function(year){
 			for (week = 0; week < moment().isoWeeksInYear(); week++) { 
 
@@ -876,7 +877,7 @@ this.calendar_feed = function (events){
 					
 							var new_row = {}
 								new_row.museum="Total income to BCC"
-								new_row.stat="% difference"
+								
 								new_row.typex="retail"
 								new_row.xtype="currency"
 								new_row.cssclass="summary_row"
@@ -918,7 +919,7 @@ this.calendar_feed = function (events){
 								new_row.xtype="currency"
 								new_row.cssclass="summary_row"
 								new_row.csstype="summary_row"
-								new_row.stat="% difference"	
+								
 								
 								if(row.stat=="Income - total"){					
 									for(var key in row) {
@@ -951,7 +952,7 @@ this.calendar_feed = function (events){
 								new_row.xtype="currency"
 								new_row.cssclass="summary_row"
 								new_row.csstype="summary_row"
-								new_row.stat="% difference"	
+								
 								
 								if(row.stat=="Children - Total"){					
 									for(var key in row) {
@@ -983,7 +984,7 @@ this.calendar_feed = function (events){
 								new_row.xtype="currency"
 								new_row.cssclass="summary_row"
 								new_row.csstype="summary_row"
-								new_row.stat="% difference"	
+								
 								
 								if(row.stat=="Yearly Total"){					
 									for(var key in row) {
@@ -1099,7 +1100,7 @@ this.calendar_feed = function (events){
 		running_total_last_year.museum="Last Year"
 		running_total_last_year_percentage.museum="% difference"
 		
-			var years = [2015,2016,2017,2018,2019]
+			var years = [2015,2016,2017,2018,2019,2020]
 			_.each(years,function(year){
 			_.each(moment.monthsShort(),function(month){
 				sites_total[month+" "+year]=""
@@ -1110,9 +1111,6 @@ this.calendar_feed = function (events){
 					}
 				
 				}
-				
-			
-				
 					_.each(result,function(row){
 						lastmonth=months.indexOf(month)-1
 						var checkmonth = new Date()
@@ -1121,40 +1119,43 @@ this.calendar_feed = function (events){
 				
 					
 						if(month==moment.monthsShort(row._id.month-1) &&row._id.year==year){
-				
 						
 							if(sites_total[month+" "+year]){
 								sites_total[month+" "+year]=parseInt(sites_total[month+" "+year])
 							}
-						
-
 							
 							sites_total[month+" "+year]+=parseInt(row.visits)
 							months=moment.monthsShort() 
 						
-							if(month=="Apr"){
+							if(month=="Apr"){ //start from zero for year
+								
+								
 								running_total[month+" "+year]=sites_total[month+" "+year]
 								lastyear=years.indexOf(year)-1
 								if(sites_total[month+" "+years[lastyear]]){
 									running_total_last_year[month+" "+year]=sites_total[month+" "+years[lastyear]]
 									
 									
-									if(lastmonth<checkmonth_num-1){
+									//if(lastmonth<checkmonth_num-1){
 											running_total_last_year_percentage[month+" "+year]=((running_total[month+" "+year]/running_total_last_year[month+" "+year])*100-100).toFixed(2)+"%"	
-									}
+									//}
+									
+									
 								}
 							
 							}
-							else if(running_total[months[lastmonth]+" "+year]){
+							else if(running_total[months[lastmonth]+" "+year]){ //april done - start adding till december
 								
 								running_total[month+" "+year]=running_total[months[lastmonth]+" "+year]+sites_total[month+" "+year]
+								
+								
 								lastyear=years.indexOf(year)-1
 								if(running_total[months[lastmonth]+" "+years[lastyear]] && sites_total[month+" "+years[lastyear]]){
 									running_total_last_year[month+" "+year]=running_total[months[lastmonth]+" "+years[lastyear]]+sites_total[month+" "+years[lastyear]]
 								
-								if(lastmonth<checkmonth_num-1){
+								//if(lastmonth<checkmonth_num-1){
 									running_total_last_year_percentage[month+" "+year]=((running_total[month+" "+year]/running_total_last_year[month+" "+year])*100-100).toFixed(2)+"%"	
-								}
+								//}
 								
 								}
 							
@@ -1163,14 +1164,17 @@ this.calendar_feed = function (events){
 							
 							lastyear=years.indexOf(year)-1
 							last2year=years.indexOf(year)-2
-							if(month=="Jan"){
+							
+							if(month=="Jan"){ //year starts at jan so need to add to december stat
+							
 								running_total[month+" "+year]=running_total["Dec "+ years[lastyear]]+sites_total[month+" "+year]
 				
 									if(running_total["Dec "+years[last2year]] && sites_total[month+" "+years[lastyear]]){
 										running_total_last_year[month+" "+year]=running_total["Dec "+years[last2year]]+sites_total[month+" "+years[lastyear]]
+										
 										if(lastmonth<checkmonth_num-1){
-										running_total_last_year_percentage[month+" "+year]=((running_total[month+" "+year]/running_total_last_year[month+" "+year])*100-100).toFixed(2)+"%"	
-									}
+											running_total_last_year_percentage[month+" "+year]=((running_total[month+" "+year]/running_total_last_year[month+" "+year])*100-100).toFixed(2)+"%"	
+										}
 									}
 							
 							}
@@ -1252,7 +1256,7 @@ this.calendar_feed = function (events){
 		var returned_row_compare_last_year_total={}
 		returned_row.museum=venue
 		
-			var years = [2015,2016,2017,2018,2019]
+			var years = [2015,2016,2017,2018,2019,2020]
 			_.each(years,function(year){
 			_.each(moment.monthsShort(),function(month){
 				returned_row[month+" "+year]=""
@@ -1291,9 +1295,11 @@ this.calendar_feed = function (events){
 										//returned_row_compare_last_year.cssclass="red"
 										
 										returned_row_compare_last_year_total[month+" "+year]=previous_data.visits
-										if(lastmonth<checkmonth_num-1){
+										
+										//if( lastmonth<=checkmonth_num-1){
 										returned_row_compare_last_year[month+" "+year]=((row.visits/previous_data.visits)*100-100).toFixed(2)+"%";
-										}
+										//}
+										
 										if(currency){
 											returned_row_compare_last_year_total.typex="currency"
 										}

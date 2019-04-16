@@ -91,7 +91,7 @@ exports.dynamicTableCellFilter = function() {
 exports.getDateService = function($rootScope) {	
 
 
-		 start_date=new Date("2018/04/01")
+		 start_date=new Date("2019/04/01")
 		end_date= new Date(moment(start_date).add('years', 1).format("YYYY/MM/DD"))
 		 end_date.setDate(end_date.getDate()-1);
 		  
@@ -999,7 +999,9 @@ array.build  = function (scope,start_date,end_date) {
 month_num=0
 			_.each(moment.monthsShort(),function(month){	
 			month_num++
-
+if(month_num==4){
+							columns.push({ field: "Total "+year ,width: "100"})
+				}
 			console.log('start_month',start_month)
 			console.log('monthNames.indexOf(month)',monthNames.indexOf(month))
 			console.log(year==end && month_num>monthNames.indexOf(month))
@@ -1086,9 +1088,9 @@ month_num=0
 
 			_.each(moment.monthsShort(),function(month){	
 			month_num++
-if(month_num==4){
-			columns.push({ field: "Total "+year ,width: "100"})
-}
+				if(month_num==4){
+							columns.push({ field: "Total "+year ,width: "100"})
+				}
 			if(firstrun==true && month!=monthNames[start_month] || year==end && month_num>start_month) return;
 				columns.push({ cellFilter:  'valueFilter:row.entity', field: month+" "+year,	name: month+" "+year.toString().substring(2),width: "100",	  cellClass: function(grid, row, col, rowRenderIndex, colRenderIndex) {
 																															

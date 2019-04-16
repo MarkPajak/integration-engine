@@ -65,8 +65,9 @@ exports.monthly_visitor_numbers_controller = function(getDateService,$route,$sco
 			
 			
 			_.each($scope._rows,function(row,i){	
-			
-					
+			console.log('row',row)
+			if(row.museum=="Running total") return;		
+				if(row.museum=="Last Year") return;		
 					 start=moment($scope.start_date).year()-1
 					end=moment($scope.end_date).year()+1 //financial year compared to this month stuff
 					
@@ -86,10 +87,18 @@ exports.monthly_visitor_numbers_controller = function(getDateService,$route,$sco
 							
 						month_num++
 					if( row[month+" "+year]){
-					if(start_month==3){
 						
+						if(month_num<4){
+		
+							if( $scope._rows[i]["Total " + (parseInt(year)-1)]){
+								$scope._rows[i]["Total " + (parseInt(year)-1)]+=row[month+" "+year]
+							}
 						
-					//	console.log('row',row)
+						}
+					
+					
+					if(month_num==4){
+		
 						total=  row[month+" "+year]
 						if(!isNaN(total)){
 						console.log('	adding total for ',row[month+" "+year])
@@ -102,6 +111,7 @@ exports.monthly_visitor_numbers_controller = function(getDateService,$route,$sco
 						if(!isNaN(row[month+" "+year])){
 							
 						total+=  row[month+" "+year]
+						$scope._rows[i]["Total " + year]=total
 						}
 					}
 					}
