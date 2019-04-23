@@ -94,6 +94,10 @@ function sortJSON(data, key, way) {
 						past_events.push({"name":"Dementia Friendly Creative Cafés"})
 						
 					}
+					else
+					{
+						past_events.push({"name":"add new event below"})
+					}
 			
 			 past_events = sortJSON(past_events,'name', '321');
 			$scope.events =past_events
