@@ -426,7 +426,7 @@ get_kpis( function ( result) {
 	function wind_up_Stats(	result,returned_row,analysis_field,venue,on_site_off_site,age_group){
 		
 		
-				var years = [2014,2015,2016,2017,2018,2019]
+				var years = [2014,2015,2016,2017,2018,2019,2020]
 								_.each(years,function(year){
 									var financial_yesr_text = ["last","this"]
 									_.each(financial_yesr_text,function(financial_yer_text){
@@ -589,7 +589,7 @@ get_kpis( function ( result) {
 	function wind_up_Stats(	result,returned_row,analysis_field,venue,on_site_off_site,age_group){
 		
 		
-			var years = [2014,2015,2016,2017,2018,2019]
+			var years = [2014,2015,2016,2017,2018,2019,2020]
 			_.each(years,function(year){
 			_.each(moment.monthsShort(),function(month){
 				returned_row[month+" "+year]=""
@@ -1088,6 +1088,15 @@ get_kpis( function ( result) {
 			//returned_row.session_type=session_type
 		//	returned_row.stat=kpi_type
 			returned_data.push(	 wind_up_Stats(	result,returned_row,"total_enquiries",venue))
+			
+				var returned_row={}
+			returned_row.team=venue
+			returned_row.kpi_type="total_people"
+			returned_row.stat="Visitors"
+			
+			returned_row.csstype="bold"
+			
+			returned_data.push(	 wind_up_Stats(	result,returned_row,"total_people",venue))
 
 			_.each(kpi_types,function(kpi_type){
 					var returned_row={}
@@ -1107,14 +1116,14 @@ get_kpis( function ( result) {
 			returned_row.team=venue
 			returned_row.kpi_type="total_people"
 			//returned_row.session_type=session_type
-		//	returned_row.stat=kpi_type
+			//returned_row.stat=kpi_type
 			//returned_data.push(	 wind_up_Stats(	result,returned_row,"total_people",venue,session_type,kpi_type))
 			
 			var returned_row={}
 			returned_row.team=venue
 			returned_row.kpi_type="total_enquiries"
 			//returned_row.session_type=session_type
-		//	returned_row.stat=kpi_type
+			//returned_row.stat=kpi_type
 			//returned_data.push(	 wind_up_Stats(	result,returned_row,"total_enquiries",venue,session_type,kpi_type))
 			
 			var returned_row={}
@@ -1277,7 +1286,7 @@ get_kpis( function ( result) {
 	function wind_up_Stats(	result,returned_row,analysis_field,venue,session_type,kpi_type){
 		
 		
-			var years = [2014,2015,2016,2017,2018,2019]
+			var years = [2014,2015,2016,2017,2018,2019,2020]
 			_.each(years,function(year){
 			_.each(moment.monthsShort(),function(month){
 				returned_row[month+" "+year]=""

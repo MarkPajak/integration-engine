@@ -1,9 +1,7 @@
 exports.monthly_kpi_events_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope,Monthly_kpi_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security
     ) {
 		
-		
-		
-		
+	
 			$scope.chart_class = "col-md-6 col-lg-6 col-sm-6 pull-right"
 			$scope.table_class = "col-md-6 col-lg-6 col-sm-6"
 			$scope.table_heading = "Monthly kpi stats (automatically calulated)"

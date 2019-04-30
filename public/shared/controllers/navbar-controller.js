@@ -200,7 +200,7 @@ $scope.user_groups['COMMERCIAL'].performance=performance_data
 
 
 var enter_data=[]
-//enter_data.push(performance)
+enter_data.push(performance)
 //enter_data.push(record_retail_sales)
 enter_data.push(record_corporate)
 enter_data.push(record_patron)
