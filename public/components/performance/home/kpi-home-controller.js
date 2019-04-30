@@ -74,7 +74,7 @@ $.getJSON('https://sheets.googleapis.com/v4/spreadsheets/1dZ1UMfIbNpbUEgGLy7nLeE
 							if( row._id.month>3&&current_month<=3 && (current_year-1).toString()==row._id.year.toString()){
 								$scope.objects_used+=row.no_sessions							
 							}							
-							if(current_month>3 && current_year.toString()==row._id.year.toString()){
+							if(row._id.month>3 && current_month>3 && current_year.toString()==row._id.year.toString()){
 								$scope.objects_used+=row.no_sessions			
 							}
 							if(row._id.month<=3&& current_month<=3 && current_year.toString()==row._id.year.toString()){
@@ -87,7 +87,7 @@ $.getJSON('https://sheets.googleapis.com/v4/spreadsheets/1dZ1UMfIbNpbUEgGLy7nLeE
 							if( row._id.month>3&&current_month<=3 && (current_year-1).toString()==row._id.year.toString()){
 								$scope.digitised+=row.no_sessions							
 							}							
-							if(current_month>3 && current_year.toString()==row._id.year.toString()){
+							if(row._id.month>3 && current_month>3 && current_year.toString()==row._id.year.toString()){
 								$scope.digitised+=row.no_sessions			
 							}
 							if(row._id.month<=3&& current_month<=3 && current_year.toString()==row._id.year.toString()){
@@ -102,7 +102,7 @@ $.getJSON('https://sheets.googleapis.com/v4/spreadsheets/1dZ1UMfIbNpbUEgGLy7nLeE
 							if( row._id.month>3&&current_month<=3 && (current_year-1).toString()==row._id.year.toString()){
 								$scope.filming_days+=row.no_sessions							
 							}							
-							if(current_month>3 && current_year.toString()==row._id.year.toString()){
+							if(row._id.month>3 &&current_month>3 && current_year.toString()==row._id.year.toString()){
 								$scope.filming_days+=row.no_sessions			
 							}
 							if(row._id.month<=3&& current_month<=3 && current_year.toString()==row._id.year.toString()){

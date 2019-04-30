@@ -1468,7 +1468,7 @@ get_kpis( function ( result) {
 	function wind_up_Stats(	result,returned_row,analysis_fields,venue,age_group){
 		
 		
-			var years = [2014,2015,2016,2017,2018,2019]
+			var years = [2014,2015,2016,2017,2018,2019,2020]
 			_.each(years,function(year){
 			//_.each(moment.monthsShort(),function(month){
 				returned_row[year]=""

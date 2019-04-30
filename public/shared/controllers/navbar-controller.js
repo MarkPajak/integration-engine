@@ -176,8 +176,8 @@ var resources=[]
 resources.push(rooms)
 resources.push(equipment)
 resources.push(equipment_bookings)
-resources.push(room_bookings)
-resources.push(room_bookings_list)
+//resources.push(room_bookings)
+//resources.push(room_bookings_list)
 resources.push(bookings_report)
 
 resources.push(room_hire)
