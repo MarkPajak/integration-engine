@@ -62,11 +62,13 @@ exports.monthly_learning_controller = function(getDateService,$route,$scope, $ht
 			$scope.gridOptions.data=$scope._rows;
 			
 			
-			_.each($scope._rows,function(row,i){	
-			console.log('row',row)
+							
+		_.each($scope._rows,function(row,i){	
+			//console.log('row',row)
 			if(row.museum=="Running total") return;		
 				if(row.museum=="Last Year") return;		
-					 start=moment($scope.start_date).year()-1
+					
+					start=moment($scope.start_date).year()-2
 					end=moment($scope.end_date).year()+1 //financial year compared to this month stuff
 					
 					
@@ -78,7 +80,7 @@ exports.monthly_learning_controller = function(getDateService,$route,$scope, $ht
 						  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
 						  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-						for (year = start-1; year <= end; year++) { 
+						for (year = start; year <= end; year++) { 
 						month_num=0
 						var total = 0
 						_.each(moment.monthsShort(),function(month){
@@ -87,22 +89,90 @@ exports.monthly_learning_controller = function(getDateService,$route,$scope, $ht
 					if( row[month+" "+year]){
 						
 						if(month_num<4){
-		
-							if( $scope._rows[i]["Total " + (parseInt(year)-1)]){
-								$scope._rows[i]["Total " + (parseInt(year)-1)]+=row[month+" "+year]
+							
+							if( !($scope._rows[i]["Total " + (parseInt(year)-1)])){
+								$scope._rows[i]["Total " + (parseInt(year)-1)]=0
 							}
 						
+							if( (row[month+" "+(parseInt(year))])){
+								
+								if( (row[month+" "+(parseInt(year))])>0){
+															
+								$scope._rows[i]["Total " + (parseInt(year)-1)]+=parseInt(row[month+" "+(parseInt(year))])
+								
+								}
+						
+							}
+							
+						}
+						
+						
+							if(month_num==4){
+							
+							if( !($scope._rows[i]["Total " + (parseInt(year))])){
+								$scope._rows[i]["Total " + (parseInt(year))]=0
+							}
+						
+							if( (row[month+" "+(parseInt(year))])){
+								
+								if( (row[month+" "+(parseInt(year))])>0){
+															
+								$scope._rows[i]["Total " + (parseInt(year))]=parseInt(row[month+" "+(parseInt(year))])
+								
+								}
+						
+							}
+							
+						}
+						
+								if(month_num>4){
+							
+							if( !($scope._rows[i]["Total " + (parseInt(year))])){
+								$scope._rows[i]["Total " + (parseInt(year))]=0
+							}
+						
+							if( (row[month+" "+(parseInt(year))])){
+								
+								if( (row[month+" "+(parseInt(year))])>0){
+															
+								$scope._rows[i]["Total " + (parseInt(year))]+=parseInt(row[month+" "+(parseInt(year))])
+								
+								}
+						
+							}
+							
 						}
 					
-					
-					if(month_num==4){
-		
+					/*
+					else if(month_num==4){
+		if( !isNaN(row[month+" "+year])){
 						total=  row[month+" "+year]
 						if(!isNaN(total)){
+							console.log('	adding total for ',row[month+" "+year])
+							$scope._rows[i]["Total " + year]=total
+						}
+		}
+					}
+					
+					else if(month_num>=4){
+		if( !isNaN(row[month+" "+year])){
+						total+=  row[month+" "+year]
+						if(!isNaN(total)){
+							console.log('	adding total for ',row[month+" "+year])
+							$scope._rows[i]["Total " + year]+=total
+						}
+		}
+					}
+					/*
+					else if(month_num>4){
+		
+						total+=  row[month+" "+year]
+						if(!isNaN(total)){
 						console.log('	adding total for ',row[month+" "+year])
-						$scope._rows[i]["Total " + year]=total
+						$scope._rows[i]["Total " + year]+=total
 					}
 					}
+					
 					
 					else
 					{
@@ -112,6 +182,7 @@ exports.monthly_learning_controller = function(getDateService,$route,$scope, $ht
 						$scope._rows[i]["Total " + year]=total
 						}
 					}
+					*/
 					}
 						
 						

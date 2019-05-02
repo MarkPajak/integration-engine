@@ -74,7 +74,7 @@ Venuehire.aggregate([
             }
 		 }	,
 	 
-	{ $project : {venue:"$_id.venue", booking_type:"$_id.booking_type",visits:"$visits", total_income:"$total_income",total_sessions:"$total_sessions", total_teachers:"$total_teachers",total_children:"$total_children",kpi_year :"$_id.year", kpi_month :"$_id.month"}  },	 
+	{ $project : {venue:"$_id.venue", booking_type:"$_id.booking_type",visits:"$visits",total_income:"$visits", _total_income:"$total_income",total_sessions:"$total_sessions", total_teachers:"$total_teachers",total_children:"$total_children",kpi_year :"$_id.year", kpi_month :"$_id.month"}  },	 
 	{ $sort : { "visits" : -1} }
     ], function (err, result) {
         if (err) {
@@ -103,7 +103,33 @@ get_kpis( function ( result) {
 returned_data=route_functions.wind_up_Stats_monthly_venue(result,venues,req.params.booking_type,true)
 
 
-res.json(returned_data)
+
+
+		
+		var returned_row={}
+		returned_row.museum="Yearly income"
+		returned_row.stat="Income - total"
+		returned_row.xtype="currency"
+		returned_row.typex="retail"
+		returned_row.cssclass="summary_row"
+		returned_row.csstype="summary_row"
+		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_income",""))
+
+
+		var returned_row={}
+		returned_row.museum="Last year"
+		returned_row.stat="Income -  last year"
+		returned_row.xtype="currency"
+		returned_row.typex="retail"
+		returned_row.cssclass="summary_row"
+		returned_row.csstype="summary_row"
+		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_income_last_year",""))
+
+
+		route_functions.ad_percentage_last_year_income(returned_data)
+
+		res.json(returned_data)
+	
 	
 })
 
@@ -186,7 +212,7 @@ get_kpis( function ( result) {
 	function wind_up_Stats(	result,returned_row,analysis_field,venue,on_site_off_site,visitor_group){
 		
 		
-				var years = [2014,2015,2016,2017,2018]
+				var years = [2014,2015,2016,2017,2018,2019,2020]
 								_.each(years,function(year){
 									var financial_yesr_text = ["last","this"]
 									_.each(financial_yesr_text,function(financial_yer_text){
@@ -306,7 +332,7 @@ router.get('/total/:booking_type', function(req, res, next) {
 						
 						function wind_up_Stats(	result,returned_row,analysis_field,venue){
 						
-									var years = [2014,2015,2016,2017,2018,2019]
+									var years = [2014,2015,2016,2017,2018,2019,2020]
 								_.each(years,function(year){
 									var financial_yesr_text = ["last","this"]
 									_.each(financial_yesr_text,function(financial_yer_text){
@@ -352,6 +378,7 @@ router.get('/total/:booking_type', function(req, res, next) {
 							//returned_data.push(	 wind_up_Stats(	result,returned_row,"pwyt_income",venue))
 
 						})
+
 
 
 					res.json(returned_data)

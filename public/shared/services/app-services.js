@@ -1089,7 +1089,28 @@ month_num=0
 			_.each(moment.monthsShort(),function(month){	
 			month_num++
 				if(month_num==4){
-							columns.push({ field: "Total "+year ,width: "100"})
+							columns.push({ cellFilter:  'valueFilter:row.entity',field: "Total "+year ,width: "100",	  cellClass: function(grid, row, col, rowRenderIndex, colRenderIndex) {
+																															
+																														
+																															if(row.entity[col.colDef.field]){
+																																if(typeof row.entity[col.colDef.field].indexOf === "function"){
+																																	if(row.entity[col.colDef.field].indexOf("-")!=-1){
+																																	return ("red")
+																																}
+																															}
+																															if(row.entity){
+																																if(row.entity.csstype){
+																																
+																																	return (row.entity.csstype)
+																																}
+																																}
+																																
+																																
+																															}
+																															
+																															
+																															
+																															}})
 				}
 			if(firstrun==true && month!=monthNames[start_month] || year==end && month_num>start_month) return;
 				columns.push({ cellFilter:  'valueFilter:row.entity', field: month+" "+year,	name: month+" "+year.toString().substring(2),width: "100",	  cellClass: function(grid, row, col, rowRenderIndex, colRenderIndex) {

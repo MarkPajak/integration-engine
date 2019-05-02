@@ -161,26 +161,46 @@ this.calendar_feed = function (events){
 	  this.wind_up_Stats_monthly_variable=function(result,returned_row,analysis_field,venue){
 		 
 			var years = [2015,2016,2017,2018,2019,2020,2021,2022]
+			
+			//n.b. if there is no data for a given month then it wont match to running totals wont carry over.
 			var checkmonth = new Date()
 			var checkmonth_num = checkmonth.getMonth()
 			
 			new_row=returned_row
 			new_rowx=returned_row
 			_.each(years,function(year){
+				
+				_.each(moment.monthsShort(),function(month){
+					
+					var found_month=false
+					
+					_.each(result,function(row){
+						
+						if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year){
+							
+							found_month=true
+							
+						}
+					})
+					if(found_month==false){
+						console.log(found_month)
+						new_row=[]
+					
+						returned_row[month+" "+year]=0
+					}
+					
+				})
+				
 			_.each(moment.monthsShort(),function(month){
+				
 				sales_for_month=0
 				sales_for_month_lt=0
 				returned_row[month+" "+year]=0
 				new_row[month+" "+year]=0
 				new_rowx[month+" "+year]=0
-			
-			
-		
-
+	
 				if(analysis_field=="total_donations"){
-				
-				
-				
+					
 						_.each(result,function(row){
 							if(!isNaN(parseInt(row['combined']	))){
 								if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year){
@@ -191,6 +211,26 @@ this.calendar_feed = function (events){
 										returned_row[month+" "+year]+=parseInt(row['combined']	)										
 										returned_row.cssclass="bold"						
 										returned_row.typex="currency"
+		
+								}
+							}
+						})
+				
+				}
+					else if(analysis_field=="total_income"){
+				
+				
+				
+						_.each(result,function(row){
+							if(!isNaN(parseInt(row['total_income']	))){
+								if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year){
+									
+										months=moment.monthsShort() 
+										lastmonth=months.indexOf(month)-1
+										lastyear=years.indexOf(year)-1
+										returned_row[month+" "+year]+=parseInt(row['total_income'])										
+										returned_row.cssclass="bold"						
+										returned_row.typex="currency"
 							
 									
 								}
@@ -198,7 +238,6 @@ this.calendar_feed = function (events){
 						})
 				
 				}
-				
 				else if(analysis_field=="total_sales"){
 				
 				
@@ -365,6 +404,67 @@ this.calendar_feed = function (events){
 				
 				}
 				
+				else if(analysis_field=="running_total"){
+	
+						_.each(result,function(row){
+				
+							if(month==moment.monthsShort(row.kpi_month-1)  && row.kpi_year==year){
+								
+									if(row['total_income']){
+										sales_for_month+=parseInt(row['total_income'])
+									}
+									else
+									{
+										sales_for_month=0
+									}
+
+									
+									months=moment.monthsShort() 
+									lastmonth=months.indexOf(month)-1
+									
+									
+									if(month=="Apr"){
+										if(parseInt(row['total_income'])){
+											if(returned_row[month+" "+year]){
+												returned_row[month+" "+year]+=parseInt(row['total_income'])
+											}
+											else
+											{
+												returned_row[month+" "+year]=parseInt(row['total_income'])	
+											}
+										}
+									}
+									
+									
+									else if(returned_row[months[lastmonth]+" "+year]){
+										
+										if(!returned_row[months[lastmonth]+" "+year]){
+											returned_row[months[lastmonth]+" "+year]=0
+										}
+										
+												returned_row[month+" "+year]=returned_row[months[lastmonth]+" "+year]+sales_for_month
+										}
+									
+									
+									
+									lastyear=years.indexOf(year)-1
+									
+									if(month=="Jan"){
+												returned_row[month+" "+year]=returned_row["Dec "+ years[lastyear]]+sales_for_month
+									}
+									
+									
+									returned_row.cssclass="bold"						
+									returned_row.typex="currency"
+									
+									
+							}
+			
+					})
+				
+				
+				}
+				
 				else if(analysis_field=="yearly_total"){
 				
 					_.each(result,function(row){
@@ -495,7 +595,8 @@ this.calendar_feed = function (events){
 								if(month=="Jan"){
 									returned_row[month+" "+year]=returned_row["Dec "+ years[lastyear]]+sales_for_month
 								}
-								returned_row.cssclass="bold"						
+								returned_row.cssclass="bold"
+								
 							    returned_row.typex="currency"
 								
 						
@@ -504,6 +605,27 @@ this.calendar_feed = function (events){
 					})
 				
 				}
+				
+				else if(analysis_field=="total_income_last_year"){
+				
+				_.each(result,function(row){
+							if(!isNaN(parseInt(row['total_income']	))){
+								if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year-1){
+									
+										months=moment.monthsShort() 
+										lastmonth=months.indexOf(month)-1
+										lastyear=years.indexOf(year)-1
+										returned_row[month+" "+year]+=parseInt(row['total_income'])										
+										returned_row.cssclass="bold"						
+										returned_row.typex="currency"
+							
+									
+								}
+							}
+						})
+				
+				}
+				
 				else if(analysis_field=="total_donations_last_year"){
 				
 					_.each(result,function(row){
@@ -539,10 +661,10 @@ this.calendar_feed = function (events){
 				
 				}
 				
-					else if(analysis_field=="site_pemrissions_total_last_year"){
+				else if(analysis_field=="site_pemrissions_total_last_year"){
 				
 					_.each(result,function(row){
-									if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year-1){
+						if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year-1){
 					
 								sales_for_month+=parseInt(row['income_site_permissions'])								
 								months=moment.monthsShort() 
@@ -560,8 +682,8 @@ this.calendar_feed = function (events){
 								}
 								else
 									returned_row[month+" "+year]=returned_row["Dec "+ years[lastyear]]+sales_for_month
-								returned_row.cssclass="bold"						
-							    returned_row.typex="currency"
+									returned_row.cssclass="bold"						
+									returned_row.typex="currency"
 						
 						}
 			
@@ -571,8 +693,7 @@ this.calendar_feed = function (events){
 				
 				else if(analysis_field=="total_last_year"){
 				
-					_.each(result,function(row){
-				
+					_.each(result,function(row){		
 
 						if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year-1){
 					
@@ -913,7 +1034,8 @@ this.calendar_feed = function (events){
 					_.each(returned_data,function(row){
 					
 							var new_row = {}
-								new_row.museum="Total"
+							
+								new_row.museum="% difference"
 								new_row.stat="% difference"
 								new_row.typex="retail"
 								new_row.xtype="currency"
@@ -926,11 +1048,17 @@ this.calendar_feed = function (events){
 										_.each(returned_data,function(rowX){
 											for(var keyX in rowX) {
 												if(rowX.stat=="Income -  last year" && key ==keyX ){	
+													if(row[key]){
+														if(rowX[keyX]){
 													if(row[key]>0 && rowX[keyX]>0){
 														//need to detect if it is a full month
 														percantage=((key,row[key]/rowX[keyX])*100-100).toFixed(2)+"%";
 														new_row[key]=percantage
 													}
+													}
+													}
+													
+													
 												}
 											}
 										})
@@ -1041,8 +1169,11 @@ this.calendar_feed = function (events){
 							_.each(result,function(previous_data){
 								compare_previous_year = year-compare_previous_years
 							
-								
-								if(month==moment.monthsShort(previous_data._id.month-1)&&booking_type==previous_data._id.booking_type  &&venue==previous_data._id.venue &&previous_data._id.year==compare_previous_year){
+								if(previous_data._id.month){
+								if(month==moment.monthsShort(previous_data._id.month-1)
+									&&booking_type==previous_data._id.booking_type 
+								   &&venue==previous_data._id.venue 
+								   &&previous_data._id.year==compare_previous_year){
 									
 										returned_row_compare_last_year_total.museum=compare_previous_year+ " - " + year
 										returned_row_compare_last_year.museum="% difference" 
@@ -1058,6 +1189,7 @@ this.calendar_feed = function (events){
 							
 										
 									
+								}
 								}
 							})
 							

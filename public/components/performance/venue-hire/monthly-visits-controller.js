@@ -35,7 +35,7 @@ exports.monthly_venue_hire_controller = function(getDateService,$route,$scope, $
 					
 			)
 			
-			$scope.start_date=new Date("04/01/2018")
+			$scope.start_date=new Date("04/01/2019")
 			$scope.end_date= moment($scope.start_date).add('years', 1).format("DD/MM/YYYY")
 
 			
@@ -67,6 +67,138 @@ exports.monthly_venue_hire_controller = function(getDateService,$route,$scope, $
 		
 			$scope.gridOptions.data=$scope._rows;
 			
+					
+		_.each($scope._rows,function(row,i){	
+			//console.log('row',row)
+			if(row.museum=="Running total") return;		
+				if(row.museum=="Last Year") return;		
+					
+					start=moment($scope.start_date).year()-2
+					end=moment($scope.end_date).year()+1 //financial year compared to this month stuff
+					
+					
+					start_month=moment($scope.start_date).month()
+					end_month=moment($scope.end_date).month()
+ 
+ 
+					  var columns = []
+						  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+						  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+						for (year = start; year <= end; year++) { 
+						month_num=0
+						var total = 0
+						_.each(moment.monthsShort(),function(month){
+							
+						month_num++
+					if( row[month+" "+year]){
+						
+						if(month_num<4){
+							
+							if( !($scope._rows[i]["Total " + (parseInt(year)-1)])){
+								$scope._rows[i]["Total " + (parseInt(year)-1)]=0
+							}
+						
+							if( (row[month+" "+(parseInt(year))])){
+								
+								if( (row[month+" "+(parseInt(year))])>0){
+															
+								$scope._rows[i]["Total " + (parseInt(year)-1)]+=parseInt(row[month+" "+(parseInt(year))])
+								
+								}
+						
+							}
+							
+						}
+						
+						
+							if(month_num==4){
+							
+							if( !($scope._rows[i]["Total " + (parseInt(year))])){
+								$scope._rows[i]["Total " + (parseInt(year))]=0
+							}
+						
+							if( (row[month+" "+(parseInt(year))])){
+								
+								if( (row[month+" "+(parseInt(year))])>0){
+															
+								$scope._rows[i]["Total " + (parseInt(year))]=parseInt(row[month+" "+(parseInt(year))])
+								
+								}
+						
+							}
+							
+						}
+						
+								if(month_num>4){
+							
+							if( !($scope._rows[i]["Total " + (parseInt(year))])){
+								$scope._rows[i]["Total " + (parseInt(year))]=0
+							}
+						
+							if( (row[month+" "+(parseInt(year))])){
+								
+								if( (row[month+" "+(parseInt(year))])>0){
+															
+								$scope._rows[i]["Total " + (parseInt(year))]+=parseInt(row[month+" "+(parseInt(year))])
+								
+								}
+						
+							}
+							
+						}
+					
+					/*
+					else if(month_num==4){
+		if( !isNaN(row[month+" "+year])){
+						total=  row[month+" "+year]
+						if(!isNaN(total)){
+							console.log('	adding total for ',row[month+" "+year])
+							$scope._rows[i]["Total " + year]=total
+						}
+		}
+					}
+					
+					else if(month_num>=4){
+		if( !isNaN(row[month+" "+year])){
+						total+=  row[month+" "+year]
+						if(!isNaN(total)){
+							console.log('	adding total for ',row[month+" "+year])
+							$scope._rows[i]["Total " + year]+=total
+						}
+		}
+					}
+					/*
+					else if(month_num>4){
+		
+						total+=  row[month+" "+year]
+						if(!isNaN(total)){
+						console.log('	adding total for ',row[month+" "+year])
+						$scope._rows[i]["Total " + year]+=total
+					}
+					}
+					
+					
+					else
+					{
+						if(!isNaN(row[month+" "+year])){
+							
+						total+=  row[month+" "+year]
+						$scope._rows[i]["Total " + year]=total
+						}
+					}
+					*/
+					}
+						
+						
+						
+						
+						})
+					}
+				
+				
+			})
+			
  $scope.genericMap = function(hash){
         return function(input){
           if (!input){
@@ -97,7 +229,7 @@ exports.monthly_venue_hire_controller = function(getDateService,$route,$scope, $
 			
 			
 	 $scope.$on('date:updated', function(event,data) {
-					console.log(data)
+					//console.log(data)
 					$scope.start_date=data[0]
 					$scope.end_date=	data[1]	
 			

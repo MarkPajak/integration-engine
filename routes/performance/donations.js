@@ -925,7 +925,7 @@ get_kpis( function ( result) {
 	})
 
 	var returned_row={}
-		returned_row.museum="Running Combined"
+		returned_row.museum="Running Total"
 		returned_row.stat="Monthly total"
 		returned_row.xtype="currency"
 		returned_row.cssclass="summary_row"
