@@ -925,34 +925,27 @@ get_kpis( function ( result) {
 	})
 
 	var returned_row={}
-		returned_row.museum="Running Total"
-		returned_row.stat="Monthly total"
+		returned_row.museum="Total"
+		returned_row.stat="Total"
+		returned_row.typex="retail"
 		returned_row.xtype="currency"
 		returned_row.cssclass="summary_row"
-		returned_row.typex="retail"
 		returned_row.csstype="summary_row"
-	returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_donations",""))
+	returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_s","",'combined',"currency"))
+		
+	
 		
 	var returned_row={}
-			returned_row.museum="Yearly donations"
-			returned_row.stat="Yearly Total"
-			returned_row.xtype="currency"
-			returned_row.typex="retail"
-			returned_row.cssclass="summary_row"
-			returned_row.csstype="summary_row"
-		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"yearly_donations",""))
-		
-	var returned_row={}
-			returned_row.museum="Last year"
-			returned_row.stat="Last Year"
-			returned_row.xtype="currency"
-			returned_row.typex="retail"
-			returned_row.cssclass="summary_row"
-			returned_row.csstype="summary_row"
-		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_donations_last_year",""))
+		returned_row.museum="Last year"
+		returned_row.stat="Last year"
+		returned_row.xtype="currency"
+		returned_row.typex="retail"
+		returned_row.cssclass="summary_row"
+		returned_row.csstype="summary_row"
+		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_sales_last_year","",'combined',"currency"))
 		
 		
-		route_functions.ad_percentage_last_year(returned_data)
+		//route_functions.ad_percentage_last_year(returned_data)
 		
 		 	var datacache = [{ type: 'monthly_development', row_name: "cheese" , date_cached: new Date(), cache:returned_data }];
     // save multiple documents to the collection referenced by Book Model

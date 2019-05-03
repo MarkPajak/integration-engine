@@ -1,4 +1,4 @@
-exports.monthly_retail_sales_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_retail_sales,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,table_security,dynamicTableCellFilter_retail
+exports.monthly_retail_sales_controller = function(yearly_percentage_difference,yearly_totals,getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_retail_sales,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,table_security,dynamicTableCellFilter_retail
     ) {
 		
 		
@@ -64,6 +64,11 @@ exports.monthly_retail_sales_controller = function(getDateService,$route,$scope,
 				})
 			
 			$scope.gridOptions.data=$scope._rows;
+			
+			
+				yearly_totals.build($scope)
+				yearly_percentage_difference.build($scope)
+				
 			$scope.gridOptions.enableFiltering=false
 			make_a_pie.build($scope,"Apr 2017","museum")
 			make_a_line_chart.build($scope,columnDefs,"museum")

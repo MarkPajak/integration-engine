@@ -70,7 +70,7 @@ router.get('/total', function(req, res, next) {
 						
 						function wind_up_Stats(	result,returned_row,analysis_field,venue){
 						
-									var years = [2014,2015,2016,2017,2018,2019]
+									var years = [2014,2015,2016,2017,2018,2019,2020]
 								_.each(years,function(year){
 									var financial_yesr_text = ["last","this"]
 									_.each(financial_yesr_text,function(financial_yer_text){
@@ -342,8 +342,31 @@ router.get('/all', function(req, res, next) {
 					}
 				})
 				
-				
-			returned_data=route_functions.wind_up_Stats_monthly(result,venues)
+			returned_data=route_functions.wind_up_Stats_monthly_venue(result,venues,req.params.booking_type,false)	
+			//returned_data=route_functions.wind_up_Stats_monthly(result,venues)
+		
+	var returned_row={}
+		returned_row.museum="Total"
+		returned_row.stat="Total"
+		returned_row.typex="retail"
+		returned_row.xtype="currency"
+		returned_row.cssclass="summary_row"
+		returned_row.csstype="summary_row"
+	returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_s","",'visits',""))
+		
+		
+			
+				var returned_row={}
+		returned_row.museum="Last year"
+		returned_row.stat="Last year"
+		returned_row.xtype="currency"
+		returned_row.typex="retail"
+		returned_row.cssclass="summary_row"
+		returned_row.csstype="summary_row"
+		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_sales_last_year","",'visits',""))
+			
+			
+			
 			res.json(returned_data)
 		
 	})

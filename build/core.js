@@ -10928,7 +10928,7 @@ exports.yearly_donations_other_controller = function($route,$scope, $http, $q, $
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-other/yearly-donations_other-controller.js","/../components/performance/donations-other")
 },{"b55mWE":4,"buffer":3}],32:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-exports.monthly_donations_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_donations,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,data_table_reload,table_security,dynamicTableCellFilter_donations
+exports.monthly_donations_controller = function(yearly_percentage_difference,yearly_totals,getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_donations,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,data_table_reload,table_security,dynamicTableCellFilter_donations
     ) {
 		
 		
@@ -10987,137 +10987,8 @@ exports.monthly_donations_controller = function(getDateService,$route,$scope, $h
 			
 			
 								
-		_.each($scope._rows,function(row,i){	
-			//console.log('row',row)
-			if(row.museum=="Running total") return;		
-				if(row.museum=="Last Year") return;		
-					
-					start=moment($scope.start_date).year()-2
-					end=moment($scope.end_date).year()+1 //financial year compared to this month stuff
-					
-					
-					start_month=moment($scope.start_date).month()
-					end_month=moment($scope.end_date).month()
- 
- 
-					  var columns = []
-						  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-						  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-						for (year = start; year <= end; year++) { 
-						month_num=0
-						var total = 0
-						_.each(moment.monthsShort(),function(month){
-							
-						month_num++
-					if( row[month+" "+year]){
-						
-						if(month_num<4){
-							
-							if( !($scope._rows[i]["Total " + (parseInt(year)-1)])){
-								$scope._rows[i]["Total " + (parseInt(year)-1)]=0
-							}
-						
-							if( (row[month+" "+(parseInt(year))])){
-								
-								if( (row[month+" "+(parseInt(year))])>0){
-															
-								$scope._rows[i]["Total " + (parseInt(year)-1)]+=parseInt(row[month+" "+(parseInt(year))])
-								
-								}
-						
-							}
-							
-						}
-						
-						
-							if(month_num==4){
-							
-							if( !($scope._rows[i]["Total " + (parseInt(year))])){
-								$scope._rows[i]["Total " + (parseInt(year))]=0
-							}
-						
-							if( (row[month+" "+(parseInt(year))])){
-								
-								if( (row[month+" "+(parseInt(year))])>0){
-															
-								$scope._rows[i]["Total " + (parseInt(year))]=parseInt(row[month+" "+(parseInt(year))])
-								
-								}
-						
-							}
-							
-						}
-						
-								if(month_num>4){
-							
-							if( !($scope._rows[i]["Total " + (parseInt(year))])){
-								$scope._rows[i]["Total " + (parseInt(year))]=0
-							}
-						
-							if( (row[month+" "+(parseInt(year))])){
-								
-								if( (row[month+" "+(parseInt(year))])>0){
-															
-								$scope._rows[i]["Total " + (parseInt(year))]+=parseInt(row[month+" "+(parseInt(year))])
-								
-								}
-						
-							}
-							
-						}
-					
-					/*
-					else if(month_num==4){
-		if( !isNaN(row[month+" "+year])){
-						total=  row[month+" "+year]
-						if(!isNaN(total)){
-							console.log('	adding total for ',row[month+" "+year])
-							$scope._rows[i]["Total " + year]=total
-						}
-		}
-					}
-					
-					else if(month_num>=4){
-		if( !isNaN(row[month+" "+year])){
-						total+=  row[month+" "+year]
-						if(!isNaN(total)){
-							console.log('	adding total for ',row[month+" "+year])
-							$scope._rows[i]["Total " + year]+=total
-						}
-		}
-					}
-					/*
-					else if(month_num>4){
-		
-						total+=  row[month+" "+year]
-						if(!isNaN(total)){
-						console.log('	adding total for ',row[month+" "+year])
-						$scope._rows[i]["Total " + year]+=total
-					}
-					}
-					
-					
-					else
-					{
-						if(!isNaN(row[month+" "+year])){
-							
-						total+=  row[month+" "+year]
-						$scope._rows[i]["Total " + year]=total
-						}
-					}
-					*/
-					}
-						
-						
-						
-						
-						})
-					}
-				
-				
-			})
-			
+	yearly_totals.build($scope)
+	yearly_percentage_difference.build($scope)		
 			_.each([2016,2017],function(year){
 				_.each(moment.monthsShort(),function(month){				
 						$scope.filter_pie.push({value:month+" "+year,name:month+" "+year})
@@ -14234,7 +14105,7 @@ $scope.chart_title="Age groups"
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/learning/age-learning-controller.js","/../components/performance/learning")
 },{"b55mWE":4,"buffer":3}],61:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-exports.monthly_learning_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_learning,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter_retail
+exports.monthly_learning_controller = function(yearly_totals,yearly_percentage_difference,getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_learning,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter_retail
     ) {
 		
 		
@@ -14297,138 +14168,9 @@ exports.monthly_learning_controller = function(getDateService,$route,$scope, $ht
 		
 			$scope.gridOptions.data=$scope._rows;
 			
+			yearly_totals.build($scope)
+			yearly_percentage_difference.build($scope)
 			
-							
-		_.each($scope._rows,function(row,i){	
-			//console.log('row',row)
-			if(row.museum=="Running total") return;		
-				if(row.museum=="Last Year") return;		
-					
-					start=moment($scope.start_date).year()-2
-					end=moment($scope.end_date).year()+1 //financial year compared to this month stuff
-					
-					
-					start_month=moment($scope.start_date).month()
-					end_month=moment($scope.end_date).month()
- 
- 
-					  var columns = []
-						  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-						  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-						for (year = start; year <= end; year++) { 
-						month_num=0
-						var total = 0
-						_.each(moment.monthsShort(),function(month){
-							
-						month_num++
-					if( row[month+" "+year]){
-						
-						if(month_num<4){
-							
-							if( !($scope._rows[i]["Total " + (parseInt(year)-1)])){
-								$scope._rows[i]["Total " + (parseInt(year)-1)]=0
-							}
-						
-							if( (row[month+" "+(parseInt(year))])){
-								
-								if( (row[month+" "+(parseInt(year))])>0){
-															
-								$scope._rows[i]["Total " + (parseInt(year)-1)]+=parseInt(row[month+" "+(parseInt(year))])
-								
-								}
-						
-							}
-							
-						}
-						
-						
-							if(month_num==4){
-							
-							if( !($scope._rows[i]["Total " + (parseInt(year))])){
-								$scope._rows[i]["Total " + (parseInt(year))]=0
-							}
-						
-							if( (row[month+" "+(parseInt(year))])){
-								
-								if( (row[month+" "+(parseInt(year))])>0){
-															
-								$scope._rows[i]["Total " + (parseInt(year))]=parseInt(row[month+" "+(parseInt(year))])
-								
-								}
-						
-							}
-							
-						}
-						
-								if(month_num>4){
-							
-							if( !($scope._rows[i]["Total " + (parseInt(year))])){
-								$scope._rows[i]["Total " + (parseInt(year))]=0
-							}
-						
-							if( (row[month+" "+(parseInt(year))])){
-								
-								if( (row[month+" "+(parseInt(year))])>0){
-															
-								$scope._rows[i]["Total " + (parseInt(year))]+=parseInt(row[month+" "+(parseInt(year))])
-								
-								}
-						
-							}
-							
-						}
-					
-					/*
-					else if(month_num==4){
-		if( !isNaN(row[month+" "+year])){
-						total=  row[month+" "+year]
-						if(!isNaN(total)){
-							console.log('	adding total for ',row[month+" "+year])
-							$scope._rows[i]["Total " + year]=total
-						}
-		}
-					}
-					
-					else if(month_num>=4){
-		if( !isNaN(row[month+" "+year])){
-						total+=  row[month+" "+year]
-						if(!isNaN(total)){
-							console.log('	adding total for ',row[month+" "+year])
-							$scope._rows[i]["Total " + year]+=total
-						}
-		}
-					}
-					/*
-					else if(month_num>4){
-		
-						total+=  row[month+" "+year]
-						if(!isNaN(total)){
-						console.log('	adding total for ',row[month+" "+year])
-						$scope._rows[i]["Total " + year]+=total
-					}
-					}
-					
-					
-					else
-					{
-						if(!isNaN(row[month+" "+year])){
-							
-						total+=  row[month+" "+year]
-						$scope._rows[i]["Total " + year]=total
-						}
-					}
-					*/
-					}
-						
-						
-						
-						
-						})
-					}
-				
-				
-			})
 			$scope.gridOptions.enableFiltering=false
 		
 			make_a_line_chart.build($scope,columnDefs,"age_group")
@@ -17124,7 +16866,7 @@ exports.giftaidDashboard = function() {
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/performance-directive.js","/../components/performance")
 },{"b55mWE":4,"buffer":3}],79:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-exports.monthly_retail_sales_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_retail_sales,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,table_security,dynamicTableCellFilter_retail
+exports.monthly_retail_sales_controller = function(yearly_percentage_difference,yearly_totals,getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_retail_sales,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,table_security,dynamicTableCellFilter_retail
     ) {
 		
 		
@@ -17190,6 +16932,11 @@ exports.monthly_retail_sales_controller = function(getDateService,$route,$scope,
 				})
 			
 			$scope.gridOptions.data=$scope._rows;
+			
+			
+				yearly_totals.build($scope)
+				yearly_percentage_difference.build($scope)
+				
 			$scope.gridOptions.enableFiltering=false
 			make_a_pie.build($scope,"Apr 2017","museum")
 			make_a_line_chart.build($scope,columnDefs,"museum")
@@ -18037,7 +17784,7 @@ exports.raw_turnstiles_controller = function($route,$scope, $http, $q, $routePar
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/turnstiles/raw-turnstiles-controller.js","/../components/performance/turnstiles")
 },{"b55mWE":4,"buffer":3}],90:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-exports.monthly_venue_hire_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_venue_hire,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter
+exports.monthly_venue_hire_controller = function(yearly_percentage_difference,yearly_totals,getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_venue_hire,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter
     ) {
 		
 		
@@ -18106,137 +17853,10 @@ exports.monthly_venue_hire_controller = function(getDateService,$route,$scope, $
 		
 			$scope.gridOptions.data=$scope._rows;
 			
-					
-		_.each($scope._rows,function(row,i){	
-			//console.log('row',row)
-			if(row.museum=="Running total") return;		
-				if(row.museum=="Last Year") return;		
-					
-					start=moment($scope.start_date).year()-2
-					end=moment($scope.end_date).year()+1 //financial year compared to this month stuff
-					
-					
-					start_month=moment($scope.start_date).month()
-					end_month=moment($scope.end_date).month()
- 
- 
-					  var columns = []
-						  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-						  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-						for (year = start; year <= end; year++) { 
-						month_num=0
-						var total = 0
-						_.each(moment.monthsShort(),function(month){
-							
-						month_num++
-					if( row[month+" "+year]){
-						
-						if(month_num<4){
-							
-							if( !($scope._rows[i]["Total " + (parseInt(year)-1)])){
-								$scope._rows[i]["Total " + (parseInt(year)-1)]=0
-							}
-						
-							if( (row[month+" "+(parseInt(year))])){
-								
-								if( (row[month+" "+(parseInt(year))])>0){
-															
-								$scope._rows[i]["Total " + (parseInt(year)-1)]+=parseInt(row[month+" "+(parseInt(year))])
-								
-								}
-						
-							}
-							
-						}
-						
-						
-							if(month_num==4){
-							
-							if( !($scope._rows[i]["Total " + (parseInt(year))])){
-								$scope._rows[i]["Total " + (parseInt(year))]=0
-							}
-						
-							if( (row[month+" "+(parseInt(year))])){
-								
-								if( (row[month+" "+(parseInt(year))])>0){
-															
-								$scope._rows[i]["Total " + (parseInt(year))]=parseInt(row[month+" "+(parseInt(year))])
-								
-								}
-						
-							}
-							
-						}
-						
-								if(month_num>4){
-							
-							if( !($scope._rows[i]["Total " + (parseInt(year))])){
-								$scope._rows[i]["Total " + (parseInt(year))]=0
-							}
-						
-							if( (row[month+" "+(parseInt(year))])){
-								
-								if( (row[month+" "+(parseInt(year))])>0){
-															
-								$scope._rows[i]["Total " + (parseInt(year))]+=parseInt(row[month+" "+(parseInt(year))])
-								
-								}
-						
-							}
-							
-						}
-					
-					/*
-					else if(month_num==4){
-		if( !isNaN(row[month+" "+year])){
-						total=  row[month+" "+year]
-						if(!isNaN(total)){
-							console.log('	adding total for ',row[month+" "+year])
-							$scope._rows[i]["Total " + year]=total
-						}
-		}
-					}
-					
-					else if(month_num>=4){
-		if( !isNaN(row[month+" "+year])){
-						total+=  row[month+" "+year]
-						if(!isNaN(total)){
-							console.log('	adding total for ',row[month+" "+year])
-							$scope._rows[i]["Total " + year]+=total
-						}
-		}
-					}
-					/*
-					else if(month_num>4){
 		
-						total+=  row[month+" "+year]
-						if(!isNaN(total)){
-						console.log('	adding total for ',row[month+" "+year])
-						$scope._rows[i]["Total " + year]+=total
-					}
-					}
-					
-					
-					else
-					{
-						if(!isNaN(row[month+" "+year])){
-							
-						total+=  row[month+" "+year]
-						$scope._rows[i]["Total " + year]=total
-						}
-					}
-					*/
-					}
-						
-						
-						
-						
-						})
-					}
-				
-				
-			})
+		yearly_totals.build($scope)
+		yearly_percentage_difference.build($scope)
+
 			
  $scope.genericMap = function(hash){
         return function(input){
@@ -18532,7 +18152,7 @@ exports.yearly_venue_hire_controller = function($route,$scope, $http, $q, $route
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/venue-hire/yearly-visits-controller.js","/../components/performance/venue-hire")
 },{"b55mWE":4,"buffer":3}],94:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-exports.monthly_visitor_numbers_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_visits,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter
+exports.monthly_visitor_numbers_controller = function(yearly_totals,yearly_percentage_difference,getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_visits,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter
     ) {
 		
 		
@@ -18597,138 +18217,8 @@ exports.monthly_visitor_numbers_controller = function(getDateService,$route,$sco
 		
 			$scope.gridOptions.data=$scope._rows;
 			
-			
-								
-		_.each($scope._rows,function(row,i){	
-			//console.log('row',row)
-			if(row.museum=="Running total") return;		
-				if(row.museum=="Last Year") return;		
-					
-					start=moment($scope.start_date).year()-2
-					end=moment($scope.end_date).year()+1 //financial year compared to this month stuff
-					
-					
-					start_month=moment($scope.start_date).month()
-					end_month=moment($scope.end_date).month()
- 
- 
-					  var columns = []
-						  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-						  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-						for (year = start; year <= end; year++) { 
-						month_num=0
-						var total = 0
-						_.each(moment.monthsShort(),function(month){
-							
-						month_num++
-					if( row[month+" "+year]){
-						
-						if(month_num<4){
-							
-							if( !($scope._rows[i]["Total " + (parseInt(year)-1)])){
-								$scope._rows[i]["Total " + (parseInt(year)-1)]=0
-							}
-						
-							if( (row[month+" "+(parseInt(year))])){
-								
-								if( (row[month+" "+(parseInt(year))])>0){
-															
-								$scope._rows[i]["Total " + (parseInt(year)-1)]+=parseInt(row[month+" "+(parseInt(year))])
-								
-								}
-						
-							}
-							
-						}
-						
-						
-							if(month_num==4){
-							
-							if( !($scope._rows[i]["Total " + (parseInt(year))])){
-								$scope._rows[i]["Total " + (parseInt(year))]=0
-							}
-						
-							if( (row[month+" "+(parseInt(year))])){
-								
-								if( (row[month+" "+(parseInt(year))])>0){
-															
-								$scope._rows[i]["Total " + (parseInt(year))]=parseInt(row[month+" "+(parseInt(year))])
-								
-								}
-						
-							}
-							
-						}
-						
-								if(month_num>4){
-							
-							if( !($scope._rows[i]["Total " + (parseInt(year))])){
-								$scope._rows[i]["Total " + (parseInt(year))]=0
-							}
-						
-							if( (row[month+" "+(parseInt(year))])){
-								
-								if( (row[month+" "+(parseInt(year))])>0){
-															
-								$scope._rows[i]["Total " + (parseInt(year))]+=parseInt(row[month+" "+(parseInt(year))])
-								
-								}
-						
-							}
-							
-						}
-					
-					/*
-					else if(month_num==4){
-		if( !isNaN(row[month+" "+year])){
-						total=  row[month+" "+year]
-						if(!isNaN(total)){
-							console.log('	adding total for ',row[month+" "+year])
-							$scope._rows[i]["Total " + year]=total
-						}
-		}
-					}
-					
-					else if(month_num>=4){
-		if( !isNaN(row[month+" "+year])){
-						total+=  row[month+" "+year]
-						if(!isNaN(total)){
-							console.log('	adding total for ',row[month+" "+year])
-							$scope._rows[i]["Total " + year]+=total
-						}
-		}
-					}
-					/*
-					else if(month_num>4){
-		
-						total+=  row[month+" "+year]
-						if(!isNaN(total)){
-						console.log('	adding total for ',row[month+" "+year])
-						$scope._rows[i]["Total " + year]+=total
-					}
-					}
-					
-					
-					else
-					{
-						if(!isNaN(row[month+" "+year])){
-							
-						total+=  row[month+" "+year]
-						$scope._rows[i]["Total " + year]=total
-						}
-					}
-					*/
-					}
-						
-						
-						
-						
-						})
-					}
-				
-				
-			})	
+			yearly_totals.build($scope)
+		yearly_percentage_difference.build($scope)	
 			
 			
  $scope.genericMap = function(hash){
@@ -31178,7 +30668,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
           
         }])
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_ab4719cf.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_43effbb9.js","/")
 },{"../components/exhibitions/directive":8,"../components/exhibitions/music/monthly-votes-controller":9,"../components/exhibitions/music/raw-votes-controller":10,"../components/exhibitions/music/votes-form-controller":11,"../components/iframe/iframe-controller":12,"../components/iframe/iframe-directive":13,"../components/machine-monitor/dashboard-controller":14,"../components/machine-monitor/dead-controller":15,"../components/machine-monitor/downtime-controller":16,"../components/machine-monitor/downtime-services":17,"../components/machine-monitor/feedback-controller":18,"../components/machine-monitor/feedback-services":19,"../components/machine-monitor/satisfaction-controller":20,"../components/member/member-controller":21,"../components/performance/analyser/analyser-controller":22,"../components/performance/corporate/monthly-corporate-controller":23,"../components/performance/corporate/performance-form-controller":24,"../components/performance/corporate/raw-corporate-controller":25,"../components/performance/corporate/yearly-corporate-controller":26,"../components/performance/dashboard-controllers":27,"../components/performance/donations-other/monthly-donations_other-controller":28,"../components/performance/donations-other/performance-form-controller":29,"../components/performance/donations-other/raw-donations_other-controller":30,"../components/performance/donations-other/yearly-donations_other-controller":31,"../components/performance/donations/monthly-donations-controller":32,"../components/performance/donations/performance-form-controller":33,"../components/performance/donations/raw-donations-controller":34,"../components/performance/donations/yearly-donations-controller":35,"../components/performance/events/monthly-events-controller":36,"../components/performance/events/performance-form-controller":37,"../components/performance/events/raw-events-controller":38,"../components/performance/events/yearly-events-controller":39,"../components/performance/exhibitions-pwyt/monthly-donations-controller":40,"../components/performance/exhibitions-pwyt/performance-form-controller":41,"../components/performance/exhibitions-pwyt/raw-donations-controller":42,"../components/performance/exhibitions/exhibitions-summary-controller":43,"../components/performance/gallery-visits/exhibitions-teg-controller":44,"../components/performance/gallery-visits/monthly-teg-controller":45,"../components/performance/gallery-visits/performance-form-controller":46,"../components/performance/gallery-visits/raw-teg-controller":47,"../components/performance/gallery-visits/weekly-teg-controller":48,"../components/performance/gallery-visits/yearly-teg-controller":49,"../components/performance/gift-aid/monthly-allgiftaid-controller":50,"../components/performance/gift-aid/monthly-giftaid-controller":51,"../components/performance/gift-aid/performance-form-controller":52,"../components/performance/gift-aid/raw-giftaid-controller":53,"../components/performance/home/kpi-home-controller":54,"../components/performance/home/master-kpi-home-controller":55,"../components/performance/kpi-events/monthly-events-controller":56,"../components/performance/kpi-events/performance-form-controller":57,"../components/performance/kpi-events/raw-events-controller":58,"../components/performance/kpi-events/standard-monthly-events-controller":59,"../components/performance/learning/age-learning-controller":60,"../components/performance/learning/monthly-learning-controller":61,"../components/performance/learning/performance-form-controller":62,"../components/performance/learning/raw-learning-controller":63,"../components/performance/learning/yearly-learning-controller":64,"../components/performance/operations/monthly-operations-controller":65,"../components/performance/operations/performance-form-controller":66,"../components/performance/operations/raw-operations-controller":67,"../components/performance/operations/yearly-operations-controller":68,"../components/performance/participation/monthly-participation-controller":69,"../components/performance/participation/performance-form-controller":70,"../components/performance/participation/raw-participation-controller":71,"../components/performance/participation/target-audience-controller":72,"../components/performance/participation/yearly-participation-controller":73,"../components/performance/patron/monthly-patron-controller":74,"../components/performance/patron/performance-form-controller":75,"../components/performance/patron/raw-patron-controller":76,"../components/performance/patron/yearly-patron-controller":77,"../components/performance/performance-directive":78,"../components/performance/retail/monthly-retail-sales-controller":79,"../components/performance/retail/performance-form-controller":80,"../components/performance/retail/raw-retail-sales-controller":81,"../components/performance/retail/yearly-retail-sales-controller":82,"../components/performance/site_permissions/monthly-site_permissions-controller":83,"../components/performance/site_permissions/performance-form-controller":84,"../components/performance/site_permissions/raw-site_permissions-controller":85,"../components/performance/site_permissions/yearly-site_permissions-controller":86,"../components/performance/team-kpis/standard-monthly-events-controller":87,"../components/performance/turnstiles/monthly-turnstiles-controller":88,"../components/performance/turnstiles/raw-turnstiles-controller":89,"../components/performance/venue-hire/monthly-visits-controller":90,"../components/performance/venue-hire/raw-visits-controller":91,"../components/performance/venue-hire/visits-form-controller":92,"../components/performance/venue-hire/yearly-visits-controller":93,"../components/performance/visits/monthly-visits-controller":94,"../components/performance/visits/raw-visits-controller":95,"../components/performance/visits/visits-form-controller":96,"../components/performance/visits/yearly-visits-controller":97,"../components/performance/welcome-desk/monthly-welcomedesk-controller":98,"../components/performance/welcome-desk/performance-form-controller":99,"../components/performance/welcome-desk/raw-welcomedesk-controller":100,"../components/performance/welcome-desk/yearly-welcomedesk-controller":101,"../components/resource-bookings/bookings/edit-form-controller":102,"../components/resource-bookings/bookings/form-controller":103,"../components/resource-bookings/bookings/monthly-bookings-controller":104,"../components/resource-bookings/bookings/raw-bookings-controller":105,"../components/resource-bookings/bookings/recurring-events-controller":106,"../components/resource-bookings/bookings/yearly-bookings-controller":107,"../components/resource-bookings/directive":108,"../components/resource-bookings/equipment/form-controller":109,"../components/resource-bookings/equipment/raw-equipment-controller":110,"../components/resource-bookings/rooms/form-controller":111,"../components/resource-bookings/rooms/raw-rooms-controller":112,"../components/resource-bookings/timeline-resources-controller":113,"../components/resource-bookings/timeline-resources-services":114,"../components/shopify/shopify-controller":115,"../components/shopify/shopify-directive":116,"../components/shopify/shopify-monthly-controller":117,"../components/signage/directive":118,"../components/signage/posters/form-controller":119,"../components/signage/posters/raw-poster-controller":120,"../components/team/app-controllers":121,"../components/team/form-controller":122,"../components/team/leave-controller":123,"../components/team/team-controller":124,"../components/tech-support/tech-support-controller":125,"../components/tech-support/tech-support-directive":126,"../components/tech-support/trello-services":127,"../components/timeline-settings/raw-timeline-settings-controller":128,"../components/timeline-settings/settings-form-controller":129,"../components/timeline-settings/timeline-settings-directive":130,"../components/timeline/timeline-bookings-services":131,"../components/timeline/timeline-controller":132,"../components/timeline/timeline-directive":133,"../components/timeline/timeline-exhibitions-services":134,"../components/timeline/timeline-googlesheets-services":135,"../components/timeline/timeline-installs-services":136,"../components/timeline/timeline-learning-bookings-services":137,"../components/timeline/timeline-leave-services":138,"../components/timeline/timeline-loans-services":139,"../components/timeline/timeline-services":140,"../components/timeline/timeline-shopify-services":141,"../components/timeline/timeline-visitor-figures-services":142,"../components/turnstiles/turnstiles-controller":143,"../components/turnstiles/turnstiles-directive":144,"../components/user-admin/users-controller":145,"../components/user-admin/users-directive":146,"../shared/controllers/colourkey-controller":147,"../shared/controllers/controllers":148,"../shared/controllers/navbar-controller":149,"../shared/controllers/tablefilter-controller":150,"../shared/directives/directives":151,"../shared/services/app-services":153,"../shared/services/data-services":154,"async":1,"b55mWE":4,"buffer":3,"underscore":7}],153:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
@@ -32183,7 +31673,28 @@ month_num=0
 			_.each(moment.monthsShort(),function(month){	
 			month_num++
 if(month_num==4){
-							columns.push({ field: "Total "+year ,width: "100"})
+							columns.push({ cellFilter:  'valueFilter:row.entity',field: "Total "+year ,width: "100",	  cellClass: function(grid, row, col, rowRenderIndex, colRenderIndex) {
+																															
+																														
+																															if(row.entity[col.colDef.field]){
+																																if(typeof row.entity[col.colDef.field].indexOf === "function"){
+																																	if(row.entity[col.colDef.field].indexOf("-")!=-1){
+																																	return ("red")
+																																}
+																															}
+																															if(row.entity){
+																																if(row.entity.csstype){
+																																
+																																	return (row.entity.csstype)
+																																}
+																																}
+																																
+																																
+																															}
+																															
+																															
+																															
+																															}})
 				}
 			console.log('start_month',start_month)
 			console.log('monthNames.indexOf(month)',monthNames.indexOf(month))
@@ -32241,6 +31752,164 @@ if(month_num==4){
 	
 
     return array;
+
+}
+
+exports.yearly_percentage_difference = function(){
+	
+	var array = {};
+	
+	array.build  = function (scope) {
+		
+			_.each(scope._rows,function(row,i){	
+
+					
+							var new_row = {}
+								new_row.museum="Total"
+								new_row.museum="% difference"
+								new_row.typex="retail"
+								new_row.xtype="currency"
+								new_row.cssclass="summary_row"
+								new_row.csstype="summary_row"
+								console.log('new_row',row)
+								
+								if(row.museum=="Total"){					
+									for(var key in row) {
+										_.each(scope._rows,function(rowX){
+											for(var keyX in rowX) {
+												if(rowX.museum=="Last year" && key ==keyX ){	
+													if(row[key]>0 && rowX[keyX]>0){
+														//need to detect if it is a full month
+														percantage=((key,row[key]/rowX[keyX])*100-100).toFixed(2)+"%";
+														new_row[key]=percantage
+														console.log('new_row',new_row)
+													}
+												}
+											}
+										})
+									}
+										scope._rows.push(new_row)
+								}
+							
+				})	
+				
+		
+			
+	}
+	
+	return array;
+
+
+
+
+}
+
+exports.yearly_totals = function(){
+	
+	var array = {};
+	
+	array.build  = function (scope) {
+		
+			_.each(scope._rows,function(row,i){	
+			//console.log('row',row)
+			if(row.museum=="Running total") return;		
+				if(row.museum=="Last Year") return;		
+					if(row.stat=="Yearly Total") return;		
+
+					
+					start=moment(scope.start_date).year()-2
+					end=moment(scope.end_date).year()+1 //financial year compared to this month stuff
+					
+					
+					start_month=moment(scope.start_date).month()
+					end_month=moment(scope.end_date).month()
+ 
+ 
+					  var columns = []
+						  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+						  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+						for (year = start; year <= end; year++) { 
+						month_num=0
+						var total = 0
+						_.each(moment.monthsShort(),function(month){
+							
+						month_num++
+					if( row[month+" "+year]){
+						
+						if(month_num<4){
+							
+							if( !(scope._rows[i]["Total " + (parseInt(year)-1)])){
+								scope._rows[i]["Total " + (parseInt(year)-1)]=0
+							}
+						
+							if( (row[month+" "+(parseInt(year))])){
+								
+								if( (row[month+" "+(parseInt(year))])>0){
+															
+								scope._rows[i]["Total " + (parseInt(year)-1)]+=parseInt(row[month+" "+(parseInt(year))])
+								
+								}
+						
+							}
+							
+						}
+						
+						
+							if(month_num==4){
+							
+							if( !(scope._rows[i]["Total " + (parseInt(year))])){
+								scope._rows[i]["Total " + (parseInt(year))]=0
+							}
+						
+							if( (row[month+" "+(parseInt(year))])){
+								
+								if( (row[month+" "+(parseInt(year))])>0){
+															
+								scope._rows[i]["Total " + (parseInt(year))]=parseInt(row[month+" "+(parseInt(year))])
+								
+								}
+						
+							}
+							
+						}
+						
+								if(month_num>4){
+							
+							if( !(scope._rows[i]["Total " + (parseInt(year))])){
+								scope._rows[i]["Total " + (parseInt(year))]=0
+							}
+						
+							if( (row[month+" "+(parseInt(year))])){
+								
+								if( (row[month+" "+(parseInt(year))])>0){
+															
+								scope._rows[i]["Total " + (parseInt(year))]+=parseInt(row[month+" "+(parseInt(year))])
+								
+								}
+						
+							}
+							
+						}
+					
+	
+					}
+						
+						
+						
+						
+						})
+					}
+				
+				
+			})
+			
+	}
+	
+	return array;
+
+
+
 
 }
 

@@ -107,13 +107,13 @@ returned_data=route_functions.wind_up_Stats_monthly_venue(result,venues,req.para
 
 		
 		var returned_row={}
-		returned_row.museum="Yearly income"
+		returned_row.museum="Total"
 		returned_row.stat="Income - total"
 		returned_row.xtype="currency"
 		returned_row.typex="retail"
 		returned_row.cssclass="summary_row"
 		returned_row.csstype="summary_row"
-		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_income",""))
+		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_s","",'total_income',"currency"))
 
 
 		var returned_row={}
@@ -123,10 +123,10 @@ returned_data=route_functions.wind_up_Stats_monthly_venue(result,venues,req.para
 		returned_row.typex="retail"
 		returned_row.cssclass="summary_row"
 		returned_row.csstype="summary_row"
-		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_income_last_year",""))
+		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_sales_last_year","",'total_income',"currency"))
 
 
-		route_functions.ad_percentage_last_year_income(returned_data)
+		//route_functions.ad_percentage_last_year_income(returned_data)
 
 		res.json(returned_data)
 	
@@ -332,9 +332,11 @@ router.get('/total/:booking_type', function(req, res, next) {
 						
 						function wind_up_Stats(	result,returned_row,analysis_field,venue){
 						
-									var years = [2014,2015,2016,2017,2018,2019,2020]
+								var years = [2014,2015,2016,2017,2018,2019,2020]
+								
 								_.each(years,function(year){
-									var financial_yesr_text = ["last","this"]
+								
+								var financial_yesr_text = ["last","this"]
 									_.each(financial_yesr_text,function(financial_yer_text){
 										_.each(result,function(row){
 											if(venue==row._id.kpi_venue &&row._id.financial_yer==financial_yer_text&&row._id.year==year){

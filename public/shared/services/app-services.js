@@ -1000,7 +1000,28 @@ month_num=0
 			_.each(moment.monthsShort(),function(month){	
 			month_num++
 if(month_num==4){
-							columns.push({ field: "Total "+year ,width: "100"})
+							columns.push({ cellFilter:  'valueFilter:row.entity',field: "Total "+year ,width: "100",	  cellClass: function(grid, row, col, rowRenderIndex, colRenderIndex) {
+																															
+																														
+																															if(row.entity[col.colDef.field]){
+																																if(typeof row.entity[col.colDef.field].indexOf === "function"){
+																																	if(row.entity[col.colDef.field].indexOf("-")!=-1){
+																																	return ("red")
+																																}
+																															}
+																															if(row.entity){
+																																if(row.entity.csstype){
+																																
+																																	return (row.entity.csstype)
+																																}
+																																}
+																																
+																																
+																															}
+																															
+																															
+																															
+																															}})
 				}
 			console.log('start_month',start_month)
 			console.log('monthNames.indexOf(month)',monthNames.indexOf(month))
@@ -1058,6 +1079,164 @@ if(month_num==4){
 	
 
     return array;
+
+}
+
+exports.yearly_percentage_difference = function(){
+	
+	var array = {};
+	
+	array.build  = function (scope) {
+		
+			_.each(scope._rows,function(row,i){	
+
+					
+							var new_row = {}
+								new_row.museum="Total"
+								new_row.museum="% difference"
+								new_row.typex="retail"
+								new_row.xtype="currency"
+								new_row.cssclass="summary_row"
+								new_row.csstype="summary_row"
+								console.log('new_row',row)
+								
+								if(row.museum=="Total"){					
+									for(var key in row) {
+										_.each(scope._rows,function(rowX){
+											for(var keyX in rowX) {
+												if(rowX.museum=="Last year" && key ==keyX ){	
+													if(row[key]>0 && rowX[keyX]>0){
+														//need to detect if it is a full month
+														percantage=((key,row[key]/rowX[keyX])*100-100).toFixed(2)+"%";
+														new_row[key]=percantage
+														console.log('new_row',new_row)
+													}
+												}
+											}
+										})
+									}
+										scope._rows.push(new_row)
+								}
+							
+				})	
+				
+		
+			
+	}
+	
+	return array;
+
+
+
+
+}
+
+exports.yearly_totals = function(){
+	
+	var array = {};
+	
+	array.build  = function (scope) {
+		
+			_.each(scope._rows,function(row,i){	
+			//console.log('row',row)
+			if(row.museum=="Running total") return;		
+				if(row.museum=="Last Year") return;		
+					if(row.stat=="Yearly Total") return;		
+
+					
+					start=moment(scope.start_date).year()-2
+					end=moment(scope.end_date).year()+1 //financial year compared to this month stuff
+					
+					
+					start_month=moment(scope.start_date).month()
+					end_month=moment(scope.end_date).month()
+ 
+ 
+					  var columns = []
+						  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+						  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+						for (year = start; year <= end; year++) { 
+						month_num=0
+						var total = 0
+						_.each(moment.monthsShort(),function(month){
+							
+						month_num++
+					if( row[month+" "+year]){
+						
+						if(month_num<4){
+							
+							if( !(scope._rows[i]["Total " + (parseInt(year)-1)])){
+								scope._rows[i]["Total " + (parseInt(year)-1)]=0
+							}
+						
+							if( (row[month+" "+(parseInt(year))])){
+								
+								if( (row[month+" "+(parseInt(year))])>0){
+															
+								scope._rows[i]["Total " + (parseInt(year)-1)]+=parseInt(row[month+" "+(parseInt(year))])
+								
+								}
+						
+							}
+							
+						}
+						
+						
+							if(month_num==4){
+							
+							if( !(scope._rows[i]["Total " + (parseInt(year))])){
+								scope._rows[i]["Total " + (parseInt(year))]=0
+							}
+						
+							if( (row[month+" "+(parseInt(year))])){
+								
+								if( (row[month+" "+(parseInt(year))])>0){
+															
+								scope._rows[i]["Total " + (parseInt(year))]=parseInt(row[month+" "+(parseInt(year))])
+								
+								}
+						
+							}
+							
+						}
+						
+								if(month_num>4){
+							
+							if( !(scope._rows[i]["Total " + (parseInt(year))])){
+								scope._rows[i]["Total " + (parseInt(year))]=0
+							}
+						
+							if( (row[month+" "+(parseInt(year))])){
+								
+								if( (row[month+" "+(parseInt(year))])>0){
+															
+								scope._rows[i]["Total " + (parseInt(year))]+=parseInt(row[month+" "+(parseInt(year))])
+								
+								}
+						
+							}
+							
+						}
+					
+	
+					}
+						
+						
+						
+						
+						})
+					}
+				
+				
+			})
+			
+	}
+	
+	return array;
+
+
+
 
 }
 

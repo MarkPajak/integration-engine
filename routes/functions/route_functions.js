@@ -158,7 +158,7 @@ this.calendar_feed = function (events){
 	
 	}
 	 
-	  this.wind_up_Stats_monthly_variable=function(result,returned_row,analysis_field,venue){
+	  this.wind_up_Stats_monthly_variable=function(result,returned_row,analysis_field,venue,data_field_name,currency){
 		 
 			var years = [2015,2016,2017,2018,2019,2020,2021,2022]
 			
@@ -199,38 +199,36 @@ this.calendar_feed = function (events){
 				new_row[month+" "+year]=0
 				new_rowx[month+" "+year]=0
 	
-				if(analysis_field=="total_donations"){
-					
-						_.each(result,function(row){
-							if(!isNaN(parseInt(row['combined']	))){
-								if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year){
-									
-										months=moment.monthsShort() 
-										lastmonth=months.indexOf(month)-1
-										lastyear=years.indexOf(year)-1
-										returned_row[month+" "+year]+=parseInt(row['combined']	)										
-										returned_row.cssclass="bold"						
-										returned_row.typex="currency"
 		
-								}
-							}
-						})
 				
-				}
-					else if(analysis_field=="total_income"){
+				 if(analysis_field=="total_s"){
 				
 				
 				
 						_.each(result,function(row){
-							if(!isNaN(parseInt(row['total_income']	))){
+							if(!isNaN(parseInt(row[data_field_name]	))){
+								
+									if(month==moment.monthsShort(row._id.month-1)  &&row._id.year==year){
+									
+										months=moment.monthsShort() 
+										lastmonth=months.indexOf(month)-1
+										lastyear=years.indexOf(year)-1
+										returned_row[month+" "+year]+=parseInt(row[data_field_name])										
+										returned_row.cssclass="bold"						
+										returned_row.typex=currency
+							
+									
+								}
+								
+								
 								if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year){
 									
 										months=moment.monthsShort() 
 										lastmonth=months.indexOf(month)-1
 										lastyear=years.indexOf(year)-1
-										returned_row[month+" "+year]+=parseInt(row['total_income'])										
+										returned_row[month+" "+year]+=parseInt(row[data_field_name])										
 										returned_row.cssclass="bold"						
-										returned_row.typex="currency"
+										returned_row.typex=currency
 							
 									
 								}
@@ -238,27 +236,11 @@ this.calendar_feed = function (events){
 						})
 				
 				}
-				else if(analysis_field=="total_sales"){
+				
+			
+					
 				
 				
-				
-						_.each(result,function(row){
-							if(!isNaN(parseInt(row['net_sales']	))){
-								if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year){
-									
-										months=moment.monthsShort() 
-										lastmonth=months.indexOf(month)-1
-										lastyear=years.indexOf(year)-1
-										returned_row[month+" "+year]+=parseInt(row['net_sales'])										
-										returned_row.cssclass="bold"						
-										returned_row.typex="currency"
-							
-									
-								}
-							}
-						})
-				
-				}
 				else if(analysis_field=="yearly_sessions"){
 				
 				
@@ -606,18 +588,33 @@ this.calendar_feed = function (events){
 				
 				}
 				
-				else if(analysis_field=="total_income_last_year"){
+				
+				else if(analysis_field=="total_sales_last_year"){
 				
 				_.each(result,function(row){
-							if(!isNaN(parseInt(row['total_income']	))){
+							if(!isNaN(parseInt(row[data_field_name]	))){
+								
+									if(month==moment.monthsShort(row._id.month-1)  &&row._id.year==year-1){
+									
+										months=moment.monthsShort() 
+										lastmonth=months.indexOf(month)-1
+										lastyear=years.indexOf(year)-1
+										returned_row[month+" "+year]+=parseInt(row[data_field_name])										
+										returned_row.cssclass="bold"						
+										returned_row.typex=currency
+							
+									
+								}
+								
+								
 								if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year-1){
 									
 										months=moment.monthsShort() 
 										lastmonth=months.indexOf(month)-1
 										lastyear=years.indexOf(year)-1
-										returned_row[month+" "+year]+=parseInt(row['total_income'])										
+										returned_row[month+" "+year]+=parseInt(row[data_field_name])										
 										returned_row.cssclass="bold"						
-										returned_row.typex="currency"
+										returned_row.typex=currency
 							
 									
 								}
@@ -626,7 +623,9 @@ this.calendar_feed = function (events){
 				
 				}
 				
-				else if(analysis_field=="total_donations_last_year"){
+						
+				
+				else if(analysis_field=="_total_donations_last_year"){
 				
 					_.each(result,function(row){
 				
@@ -1114,11 +1113,11 @@ this.calendar_feed = function (events){
 								new_row.csstype="summary_row"
 								
 								
-								if(row.stat=="Yearly Total"){					
+								if(row.stat=="Total"){					
 									for(var key in row) {
 										_.each(returned_data,function(rowX){
 											for(var keyX in rowX) {
-												if(rowX.stat=="Last Year" && key ==keyX ){	
+												if(rowX.stat=="Last year" && key ==keyX ){	
 													if(row[key]>0 && rowX[keyX]>0){
 														//need to detect if it is a full month
 														percantage=((key,row[key]/rowX[keyX])*100-100).toFixed(2)+"%";
@@ -1134,6 +1133,83 @@ this.calendar_feed = function (events){
 				})	
 			//	return (new_row)
 	}
+	
+			 this.wind_up_Stats_monthly_visits=function(result,venues,booking_type,currency){
+		 
+		 
+		 
+	var returned_data=[]
+	_.each(venues,function(venue){
+		var returned_row={}
+		var returned_row_compare_last_year={}
+		var returned_row_compare_last_year_total={}
+		returned_row.museum=venue
+		
+			var years = [2015,2016,2017,2018,2019,2020,2021,2022]
+			_.each(years,function(year){
+			_.each(moment.monthsShort(),function(month){
+				returned_row[month+" "+year]=""
+						var checkmonth = new Date()
+									var checkmonth_num = checkmonth.getMonth()
+									lastmonth=moment.monthsShort().indexOf(month)-1	
+					_.each(result,function(row){
+						if(month==moment.monthsShort(row._id.month-1) && booking_type==row._id.booking_type &&venue==row._id.venue &&row._id.year==year){
+							returned_row[month+" "+year]=row.visits
+							returned_row.stat="Visits"
+							returned_row.cssclass="bold"
+							if(currency){
+							//returned_row.typex="currency"
+							}
+							
+							//returned_row.cellfilter="number:2"
+							for (compare_previous_years = 1; compare_previous_years <= 2; compare_previous_years++) { 
+  
+
+							_.each(result,function(previous_data){
+								compare_previous_year = year-compare_previous_years
+							
+								if(previous_data._id.month){
+								if(month==moment.monthsShort(previous_data._id.month-1)
+									&&booking_type==previous_data._id.booking_type 
+								   &&venue==previous_data._id.venue 
+								   &&previous_data._id.year==compare_previous_year){
+									
+										returned_row_compare_last_year_total.museum=compare_previous_year+ " - " + year
+										returned_row_compare_last_year.museum="% difference" 
+										
+										if(lastmonth<checkmonth_num-1){
+											returned_row_compare_last_year[month+" "+year]=((row.visits/previous_data.visits)*100-100).toFixed(2)+"%";
+										}
+										
+										returned_row_compare_last_year_total[month+" "+year]=previous_data.visits
+										if(currency){
+											//returned_row_compare_last_year_total.typex="currency"
+										}
+							
+										
+									
+								}
+								}
+							})
+							
+							}
+							
+						}
+					})
+				})
+			})
+		returned_data.push(	returned_row)
+		if(returned_row_compare_last_year.museum){
+			returned_data.push(	returned_row_compare_last_year)
+		}
+		if(returned_row_compare_last_year_total.museum){
+			returned_data.push(	returned_row_compare_last_year_total)
+			
+		}
+	})
+	return returned_data
+	 }	
+	 
 	
 		 this.wind_up_Stats_monthly_venue=function(result,venues,booking_type,currency){
 		 

@@ -462,40 +462,31 @@ get_kpis( function ( result) {
 	})
 
 			var returned_row={}
-				returned_row.museum="Monthly total"
-				returned_row.stat="Monthly total"
-				returned_row.typex="retail"
-				returned_row.xtype="currency"
-				returned_row.cssclass="summary_row"
-				returned_row.csstype="summary_row"
-			
-		
-				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_sales",""))
-			
-			
-			var returned_row={}
 				returned_row.museum="Total"
-				returned_row.stat="Yearly Total"
+				returned_row.stat="Total"
 				returned_row.typex="retail"
 				returned_row.xtype="currency"
-				
 				returned_row.cssclass="summary_row"
 				returned_row.csstype="summary_row"
+			
 		
-				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"yearly_total",""))
+				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_s","",'net_sales',"currency"))
+			
+			
+			
 				
 				
-				var returned_row={}
-					returned_row.museum="Total"
-					returned_row.stat="Last Year"
-					returned_row.typex="retail"
-					returned_row.xtype="currency"
-					returned_row.cssclass="summary_row"
-					returned_row.csstype="summary_row"
-		
-				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_last_year",""))
+			var returned_row={}
+		returned_row.museum="Last year"
+		returned_row.stat="Last year"
+		returned_row.xtype="currency"
+		returned_row.typex="retail"
+		returned_row.cssclass="summary_row"
+		returned_row.csstype="summary_row"
+		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_sales_last_year","",'net_sales',"currency"))
+
 				
-				route_functions.ad_percentage_last_year(returned_data)
+				//route_functions.ad_percentage_last_year(returned_data)
 		
 		
 res.json(returned_data)
