@@ -1,4 +1,4 @@
-exports.monthly_kpi_events_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope,Monthly_kpi_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security
+exports.monthly_kpi_events_controller = function(yearly_percentage_difference,yearly_totals,getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope,Monthly_kpi_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security
     ) {
 		
 	
@@ -130,7 +130,9 @@ function isNumeric(n) {
 			console.log('team $scope._rows',$scope._rows)
 			$scope.gridOptions.data=$scope._rows;
 
-		
+										
+	yearly_totals.build($scope)
+	yearly_percentage_difference.build($scope)	
 			
 			
 			$scope.changedValue = function(item){ 

@@ -57,8 +57,11 @@ exports.monthly_donations_controller = function(yearly_percentage_difference,yea
 			
 			
 								
-	yearly_totals.build($scope)
-	yearly_percentage_difference.build($scope)		
+			yearly_totals.build($scope)
+			yearly_percentage_difference.build($scope)	
+
+
+	
 			_.each([2016,2017],function(year){
 				_.each(moment.monthsShort(),function(month){				
 						$scope.filter_pie.push({value:month+" "+year,name:month+" "+year})

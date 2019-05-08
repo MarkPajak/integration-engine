@@ -1092,7 +1092,7 @@ exports.yearly_percentage_difference = function(){
 
 					
 							var new_row = {}
-								new_row.museum="Total"
+								//new_row.museum="Total"
 								new_row.museum="% difference"
 								new_row.typex="retail"
 								new_row.xtype="currency"
@@ -1142,7 +1142,7 @@ exports.yearly_totals = function(){
 			if(row.museum=="Running total") return;		
 				if(row.museum=="Last Year") return;		
 					if(row.stat=="Yearly Total") return;		
-
+	//if(row.stat=="Children - Last year") return;	
 					
 					start=moment(scope.start_date).year()-2
 					end=moment(scope.end_date).year()+1 //financial year compared to this month stuff

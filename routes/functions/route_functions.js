@@ -208,6 +208,9 @@ this.calendar_feed = function (events){
 						_.each(result,function(row){
 							if(!isNaN(parseInt(row[data_field_name]	))){
 								
+								if(venue!="" && row._id.venue!=venue) return;
+								if(venue!="" && row.kpi_venue!=venue) return;
+								
 									if(month==moment.monthsShort(row._id.month-1)  &&row._id.year==year){
 									
 										months=moment.monthsShort() 
@@ -593,6 +596,10 @@ this.calendar_feed = function (events){
 				
 				_.each(result,function(row){
 							if(!isNaN(parseInt(row[data_field_name]	))){
+								
+								if(venue!="" && row._id.venue!=venue) return;
+								if(venue!="" && row.kpi_venue!=venue) return;
+								
 								
 									if(month==moment.monthsShort(row._id.month-1)  &&row._id.year==year-1){
 									

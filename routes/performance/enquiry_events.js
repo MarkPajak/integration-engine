@@ -970,7 +970,7 @@ get_kpis( function ( result) {
 				_.each(result,function(row){
 					if(month==moment.monthsShort(row.kpi_month-1 )  && venue==row.kpi_venue &&row.kpi_year==year){
 						if(row[analysis_field]>0){
-							console.log(row)
+							
 							returned_row[month+" "+year]=row[analysis_field]  //n.b. needs to add up if already exists!
 							this_year_stats[month+" "+year]=row[analysis_field] 
 								if(analysis_field =="_last_year" ){
@@ -988,7 +988,7 @@ get_kpis( function ( result) {
 						}
 						
 							if(analysis_field=="kpi_type" && row.kpi_type==kpi_type){
-							console.log(row)
+							
 							returned_row[month+" "+year]=row.total_sessions  //n.b. needs to add up if already exists!
 							this_year_stats[month+" "+year]=row.total_sessions
 								if(analysis_field =="_last_year" ){
@@ -1016,6 +1016,21 @@ get_kpis( function ( result) {
 														}
 									})							
 								}
+								
+									if(analysis_field =="total" ){
+									if(month==moment.monthsShort(row.kpi_month-1 )  && venue==row.kpi_venue &&row.kpi_year==year){
+														
+												//if(moment.monthsShort(previous_data.kpi_month-1 ) == month){		
+															if(!isNaN(row.total_income)){
+																		if(row.total_income>0){							
+																			returned_row[month+" "+year]+=parseInt(row.total_income)
+																		}
+															}
+												//}
+														
+									//})							
+								}
+				}
 				})
 			})	
 		})
@@ -1087,7 +1102,11 @@ get_kpis( function ( result) {
 						returned_row.csstype="bold"
 			//returned_row.session_type=session_type
 		//	returned_row.stat=kpi_type
-			returned_data.push(	 wind_up_Stats(	result,returned_row,"total_enquiries",venue))
+			
+			
+			if(team_id=="COLLECTIONS" ) {
+				returned_data.push(	 wind_up_Stats(	result,returned_row,"total_enquiries",venue))
+			}
 			
 				var returned_row={}
 			returned_row.team=venue
@@ -1095,50 +1114,50 @@ get_kpis( function ( result) {
 			returned_row.stat="Visitors"
 			
 			returned_row.csstype="bold"
+			if(team_id=="COLLECTIONS" ) {
+				returned_data.push(	 wind_up_Stats(	result,returned_row,"total_people",venue))
+			}
 			
-			returned_data.push(	 wind_up_Stats(	result,returned_row,"total_people",venue))
-
 			_.each(kpi_types,function(kpi_type){
 					var returned_row={}
 						returned_row.team=venue
 						returned_row.stat=kpi_type
 						returned_row.session_type=""
 						//returned_row.stat=kpi_type
-						returned_data.push(	 wind_up_Stats(	result,returned_row,"kpi_type",venue,kpi_type))
+					
+					returned_data.push(	 wind_up_Stats(	result,returned_row,"kpi_type",venue,kpi_type))
+						
+			
+			
 			})
 	
 
-
-
-
-
-		var returned_row={}
-			returned_row.team=venue
-			returned_row.kpi_type="total_people"
-			//returned_row.session_type=session_type
-			//returned_row.stat=kpi_type
-			//returned_data.push(	 wind_up_Stats(	result,returned_row,"total_people",venue,session_type,kpi_type))
-			
-			var returned_row={}
-			returned_row.team=venue
-			returned_row.kpi_type="total_enquiries"
-			//returned_row.session_type=session_type
-			//returned_row.stat=kpi_type
-			//returned_data.push(	 wind_up_Stats(	result,returned_row,"total_enquiries",venue,session_type,kpi_type))
-			
-			var returned_row={}
-					returned_row.team=venue
-					returned_row.kpi_type=kpi_type
-					returned_row.stat="last year"
-					returned_data.push(	 wind_up_Stats(	result,returned_row,"last_year",venue,"total_income"))
-		
 				var returned_row={}
 					returned_row.team=venue
 					returned_row.kpi_type=kpi_type
-					returned_row.stat="% last year"
-					returned_data.push(	 wind_up_Stats(	result,returned_row,"_last_year",venue,"total_income"))
-		
-	
+					returned_row.stat="Total"
+					returned_row.museum="Total"
+					returned_row.cssclass="summary_row"
+					returned_row.csstype="summary_row"
+					returned_row.typex="retail"
+					returned_row.xtype="currency"
+					
+					returned_data.push(	 wind_up_Stats(	result,returned_row,"total",venue,"total_income"))
+					
+			var returned_row={}
+					returned_row.team=venue
+					returned_row.kpi_type=kpi_type
+					returned_row.stat="Last year"
+					returned_row.museum="Last year"
+					returned_row.cssclass="summary_row"
+					returned_row.csstype="summary_row"
+					returned_row.typex="retail"
+					returned_row.xtype="currency"
+					
+					returned_data.push(	 wind_up_Stats(	result,returned_row,"last_year",venue,"total_income"))
+
+					
+
 
 	
 	
@@ -1342,14 +1361,16 @@ get_kpis( function ( result) {
 			returned_row.kpi_type="total_enquiries"
 			returned_row.session_type=session_type
 		//	returned_row.stat=kpi_type
+		if(team_id=="COLLECTIONS"){
 			returned_data.push(	 wind_up_Stats(	result,returned_row,"total_enquiries",venue,session_type,kpi_type))
-			
+		}
 		
 		
 		})
 	})
 })
-
+	
+		
 res.json(returned_data)
 	
 })
