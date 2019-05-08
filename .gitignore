@@ -4,6 +4,7 @@ dump/
 test/
 log/
 uploads/
+routes/trogger_files/
 npm-debug.log
 .env
 db.js
