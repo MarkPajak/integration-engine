@@ -27,7 +27,9 @@ console.log(err)
 				//	console.log('moment(post.date_value)',moment(post.date_value).format("hh"))
 					
 					if(moment(post.date_value).format("hh")=="12"){
+						
 						console.log("model updated",post.date_value)
+						
 					model.update({ _id: post._id }, { $set : { date_value: post.date_value.setHours(post.date_value.getHours()+1) }}, res.json(post));
 					}
 					else

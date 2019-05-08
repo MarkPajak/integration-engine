@@ -84,13 +84,24 @@ if (runupdate==true) {
 						venues.push(row.kpi_venue)
 					}
 				})
+				
+				var types=[]
+				_.each(result,function(row){
+					if(types.indexOf(row.type)==-1){
+						if(row.type){
+								console.log(row.type)
+								types.push(row.type)
+						}
+					}
+				})
+					
 					
 				var returned_data=[]
-				returned_data=route_functions.sort_data(result,venues,returned_data)
+				returned_data=route_functions.sort_data(result,venues,types,returned_data)
 				
 				route_functions.datacache(Cache,returned_data)
-			
-				console.log(returned_data)
+			//
+				//console.log(returned_data)
 				mongoose.connection.close()
 			})
 			

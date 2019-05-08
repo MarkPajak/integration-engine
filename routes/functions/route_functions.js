@@ -264,10 +264,10 @@ Team.aggregate([
 						})
 							
 					_.each(Donations_other,function(corporate,i){
-						if(venues.indexOf(corporate.type)==-1){
+						if(types.indexOf(corporate.type)==-1){
 							if(corporate.type=="") return;
-											//	console.log('adding  types  ',corporate.type)
-												venues.push(corporate.type)
+												console.log('adding  types  ',corporate.type)
+												types.push(corporate.type)
 								}
 						})
 									
@@ -1305,7 +1305,7 @@ Team.aggregate([
 	
 		
 var self = this	
-	this.sort_data=function(result,venues,returned_data){
+	this.sort_data=function(result,venues,types,returned_data){
 			console.log("sort_data")	
 					
 				
@@ -1368,14 +1368,14 @@ var self = this
 					if(row.delete_row==false){
 						returned_data.push(	row)
 					}
-					var types = [] //hack
-					_.each(types,function(type){
+					//var types = [] //hack
+					_.each(types,function(typex){
 					
 							var returned_row={}
 							returned_row.museum=venue
-							returned_row.stat=type
+							returned_row.stat=typex
 							returned_row.xtype="currency"
-							row = self.wind_up_Stats(result,returned_row,"donations_other",venue,type)
+							row = self.wind_up_Stats(result,returned_row,"donations_other",venue,typex)
 						
 							if(row.delete_row==false){
 								returned_data.push(	row)
