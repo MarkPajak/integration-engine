@@ -39,12 +39,13 @@ exports.corporate_performance_form =  function($scope, $http, $q,
 			if (confirm("we already have a figure of " + visits[0].value + " for that date - are you sure you wnt to overwrite it ?")) {
 			
 				_.each(	visits	, function(visit) {
-				
+				/*
 				  Raw_corporate.remove({
 						id: visit._id
 					}, function() {
 					  console.log('removed old data')
 					});
+					*/
 					})
 						save(kpis)
 				// Save it!
