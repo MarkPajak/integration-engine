@@ -30,15 +30,15 @@ router.get('/all', function(req, res, next) {
 function get_kpis(cb){
 
 Team.aggregate([
+
 		 { $match : {type: { $ne: "" }} },
 		 { $group: {
                 _id: {
 				 "year": { "$year": route_functions.mongo_aggregator }, 
-						"month": { "$month": route_functions.mongo_aggregator }, 
-				
+					   "month": { "$month": route_functions.mongo_aggregator }, 
 					   venue:'$type'
 					 },  
-               amount: {$sum: '$amount' }
+						amount: {$sum: '$donation_box_amount' }
             }
 		 }			
 
@@ -84,8 +84,10 @@ get_kpis( function ( result) {
 			
 			returned_row[month+" "+year]=""
 				_.each(result,function(row){
+					console.log(row)
 					if(month==moment.monthsShort(row._id.month-1) &&venue==row._id.venue &&row._id.year==year){
 						returned_row[month+" "+year]=row.amount
+						returned_row.typex="retail"
 					}
 				})
 			})

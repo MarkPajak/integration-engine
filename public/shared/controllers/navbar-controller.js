@@ -105,7 +105,7 @@ var patron = 				 {teamx:"DONATIONS" ,link:"raw-patron",value:"Raw patron data"}
 var monthly_patron = 		 {teamx:"DONATIONS" ,link:"monthly-patron",value:"Monthly patron"}
 
 var record_corporate =			 {teamx:"DONATIONS" ,link:"record-corporate",value:"Record corporate"}
-var corporate = 				 {teamx:"DONATIONS" ,link:"raw-corporate",value:"Raw patron data"}
+var corporate = 				 {teamx:"DONATIONS" ,link:"raw-corporate",value:"Raw corporate data"}
 var monthly_corporate = 		 {teamx:"DONATIONS" ,link:"monthly-corporate",value:"Monthly corporate"}
 
 

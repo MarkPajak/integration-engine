@@ -486,11 +486,11 @@ get_kpis( function ( result) {
 				returned_row.csstype="summary_row"
 				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_sales_last_year","","total_children"))
 				
-				route_functions.ad_percentage_last_year_learning(returned_data)
+				//route_functions.ad_percentage_last_year_learning(returned_data)
 					
 					
 				var returned_row={}
-				returned_row.museum="Income - total"
+				returned_row.museum="Total"
 				returned_row.stat="Income - total"
 				returned_row.xtype="currency"
 				//returned_row.typex="retail"
@@ -499,8 +499,8 @@ get_kpis( function ( result) {
 				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_s","","total_income","currency"))
 
 				var returned_row={}
-				returned_row.museum="Income -  last year"
-				returned_row.stat="Income -  last year"
+				returned_row.museum="Last year"
+				returned_row.stat="Income - last year"
 				returned_row.xtype="currency"
 				//returned_row.typex="retail"
 				returned_row.cssclass="summary_row"
@@ -508,7 +508,7 @@ get_kpis( function ( result) {
 				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_sales_last_year","","total_income","currency"))
 
 				
-				route_functions.ad_percentage_last_year_income(returned_data)
+				//route_functions.ad_percentage_last_year_income(returned_data)
 				
 
 				_.each(returned_data,function(row,i){

@@ -1053,7 +1053,7 @@ this.calendar_feed = function (events){
 									for(var key in row) {
 										_.each(returned_data,function(rowX){
 											for(var keyX in rowX) {
-												if(rowX.stat=="Income -  last year" && key ==keyX ){	
+												if(rowX.stat=="Income - last year" && key ==keyX ){	
 													if(row[key]){
 														if(rowX[keyX]){
 													if(row[key]>0 && rowX[keyX]>0){

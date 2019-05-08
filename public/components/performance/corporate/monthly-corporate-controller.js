@@ -1,4 +1,4 @@
-exports.monthly_corporate_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_corporate,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,data_table_reload,table_security,dynamicTableCellFilter_corporate
+exports.monthly_corporate_controller = function(yearly_percentage_difference,yearly_totals,getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, dynamicTableCellFilter_donations,Monthly_corporate,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,data_table_reload,table_security,dynamicTableCellFilter_corporate
     ) {
 		
 		
@@ -8,7 +8,7 @@ exports.monthly_corporate_controller = function(getDateService,$route,$scope, $h
 			$scope.background_colour="corporate"
 		$scope.show_all_Button=false
 		console.log('controller go')
-		$scope.table_heading = "Monthly Fundraised income"
+		$scope.table_heading = "Monthly Corporate income"
 		$scope.pie_date = "Apr 2017"
 		$scope.gridOptions=[]
 		$scope.gridOptions.data=[]
@@ -16,8 +16,8 @@ exports.monthly_corporate_controller = function(getDateService,$route,$scope, $h
 		var columnDefs= []
 			$scope.filter_pie=[]
 			columnDefs.push(
-		//	{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "100", pinnedLeft:true,cellClass:dynamicTableCellFilter_corporate},
-			{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_corporate}
+			{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "200", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations}//,
+			//{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_corporate}
 					
 			)
 			dates=getDateService.getDate()
@@ -54,6 +54,11 @@ exports.monthly_corporate_controller = function(getDateService,$route,$scope, $h
 			
 			$scope.gridOptions.data=$scope._rows;
 			$scope.gridOptions.enableFiltering=false
+			yearly_totals.build($scope)
+			yearly_percentage_difference.build($scope)	
+
+			
+			
 			
 			_.each([2016,2017],function(year){
 				_.each(moment.monthsShort(),function(month){				
@@ -81,8 +86,8 @@ exports.monthly_corporate_controller = function(getDateService,$route,$scope, $h
   
 					columnDefs=[]
 				columnDefs.push(	
-				//{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "100", pinnedLeft:true,cellClass:dynamicTableCellFilter_corporate},
-			{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_corporate}
+				{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "200", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations}//,
+			//{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations}
 					)
 					columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))
 					$scope.gridOptions.columnDefs=columnDefs

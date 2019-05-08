@@ -1092,8 +1092,22 @@ exports.giftaidDashboard = function() {
     templateUrl: './components/performance/gift-aid/dashboard.html'
   }
 	}	
-		
 	
+	
+		exports.patronDashboard = function() {
+  return {
+    controller: 'dashboard_controller',
+    templateUrl: './components/performance/patron/dashboard.html'
+  }
+	}	
+	
+		
+	exports.corporateDashboard = function() {
+  return {
+    controller: 'dashboard_controller',
+    templateUrl: './components/performance/corporate/dashboard.html'
+  }
+	}	
 			
 	exports.exhibitionsSummary = function() {
   return {

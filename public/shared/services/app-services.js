@@ -30,8 +30,30 @@ exports.dynamicTableCellFilter_donations= function() {
 								}
 										
 																																
+					}
+
 }
 
+exports.dynamicTableCellFilter_corporate= function() {
+	
+					 return function(grid, row, col, rowRenderIndex, colRenderIndex	){		
+								if(row.entity){
+										if(row.entity.csstype){
+											
+												return (row.entity.csstype)
+										}
+											
+										else if(row.entity.stat){
+											if(row.entity.typex=="retail" ){
+												return ("bold")
+										}
+										else
+											return ""
+										}
+										}
+								}
+										
+																																
 }
 
 exports.dynamicTableCellFilter_retail= function() {
@@ -1100,7 +1122,7 @@ exports.yearly_percentage_difference = function(){
 								new_row.csstype="summary_row"
 								console.log('new_row',row)
 								
-								if(row.museum=="Total"){					
+								if(row.museum=="Total" || row.museum=="Income - total"){					
 									for(var key in row) {
 										_.each(scope._rows,function(rowX){
 											for(var keyX in rowX) {
