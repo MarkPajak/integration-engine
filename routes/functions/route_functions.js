@@ -614,7 +614,7 @@ Team.aggregate([
 								{
 								
 								if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year-1){
-									if(session_type!="" && row.session_type!=session_type) return;	
+									
 										months=moment.monthsShort() 
 										lastmonth=months.indexOf(month)-1
 										lastyear=years.indexOf(year)-1

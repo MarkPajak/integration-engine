@@ -308,6 +308,11 @@ get_kpis( function ( result) {
 		var returned_row_compare_last_year={}
 		var returned_row_compare_last_year_total={}
 		
+		var checkmonth = new Date()
+		var checkmonth_num = checkmonth.getMonth()
+		var checkyear_num = checkmonth.getFullYear()
+		
+		
 				var years = [2017,2018,2019]
 				_.each(years,function(year){
 					_.each(months,function(month){
@@ -328,6 +333,8 @@ get_kpis( function ( result) {
 							
 							if(analysis_field =="last_year" || analysis_field =="% last year"){
 							
+							
+							
 								for (compare_previous_years = 1; compare_previous_years < 2; compare_previous_years++) { 
 								
 								_.each(rows,function(previous_data){
@@ -340,7 +347,9 @@ get_kpis( function ( result) {
 									returned_row.museum=compare_previous_year+ " - " + year
 									
 									if(analysis_field =="% last year"){
-										
+									lastmonth=moment.monthsShort().indexOf(month)-1	
+									if(checkmonth_num==lastmonth && year==checkyear_num) return;
+							
 										if(row.total_children + previous_data.total_children >0){
 											
 											returned_row[month+" "+year]=((row.total_children/previous_data.total_children)*100-100).toFixed(0)+"%";	
