@@ -465,7 +465,7 @@ get_kpis( function ( result) {
 				//returned_row.typex="retail"
 				returned_row.cssclass="summary_row"
 				returned_row.csstype="summary_row"
-				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"yearly_sessions","",session_type))
+					returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_s","","total_sessions","",session_type))
 				
 				var returned_row={}
 				returned_row.museum="Yearly learning"
