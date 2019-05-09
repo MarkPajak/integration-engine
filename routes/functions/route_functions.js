@@ -1375,6 +1375,7 @@ var self = this
 							returned_row.museum=venue
 							returned_row.stat=typex
 							returned_row.xtype="currency"
+							returned_row.typex="currency"
 							row = self.wind_up_Stats(result,returned_row,"donations_other",venue,typex)
 						
 							if(row.delete_row==false){
@@ -1388,7 +1389,7 @@ var self = this
 					returned_row.museum="last year"
 					returned_row.stat="last year"
 					returned_row.xtype="currency"		
-					returned_data.push(	 self.wind_up_Stats_monthly_variable(result,returned_row,"last_year_total",venue))
+					returned_data.push(	 self.wind_up_Stats_monthly_variable(result,returned_row,"last_year_total",venue,"","currency"))
 
 					var returned_row={}
 					returned_row.museum=venue
