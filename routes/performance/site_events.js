@@ -651,7 +651,7 @@ res.json(returned_data)
 router.get('/all/:event_type', function(req, res, next) {
 	
 	
-	
+	var on_site_off_site_ = req.params.event_type
 	
 	
 	
@@ -853,8 +853,28 @@ get_kpis( function ( result) {
 		//})
 	})
 })
+	var returned_row={}
+				returned_row.museum="Total"
+				returned_row.stat="Total"
+				//returned_row.xtype="currency"
+				//returned_row.typex="retail"
+				returned_row.cssclass="summary_row"
+				returned_row.csstype="summary_row"
+				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_s","","count","","",on_site_off_site_))
 
-res.json(returned_data)
+				var returned_row={}
+				returned_row.museum="Last year"
+				returned_row.stat="last year"
+				//returned_row.xtype="currency"
+				//returned_row.typex="retail"
+				returned_row.cssclass="summary_row"
+				returned_row.csstype="summary_row"
+				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_sales_last_year","","count","","",on_site_off_site_))
+
+
+			res.json(returned_data)
+
+
 	
 })
 
@@ -1198,7 +1218,7 @@ get_kpis( function ( result) {
 	
 })
 })
-res.json(returned_data)
+
 	
 })
 

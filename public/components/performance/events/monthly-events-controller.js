@@ -1,4 +1,4 @@
-exports.monthly_events_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter_retail
+exports.monthly_events_controller = function(yearly_totals,yearly_percentage_difference,getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter_retail
     ) {
 		
 		
@@ -62,6 +62,11 @@ exports.monthly_events_controller = function(getDateService,$route,$scope, $http
 			$scope.gridOptions.data=$scope._rows;
 			$scope.gridOptions.enableFiltering=false
 		
+		
+				yearly_totals.build($scope)
+			yearly_percentage_difference.build($scope)
+			
+			
 			make_a_line_chart.build($scope,columnDefs,"age_group")
 	
 			$scope.$watchGroup(['end_date','start_date'], function(newValue, oldValue) {

@@ -512,7 +512,7 @@ Team.aggregate([
 					
 				}
 
-	this.wind_up_Stats_monthly_variable=function(result,returned_row,analysis_field,venue,data_field_name,currency,session_type){
+	this.wind_up_Stats_monthly_variable=function(result,returned_row,analysis_field,venue,data_field_name,currency,session_type,on_off_site){
 		
 			console.log('wind_up_Stats_monthly_variable')
 			var years = [2015,2016,2017,2018,2019,2020,2021,2022]
@@ -557,6 +557,10 @@ Team.aggregate([
 								    
 									if(row._id) {;
 									if(session_type!="" && row._id.session_type!=session_type) return;
+									if(on_off_site!="" && row._id.on_site_off_site!=on_off_site) return;
+									
+									
+									
 									if(month==moment.monthsShort(row._id.month-1)  &&row._id.year==year){
 									
 										months=moment.monthsShort() 
@@ -573,6 +577,8 @@ Team.aggregate([
 																
 								if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year){
 								if(session_type!="" && row.session_type!=session_type) return;	
+								if(on_off_site!="" && row._id.on_site_off_site!=on_off_site) return;
+								
 										months=moment.monthsShort() 
 										lastmonth=months.indexOf(month)-1
 										lastyear=years.indexOf(year)-1
@@ -598,6 +604,7 @@ Team.aggregate([
 								
 								if(row._id) {;
 								if(session_type!="" && row._id.session_type!=session_type) return;
+								if(on_off_site!="" && row._id.on_site_off_site!=on_off_site) return;
 									if(month==moment.monthsShort(row._id.month-1)  &&row._id.year==year-1){
 									
 										months=moment.monthsShort() 
@@ -614,7 +621,8 @@ Team.aggregate([
 								{
 								
 								if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year-1){
-									
+								if(session_type!="" && row.session_type!=session_type) return;
+								if(on_off_site!="" && row.on_site_off_site!=on_off_site) return;
 										months=moment.monthsShort() 
 										lastmonth=months.indexOf(month)-1
 										lastyear=years.indexOf(year)-1
