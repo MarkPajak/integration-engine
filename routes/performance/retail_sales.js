@@ -262,7 +262,7 @@ Team.aggregate([
 					   
 					 },  
 				
-               visits: { $sum:  "$value" } ,
+               visits: { $sum:  "$value" } ,//visits
 			
 		      
             }
@@ -368,8 +368,8 @@ Team.aggregate([
             }
 		 },
 		 
-	{ $sort : { "total_sales" : -1} }	,
-	 { $project : {kpi_venue:"$_id.kpi_venue", kpi_year :"$_id.kpi_year", kpi_month :"$_id.kpi_month",number_transactions:'$number_transactions',  non_vat_sales:"$non_vat_sales", total_sales:"$total_sales"}  },
+		{	$sort : { "total_sales" : -1} }	,
+		{	$project : {kpi_venue:"$_id.kpi_venue", kpi_year :"$_id.kpi_year", kpi_month :"$_id.kpi_month",number_transactions:'$number_transactions',  non_vat_sales:"$non_vat_sales", total_sales:"$total_sales"}  },
 
 		
 
@@ -385,7 +385,7 @@ Team.aggregate([
 					   venue:'$museum_id',				   
 					 },  
 				
-               visits: { $sum:  "$value" } ,
+               visits: { $sum:  "$value" } , //visits
 			      
             }
 		 },
@@ -407,8 +407,6 @@ Team.aggregate([
 
 get_kpis( function ( result) {
 	
-
-
 	
 	//load venues
 	var venues=[]
@@ -419,10 +417,7 @@ get_kpis( function ( result) {
 		}
 	})
 	
-	
 
-	
-	
 	var returned_data=[]
 
 	_.each(venues,function(venue){
@@ -468,26 +463,23 @@ get_kpis( function ( result) {
 				returned_row.xtype="currency"
 				returned_row.cssclass="summary_row"
 				returned_row.csstype="summary_row"
-			
-		
-				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_s","",'net_sales',"currency"))
-			
-			
-			
-				
-				
-			var returned_row={}
-		returned_row.museum="Last year"
-		returned_row.stat="Last year"
-		returned_row.xtype="currency"
-		returned_row.typex="retail"
-		returned_row.cssclass="summary_row"
-		returned_row.csstype="summary_row"
-		returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_sales_last_year","",'net_sales',"currency"))
 
+				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_s","",'net_sales',"currency","",""))
+				//returned_data.push(	route_functions.wind_up_Stats_monthly_variable(		result,returned_row,"net_sales",""))
+	
+			var returned_row={}
+				returned_row.museum="Last year"
+				returned_row.stat="Last year"
+				returned_row.xtype="currency"
+				returned_row.typex="retail"
+				returned_row.cssclass="summary_row"
+				returned_row.csstype="summary_row"
+				
+				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_sales_last_year","",'net_sales',"currency","",""))
 				
 				//route_functions.ad_percentage_last_year(returned_data)
-		
+	
+//	console.log(returned_data)	
 		
 res.json(returned_data)
 	

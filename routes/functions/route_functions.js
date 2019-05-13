@@ -550,16 +550,26 @@ Team.aggregate([
 						_.each(result,function(row){
 							if(!isNaN(parseInt(row[data_field_name]	))){
 								
-								if(venue!="" && row._id.venue!=venue) return;
-								if(venue!="" && row.kpi_venue!=venue) return;
 								
+							
+								console.log(row)
 								
 								    
 									if(row._id) {;
+									if(venue!="" && row._id.venue!=venue) return;
 									if(session_type!="" && row._id.session_type!=session_type) return;
 									if(on_off_site!="" && row._id.on_site_off_site!=on_off_site) return;
 									
 									
+									if(month==moment.monthsShort(row._id.kpi_month-1)  &&row._id.kpi_year==year){
+									
+										months=moment.monthsShort() 
+										lastmonth=months.indexOf(month)-1
+										lastyear=years.indexOf(year)-1
+										returned_row[month+" "+year]+=parseInt(row[data_field_name])										
+										returned_row.cssclass="bold"						
+										returned_row.typex=currency
+									}
 									
 									if(month==moment.monthsShort(row._id.month-1)  &&row._id.year==year){
 									
@@ -574,7 +584,8 @@ Team.aggregate([
 								}
 								else
 								{
-																
+								
+								if(venue!="" && row.kpi_venue!=venue) return;							
 								if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year){
 								if(session_type!="" && row.session_type!=session_type) return;	
 								if(on_off_site!="" && row._id.on_site_off_site!=on_off_site) return;
@@ -593,19 +604,32 @@ Team.aggregate([
 						})
 				
 				}	
-
-	else if(analysis_field=="total_sales_last_year"){
+				else if(analysis_field=="total_sales_last_year"){
 				
 				_.each(result,function(row){
 							if(!isNaN(parseInt(row[data_field_name]	))){
 								
-								if(venue!="" && row._id.venue!=venue) return;
-								if(venue!="" && row.kpi_venue!=venue) return;
+							
+								
 								
 								if(row._id) {;
+								if(venue!="" && row._id.venue!=venue) return;
 								if(session_type!="" && row._id.session_type!=session_type) return;
 								if(on_off_site!="" && row._id.on_site_off_site!=on_off_site) return;
+									
 									if(month==moment.monthsShort(row._id.month-1)  &&row._id.year==year-1){
+									
+										months=moment.monthsShort() 
+										lastmonth=months.indexOf(month)-1
+										lastyear=years.indexOf(year)-1
+										returned_row[month+" "+year]+=parseInt(row[data_field_name])										
+										returned_row.cssclass="bold"						
+										returned_row.typex=currency
+							
+									
+									}
+									
+									if(month==moment.monthsShort(row._id.kpi_month-1)  &&row._id.kpi_year==year-1){
 									
 										months=moment.monthsShort() 
 										lastmonth=months.indexOf(month)-1
@@ -619,7 +643,7 @@ Team.aggregate([
 								}
 								else
 								{
-								
+								if(venue!="" && row.kpi_venue!=venue) return;
 								if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year-1){
 								if(session_type!="" && row.session_type!=session_type) return;
 								if(on_off_site!="" && row.on_site_off_site!=on_off_site) return;
@@ -636,9 +660,7 @@ Team.aggregate([
 							}
 						})
 				
-				}
-								
-				
+				}				
 				else if(analysis_field=="yearly_sessions"){
 				
 							_.each(result,function(row){
@@ -774,8 +796,7 @@ Team.aggregate([
 					})
 				
 				
-				}
-				
+				}		
 				else if(analysis_field=="running_total"){
 	
 						_.each(result,function(row){
@@ -835,8 +856,7 @@ Team.aggregate([
 					})
 				
 				
-				}
-				
+				}				
 				else if(analysis_field=="yearly_total"){
 				
 					_.each(result,function(row){
@@ -905,10 +925,8 @@ Team.aggregate([
 			
 					})
 				
-				}
-				
-				else if(analysis_field=="yearly_learning_income"){
-				
+				}				
+				else if(analysis_field=="yearly_learning_income"){			
 					_.each(result,function(row){
 				
 
@@ -940,8 +958,7 @@ Team.aggregate([
 			
 					})
 				
-				}
-				
+				}				
 				else if(analysis_field=="total_learing_income_last_year"){
 				
 					_.each(result,function(row){
@@ -976,12 +993,7 @@ Team.aggregate([
 			
 					})
 				
-				}
-				
-				
-			
-						
-				
+				}				
 				else if(analysis_field=="_total_donations_last_year"){
 				
 					_.each(result,function(row){
@@ -1015,10 +1027,8 @@ Team.aggregate([
 			
 					})
 				
-				}
-				
-				else if(analysis_field=="site_pemrissions_total_last_year"){
-				
+				}				
+				else if(analysis_field=="site_pemrissions_total_last_year"){				
 					_.each(result,function(row){
 						if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year-1){
 					
@@ -1045,10 +1055,8 @@ Team.aggregate([
 			
 					})
 				
-				}
-				
-				else if(analysis_field=="total_last_year"){
-				
+				}				
+				else if(analysis_field=="total_last_year"){				
 					_.each(result,function(row){		
 
 						if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year-1){
@@ -1074,9 +1082,7 @@ Team.aggregate([
 			
 					})
 				
-				}
-				
-				
+				}								
 				else if(analysis_field=="percentage_total_last_year_learning"){
 							
 							var plus_this_year=0
@@ -1151,10 +1157,8 @@ Team.aggregate([
 										}											
 							})
 			
-				}	
-					
-				else if(analysis_field=="percentace_total_last_year_site_permissions"){
-						
+				}						
+				else if(analysis_field=="percentace_total_last_year_site_permissions"){						
 								var plus_this_year=0
 							var last_year_plus=0
 							var cheesegrater=0
@@ -1229,10 +1233,8 @@ Team.aggregate([
 										}											
 							})
 			
-				}	
-		
-				else if(analysis_field=="percentace_total_last_year"){
-							
+				}			
+				else if(analysis_field=="percentace_total_last_year"){							
 							var plus_this_year=0
 							var last_year_plus=0
 							var cheesegrater=0
