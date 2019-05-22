@@ -7,9 +7,7 @@ var json2csv =  require('json2csv');
 Route_permissions= require('../functions/route_permissions.js');
 route_permissions=new Route_permissions()
 Api_calls= require('../functions/standard_api_calls.js');
-
-var years = [2014,2015,2016,2017,2018,2019,2020,2021,2022]
-
+var years =  [2014,2015,2016,2017,2018,2019,2020,2021]
 var isAuthenticated = function (req, res, next) {
 	console.log('if user is authenticated in the session, call the next() to call the next request handler ')
 	// Passport adds this method to request object. A middleware is allowed to add properties to
@@ -110,7 +108,7 @@ get_kpis( function ( result) {
 	function wind_up_Stats(	result,returned_row,analysis_field,event_name){
 		
 		
-				var years = years
+				
 								_.each(years,function(year){
 									var financial_yesr_text = ["last","this"]
 									_.each(financial_yesr_text,function(financial_yer_text){
@@ -265,7 +263,7 @@ get_kpis( function ( result) {
 	function wind_up_Stats(	result,returned_row,analysis_field,target_groups){
 		
 		
-				var years = years
+				
 								_.each(years,function(year){
 									var financial_yesr_text = ["last","this"]
 									_.each(financial_yesr_text,function(financial_yer_text){
@@ -427,7 +425,7 @@ get_kpis( function ( result) {
 	function wind_up_Stats(	result,returned_row,analysis_field,community_group){
 		
 		
-				var years = years
+				
 								_.each(years,function(year){
 									var financial_yesr_text = ["last","this"]
 									_.each(financial_yesr_text,function(financial_yer_text){
@@ -580,7 +578,7 @@ get_kpis( function ( result) {
 	function wind_up_Stats(	result,returned_row,analysis_field,venue,on_site_off_site,age_group){
 		
 		
-				var years = years
+				
 								_.each(years,function(year){
 									var financial_yesr_text = ["last","this"]
 									_.each(financial_yesr_text,function(financial_yer_text){
@@ -753,7 +751,7 @@ get_kpis( function ( result) {
 	function wind_up_Stats(	result,returned_row,analysis_field,venue,on_site_off_site){
 		
 		
-			var years = years
+			
 			_.each(years,function(year){
 			_.each(moment.monthsShort(),function(month){
 				returned_row[month+" "+year]=""
@@ -1001,7 +999,7 @@ get_kpis( function ( result) {
 	function wind_up_Stats(	result,returned_row,analysis_field,venue,session_type,age_group){
 		
 		
-			var years = years
+			
 			_.each(years,function(year){
 			_.each(moment.monthsShort(),function(month){
 				returned_row[month+" "+year]=""
@@ -1179,7 +1177,7 @@ get_kpis( function ( result) {
 	function wind_up_Stats(	result,returned_row,analysis_fields,venue,age_group){
 		
 		
-			var years = years
+		
 			_.each(years,function(year){
 			//_.each(moment.monthsShort(),function(month){
 				returned_row[year]=""
