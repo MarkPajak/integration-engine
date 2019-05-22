@@ -21,7 +21,7 @@ exports.monthly_learning_controller = function(yearly_totals,yearly_percentage_d
 			columns=	
 					{ field: 'stat',cellFilter:'valueFilter',name: "Statistic",width:300, pinnedLeft:true, enableColumnMoving:false  ,cellClass:dynamicTableCellFilter_retail}		
 			
-			columnDefs.push(columns	)
+		columnDefs.push(columns	)
 		dates=getDateService.getDate()
 		$scope.start_date=dates[0]
 		$scope.end_date=dates[1]

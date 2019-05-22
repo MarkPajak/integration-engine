@@ -1162,11 +1162,14 @@ exports.yearly_totals = function(){
 	array.build  = function (scope) {
 		
 			_.each(scope._rows,function(row,i){	
+			
 			//console.log('row',row)
-			if(row.museum=="Running total") return;		
-				if(row.museum=="Last Year") return;		
-					if(row.stat=="Yearly Total") return;		
-	//if(row.stat=="Children - Last year") return;	
+	
+				if(row.museum=="Running total") 	return;		
+				if(row.museum=="Last Year") 		return;		
+				if(row.stat=="Yearly Total")	   return;
+			
+			//if(row.stat=="Children - Last year") return;	
 					
 					start=moment(scope.start_date).year()-2
 					end=moment(scope.end_date).year()+1 //financial year compared to this month stuff
@@ -1194,11 +1197,14 @@ exports.yearly_totals = function(){
 								scope._rows[i]["Total " + (parseInt(year)-1)]=0
 							}
 						
-							if( (row[month+" "+(parseInt(year))])){
+							if((row[month+" "+(parseInt(year))])){
 								
-								if( (row[month+" "+(parseInt(year))])>0){
+								if((row[month+" "+(parseInt(year))])>0){
 															
-								scope._rows[i]["Total " + (parseInt(year)-1)]+=parseInt(row[month+" "+(parseInt(year))])
+									scope._rows[i]["Total " + (parseInt(year)-1)]+=parseInt(row[month+" "+(parseInt(year))]) 
+								
+								
+							
 								
 								}
 						
@@ -1250,6 +1256,30 @@ exports.yearly_totals = function(){
 						
 						
 						})
+						
+						
+						
+						if(row.stat==row.museum+ " Net sales"){
+
+							top= scope._rows[i]["Total " + (parseInt(year)-1)]
+					
+						}
+						
+						if(row.stat=="last year"){
+
+							bottom= scope._rows[i]["Total " + (parseInt(year)-1)]
+						
+						}
+						
+						
+						if(row.stat=="% last year"){
+
+							scope._rows[i]["Total " + (parseInt(year)-1)]=((top/bottom)*100-100).toFixed(2)+"%"	
+	console.log("top="+top)
+	console.log("bottom="+bottom)
+						}
+								
+								
 					}
 				
 				

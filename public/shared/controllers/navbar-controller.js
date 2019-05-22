@@ -75,7 +75,7 @@ var add_posters 		= {teamx:"_DONATIONS" ,link:"add-poster",value:"Add poster"}
 
 var room_hire = {teamx:"_DONATIONS" ,link:"room-hire",value:"Room booking timeline"}
 var equipment_booking_timeline = {teamx:"_DONATIONS" ,link:"equipment-timeline",value:"Equipment booking timeline"}
-var participation = {teamx:"_PARTICIPATION" ,link:"participation-dashboard",value:"Participation dashboard"}
+var participation = {teamx:"PARTICIPATION" ,link:"participation-dashboard",value:"Participation dashboard"}
 
 
 var performance = {teamx:"VISITS" ,link:"record-visitor-numbers",value:"Record visitor figures"}

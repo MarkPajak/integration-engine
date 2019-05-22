@@ -66,8 +66,8 @@ exports.monthly_retail_sales_controller = function(yearly_percentage_difference,
 			$scope.gridOptions.data=$scope._rows;
 			
 			
-				yearly_totals.build($scope)
-				yearly_percentage_difference.build($scope)
+				yearly_totals.build($scope) 				//vertical
+				yearly_percentage_difference.build($scope)  //horizontal
 				
 			$scope.gridOptions.enableFiltering=false
 			make_a_pie.build($scope,"Apr 2017","museum")
@@ -79,7 +79,9 @@ exports.monthly_retail_sales_controller = function(yearly_percentage_difference,
 					columnDefs.push(
 					
 						{ field: 'stat' ,cellFilter:'valueFilter',name: "Statistic",width: "180", pinnedLeft:true,cellClass:dynamicTableCellFilter_retail}		
+						
 						)
+						
 					columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))
 					$scope.gridOptions.columnDefs=columnDefs
 					make_a_line_chart.build($scope,columnDefs,"museum")

@@ -88,7 +88,12 @@
            <li   ng-repeat="view in user.performance | filter:{ teamx:'EVENTS'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
          </ul>
      </li>
-	 
+	 	 <li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">Participation<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+           <li   ng-repeat="view in user.performance | filter:{ teamx:'PARTICIPATION'} track by $index "  ><a href="/#{{view.link}}">{{view.value}}</a></li>
+         </ul>
+     </li>
 	    <li class="dropdown-submenu">
         <a class="test" tabindex="-1" href="#">Venue Hire <span class="caret"></span></a>
         <ul class="dropdown-menu">
