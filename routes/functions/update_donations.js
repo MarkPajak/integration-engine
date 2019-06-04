@@ -52,7 +52,7 @@ const fs = require("fs"); // Or `import fs from "fs";` with ESM
 var paths=[]
 
 paths.push( './routes/trigger_files/donations_kpis.txt')
-paths.push(  './routes/trigger_files/donations_others.txt')
+paths.push(  './routes/trigger_files/donations_other.txt')
 paths.push(  './routes/trigger_files/giftaid_kpis.txt')
 paths.push(  './routes/trigger_files/patron_kpis.txt')
 paths.push(  './routes/trigger_files/welcomedesk_kpis.txt')

@@ -588,7 +588,7 @@ Team.aggregate([
 								if(venue!="" && row.kpi_venue!=venue) return;							
 								if(month==moment.monthsShort(row.kpi_month-1)  &&row.kpi_year==year){
 								if(session_type!="" && row.session_type!=session_type) return;	
-								if(on_off_site!="" && row._id.on_site_off_site!=on_off_site) return;
+								if(on_off_site!="" && row.on_site_off_site!=on_off_site) return;
 								
 										months=moment.monthsShort() 
 										lastmonth=months.indexOf(month)-1
