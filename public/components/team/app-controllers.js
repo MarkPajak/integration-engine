@@ -146,6 +146,8 @@ exports.trello =   function($scope, $http, $q, $routeParams, $location,
                     list.tint = list.average / 100
                     list.card_count = card_count
                     list.points = (card_count / (list.average/1 + 1)).toFixed(2)
+					
+					
 					console.log('card_count',card_count)
 					console.log('list.average ',list.average )
 					console.log('list.average ',(list.average + 1))

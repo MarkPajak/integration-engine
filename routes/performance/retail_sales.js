@@ -20,13 +20,12 @@ var isAuthenticated = function (req, res, next) {
 	return false
 }
 
-var Team = require('../../models/performance/Retail_sales.js');
+var Team = require('../../models/performance/Retail_sales_net.js');
 
 
 var Kpi_aggregate = require('../../models/Kpi_log.js');
 //aggregation
 /* GET /todos listing. */
-
 
 router.get('/total', function(req, res, next) {
 	
@@ -37,7 +36,7 @@ router.get('/total', function(req, res, next) {
 			
 					Team.aggregate([
 					
-					{$project:{"date":1,"non_vat_sales":1,"total_sales":1,"no_transactions":1,"museum_id":1,
+					{$project:{"date":1,"non_vat_sales":1,"total_sales":1,"net_sales":1,"no_transactions":1,"museum_id":1,
 							   "quarter":{$cond:[{$lte:[{$month:route_functions.mongo_aggregator},3]},
 												 "fourth",
 												 {$cond:[{$lte:[{$month:route_functions.mongo_aggregator},6]},
@@ -57,7 +56,7 @@ router.get('/total', function(req, res, next) {
 					}}
 			
 					},
-					{$group:{"_id":{"year":"$year" ,"financial_yer":"$financial_yer" ,kpi_venue:'$museum_id'}, number_transactions: {$sum: '$no_transactions' }, non_vat_sales: {$sum: '$non_vat_sales' }, total_sales: {$sum: '$total_sales' }}},
+					{$group:{"_id":{"year":"$year" ,"financial_yer":"$financial_yer" ,kpi_venue:'$museum_id'}, number_transactions: {$sum: '$no_transactions' },net_sales: {$sum: '$net_sales' }, non_vat_sales: {$sum: '$non_vat_sales' }, total_sales: {$sum: '$total_sales' }}},
 
 				
 							
@@ -123,13 +122,14 @@ router.get('/total', function(req, res, next) {
 						
 						function wind_up_Stats(	result,returned_row,analysis_field,venue){
 						
-									var years = [2014,2015,2016,2017,2018,201,2020]
+									var years = [2014,2015,2016,2017,2018,2019,201,2020]
 								_.each(years,function(year){
 									var financial_yesr_text = ["last","this"]
 									_.each(financial_yesr_text,function(financial_yer_text){
 									
 									var total_sales = 0
 									var non_vat_sales = 0
+									var net_sales = 0
 									var number_transactions = 0
 									var visits = 0
 									
@@ -143,6 +143,8 @@ router.get('/total', function(req, res, next) {
 												
 													returned_row[financial_year_display]=row[analysis_field]
 													total_sales=row.total_sales
+													net_sales=parseInt(row.net_sales)
+													//console.log('row.net_sales',row.net_sales)
 													non_vat_sales=row.non_vat_sales
 													number_transactions=row.number_transactions
 													visits=row.visits
@@ -154,6 +156,7 @@ router.get('/total', function(req, res, next) {
 													financial_year_display=	(year-1)+"-"+(year.toString().substring(2))	
 													returned_row[financial_year_display]+=row[analysis_field]
 													total_sales+=row.total_sales
+													net_sales+=parseInt(row.net_sales)
 													non_vat_sales+=row.non_vat_sales
 													number_transactions+=row.number_transactions
 													visits+=row.visits
@@ -162,13 +165,14 @@ router.get('/total', function(req, res, next) {
 												
 											
 												if(analysis_field=='Net sales'){
-													returned_row[financial_year_display]=((total_sales - non_vat_sales)/1.2+non_vat_sales).toFixed(2)
+													//returned_row[financial_year_display]=((total_sales - non_vat_sales)/1.2+non_vat_sales).toFixed(2)
+													returned_row[financial_year_display]=parseInt(net_sales)
+													//console.log('row.net_sales',row.net_sales)
 												}
 												if(analysis_field=='conversion'){
 													returned_row[financial_year_display]=((number_transactions/visits)*100).toFixed(2)+"%";
 												}
-												if(analysis_field=='ATV'){
-												
+												if(analysis_field=='ATV'){												
 													returned_row[financial_year_display]=((total_sales - non_vat_sales)/number_transactions).toFixed(2)
 												}
 												
@@ -235,7 +239,7 @@ Team.aggregate([
 					   kpi_venue:'$museum_id',
 					   
 					 },  
-				
+			   net_sales: {$sum: '$net_sales' },
                non_vat_sales: {$sum: '$non_vat_sales' },
 			   total_sales: {$sum: '$total_sales' },
 			   number_transactions: { $sum:    "$no_transactions" } ,
@@ -244,7 +248,7 @@ Team.aggregate([
 		 },
 		 
 
-	 { $project : {kpi_venue:"$_id.kpi_venue", kpi_year :"$_id.kpi_year", kpi_week :"$_id.kpi_week",number_transactions:'$number_transactions',  non_vat_sales:"$non_vat_sales", total_sales:"$total_sales"}  },
+	 { $project : {kpi_venue:"$_id.kpi_venue", kpi_year :"$_id.kpi_year", kpi_week :"$_id.kpi_week",number_transactions:'$number_transactions', net_sales:"$net_sales",  non_vat_sales:"$non_vat_sales", total_sales:"$total_sales"}  },
 
 		
 
@@ -268,7 +272,7 @@ Team.aggregate([
             }
 		 },
 
-	 { $project : {venue:"$_id.venue", year :"$_id.year", week :"$_id.week",number_transactions:'$number_transactions', non_vat_sales:'$non_vat_sales',total_sales:'$total_sales',visits:"$visits"}  },
+	 { $project : {venue:"$_id.venue", year :"$_id.year", week :"$_id.week",number_transactions:'$number_transactions', non_vat_sales:'$non_vat_sales',net_sales:'$net_sales',total_sales:'$total_sales',visits:"$visits"}  },
 
 		
 	  ], function (err, result2) {
@@ -363,13 +367,14 @@ Team.aggregate([
 					   kpi_venue:'$museum_id',				   
 					 },  			
                non_vat_sales: {$sum: '$non_vat_sales' },
+			    net_sales: {$sum: '$net_sales' },
 			   total_sales: {$sum: '$total_sales' },
 			   number_transactions: { $sum:    "$no_transactions" } ,
             }
 		 },
 		 
 		{	$sort : { "total_sales" : -1} }	,
-		{	$project : {kpi_venue:"$_id.kpi_venue", kpi_year :"$_id.kpi_year", kpi_month :"$_id.kpi_month",number_transactions:'$number_transactions',  non_vat_sales:"$non_vat_sales", total_sales:"$total_sales"}  },
+		{	$project : {kpi_venue:"$_id.kpi_venue", kpi_year :"$_id.kpi_year", kpi_month :"$_id.kpi_month",number_transactions:'$number_transactions',  non_vat_sales:"$non_vat_sales", net_sales:'$net_sales', total_sales:"$total_sales"}  },
 
 		
 
@@ -390,7 +395,7 @@ Team.aggregate([
             }
 		 },
 
-	 { $project : {venue:"$_id.venue", year :"$_id.year", month :"$_id.month",number_transactions:'$number_transactions', non_vat_sales:'$non_vat_sales',total_sales:'$total_sales',visits:"$visits"}  },
+	 { $project : {venue:"$_id.venue", year :"$_id.year", month :"$_id.month",number_transactions:'$number_transactions', net_sales:'$net_sales', non_vat_sales:'$non_vat_sales',total_sales:'$total_sales',visits:"$visits"}  },
 
 		
 	  ], function (err, result2) {
@@ -464,7 +469,7 @@ get_kpis( function ( result) {
 				returned_row.cssclass="summary_row"
 				returned_row.csstype="summary_row"
 
-				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_s","",'net_sales',"currency","",""))
+				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(result,returned_row,"total_s","",'net_sales',"currency","",""))
 				//returned_data.push(	route_functions.wind_up_Stats_monthly_variable(		result,returned_row,"net_sales",""))
 	
 			var returned_row={}

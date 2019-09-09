@@ -1,0 +1,1 @@
+"{\"museum_id\":\"BMAG\",\"kpi_type\":\"visits\",\"donation_box_amount\":\"1\",\"gift_aid_donation_box_amount\":\"2\",\"type\":\"On Site Exhibition Tickets\",\"no_transactions\":\"4\",\"no_envelopes\":\"3\",\"date_logged\":\"2019-09-09T14:45:36.466Z\",\"date_value\":\"2019-09-09\",\"comments\":\"5\",\"logger_user_name\":\"mark\"}"

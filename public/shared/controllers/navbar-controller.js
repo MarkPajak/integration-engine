@@ -79,12 +79,16 @@ var participation = {teamx:"PARTICIPATION" ,link:"participation-dashboard",value
 
 
 var performance = {teamx:"VISITS" ,link:"record-visitor-numbers",value:"Record visitor figures"}
+
 var record_retail_sales = {teamx:"RETAIL" ,link:"record-retail-sales",value:"Record retail sales"}
+
+var upload_retail_sales = {teamx:"RETAIL" ,link:"upload-retail-sales",value:"Upload retail sales"}
+
 var raw_retail_sales = {teamx:"RETAIL" ,link:"raw-retail-sales",value:"Raw retail sales"}
 var monthly_retail_sales = {teamx:"RETAIL" ,link:"monthly-retail-sales",value:"Monthly retail sales"}
 
 
-var record_donations_other =		{teamx:"DONATIONS" ,link:"record-donations-other",value:"Record other donations"}
+var record_donations_other =		{teamx:"DONATIONS" ,link:"record-donations-other",value:"Record exhibition ticket donations"}
 var donations_other = 				 {teamx:"DONATIONS" ,link:"raw-donations-other",value:"Raw other donation data"}
 var monthly_donations_other = 		 {teamx:"DONATIONS" ,link:"monthly-donations-other",value:"Monthly other donations"}
 
@@ -96,9 +100,9 @@ var monthly_site_permissions = 		 {teamx:"ARTS AND EVENTS" ,link:"monthly-site-p
 
 
 
-var record_donations =			 {teamx:"DONATIONS" ,link:"record-donations",value:"Record donations"}
+var record_donations =			 {teamx:"DONATIONS" ,link:"record-donations",value:"Record donation boxes"}
 var donations = 				 {teamx:"DONATIONS" ,link:"raw-donations",value:"Raw donation data"}
-var monthly_donations = 		 {teamx:"DONATIONS" ,link:"monthly-donations",value:"Monthly donations"}
+var monthly_donations = 		 {teamx:"DONATIONS" ,link:"monthly-donations",value:" Monthly total income"}
 
 var record_patron =			 {teamx:"DONATIONS" ,link:"record-patron",value:"Record patron"}
 var patron = 				 {teamx:"DONATIONS" ,link:"raw-patron",value:"Raw patron data"}
@@ -296,6 +300,9 @@ $scope.user_groups['ARTS AND EVENTS'].performance=performance_data
 var enter_data=[]
 enter_data.push(performance)
 enter_data.push(record_retail_sales)
+enter_data.push(upload_retail_sales)
+
+
 enter_data.push(record_donations)
 enter_data.push(record_site_permissions)
 enter_data.push(record_donations_other)
@@ -462,6 +469,8 @@ $scope.user_groups['LEARNING'].views.push(room_hire)
 var enter_data=[]
 enter_data.push(performance)
 enter_data.push(record_retail_sales)
+
+enter_data.push(upload_retail_sales)
 enter_data.push(record_donations)
 enter_data.push(record_giftaid)
 enter_data.push(record_welcomedesk)
@@ -512,6 +521,7 @@ $scope.user_groups['AV'].permissions= [	]
 var enter_data=[]
 enter_data.push(performance)
 enter_data.push(record_retail_sales)
+enter_data.push(upload_retail_sales)
 enter_data.push(record_donations)
 enter_data.push(record_giftaid)
 enter_data.push(record_events)
@@ -564,7 +574,21 @@ $scope.user_groups['DIGITAL'].resources=resources
 
 var performance_data=[]
  var enter_data=[]
-  
+
+performance_data.push(raw_visits)
+performance_data.push(monthly_visits)
+
+performance_data.push(monthly_retail_sales)
+
+
+performance_data.push(monthly_donations)
+performance_data.push(transformation_kpis)
+performance_data.push(engagement_kpis)
+performance_data.push(collections_kpis)
+
+
+performance_data.push(monthly_events)
+performance_data.push(participation)
 
 
 $scope.user_groups['DEFAULT'].views=[]
@@ -725,6 +749,7 @@ $scope.user_groups['OPERATIONS'].resources=resources
 
 var enter_data=[]
 enter_data.push(record_retail_sales)
+enter_data.push(upload_retail_sales)
 enter_data.push(record_events)
 enter_data.push(record_kpi_events)
 

@@ -8,12 +8,12 @@ var Donations_kpi = new mongoose.Schema({
 			kpi_type: { type: String },	
 			
 			
-		
+			gift_aid_donation_box_amount: { type: Number},
 			donation_box_amount: { type: Number},
 			donation_box_no: { type: String},
 			//non_vat_sales: { type: Number},
 			//net_sales: { type: Number},
-			//no_transactions: { type: Number},
+			no_envelopes: { type: Number},
 			
 			date_value: { type: Date},	
 			date_logged: { type: Date, required: true},

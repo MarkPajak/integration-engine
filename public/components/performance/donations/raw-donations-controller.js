@@ -18,9 +18,10 @@ exports.raw_donations_controller = function($route,$scope, $http, $q, $routePara
 		 columnDefs.push(
 			{ field: 'museum_id' ,name: "Museum",resizable: true,width:"150"},
 			{ field: 'date_value' ,name: "Date",resizable: true ,type: 'date', cellFilter: 'date:\'dd/MM/yy\''},
-			{ field: 'donation_box_amount' ,resizable: true ,cellFilter:'currency:"&pound;" : 2'},
+			{ field: 'donation_box_amount' ,name: "Amount (without gift aid)",resizable: true ,cellFilter:'currency:"&pound;" : 2'},
+			{ field: 'gift_aid_donation_box_amount' ,name: "Gift aid amount", resizable: true ,cellFilter:'currency:"&pound;" : 2'},
 			{ field: 'donation_box_no' ,resizable: true},
-			
+			{ field: 'no_envelopes' ,resizable: true},
 			{ field: 'comments' ,value: "comments",resizable: true,visible:false},
 			{ field: 'logger_user_name' ,value: "Logged by",resizable: true,visible:false},
 			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',visible:false}

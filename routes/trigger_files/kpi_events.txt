@@ -1,0 +1,1 @@
+"{\"team_id\":\"MODERN RECORDS\",\"event_name\":\"things gone\",\"kpi_type\":\"Items destroyed\",\"date_logged\":\"2019-09-05T13:50:49.621Z\",\"date_value\":\"2019-09-05\",\"date_value_end\":\"2019-09-05\",\"comments\":\"\",\"no_sessions\":\"10\",\"income\":\"\",\"no_visits\":\"\",\"no_enquiries\":\"\",\"logger_user_name\":\"mark\"}"

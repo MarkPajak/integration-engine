@@ -14,6 +14,7 @@ var Giftaid = require('../../models/performance/Giftaid.js');
 var Learning = require('../../models/performance/Learning.js');
 var Operations = require('../../models/performance/Operations.js');
 var Retail_sales = require('../../models/performance/Retail_sales.js');
+var Retail_sales_net = require('../../models/performance/Retail_sales_net.js');
 var Welcomedesk = require('../../models/performance/Welcomedesk.js');
 
 
@@ -57,11 +58,15 @@ incrementDates('visits',visits, function(){
 							incrementDates('Operations',Operations, function(){	
 	//console.log('Operations done')
 								incrementDates('Retail_sales',Retail_sales, function(){	
-	//console.log('Retail_sales done')
+								
+								incrementDates('Retail_sales_net',Retail_sales_net, function(){	
+								
+								
+	console.log('Retail_sales_net done')
 									incrementDates('Welcomedesk',Welcomedesk, function(){
 mongoose.connection.close()										
 	//console.log('Welcomedesk done')
-
+})
 })
 })	
 })	

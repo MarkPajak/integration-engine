@@ -634,7 +634,6 @@ exports.venuehireFormdata = function() {
   }
 }
 
-
 exports.visitsFormdata = function() {
   return {
 
@@ -656,6 +655,16 @@ exports.retailKpiform = function() {
     templateUrl: './components/performance/retail/kpi-form.html'
   }
 }
+
+
+exports.retailUploader = function() {
+  return {
+   controller: 'retail_uploader',
+    templateUrl: './components/performance/uploader/poster-form.html'
+  }
+}
+
+
 
 					exports.yearlyRetailsales = function() {
   return {

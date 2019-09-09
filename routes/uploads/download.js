@@ -15,18 +15,27 @@ var _ =  require('underscore');
 var formidable = require('formidable');
 var fs = require('fs');
 var path = require('path');
-var staticBasePath = './uploads';
+var staticBasePath = './uploads/data';
 
 var download = function( dest, res,directory,cb) {
-
+console.log('dest',dest)
 
  var fileLoc = path.resolve(staticBasePath);
+
+
  if(directory=="posters"){
   fileLoc = path.join(fileLoc,directory);
  }
+
+ if(directory=="data"){
+
+  fileLoc = path.join(fileLoc,directory);
+  
+ }
+
  fileLoc = path.join(fileLoc,dest);
 
-       // parse URL
+ console.log('fileLoc',fileLoc)  // parse URL
 
   // extract URL path
   let pathname = fileLoc;
@@ -35,6 +44,7 @@ var download = function( dest, res,directory,cb) {
     '.ico': 'image/x-icon',
     '.html': 'text/html',
     '.js': 'text/javascript',
+    '.log': 'text/javascript',
     '.json': 'application/json',
     '.css': 'text/css',
     '.png': 'image/png',

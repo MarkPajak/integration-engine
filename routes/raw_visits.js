@@ -82,7 +82,7 @@ get_kpis( function ( result) {
 	function wind_up_Stats(	result,returned_row,analysis_field,venue,on_site_off_site,visitor_group){
 		
 		
-				var years = [2014,2015,2016,2017,2018]
+							var years = [2014,2015,2016,2017,2018,2019,2020,2021]
 								_.each(years,function(year){
 									var financial_yesr_text = ["last","this"]
 									_.each(financial_yesr_text,function(financial_yer_text){

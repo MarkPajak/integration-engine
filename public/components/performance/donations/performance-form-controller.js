@@ -18,8 +18,9 @@ exports.donations_performance_form =  function($scope, $http, $q,
 					kpi_type: "visits",	
 				//DEPARTMENTAL VARIABLES	
 					donation_box_amount: visit_form.donation_box_amount.value,
+					gift_aid_donation_box_amount: visit_form.gift_aid_donation_box_amount.value,
 					donation_box_no: visit_form.donation_box_no.value,
-					//no_envelopes: visit_form.no_envelopes.value,
+					no_envelopes: visit_form.no_envelopes.value,
 					
 					date_logged:new Date(),	
 					date_value:visit_form.date_value.value,
@@ -71,17 +72,17 @@ exports.donations_performance_form =  function($scope, $http, $q,
 
 	kpis.$save(function(err, user) {
 		
-						if(err) console.log(err)
-						 var  message = "data saved successfully";
-							  message+= "\n ";
-							  //message+= " "+ data + " added to " + museum;
-							  alert(message);
-							  get_table_data.getData(moment(new Date()).subtract({'months':1})._d,$scope)			
-							$scope.message="data saved successfully";
-			
-							visit_form.donation_box_amount.value=""
-							visit_form.donation_box_no.value=""
-							visit_form.no_envelopes.value=""
+if(err) console.log(err)
+var  message = "data saved successfully";
+message+= "\n ";
+//message+= " "+ data + " added to " + museum;
+alert(message);
+get_table_data.getData(moment(new Date()).subtract({'months':1})._d,$scope)			
+$scope.message="data saved successfully";
+visit_form.gift_aid_donation_box_amount.value=""
+visit_form.donation_box_amount.value=""
+visit_form.donation_box_no.value=""
+visit_form.no_envelopes.value=""
 							 
 							 
 						})

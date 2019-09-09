@@ -12,7 +12,7 @@ var dbConfig = require('../../db');
 var async = require('async');
 var Import_file=require('./load-csv.js');
 
-	
+//cheese	
 
 		import_file= new Import_file('./data_loader/backups/imports/archives-visits.csv')
 		mongoose.connect(dbConfig.url);
@@ -23,7 +23,6 @@ var Import_file=require('./load-csv.js');
 				
 					visitor_groupDocs=[]	
 				
-					
 
 					var visitor_groupDoc = {
 											  name:  "Searchroom visitors",

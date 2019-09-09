@@ -16,7 +16,7 @@
 </style>
 	
 <div  ng-show="user.username" class="panel panel-default col-xs-5 col-sm-5 col-md-5">
-<div class="panel-heading">Enter data</div>
+<div class="panel-heading">Enter exhibition ticket data</div>
 	<div class="panel-body">
 		<form name="visit_form"  id="visit_form">
 			  <div class="form-group">
@@ -36,18 +36,36 @@
 				
 					<option value="On Site Exhibition Tickets">Exhibition Tickets (on site)</option>
 					<option value="Online Exhibition Tickets">Exhibition Tickets (online)</option>
-					<option value="Contactless Donation Kiosk">Contactless Donation Kiosk</option>
+		
 					<option value="OTHER">Other</option> 
 				</select>
 			  </div>
 			  <div class="form-group">
-				<label for="comments">Date of donation</label>
+				<label for="comments">Date</label>
 				<input type = "date" class="form-control input-lg" id="date_value" rows="3"></input>
 			  </div>
+			  
 			  <div class="form-group">
-				<label for="comments">Amount</label>
+				<label for="comments">Amount (without gift aid)</label>
 				<input  step="any" type = "number" class="form-control input-lg" id="donation_box_amount" rows="3"></input>
 			  </div>
+			  
+			  	  <div class="form-group">
+				<label for="comments">Amount gift aided</label>
+				<input  step="any" type = "number" class="form-control input-lg" id="gift_aid_donation_box_amount" rows="3"></input>
+			  </div>
+			
+			<div class="form-group">
+			<label for="comments">No. gift aid donations</label>
+				<input  step="any" type = "number" class="form-control input-lg" id="no_envelopes" rows="3"></input>
+			  </div>
+			  
+			  <div class="form-group">
+			 <label for="comments">No. transactions</label>
+				<input  step="any" type = "number" class="form-control input-lg" id="no_transactions" rows="3"></input>
+			  </div>
+			 
+			 
 			  <div class="form-group">
 				<label for="comments">Comments</label>
 				<textarea class="form-control input-lg" id="comments" rows="3"></textarea>

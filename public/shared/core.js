@@ -214,7 +214,7 @@ var venue_hire_form = require('../components/performance/venue-hire/visits-form-
 
 
 
-
+var retail_uploader = require('../components/performance/retail/retail-uploader-controller');
 var retail_performance_form = require('../components/performance/retail/performance-form-controller');
 
 
@@ -796,6 +796,9 @@ _.each(retail_performance_form, function(controller, name) {
   app.controller(name, controller);
 });
 
+_.each(retail_uploader, function(controller, name) {
+  app.controller(name, controller);
+});
 
 
 
@@ -1105,25 +1108,28 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
                 template: '<kpihome-dashboard></kpihome-dashboard>',
               controller: 'kpi_home_controller'
             })
-			.when('/-:view', {
-              templateUrl: '../components/team/trello.html',
-              controller: 'trello'
-            })
-			/*
-			 .when('/', {
-              templateUrl: '../components/machine-monitor/dashboard.html',
-              controller: 'boardCtrl'
+			
+		
+		     .when('/timeline', {
+              template: '<time-line  timeline_mode="Timeline" ng-init="init(\'timeline\')"  ></time-line>'
+			  
            })
-		   */
-		    .when('/downtime/:kiosk', {
-              templateUrl: '../components/machine-monitor/downtime.html',
-              controller: 'downtimeCtrl'
+		    .when('/master', {
+              template: '<master-kpi></master-kpi>'
+			  
            })
-		     .when('/downtime', {
-              templateUrl: '../components/machine-monitor/downtime.html',
-              controller: 'downtimeCtrl'
-           })
-		   .when('/activity', {
+		   
+		      //DEV
+			  
+				.when('/downtime/:kiosk', {
+		  templateUrl: '../components/machine-monitor/downtime.html',
+		  controller: 'downtimeCtrl'
+	   })
+		 .when('/downtime', {
+		  templateUrl: '../components/machine-monitor/downtime.html',
+		  controller: 'downtimeCtrl'
+	   })
+	   .when('/activity', {
               templateUrl: '../components/machine-monitor/downtime.html',
               controller: 'downtimeCtrl'
            })
@@ -1138,7 +1144,8 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
               controller: 'satisfaction'
            })
 		   
-		   .when('/open_badges', {
+			  
+			  	   .when('/open_badges', {
               templateUrl: '../views/open_badges.html',
               controller: 'open_badgesCtrl'
            })
@@ -1148,25 +1155,11 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
               controller: 'deadCtrl'
            })
 		   
-		       .when('/people', {
-              templateUrl: '../views/people.html',
-              controller: 'peoplecounter'
-           })
 		   
 		    .when('/todo', {
               templateUrl: '../components/machine-monitor/page-feedback.html',
               controller: 'form_to_trellox'
            })
-		     .when('/timeline', {
-              template: '<time-line  timeline_mode="Timeline" ng-init="init(\'timeline\')"  ></time-line>'
-			  
-           })
-		    .when('/master', {
-              template: '<master-kpi></master-kpi>'
-			  
-           })
-		   
-		   
 		   
 		    .when('/timeline_settings', {
                template: '<timelinesettings-formdata></timelinesettings-formdata>'
@@ -1180,6 +1173,25 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
               template: '<timeline-bookings timeline_mode="Bookings" ng-init="init(\'equipment-booking\')"  ></timeline-bookings>'
 			  
            })
+		   
+		   	.when('/shopify_app', {
+               template: '<shopify-status></shopify-status>'
+           })
+		   
+		   
+		   .when('/shopify_monthly', {
+               template: '<shopify-monthly></shopify-monthly>'
+           })
+		   
+		   
+		    .when('/doom', {
+               template: '<i-frame></i-frame>'
+           })
+		   
+		   .when('/turnstiles', {
+               template: '<turnstiles-controller></turnstiles-controller>'
+           })
+	
 		   
 		   .when('/timeline/:track', {
               template: '<time-line></time-line>'
@@ -1197,27 +1209,31 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
                template: '<tech-support></tech-support>'
            })
 		   
+		   .when('/-:view', {
+              templateUrl: '../components/team/trello.html',
+              controller: 'trello'
+            })
+			/*
+			 .when('/', {
+              templateUrl: '../components/machine-monitor/dashboard.html',
+              controller: 'boardCtrl'
+           })
+		   */
+	
+	
+		       .when('/people', {
+              templateUrl: '../views/people.html',
+              controller: 'peoplecounter'
+           })
+		   
+		   
+		   //ADMIN
+		   
 		    .when('/users', {
                template: '<user-admin></user-admin>'
            })
 		   
-		     .when('/shopify_app', {
-               template: '<shopify-status></shopify-status>'
-           })
-		   
-		   
-		   .when('/shopify_monthly', {
-               template: '<shopify-monthly></shopify-monthly>'
-           })
-		   
-		   
-		      .when('/doom', {
-               template: '<i-frame></i-frame>'
-           })
-		      .when('/turnstiles', {
-               template: '<turnstiles-controller></turnstiles-controller>'
-           })
-	
+
 	//PERFORMANCE		   
 		   .when('/record-visitor-numbers', {
                 template: '<visits-formdata></visits-formdata>'
@@ -1254,6 +1270,11 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
 		  .when('/record-retail-sales', {
                template: '<retail-formdata></retail-formdata>'
            })
+
+
+           .when('/upload-retail-sales', {
+            template: '<retail-uploader></retail-uploader>'
+        })
 		   
 		   .when('/monthly-retail-sales', {
                template: '<retail-dashboard></retail-dashboard>'

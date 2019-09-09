@@ -10,11 +10,14 @@ var Donations_other = new mongoose.Schema({
 			
 		
 			donation_box_amount: { type: Number},
+			
+			gift_aid_donation_box_amount: { type: Number},
 			type: { type: String},
 			//non_vat_sales: { type: Number},
 			//net_sales: { type: Number},
-			//no_transactions: { type: Number},
-			
+			no_transactions: { type: Number},
+			no_gift_aided_donations: { type: Number},
+			no_envelopes: { type: Number},
 			date_value: { type: Date},	
 			date_logged: { type: Date, required: true},
 			comments: { type: String},

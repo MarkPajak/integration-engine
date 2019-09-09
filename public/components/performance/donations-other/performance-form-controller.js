@@ -18,9 +18,12 @@ exports.donations_other_performance_form =  function($scope, $http, $q,
 					kpi_type: "visits",	
 				//DEPARTMENTAL VARIABLES	
 					donation_box_amount: visit_form.donation_box_amount.value,
-					type: visit_form.type_id.value,
-					//no_envelopes: visit_form.no_envelopes.value,
+					gift_aid_donation_box_amount: visit_form.gift_aid_donation_box_amount.value,
 					
+					type: visit_form.type_id.value,
+					no_transactions: visit_form.no_transactions.value,
+				   no_envelopes: visit_form.no_envelopes.value,
+						
 					date_logged:new Date(),	
 					date_value:visit_form.date_value.value,
 					comments:visit_form.comments.value,			
@@ -82,7 +85,9 @@ exports.donations_other_performance_form =  function($scope, $http, $q,
 							visit_form.donation_box_amount.value=""
 							visit_form.type_id.value=""
 							visit_form.no_envelopes.value=""
-							 
+							visit_form. gift_aid_donation_box_amount=""
+							visit_form.no_transactions.value=""
+								
 							 
 						})
 						

@@ -20,8 +20,10 @@ exports.raw_donations_other_controller = function($route,$scope, $http, $q, $rou
 			{ field: 'type' ,name: "type",resizable: true,width:"150"},
 			{ field: 'date_value' ,name: "Date",resizable: true ,type: 'date', cellFilter: 'date:\'dd/MM/yy\''},
 			{ field: 'donation_box_amount' ,resizable: true ,cellFilter:'currency:"&pound;" : 2'},
-		
+			{ field: 'gift_aid_donation_box_amount' ,resizable: true ,cellFilter:'currency:"&pound;" : 2'},
 			
+			{ field: 'no_envelopes' ,name: "No Gift Aided Donations",resizable: true },
+			{ field: 'no_transactions' ,resizable: true },
 			{ field: 'comments' ,value: "comments",resizable: true,visible:false},
 			{ field: 'logger_user_name' ,value: "Logged by",resizable: true,visible:false},
 			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',visible:false}

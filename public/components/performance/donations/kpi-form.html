@@ -16,7 +16,7 @@
 </style>
 	
 <div  ng-show="user.username" class="panel panel-default col-xs-5 col-sm-5 col-md-5">
-<div class="panel-heading">Enter data</div>
+<div class="panel-heading">Enter donation box data</div>
 	<div class="panel-body">
 		<form name="visit_form"  id="visit_form">
 
@@ -32,10 +32,9 @@
 				</select>
 			  </div>
 			  	  <div class="form-group">
-				<label for="exampleSelect1">Donation method</label>
+				<label for="exampleSelect1">Donation Box</label>
 				<select class="form-control input-lg" id="donation_box_no">
-				  <option value="Cash">Cash</option>
-				<!--  <option value="Contactless">Contactless</option>-->
+				
 				  <option value="BOX 1">BOX 1</option>
 				  <option value="BOX 2">BOX 2</option>
 				  <option value="BOX 3">BOX 3</option>
@@ -43,21 +42,27 @@
 				  <option value="BOX 5">BOX 5</option>
 				  <option value="BOX 6">BOX 6</option>
 				  <option value="BOX 7">BOX 7</option>
-				  <option value="BOX 8">BOX 8</option>
-				  <option value="Cash">Cash</option>
+				  <option value="BOX 8">BOX 8</option>				
 				  <option value="OTHER">Other</option>
 				  
 				</select>
 			  </div>
 			  <div class="form-group">
-				<label for="comments">Date of donation</label>
+				<label for="comments">Date</label>
 				<input type = "date" class="form-control input-lg" id="date_value" rows="3"></input>
 			  </div>
 			  <div class="form-group">
-				<label for="comments">Amount</label>
+				<label for="comments">Amount (without gift aid)</label>
 				<input  step="any" type = "number" class="form-control input-lg" id="donation_box_amount" rows="3"></input>
 			  </div>
-			
+			  <div class="form-group">
+				<label for="comments">Amount gift aided</label>
+				<input  step="any" type = "number" class="form-control input-lg" id="gift_aid_donation_box_amount" rows="3"></input>
+			  </div>
+			 <div class="form-group">
+				<label for="comments">No. gift aid envelopes</label>
+				<input  step="any" type = "number" class="form-control input-lg" id="no_envelopes" rows="3"></input>
+			  </div>
 			 
 			 
 
