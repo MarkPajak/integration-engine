@@ -1309,7 +1309,7 @@ Team.aggregate([
 				else
 				{
 				_.each(result,function(row){
-				console.log('this is else mofo',analysis_field,row[analysis_field])
+				//console.log('this is else mofo',analysis_field,row[analysis_field])
 				//console.log(row)
 						if(month==moment.monthsShort(row.kpi_month-1) &&venue==row.kpi_venue &&row.kpi_year==year){
 							returned_row[month+" "+year]=row[analysis_field]
