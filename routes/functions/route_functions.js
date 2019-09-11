@@ -343,7 +343,9 @@ Team.aggregate([
 										//if(kpi.kpi_venue==venue &&  kpi.kpi_month==m+1 && kpi.kpi_year==year){
 											if(venue=="") return;
 												_.each(types,function(type){
+													
 													_.each(Donations_other,function(other,i){
+														if(other.type=="") return;
 														//n.b. not data for some months or years so will need to create these and loop - see monthly gift aid
 														if(other.venue==venue &&  newres.kpi_venue==venue && other.type== type && newres.kpi_month==m+1 && newres.kpi_year==year){		
 															if( other.month==m+1 && other.year==year){
@@ -425,7 +427,7 @@ Team.aggregate([
 													
 													console.log('kiosk')
 													newresults[xx].donations_other=visits.donations	
-													newresults[xx].type="donations kiosk"
+													newresults[xx].type="Donations kiosk"
 													newresults[xx].combined=newresults[xx].welcome+newresults[xx].gift_aid_amountx+newresults[xx].donations	+newresults[xx].donations_other
 										}							
 										}								
@@ -1436,7 +1438,7 @@ var self = this
 					}
 					//var types = [] //hack
 					_.each(types,function(typex){
-					
+					if (typeof(typex) == "undefined") return;
 							var returned_row={}
 							returned_row.museum=venue
 							returned_row.stat=typex
