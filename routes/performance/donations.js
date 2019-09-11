@@ -30,6 +30,7 @@ var Welcomedesk = require('../../models/performance/Welcomedesk.js');
 var Patron = require('../../models/performance/Patron.js');
 var Corporate = require('../../models/performance/Corporate.js');
 var Donations_other = require('../../models/performance/Donations_other.js');
+var Donations_kiosk = require('../../models/performance/Donations_kiosk.js');
 var Cache = require('../../models/cache/cache.js');
 //aggregation
 
@@ -409,7 +410,7 @@ else
 
 			var months=moment.monthsShort()
 
-			route_functions.get_kpis( Team,Gidftaid,Welcomedesk,Patron,Corporate,Donations_other,req,function ( result) {
+			route_functions.get_kpis( Team,Gidftaid,Welcomedesk,Patron,Corporate,Donations_other,Donations_kiosk,req,function ( result) {
 				
 				var venues=[]
 				_.each(result,function(row){

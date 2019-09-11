@@ -362,7 +362,28 @@ exports.Monthly_venue_hire =  function($resource){
        
 
   } 
+     exports.Monthly_donations_kiosk=  function($resource){
+	  
+	  
+	return $resource('/donations-kiosk/all',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+       
+
+  } 
   
+  
+   exports.Daily_donations_kiosk=  function($resource){
+	  
+	  
+	return $resource('/donations-kiosk/day',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+       
+
+  } 
   
   
          exports.Yearly_donations =  function($resource){
@@ -832,6 +853,18 @@ exports.Monthly_venue_hire =  function($resource){
           });
  }
  
+     exports.Raw_donations_kiosk =  function($resource){
+	 
+		 
+            return $resource('/donations-kiosk/:id/:museum_id/:date_value/:type/:exact/:end_value', null,
+			{ 'get':    {method:'GET'},  // get individual record
+			  'save':   {method:'POST'}, // create record
+			  'query':  {method:'GET', isArray:true}, // get list all records
+			  'remove': {method:'DELETE'}, // remove record
+			    'update': { method:'PUT' },
+			  'delete': {method:'DELETE'} // same, remove record
+          });
+ }
  
  
    exports.Raw_corporate =  function($resource){

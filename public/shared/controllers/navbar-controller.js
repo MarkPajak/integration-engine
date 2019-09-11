@@ -88,20 +88,32 @@ var raw_retail_sales = {teamx:"RETAIL" ,link:"raw-retail-sales",value:"Raw retai
 var monthly_retail_sales = {teamx:"RETAIL" ,link:"monthly-retail-sales",value:"Monthly retail sales"}
 
 
-var record_donations_other =		{teamx:"DONATIONS" ,link:"record-donations-other",value:"Record exhibition ticket donations"}
-var donations_other = 				 {teamx:"DONATIONS" ,link:"raw-donations-other",value:"Raw other donation data"}
-var monthly_donations_other = 		 {teamx:"DONATIONS" ,link:"monthly-donations-other",value:"Monthly other donations"}
+var record_donations_other =		 {teamx:"DONATIONS" ,link:"record-donations-other",value:"Record exhibition ticket donations"}
+
+var donations_other = 				 {teamx:"DONATIONS" ,link:"raw-donations-other",value:"Raw exhibition ticket donations"}
+
+var monthly_donations_other = 		 {teamx:"DONATIONS" ,link:"monthly-donations-other",value:"Monthly exhibition ticket donations"}
+
+var record_donations_kiosk =		 {teamx:"DONATIONS" ,link:"record-donations-kiosk",value:"Record kiosk donations"}
+var upload_kiosk_donations =		 {teamx:"DONATIONS" ,link:"upload-kiosk-donations",value:"Upload kiosk donations"}
+
+var donations_kiosk = 				 {teamx:"DONATIONS" ,link:"raw-donations-kiosk",value:"Raw kiosk donation data"}
+var daily_donations_kiosk = 				 {teamx:"DONATIONS" ,link:"day-donations-kiosk",value:"Daily kiosk donation data"}
+
+var monthly_donations_kiosk = 		 {teamx:"DONATIONS" ,link:"monthly-donations-kiosk",value:"Monthly kiosk donations"}
 
 
 
-var record_site_permissions=		{teamx:"ARTS AND EVENTS" ,link:"record-site-permissions",value:"Record  site permissions"}
+
+var record_site_permissions=		 {teamx:"ARTS AND EVENTS" ,link:"record-site-permissions",value:"Record  site permissions"}
 var site_permissions = 				 {teamx:"ARTS AND EVENTS" ,link:"raw-site-permissions",value:"Raw site permissions data"}
 var monthly_site_permissions = 		 {teamx:"ARTS AND EVENTS" ,link:"monthly-site-permissions",value:"Monthly site permissions"}
 
 
 
 var record_donations =			 {teamx:"DONATIONS" ,link:"record-donations",value:"Record donation boxes"}
-var donations = 				 {teamx:"DONATIONS" ,link:"raw-donations",value:"Raw donation data"}
+var donations = 				 {teamx:"DONATIONS" ,link:"raw-donations",value:"Raw donation boxes data"}
+var monthly_donations_boxes = 	 {teamx:"DONATIONS" ,link:"monthly-donations-kiosks",value:"Monthly donation boxes and kiosks"}//still going
 var monthly_donations = 		 {teamx:"DONATIONS" ,link:"monthly-donations",value:" Monthly total income"}
 
 var record_patron =			 {teamx:"DONATIONS" ,link:"record-patron",value:"Record patron"}
@@ -210,12 +222,15 @@ enter_data.push(record_corporate)
 enter_data.push(record_patron)
 enter_data.push(record_donations)
 enter_data.push(record_donations_other)
+
+
+enter_data.push(upload_kiosk_donations)
+//enter_data.push(record_donations_kiosk)
 enter_data.push(record_giftaid)
 enter_data.push(record_welcomedesk)
 enter_data.push(record_events)
 enter_data.push(record_kpi_events)
 enter_data.push(record_venue_hire)
-
 
 var performance_data=[]
 performance_data.push(raw_visits)
@@ -231,11 +246,17 @@ performance_data.push(raw_giftaid)
 performance_data.push(monthly_giftaid)
 performance_data.push(monthly_donations)
 performance_data.push(monthly_donations_other)
+performance_data.push(monthly_donations_kiosk)
+
+performance_data.push(donations_other)
 performance_data.push(monthly_patron)
 performance_data.push(monthly_corporate)
 performance_data.push(transformation_kpis)
 performance_data.push(engagement_kpis)
 performance_data.push(collections_kpis)
+
+performance_data.push(donations_kiosk)
+performance_data.push(daily_donations_kiosk)
 
 
 performance_data.push(donations)
@@ -306,6 +327,9 @@ enter_data.push(upload_retail_sales)
 enter_data.push(record_donations)
 enter_data.push(record_site_permissions)
 enter_data.push(record_donations_other)
+
+//enter_data.push(record_donations_kiosk)
+enter_data.push(upload_kiosk_donations)
 enter_data.push(record_corporate)
 enter_data.push(record_patron)
 enter_data.push(record_giftaid)
@@ -336,8 +360,14 @@ performance_data.push(monthly_giftaid)
 performance_data.push(monthly_donations)
 performance_data.push(monthly_patron)
 performance_data.push(monthly_corporate)
-
+performance_data.push(monthly_donations_other)
+performance_data.push(monthly_donations_kiosk)
 performance_data.push(donations)
+performance_data.push(donations_kiosk)
+performance_data.push(daily_donations_kiosk)
+performance_data.push(donations_other)
+
+
 performance_data.push(corporate)
 performance_data.push(patron)
 performance_data.push(raw_welcomedesk)
@@ -345,13 +375,7 @@ performance_data.push(monthly_welcomedesk)
 performance_data.push(participation)
 performance_data.push(learning)
 performance_data.push(monthly_learning)
-
-//performance_data.push(exhibitions_pwyt_monthly)
 performance_data.push(raw_exhibitions_pwyt)
-//performance_data.push(exhibitions_summary)
-
-
-
 performance_data.push(teg)
 performance_data.push(monthly_teg)
 performance_data.push(events)

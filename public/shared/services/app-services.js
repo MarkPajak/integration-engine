@@ -10,6 +10,55 @@ exports.tableFilterService = function(AuthService,$rootScope) {
 		
 
 }
+exports.dynamicTableCellFilter_donations_other= function() {
+	
+					 return function(grid, row, col, rowRenderIndex, colRenderIndex	){		
+								if(row.entity){
+										if(row.entity.csstype){
+											
+												return (row.entity.csstype)
+										}
+											
+										if(row.entity.csstype){
+											if(row.entity.csstype=="bold" ){
+												return ("bold")
+										}
+										
+										
+										else
+											return ""
+										}
+								}
+										
+																																
+					}
+
+}
+
+exports.dynamicTableCellFilter_donations_kiosk= function() {
+	
+					 return function(grid, row, col, rowRenderIndex, colRenderIndex	){		
+								if(row.entity){
+										if(row.entity.csstype){
+											
+												return (row.entity.csstype)
+										}
+											
+										if(row.entity.csstype){
+											if(row.entity.csstype=="bold" ){
+												return ("bold")
+										}
+										
+										
+										else
+											return ""
+										}
+								}
+										
+																																
+					}
+
+}
 
 exports.dynamicTableCellFilter_donations= function() {
 	

@@ -107,9 +107,16 @@ var donations_performance_form = require('../components/performance/donations/pe
 var yearly_donations_other_controller = require('../components/performance/donations-other/yearly-donations_other-controller');
 var monthly_donations_other_controller = require('../components/performance/donations-other/monthly-donations_other-controller');
 var raw_donations_other_controller = require('../components/performance/donations-other/raw-donations_other-controller');
+
 var donations_other_performance_form = require('../components/performance/donations-other/performance-form-controller');
 
 
+
+var monthly_donations_kiosk_controller = require('../components/performance/donations-kiosk/monthly-donations_kiosk-controller');
+var raw_donations_kiosk_controller = require('../components/performance/donations-kiosk/raw-donations_kiosk-controller');
+var donations_kiosk_performance_form = require('../components/performance/donations-kiosk/performance-form-controller');
+var kiosk_uploader = require('../components/performance/donations-kiosk/kiosk-uploader-controller');
+var daily_donations_kiosk_controller = require('../components/performance/donations-kiosk/daily-donations_kiosk-controller');
 
 
 var yearly_corporate_controller = require('../components/performance/corporate/yearly-corporate-controller');
@@ -711,6 +718,36 @@ _.each(raw_donations_other_controller, function(controller, name) {
 _.each(donations_other_performance_form, function(controller, name) {
   app.controller(name, controller);
 });
+
+
+
+
+_.each(monthly_donations_kiosk_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(raw_donations_kiosk_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(daily_donations_kiosk_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+
+
+
+
+
+_.each(donations_kiosk_performance_form, function(controller, name) {
+  app.controller(name, controller);
+});
+
+_.each(kiosk_uploader, function(controller, name) {
+  app.controller(name, controller);
+});
+
+
 
 _.each(monthly_events_controller, function(controller, name) {
   app.controller(name, controller);
@@ -1381,10 +1418,18 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
 		    .when('/record-donations-other', {
                template: '<donationsother-Formdata></donationsother-Formdata>'
            })
-		   
-		   .when('/raw-donations', {
-                 templateUrl: './components/performance/donations/data.html'
+		      .when('/record-donations-kiosk', {
+               template: '<donationskiosk-Formdata></donationskiosk-Formdata>'
            })
+		   
+		   
+		   .when('/raw-donations-kiosk', {
+                 templateUrl: './components/performance/donations-kiosk/data.html'
+           })
+		      .when('/day-donations-kiosk', {
+                 templateUrl: './components/performance/donations-kiosk/day-data.html'
+           })
+		   
 		   
 		   .when('/monthly-donations', {
                template: '<donations-dashboard></donations-dashboard>'
@@ -1436,13 +1481,27 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
                template: '<donations-dashboard></donations-dashboard>'
            })
 		   
-		      	.when('/raw-donations-other', {
+		    .when('/raw-donations-other', {
                  templateUrl: './components/performance/donations-other/data.html'
            })
 		   
 			.when('/monthly-donations-other', {
-               template: '<donations_other-dashboard></donations_other-dashboard>'
+               template: '<donations_otherdashboard></donations_otherdashboard>'
            })
+		   
+		   
+		   .when('/raw-donations-kiosk', {
+                 templateUrl: './components/performance/donations-kiosk/data.html'
+           })
+		   
+			.when('/monthly-donations-kiosk', {
+               template: '<donations_kioskdashboard></donations_kioskdashboard>'
+           })
+		   
+		        .when('/upload-kiosk-donations', {
+            template: '<kiosk-uploader></kiosk-uploader>'
+        })
+		   
 		   
 		   
 		   .when('/record-events', {

@@ -111,7 +111,7 @@ this.calendar_feed = function (events){
 	 }
 	 	
 	
-this.get_kpis=function(Team,Gidftaid,Welcomedesk,Patron,Corporate,Donations_other,req,cb){
+this.get_kpis=function(Team,Gidftaid,Welcomedesk,Patron,Corporate,Donations_other,Donations_kiosk,req,cb){
 		console.log("get_kpis")
 Team.aggregate([
 			
@@ -242,6 +242,29 @@ Team.aggregate([
 
 				], function (err, Donations_other) {	  	
 						
+
+						Donations_kiosk.aggregate([
+						
+					{ $group: {
+							_id: { 
+
+									"kpi_year": { "$year":  route_functions.mongo_aggregator }, 
+									"kpi_month": { "$month":route_functions.mongo_aggregator }, 					   
+								  // type:'$type',
+									venue:'$museum_id',
+								   
+								 },  
+							
+							donations: {$sum: '$donation_amount' }
+						 
+						  
+						}
+					 },
+					{ $sort : { "donations" : -1} }	,
+					{ $project : { venue:"$_id.venue", year :"$_id.kpi_year", month :"$_id.kpi_month", donations:"$donations"}  },
+					
+
+				], function (err, Donations_kiosk) {		
 						var venues=[]	
 					    var types=[]	
 						
@@ -263,14 +286,17 @@ Team.aggregate([
 								}
 						})
 							
-					_.each(Donations_other,function(corporate,i){
+						
+						_.each(Donations_other,function(corporate,i){
 						if(types.indexOf(corporate.type)==-1){
 							if(corporate.type=="") return;
-												console.log('adding  types  ',corporate.type)
+												//console.log('adding  types  ',corporate.type) //now exhibitin ticketts
 												types.push(corporate.type)
 								}
 						})
 									
+						types.push("donation kiosk")
+						
 						
 						if (err) {
 							console.log(err);
@@ -281,17 +307,17 @@ Team.aggregate([
 							var years = [2016,2017,2018,2019,2020,2021,2022,2023]
 							
 							_.each(venues,function(venue){
-							_.each(years,function(year){
-							_.each(moment.monthsShort(),function(month,m){
-							
-							var newresult={}
-							newresult.kpi_year=year
-							newresult.kpi_month=m+1
-							newresult.kpi_venue=venue
-							newresults.push(newresult)
+								_.each(years,function(year){
+									_.each(moment.monthsShort(),function(month,m){
+									
+									var newresult={}
+									newresult.kpi_year=year
+									newresult.kpi_month=m+1
+									newresult.kpi_venue=venue
+									newresults.push(newresult)
 
-							})	
-							})
+									})	
+								})
 							})
 						
 						_.each(newresults,function(newres,xx){
@@ -302,6 +328,8 @@ Team.aggregate([
 							newresults[xx].welcome=0
 							newresults[xx].gift_aid_amountx=0
 							newresults[xx].donations_other=0
+							newresults[xx].donations_kiosk=0
+							
 								_.each(venues,function(venue){
 								_.each(years,function(year){
 								_.each(moment.monthsShort(),function(month, m){
@@ -336,7 +364,7 @@ Team.aggregate([
 										}								
 								//	})
 									
-									
+						
 									
 									_.each(result,function(kpi,i){
 									//n.b. not data for some months or years so will need to create these and loop - see monthly gift aid
@@ -391,7 +419,17 @@ Team.aggregate([
 										}								
 									})	
 
-										
+										_.each(Donations_kiosk,function(visits,ii){
+										if(visits.venue==venue &&  visits.month==m+1 && visits.year==year){	
+										if(newres.kpi_venue==venue &&  newres.kpi_month==m+1 && newres.kpi_year==year){	
+													
+													console.log('kiosk')
+													newresults[xx].donations_other=visits.donations	
+													newresults[xx].type="donations kiosk"
+													newresults[xx].combined=newresults[xx].welcome+newresults[xx].gift_aid_amountx+newresults[xx].donations	+newresults[xx].donations_other
+										}							
+										}								
+									})	
 												
 												
 
@@ -464,6 +502,7 @@ Team.aggregate([
 				});
 				}); 
 				});
+				});
 });
 
 }
@@ -484,9 +523,12 @@ Team.aggregate([
 	}
 	
 	this.wind_up_Stats=function(result,returned_row,analysis_field,venue,type){
-					console.log("wind_up_Stats")	
+						
+						//console.log("wind_up_Stats")	
+						
 						type=type || ""
-						years = [2017,2018,2019,2010,2021,2022]
+						years = [2017,2018,2019,2020,2021,2022]
+						
 						returned_row.delete_row=true
 						_.each(years,function(year){
 						_.each(moment.monthsShort(),function(month){			
@@ -499,6 +541,7 @@ Team.aggregate([
 									if( !isNaN(row[analysis_field])&& row[analysis_field]>0){
 										returned_row.delete_row=false
 									}
+									
 									returned_row[month+" "+year]=row[analysis_field]
 									
 								}
@@ -514,7 +557,7 @@ Team.aggregate([
 
 	this.wind_up_Stats_monthly_variable=function(result,returned_row,analysis_field,venue,data_field_name,currency,session_type,on_off_site){
 		
-			console.log('wind_up_Stats_monthly_variable')
+			//console.log('wind_up_Stats_monthly_variable')
 			var years = [2015,2016,2017,2018,2019,2020,2021,2022]
 			//n.b. if there is no data for a given month then it wont match to running totals wont carry over.
 			var checkmonth = new Date()
@@ -552,7 +595,7 @@ Team.aggregate([
 								
 								
 							
-								console.log(row)
+								//console.log(row)
 								
 								    
 									if(row._id) {;
@@ -1350,7 +1393,7 @@ var self = this
 					
 					var returned_row={}
 					returned_row.museum=venue
-					returned_row.stat="Donations"
+					returned_row.stat="Donation Boxes"
 					returned_row.xtype="currency"
 					row=self.wind_up_Stats(	result,returned_row,"donations",venue)
 					
@@ -1364,7 +1407,7 @@ var self = this
 					
 					var returned_row={}
 					returned_row.museum=venue
-					returned_row.stat="Gift Aid Amount + 25%"
+					returned_row.stat="Donation boxes gift aid amount + 25%"
 					returned_row.xtype="currency"
 					row = self.wind_up_Stats(	result,returned_row,"gift_aid_amountx",venue)
 					
@@ -1374,7 +1417,7 @@ var self = this
 					
 					var returned_row={}
 					returned_row.museum=venue
-					returned_row.stat="Welcome"
+					returned_row.stat="Welcome Desk"
 					returned_row.xtype="currency"
 					row =  self.wind_up_Stats(result,returned_row,"welcome",venue)
 				
@@ -1384,9 +1427,9 @@ var self = this
 					
 					var returned_row={}
 					returned_row.museum=venue
-					returned_row.stat="Welcome gift aid + 25%"
+					returned_row.stat="Welcome desk gift aid + 25%"
 					returned_row.xtype="currency"
-					row =  self.wind_up_Stats(result,returned_row,"welcome_gift_aid",venue)
+					row =  self.wind_up_Stats(result,returned_row,"welcome_gift_aid",venue,"")
 				
 					if(row.delete_row==false){
 						returned_data.push(	row)
@@ -1404,8 +1447,12 @@ var self = this
 							if(row.delete_row==false){
 								returned_data.push(	row)
 							}
+							
+							
 					
 					})
+					
+					
 					
 					
 					var returned_row={}

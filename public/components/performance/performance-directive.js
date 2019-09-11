@@ -258,7 +258,12 @@ exports.patronFormdata = function() {
     templateUrl: './components/performance/donations/dashboard.html'
   }
 	}	
-	
+					exports.donationsKioskdashboard = function() {
+  return {
+   controller: 'dashboard_controller',
+    templateUrl: './components/performance/donations-kiosk/dashboard.html'
+  }
+	}	
 		
 		
 exports.welcomedeskFormdata = function() {
@@ -453,7 +458,7 @@ exports.dataGiftaid = function() {
   }
 	}
 	
-						exports.yearlyDonationsother = function() {
+exports.yearlyDonationsother = function() {
   return {
 	    restrict: "E",
     scope: {},
@@ -461,12 +466,53 @@ exports.dataGiftaid = function() {
    templateUrl: './shared/templates/data_table.html'
   }
 	}
-		exports.rawDonationsother = function() {
+	
+	
+			exports.rawDonationskiosk = function() {
+  return {
+   controller: 'raw_donations_kiosk_controller',
+     templateUrl: './shared/templates/data_table.html'
+  }
+	}
+	
+				exports.rawDonationsother = function() {
   return {
    controller: 'raw_donations_other_controller',
      templateUrl: './shared/templates/data_table.html'
   }
 	}
+		
+exports.dataDonationskiosk = function() {
+  return {
+ //  controller: 'raw_welcomedesk_controller',
+    templateUrl: './components/performance/donations-kiosk/data.html'
+  }
+}
+
+	
+		exports.monthlyDonationskiosk = function() {
+  return {
+
+   controller: 'monthly_donations_kiosk_controller',
+   templateUrl: './shared/templates/data_table.html'
+  }
+	}
+	
+	
+		exports.rawDonationskiosk= function() {
+  return {
+   controller: 'raw_donations_kiosk_controller',
+     templateUrl: './shared/templates/data_table.html'
+  }
+	}
+	
+			exports.dayDonationskiosk= function() {
+  return {
+   controller: 'daily_donations_kiosk_controller',
+     templateUrl: './shared/templates/data_table.html'
+  }
+	}
+	
 	
 		
 exports.dataDonationsother = function() {
@@ -476,7 +522,6 @@ exports.dataDonationsother = function() {
   }
 }
 
-	
 	
 		exports.monthlyDonationsother = function() {
   return {
@@ -573,13 +618,28 @@ exports.dataDonations = function() {
   }
 	}
 	
-		exports.monthlyTurnstiles = function() {
+exports.monthlyTurnstiles = function() {
   return {
    controller: 'monthly_turnstiles_controller',
    templateUrl: './shared/templates/data_table.html'
   }
-	}
+}
+
 	
+exports.donationskioskFormdata = function() {
+  return {
+
+   templateUrl: './components/performance/donations-kiosk/kpi-form-and-data.html'
+  }
+}
+	exports.recordDonationskiosk = function() {
+  return {
+   controller: 'donations_kiosk_performance_form',
+    templateUrl: './components/performance/donations-kiosk/kpi-form.html'
+  }
+}
+
+
 
 exports.donationsotherFormdata = function() {
   return {
@@ -664,6 +724,12 @@ exports.retailUploader = function() {
   }
 }
 
+exports.kioskUploader = function() {
+  return {
+   controller: 'kiosk_uploader',
+    templateUrl: './components/performance/uploader/poster-form.html'
+  }
+}
 
 
 					exports.yearlyRetailsales = function() {

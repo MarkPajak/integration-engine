@@ -15,7 +15,8 @@ var _ =  require('underscore');
 var formidable = require('formidable');
 var fs = require('fs');
 var path = require('path');
-var staticBasePath = './uploads/data';
+var staticBasePath = './uploads';
+
 
 var download = function( dest, res,directory,cb) {
 console.log('dest',dest)
@@ -32,11 +33,16 @@ console.log('dest',dest)
   fileLoc = path.join(fileLoc,directory);
   
  }
+ if(directory=="donation-kiosk"){
+
+  fileLoc = path.join(fileLoc,directory);
+  
+ }
 
  fileLoc = path.join(fileLoc,dest);
 
  console.log('fileLoc',fileLoc)  // parse URL
-
+ console.log('directory',directory) 
   // extract URL path
   let pathname = fileLoc;
   // maps file extention to MIME types
@@ -86,7 +92,7 @@ console.log('dest',dest)
 
 };
 
-router.get('/:file/:directory?', function(req, res, next) {
+router.get('/:file/:directory', function(req, res, next) {
 
 var directory=""
 

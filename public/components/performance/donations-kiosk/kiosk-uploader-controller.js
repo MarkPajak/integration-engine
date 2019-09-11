@@ -1,4 +1,4 @@
-exports.retail_uploader =   function($scope, $http, $q,  
+exports.kiosk_uploader =   function($scope, $http, $q,  
 		Resources,Posters,data_table_reload,get_table_data,timeline_functions,$routeParams
   ) {
 
@@ -103,7 +103,7 @@ if (files.length > 0){
   }
 
   $.ajax({
-	url: '/upload/data',
+	url: '/upload/donation-kiosk',
 	type: 'POST',
 	data: formData,
 	processData: false,
@@ -115,8 +115,9 @@ if (files.length > 0){
 		
 
 			$.ajax({
-				url: '/download/'+ file.name+".log/data",
+				url: '/download/'+ file.name+".log/donation-kiosk",
 				type: 'GET',
+				//data: { directory: "donation-kiosk", field2 : "hello2"} ,
 				success: function(response)
 				{
 					$('#logtext').text(response);
