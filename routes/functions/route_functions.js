@@ -403,7 +403,7 @@ Team.aggregate([
 													newresults[xx].welcome=welcome.cash+welcome.card	
 													newresults[xx].welcome_gift_aid=welcome.giftaid_amount*1.25	
 													newresults[xx].combined=newresults[xx].donations_other+newresults[xx].welcome+newresults[xx].gift_aid_amountx+newresults[xx].donations		
-											
+													
 											}
 										}								
 									})
@@ -1385,6 +1385,7 @@ var self = this
 					returned_row.museum=venue
 					returned_row.stat=venue+ " Combined total"
 					returned_row.xtype="currency"
+					returned_row.typex="currency"
 					returned_row.csstype="bold"
 					
 					row= self.wind_up_Stats(	result,returned_row,"combined",venue)	
@@ -1397,6 +1398,7 @@ var self = this
 					returned_row.museum=venue
 					returned_row.stat="Donation Boxes"
 					returned_row.xtype="currency"
+					returned_row.typex="currency"
 					row=self.wind_up_Stats(	result,returned_row,"donations",venue)
 					
 					
@@ -1411,6 +1413,7 @@ var self = this
 					returned_row.museum=venue
 					returned_row.stat="Donation boxes gift aid amount + 25%"
 					returned_row.xtype="currency"
+					returned_row.typex="currency"
 					row = self.wind_up_Stats(	result,returned_row,"gift_aid_amountx",venue)
 					
 					if(row.delete_row==false){
@@ -1421,6 +1424,7 @@ var self = this
 					returned_row.museum=venue
 					returned_row.stat="Welcome Desk"
 					returned_row.xtype="currency"
+					returned_row.typex="currency"
 					row =  self.wind_up_Stats(result,returned_row,"welcome",venue)
 				
 					if(row.delete_row==false){
@@ -1431,6 +1435,7 @@ var self = this
 					returned_row.museum=venue
 					returned_row.stat="Welcome desk gift aid + 25%"
 					returned_row.xtype="currency"
+					returned_row.typex="currency"
 					row =  self.wind_up_Stats(result,returned_row,"welcome_gift_aid",venue,"")
 				
 					if(row.delete_row==false){
@@ -1460,7 +1465,12 @@ var self = this
 					var returned_row={}
 					returned_row.museum="last year"
 					returned_row.stat="last year"
-					returned_row.xtype="currency"		
+					returned_row.typex="currency"	
+					//returned_row.xtype="retail"		
+
+					returned_row.xtype="currency"
+
+					
 					returned_data.push(	 self.wind_up_Stats_monthly_variable(result,returned_row,"last_year_total",venue,"","currency"))
 
 					var returned_row={}
@@ -1471,7 +1481,7 @@ var self = this
 					
 				})
 
-				var returned_row={}
+			var returned_row={}
 					returned_row.museum="Total"
 					returned_row.stat="Total"
 					returned_row.typex="retail"
@@ -1479,7 +1489,6 @@ var self = this
 					returned_row.cssclass="summary_row"
 					returned_row.csstype="summary_row"
 					returned_data.push(	 self.wind_up_Stats_monthly_variable(	result,returned_row,"total_s","",'combined',"currency"))
-					
 					
 				var returned_row={}
 					returned_row.museum="Last year"
@@ -1489,6 +1498,7 @@ var self = this
 					returned_row.cssclass="summary_row"
 					returned_row.csstype="summary_row"
 					returned_data.push(	 self.wind_up_Stats_monthly_variable(	result,returned_row,"total_sales_last_year","",'combined',"currency"))
+					
 					
 					
 					return returned_data

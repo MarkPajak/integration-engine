@@ -16,8 +16,8 @@ exports.monthly_retail_sales_controller = function(yearly_percentage_difference,
 			$scope.chart_class = "col-md-8 col-lg-8 col-sm-5 pull-right"
 			$scope.table_class = "col-md-12 col-lg-12 col-sm-5"
 	
-	 $scope.background_colour="retail"
-			dates=getDateService.getDate()
+		$scope.background_colour="retail"
+		dates=getDateService.getDate()
 		$scope.start_date=dates[0]
 		$scope.end_date=dates[1]
 		$scope.table_heading = "Monthly retail sales"

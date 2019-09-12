@@ -968,7 +968,7 @@ app.filter('valueFilter_retail', function (){
 	  
 
 if(value){
-	if( !isNaN(value)&& (entity.typex=="retail" || entity.xtype=="currency" )){
+	if( !isNaN(value)&& (entity.typex=="retail" || entity.typex=="currency" )){
 		
 			return "£"+ Math.round(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 			
@@ -1016,7 +1016,7 @@ app.filter('valueFilter', function () {
 		 value=value.replace("M-SHED","M Shed")
 		 value=value.replace("GEORGIAN-HOUSE","Georgian House")
 		 value=value.replace("RED-LODGE","Red Lodge")
-		  value=value.replace("BLAISE","Blaise Castle")
+		 value=value.replace("BLAISE","Blaise Castle")
 		 value=value.replace("BRISTOL-ARCHIVES","Bristol Archives")
 	     value=value.replace("ROMAN-VILLA","Kings Weston")
 		 
