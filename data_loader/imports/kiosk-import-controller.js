@@ -21,7 +21,7 @@ var donation_amount=0
 
 self.load_data= function (importfile,form,cb){
 
-console.log(form)
+//console.log(form)
 		import_file= new Import_file('./uploads/donation-kiosk/'+importfile)
 		log+=('loaded Import_file ;'+importfile+"\n");
 		import_file.load_import_file(function (csv_tickets){
@@ -37,16 +37,16 @@ console.log(form)
 			var total_sales_column
 			var	orders_column	
 			
-			
+
 			//Report Entry ID	Kiosk ID	Alias	Transaction ID	Title	First Name	Last Name	House Number	Postcode	Donation Date	Amount
-		//	museum_id:		  
+			//museum_id:		  
 			//kpi_type: 
-     
-     
-           // transaction_id:
+
+
+			// transaction_id:
 			//donation_amount: 
 			//gift_aided:,
-           //type:
+			//type:
 
 
 			_.each(csv_tickets[0], function (line, x) {
@@ -58,23 +58,29 @@ console.log(form)
 				if(line=="Alias") kiosk_alias_column=x
 				if(line=="Amount") donation_amount_column=x
 				if(line=="Transaction ID") transaction_id_column=x
-
+				if(line=="Date/Time") date_column=x
+				if(line=="Kiosk Alias") kiosk_alias_column=x
+			
 			})
 			  
 
 
-
-
-
-
 				async.eachSeries(csv_tickets, function (row, cxcx){ 
-			
-													
-				
-				var dateParts = row[date_column].split("/");
-				//var visit_date=new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]); 
-	var visit_date=new Date(row[date_column])
 	
+				var dateParts = row[date_column].split(" ");
+			
+				if(dateParts[0]){
+
+					var dateParts = dateParts[0].split("/");
+					console.log('dateParts',dateParts)
+
+				}
+
+				var visit_date=new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]); 
+
+				//var visit_date=new Date(dateParts[0])
+				//console.log('visit_date',visit_date)
+
 					var  museum =row[kiosk_alias_column] 
 
 					switch(museum) {
@@ -89,8 +95,6 @@ console.log(form)
 						default:
 						  // code block
 					  }
-
-
 
 					var kpis = new Kiosk({
 

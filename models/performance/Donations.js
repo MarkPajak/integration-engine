@@ -15,6 +15,7 @@ var Donations_kpi = new mongoose.Schema({
 			//net_sales: { type: Number},
 			no_envelopes: { type: Number},
 			
+			
 			date_value: { type: Date},	
 			date_logged: { type: Date, required: true},
 			comments: { type: String},

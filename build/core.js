@@ -11456,15 +11456,16 @@ exports.monthly_donations_controller = function(yearly_percentage_difference,yea
 		var columnDefs= []
 			$scope.filter_pie=[]
 			columnDefs.push(
-		//	{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "100", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations},
+		
 			{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations}
 					
 			)
 			dates=getDateService.getDate()
 		$scope.start_date=dates[0]
 		$scope.end_date=dates[1]
-			columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))
-			console.log('columnDefs',columnDefs)		
+		columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))
+			
+			
 				$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
 	
 			
@@ -17497,8 +17498,8 @@ exports.monthly_retail_sales_controller = function(yearly_percentage_difference,
 			$scope.chart_class = "col-md-8 col-lg-8 col-sm-5 pull-right"
 			$scope.table_class = "col-md-12 col-lg-12 col-sm-5"
 	
-	 $scope.background_colour="retail"
-			dates=getDateService.getDate()
+		$scope.background_colour="retail"
+		dates=getDateService.getDate()
 		$scope.start_date=dates[0]
 		$scope.end_date=dates[1]
 		$scope.table_heading = "Monthly retail sales"
@@ -17697,7 +17698,7 @@ exports.retail_performance_form =  function($scope, $http, $q, $routeParams, $lo
 exports.raw_retail_sales_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Retail_sales,data_table_reload,AuthService,get_table_data,grid_ui_settings ,table_security
     ) {
 		
-		$scope.table_class="col-md-6 col-lg-6 col-sm-6 full-height"
+		$scope.table_class="col-md-12 col-lg-12 col-sm-12 full-height"
 		$scope.featured_collection=Retail_sales
 		$rootScope.featured_collection=Retail_sales
 		$scope.show_all_Button=true
@@ -17717,6 +17718,7 @@ exports.raw_retail_sales_controller = function($route,$scope, $http, $q, $routeP
 			{ field: 'net_sales' ,resizable: true,cellFilter: 'currency:"&pound;" : 2'},
 			{ field: 'no_transactions' ,resizable: true},
 			{ field: 'average_transaction' ,resizable: true,cellFilter: 'currency:"&pound;" : 2'},
+			{ field: 'taxes' ,resizable: true,cellFilter: 'currency:"&pound;" : 2'},
 			{ field: 'comments' ,name: "comments",resizable: true,visible:false},
 			{ field: 'logger_user_name' ,name: "Logged by",resizable: true,visible:false},
 			{ field: 'date_logged', name: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',visible:false}
@@ -30927,7 +30929,7 @@ app.filter('valueFilter_retail', function (){
 	  
 
 if(value){
-	if( !isNaN(value)&& (entity.typex=="retail" || entity.xtype=="currency" )){
+	if( !isNaN(value)&& (entity.typex=="retail" || entity.typex=="currency" )){
 		
 			return "£"+ Math.round(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 			
@@ -30975,7 +30977,7 @@ app.filter('valueFilter', function () {
 		 value=value.replace("M-SHED","M Shed")
 		 value=value.replace("GEORGIAN-HOUSE","Georgian House")
 		 value=value.replace("RED-LODGE","Red Lodge")
-		  value=value.replace("BLAISE","Blaise Castle")
+		 value=value.replace("BLAISE","Blaise Castle")
 		 value=value.replace("BRISTOL-ARCHIVES","Bristol Archives")
 	     value=value.replace("ROMAN-VILLA","Kings Weston")
 		 
@@ -31592,7 +31594,7 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
           
         }])
 
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_552c8d71.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_f6226abe.js","/")
 },{"../components/exhibitions/directive":8,"../components/exhibitions/music/monthly-votes-controller":9,"../components/exhibitions/music/raw-votes-controller":10,"../components/exhibitions/music/votes-form-controller":11,"../components/iframe/iframe-controller":12,"../components/iframe/iframe-directive":13,"../components/machine-monitor/dashboard-controller":14,"../components/machine-monitor/dead-controller":15,"../components/machine-monitor/downtime-controller":16,"../components/machine-monitor/downtime-services":17,"../components/machine-monitor/feedback-controller":18,"../components/machine-monitor/feedback-services":19,"../components/machine-monitor/satisfaction-controller":20,"../components/member/member-controller":21,"../components/performance/analyser/analyser-controller":22,"../components/performance/corporate/monthly-corporate-controller":23,"../components/performance/corporate/performance-form-controller":24,"../components/performance/corporate/raw-corporate-controller":25,"../components/performance/corporate/yearly-corporate-controller":26,"../components/performance/dashboard-controllers":27,"../components/performance/donations-kiosk/daily-donations_kiosk-controller":28,"../components/performance/donations-kiosk/kiosk-uploader-controller":29,"../components/performance/donations-kiosk/monthly-donations_kiosk-controller":30,"../components/performance/donations-kiosk/performance-form-controller":31,"../components/performance/donations-kiosk/raw-donations_kiosk-controller":32,"../components/performance/donations-other/monthly-donations_other-controller":33,"../components/performance/donations-other/performance-form-controller":34,"../components/performance/donations-other/raw-donations_other-controller":35,"../components/performance/donations-other/yearly-donations_other-controller":36,"../components/performance/donations/monthly-donations-controller":37,"../components/performance/donations/performance-form-controller":38,"../components/performance/donations/raw-donations-controller":39,"../components/performance/donations/yearly-donations-controller":40,"../components/performance/events/monthly-events-controller":41,"../components/performance/events/performance-form-controller":42,"../components/performance/events/raw-events-controller":43,"../components/performance/events/yearly-events-controller":44,"../components/performance/exhibitions-pwyt/monthly-donations-controller":45,"../components/performance/exhibitions-pwyt/performance-form-controller":46,"../components/performance/exhibitions-pwyt/raw-donations-controller":47,"../components/performance/exhibitions/exhibitions-summary-controller":48,"../components/performance/gallery-visits/exhibitions-teg-controller":49,"../components/performance/gallery-visits/monthly-teg-controller":50,"../components/performance/gallery-visits/performance-form-controller":51,"../components/performance/gallery-visits/raw-teg-controller":52,"../components/performance/gallery-visits/weekly-teg-controller":53,"../components/performance/gallery-visits/yearly-teg-controller":54,"../components/performance/gift-aid/monthly-allgiftaid-controller":55,"../components/performance/gift-aid/monthly-giftaid-controller":56,"../components/performance/gift-aid/performance-form-controller":57,"../components/performance/gift-aid/raw-giftaid-controller":58,"../components/performance/home/kpi-home-controller":59,"../components/performance/home/master-kpi-home-controller":60,"../components/performance/kpi-events/monthly-events-controller":61,"../components/performance/kpi-events/performance-form-controller":62,"../components/performance/kpi-events/raw-events-controller":63,"../components/performance/kpi-events/standard-monthly-events-controller":64,"../components/performance/learning/age-learning-controller":65,"../components/performance/learning/monthly-learning-controller":66,"../components/performance/learning/performance-form-controller":67,"../components/performance/learning/raw-learning-controller":68,"../components/performance/learning/yearly-learning-controller":69,"../components/performance/operations/monthly-operations-controller":70,"../components/performance/operations/performance-form-controller":71,"../components/performance/operations/raw-operations-controller":72,"../components/performance/operations/yearly-operations-controller":73,"../components/performance/participation/monthly-participation-controller":74,"../components/performance/participation/performance-form-controller":75,"../components/performance/participation/raw-participation-controller":76,"../components/performance/participation/target-audience-controller":77,"../components/performance/participation/yearly-participation-controller":78,"../components/performance/patron/monthly-patron-controller":79,"../components/performance/patron/performance-form-controller":80,"../components/performance/patron/raw-patron-controller":81,"../components/performance/patron/yearly-patron-controller":82,"../components/performance/performance-directive":83,"../components/performance/retail/monthly-retail-sales-controller":84,"../components/performance/retail/performance-form-controller":85,"../components/performance/retail/raw-retail-sales-controller":86,"../components/performance/retail/retail-uploader-controller":87,"../components/performance/retail/yearly-retail-sales-controller":88,"../components/performance/site_permissions/monthly-site_permissions-controller":89,"../components/performance/site_permissions/performance-form-controller":90,"../components/performance/site_permissions/raw-site_permissions-controller":91,"../components/performance/site_permissions/yearly-site_permissions-controller":92,"../components/performance/team-kpis/standard-monthly-events-controller":93,"../components/performance/turnstiles/monthly-turnstiles-controller":94,"../components/performance/turnstiles/raw-turnstiles-controller":95,"../components/performance/venue-hire/monthly-visits-controller":96,"../components/performance/venue-hire/raw-visits-controller":97,"../components/performance/venue-hire/visits-form-controller":98,"../components/performance/venue-hire/yearly-visits-controller":99,"../components/performance/visits/monthly-visits-controller":100,"../components/performance/visits/raw-visits-controller":101,"../components/performance/visits/visits-form-controller":102,"../components/performance/visits/yearly-visits-controller":103,"../components/performance/welcome-desk/monthly-welcomedesk-controller":104,"../components/performance/welcome-desk/performance-form-controller":105,"../components/performance/welcome-desk/raw-welcomedesk-controller":106,"../components/performance/welcome-desk/yearly-welcomedesk-controller":107,"../components/resource-bookings/bookings/edit-form-controller":108,"../components/resource-bookings/bookings/form-controller":109,"../components/resource-bookings/bookings/monthly-bookings-controller":110,"../components/resource-bookings/bookings/raw-bookings-controller":111,"../components/resource-bookings/bookings/recurring-events-controller":112,"../components/resource-bookings/bookings/yearly-bookings-controller":113,"../components/resource-bookings/directive":114,"../components/resource-bookings/equipment/form-controller":115,"../components/resource-bookings/equipment/raw-equipment-controller":116,"../components/resource-bookings/rooms/form-controller":117,"../components/resource-bookings/rooms/raw-rooms-controller":118,"../components/resource-bookings/timeline-resources-controller":119,"../components/resource-bookings/timeline-resources-services":120,"../components/shopify/shopify-controller":121,"../components/shopify/shopify-directive":122,"../components/shopify/shopify-monthly-controller":123,"../components/signage/directive":124,"../components/signage/posters/form-controller":125,"../components/signage/posters/raw-poster-controller":126,"../components/team/app-controllers":127,"../components/team/form-controller":128,"../components/team/leave-controller":129,"../components/team/team-controller":130,"../components/tech-support/tech-support-controller":131,"../components/tech-support/tech-support-directive":132,"../components/tech-support/trello-services":133,"../components/timeline-settings/raw-timeline-settings-controller":134,"../components/timeline-settings/settings-form-controller":135,"../components/timeline-settings/timeline-settings-directive":136,"../components/timeline/timeline-bookings-services":137,"../components/timeline/timeline-controller":138,"../components/timeline/timeline-directive":139,"../components/timeline/timeline-exhibitions-services":140,"../components/timeline/timeline-googlesheets-services":141,"../components/timeline/timeline-installs-services":142,"../components/timeline/timeline-learning-bookings-services":143,"../components/timeline/timeline-leave-services":144,"../components/timeline/timeline-loans-services":145,"../components/timeline/timeline-services":146,"../components/timeline/timeline-shopify-services":147,"../components/timeline/timeline-visitor-figures-services":148,"../components/turnstiles/turnstiles-controller":149,"../components/turnstiles/turnstiles-directive":150,"../components/user-admin/users-controller":151,"../components/user-admin/users-directive":152,"../shared/controllers/colourkey-controller":153,"../shared/controllers/controllers":154,"../shared/controllers/navbar-controller":155,"../shared/controllers/tablefilter-controller":156,"../shared/directives/directives":157,"../shared/services/app-services":159,"../shared/services/data-services":160,"async":1,"b55mWE":4,"buffer":3,"underscore":7}],159:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 

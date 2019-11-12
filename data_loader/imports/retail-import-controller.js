@@ -36,6 +36,8 @@ console.log(form)
 			var	orders_column	
 
 
+			
+
 			_.each(csv_tickets[0], function (line, x) {
 				
 				//match on column name
@@ -45,7 +47,7 @@ console.log(form)
 				if(line=="net_sales") net_sales_column=x
 				if(line=="total_sales") total_sales_column=x
 				if(line=="orders") orders_column=x
-
+				if(line=="taxes") taxes_column=x
 			})
 			  
 
@@ -85,8 +87,10 @@ console.log(form)
                             museum_id:museum,	
                             date_value:visit_date,			           
                             total_sales: row[total_sales_column],	
-                            non_vat_sales:   row[total_sales_column]-((row[total_sales_column]- row[net_sales_column])*5),
-                            net_sales: row[net_sales_column],	
+                           // non_vat_sales:   row[total_sales_column]-((row[total_sales_column]- row[net_sales_column])*5),
+							non_vat_sales:   row[total_sales_column]-((row[total_sales_column]- row[net_sales_column])*5)- row[taxes_column],						
+							taxes: row[taxes_column],	
+						    net_sales: row[net_sales_column],	
                             no_transactions:row[orders_column],	
                             date_logged:new Date(),		
 							logger_user_name:"IMPORT",

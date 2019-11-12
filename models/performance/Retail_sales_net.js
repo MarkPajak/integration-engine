@@ -14,6 +14,9 @@ var Retail_kpi_import = new mongoose.Schema({
 			net_sales: { type: Number},
 			no_transactions: { type: Number},
 			
+			taxes: { type: Number}, //added by Darren
+			//Non VAT sales  =”total_sales”-((“total_sales”-“net_sales”)*5)-taxes
+
 			date_value: { type: Date},	
 			date_logged: { type: Date, required: true},
 			comments: { type: String},
