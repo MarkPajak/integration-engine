@@ -60,7 +60,7 @@ self.load_data= function (importfile,form,cb){
 				if(line=="Transaction ID") transaction_id_column=x
 				if(line=="Date/Time") date_column=x
 				if(line=="Kiosk Alias") kiosk_alias_column=x
-			
+				if(line=="Status") status_column=x
 			})
 			  
 
@@ -88,6 +88,9 @@ self.load_data= function (importfile,form,cb){
 						  // code block
 						  museum="M-SHED"
 						  break;
+						  case "BMAG (v2)":
+						  museum="BMAG"
+						  break;
 						  case "M Shed":
 						  // code block
 						  museum="M-SHED"
@@ -112,14 +115,19 @@ self.load_data= function (importfile,form,cb){
 					});
 					
                 
-					     
+					if(row[status_column] !="Approved")
+					{ 
+						setTimeout(function(){ cxcx() }, 2);
+					}
+					else{
                     
 								
-					Kiosk.find({"museum_id":museum,"date_value":visit_date}).remove().exec(function(err, data) {
+					//Kiosk.find({"kiosk_id":row[kiosk_id_column],"museum_id":museum,"date_value":visit_date}).remove().exec(function(err, data) {
 				
-					 if(err) log+=('err' + err+"\n");
+					// if(err) log+=('err' + err+"\n");
                     
-                    })
+					//})
+					
 						kpis.save(function (err, data2) {
 						
 						 if(err){
@@ -138,6 +146,8 @@ self.load_data= function (importfile,form,cb){
 									setTimeout(function(){ cxcx() }, 2);
 						});
 
+					}
+
 					
 			},function(){
 
@@ -149,7 +159,7 @@ self.load_data= function (importfile,form,cb){
 		//	log+=('data total_non_vat_sales:    ' 	    + non_vat_sales +"\n");
 
 
-			console.log(log)
+			//console.log(log)
 
 			const fs = require('fs');
 
