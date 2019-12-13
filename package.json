@@ -141,7 +141,7 @@
     "ng-scrollbar": "*",
     "nodemailer": "^3.1.3",
     "nodemailer-smtp-transport": "^2.7.2",
-    "npm": "^4.2.0",
+    "npm": "^6.13.4",
     "passport": "^0.3.2",
     "passport-facebook": "2.1.1",
     "passport-local": "^1.0.0",
