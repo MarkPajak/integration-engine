@@ -74,8 +74,8 @@ var load_shopify_customers = function (keys,options){
                                 }
                     })
 
-                    _.each( body.customers, function(_customer) { 
-
+                    async.forEach( body.customers, function(_customer,cbb) { 
+                      
                             var customer={}
                             if(_customer.note!=null && _customer.note!="" ) {
                              
@@ -84,22 +84,57 @@ var load_shopify_customers = function (keys,options){
                                     customer.last_name=_customer.last_name
                                     customer.note=_customer.note
                                     customer.house="NONE"
-                                    customer.house="NONE"
-                                    customer.post_code="NONE"
+                                    customer.email=_customer.email
+                                    customer.post_code="NONE"                                    
                                     customer.date =_customer.updated_at
+                                  
+                                    customer.last_order_id=_customer.last_order_id
+                                    customer.last_order_url="https://bristol-museums-shop.myshopify.com/admin/orders/"+_customer.last_order_id 
+                                   _last_order_url=url_base + "api/2019-10/orders/" +_customer.last_order_id +".json"
+                                    if(_customer.addresses[0]){
 
-                                    
-                                if(_customer.addresses[0]){
+                                        customer.house=_customer.addresses[0].address1
+                                        customer.post_code=_customer.addresses[0].zip
+                                    }
+                                  
+                                    customer.order=""
+                                    customer.donation_amount=""
+                                    request({
+                                        url:  _last_order_url ,
+                                         json: true
+                                    }, function (_error, _response, _body) {
+                                   
+                                   if(_error) console.log(_error)
+                                       
+        
+                                   if(_body.order){
 
-                                    customer.house=_customer.addresses[0].address1
-                                    customer.post_code=_customer.addresses[0].zip
+                                    customer.date = _body.order.created_at  
+
+                                     _.each(_body.order.line_items,function(row){    
+                                               
+                                       
+                                        if( row.title.toLowerCase().indexOf("donation") !=-1 ){
+
+                                            customer.donation_amount= row.quantity * row.price 
+                                        
+                                        }
+                                         customer.order=  customer.order.concat( row.title + " * " +row.quantity+" | " )                                    
+                                         
+                                    })
                                 }
-                               // console.log('customer',customer) 
-                   
+                                
                                   allcustomers.push(customer)
+                                  setTimeout(function (){
+                                  cbb()
+                                }, 1000);
 
-                               
+                            })
                        
+                            }
+                            else{
+
+                                cbb()
                             }
                      })
                    
@@ -107,12 +142,19 @@ var load_shopify_customers = function (keys,options){
              
                     if(body.customers.length!=0 &&  nextpage==true){
                         nextpage=false
-                        current_page++
+                      
                         console.log(current_page)
+                     setTimeout(function (){
+						
+							current_page++
+					
+						
+                      
                         getNextset(url);
+                    }, 2500);
                             
                         }      else      {
-                        console.log('max reached')
+                        console.log('max reached',allcustomers)
                         cb(allcustomers)
                         }
                     }

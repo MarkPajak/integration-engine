@@ -6,7 +6,8 @@ exports.customers_giftaid_controller = function($route,$scope, $http, $q, $route
 		$scope.gridOptions.data=[]
 		$scope.gridOptions=[]
 		$scope.gridOptions.data='__data'
-		
+		$scope.table_class = "col-md-12 col-lg-12 col-sm-5"	
+
 		$scope.featured_collection=Customers_giftaid
 		$rootScope.featured_collection=Customers_giftaid
 		var columnDefs= []
@@ -15,9 +16,17 @@ exports.customers_giftaid_controller = function($route,$scope, $http, $q, $route
 		 columnDefs.push(
 			{ field: 'first_name' ,name: "first_name",resizable: true,width:"150"},
 			{ field: 'last_name' ,name: "last_name",resizable: true,width:"150"},
+			{ field: 'email' ,resizable: true,width:"250"},
 			{ field: 'house' ,resizable: true,width:"250"},
 			{ field: 'post_code' ,resizable: true,width:"150"},
 			{ field: 'note' ,resizable: true,width:"250"},
+			{ field: 'order' ,resizable: true,width:"150"},
+		//	{ field: 'quantity' ,resizable: true,width:"250"},
+			{ field: 'donation_amount' ,resizable: true,width:"250"},
+			{ field: 'last_order_url' ,resizable: true,width:"250"},
+			{ field: 'last_order_id' ,resizable: true,width:"250"},
+	
+
 			{ field: 'date' ,resizable: true,type: 'date', cellFilter: 'date:\'dd/MM/yy\'',width:"150"}
 		
 			)
