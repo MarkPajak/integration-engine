@@ -187,6 +187,10 @@ var patron = require('./routes/performance/patron')
 var site_permissions = require('./routes/performance/site_permissions')
 
 var giftaid = require('./routes/performance/giftaid')
+
+
+var customergiftaid = require('./routes/gift-aid/giftaid')
+
 var allgiftaid = require('./routes/performance/all_giftaid')
 var welcomedesk = require('./routes/performance/welcomedesk')
 var learning = require('./routes/performance/learning')
@@ -292,6 +296,10 @@ app.use('/patron', patron);
 app.use('/giftaid', giftaid);
 app.use('/allgiftaid', allgiftaid);
 app.use('/site-permissions', site_permissions);
+
+app.use('/customergiftaid', customergiftaid);
+
+
 
 app.use('/welcomedesk', welcomedesk);
 app.use('/learning', learning);

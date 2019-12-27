@@ -91,6 +91,9 @@ var monthly_retail_sales = {teamx:"RETAIL" ,link:"monthly-retail-sales",value:"M
 var record_donations_other =		 {teamx:"DONATIONS" ,link:"record-donations-other",value:"Record exhibition ticket donations"}
 
 var donations_other = 				 {teamx:"DONATIONS" ,link:"raw-donations-other",value:"Raw exhibition ticket donations"}
+var gift_aid_customers = 				 {teamx:"DONATIONS" ,link:"gift-aid-customers",value:"Gift Aid Customers"}
+
+
 
 var monthly_donations_other = 		 {teamx:"DONATIONS" ,link:"monthly-donations-other",value:"Monthly exhibition ticket donations"}
 
@@ -237,6 +240,7 @@ performance_data.push(raw_visits)
 performance_data.push(monthly_visits)
 performance_data.push(raw_venue_hire)
 performance_data.push(monthly_venue_hire)
+performance_data.push(gift_aid_customers)
 
 
 //performance_data.push(raw_retail_sales)
@@ -386,6 +390,8 @@ performance_data.push(monthly_operations)
 performance_data.push(transformation_kpis)
 performance_data.push(engagement_kpis)
 performance_data.push(collections_kpis)
+performance_data.push(gift_aid_customers)
+
 
 performance_data=performance_data.sort()
 

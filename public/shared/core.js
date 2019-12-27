@@ -21,6 +21,11 @@ var tablefilter_controller = require('../shared/controllers/tablefilter-controll
 
 var tech_support_controller = require('../components/tech-support/tech-support-controller');
 
+
+//customers
+var customers_controller = require('../components/gift-aid/raw-giftaid-controller');
+var customersdirective = require('../components/gift-aid/customers-directive');
+
 //signage
 var  record_poster_controller = require('../components/signage/posters/form-controller');
 var  raw_poster_controller = require('../components/signage/posters/raw-poster-controller');
@@ -320,6 +325,14 @@ _.each(events_kpi_performance_form, function(controller, name) {
   app.controller(name, controller);
 });
 
+
+
+_.each(customers_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+
+
 _.each(monthly_kpi_events_controller, function(controller, name) {
   app.controller(name, controller);
 });
@@ -369,6 +382,13 @@ _.each(monthly_votes_controller, function(controller, name) {
 _.each(votes_directive, function(controller, name) {
   app.directive(name, controller);
 });
+
+
+_.each(customersdirective, function(controller, name) {
+  app.directive(name, controller);
+});
+
+
 
 _.each(controllers, function(controller, name) {
   app.controller(name, controller);
@@ -1393,7 +1413,13 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
 		    .when('/record-giftaid', {
                template: '<giftaid-Formdata></giftaid-Formdata>'
            })
-		   
+           
+//customers-shopify
+
+.when('/gift-aid-customers', {
+  templateUrl: './components/gift-aid/data.html'
+})
+
 	//EXHIBITIONS		    
 		    .when('/record-votes', {
                template: '<votes-Formdata></votes-Formdata>'

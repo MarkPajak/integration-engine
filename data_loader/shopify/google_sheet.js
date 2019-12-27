@@ -10,7 +10,6 @@ var router = express.Router();
 var _ = require('underscore');
 var Shopify_product = require('../../models/Shopify_product.js');
 var Shopify_order = require('../../models/Shopify_order.js');
-
 var Shopify_aggregate = require('../../models/Shopify_transaction.js');
 
 

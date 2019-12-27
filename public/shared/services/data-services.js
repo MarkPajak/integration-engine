@@ -12,6 +12,19 @@ var status = require('http-status');
 	   
 
   } 
+
+  
+
+  exports.Customers_giftaid =  function($resource){
+	  
+	  
+	return $resource('/customergiftaid',{ }, {
+		  getData: {method:'GET', isArray: true}
+			
+  });
+  }
+
+
     exports.Event_names =  function($resource){
 	  
 	  
