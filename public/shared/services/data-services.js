@@ -375,6 +375,18 @@ exports.Monthly_venue_hire =  function($resource){
        
 
   } 
+
+  exports.Monthly_donations_boxes=  function($resource){
+	  
+	  
+	return $resource('/donations-box/all',{ }, {
+		openGates: {method:'GET', isArray: true}
+			
+  });
+  }
+
+
+
      exports.Monthly_donations_kiosk=  function($resource){
 	  
 	  

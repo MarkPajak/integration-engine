@@ -1,4 +1,5 @@
-	
+//NB this errors silently and causes issues with nav bar so users dont think they are logged in
+
 exports.NavController = function($location,AuthService,$scope,$http) {
 
 
@@ -104,7 +105,7 @@ var donations_kiosk = 				 {teamx:"DONATIONS" ,link:"raw-donations-kiosk",value:
 var daily_donations_kiosk = 				 {teamx:"DONATIONS" ,link:"day-donations-kiosk",value:"Daily kiosk donation data"}
 
 var monthly_donations_kiosk = 		 {teamx:"DONATIONS" ,link:"monthly-donations-kiosk",value:"Monthly kiosk donations"}
-
+var monthly_donations_box = 		 {teamx:"DONATIONS" ,link:"monthly-donations-box",value:"Monthly donations boxes"}
 
 
 
@@ -120,11 +121,11 @@ var monthly_donations_boxes = 	 {teamx:"DONATIONS" ,link:"monthly-donations-kios
 var monthly_donations = 		 {teamx:"DONATIONS" ,link:"monthly-donations",value:" Monthly total income"}
 
 var record_patron =			 {teamx:"DONATIONS" ,link:"record-patron",value:"Record patron"}
-var patron = 				 {teamx:"DONATIONS" ,link:"raw-patron",value:"Raw patron data"}
+var raw_patron = 				 {teamx:"DONATIONS" ,link:"raw-patron",value:"Raw patron data"}
 var monthly_patron = 		 {teamx:"DONATIONS" ,link:"monthly-patron",value:"Monthly patron"}
 
 var record_corporate =			 {teamx:"DONATIONS" ,link:"record-corporate",value:"Record corporate"}
-var corporate = 				 {teamx:"DONATIONS" ,link:"raw-corporate",value:"Raw corporate data"}
+var raw_corporate = 				 {teamx:"DONATIONS" ,link:"raw-corporate",value:"Raw corporate data"}
 var monthly_corporate = 		 {teamx:"DONATIONS" ,link:"monthly-corporate",value:"Monthly corporate"}
 
 
@@ -229,7 +230,7 @@ enter_data.push(record_donations_other)
 
 enter_data.push(upload_kiosk_donations)
 //enter_data.push(record_donations_kiosk)
-enter_data.push(record_giftaid)
+//enter_data.push(record_giftaid)
 enter_data.push(record_welcomedesk)
 enter_data.push(record_events)
 enter_data.push(record_kpi_events)
@@ -247,12 +248,16 @@ performance_data.push(gift_aid_customers)
 performance_data.push(monthly_retail_sales)
 
 performance_data.push(raw_giftaid)
+performance_data.push(raw_patron)
+performance_data.push(raw_corporate)
 performance_data.push(monthly_giftaid)
 performance_data.push(monthly_donations)
 performance_data.push(monthly_donations_other)
 performance_data.push(monthly_donations_kiosk)
+performance_data.push(monthly_donations_box)
 
-performance_data.push(donations_other)
+
+
 performance_data.push(monthly_patron)
 performance_data.push(monthly_corporate)
 performance_data.push(transformation_kpis)
@@ -336,7 +341,7 @@ enter_data.push(record_donations_other)
 enter_data.push(upload_kiosk_donations)
 enter_data.push(record_corporate)
 enter_data.push(record_patron)
-enter_data.push(record_giftaid)
+//enter_data.push(record_giftaid)
 enter_data.push(record_welcomedesk)
 enter_data.push(record_learning)
 enter_data.push(record_exhibitions_pwyt)
@@ -360,20 +365,23 @@ performance_data.push(monthly_retail_sales)
 performance_data.push(monthly_site_permissions)
 performance_data.push(site_permissions)
 performance_data.push(raw_giftaid)
+performance_data.push(raw_patron)
+performance_data.push(raw_corporate)
 performance_data.push(monthly_giftaid)
 performance_data.push(monthly_donations)
 performance_data.push(monthly_patron)
 performance_data.push(monthly_corporate)
 performance_data.push(monthly_donations_other)
 performance_data.push(monthly_donations_kiosk)
+performance_data.push(monthly_donations_box)
 performance_data.push(donations)
 performance_data.push(donations_kiosk)
 performance_data.push(daily_donations_kiosk)
 performance_data.push(donations_other)
 
 
-performance_data.push(corporate)
-performance_data.push(patron)
+//performance_data.push(corporate)
+//performance_data.push(patron)
 performance_data.push(raw_welcomedesk)
 performance_data.push(monthly_welcomedesk)
 performance_data.push(participation)

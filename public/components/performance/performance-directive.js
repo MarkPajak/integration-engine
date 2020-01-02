@@ -250,7 +250,12 @@ exports.patronFormdata = function() {
   }
 }
 
-	
+exports.donationsboxesDashboard = function() {
+  return {
+   controller: 'dashboard_controller',
+    templateUrl: './components/performance/donations-boxes/dashboard.html'
+  }
+	}	
 	
 				exports.donationsDashboard = function() {
   return {
@@ -488,7 +493,13 @@ exports.dataDonationskiosk = function() {
     templateUrl: './components/performance/donations-kiosk/data.html'
   }
 }
+exports.monthlyDonationsbox = function() {
+  return {
 
+   controller: 'monthly_donations_box_controller',
+   templateUrl: './shared/templates/data_table.html'
+  }
+	}
 	
 		exports.monthlyDonationskiosk = function() {
   return {

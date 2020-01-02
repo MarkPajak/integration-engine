@@ -276,7 +276,7 @@ Team.aggregate([
 							}
 						}) 
 						
-						venues.push("Patron" )
+						venues.push("Patron Circle" )
 						
 						_.each(Corporate,function(corporate,i){
 						if(venues.indexOf(corporate.type)==-1){
@@ -401,7 +401,7 @@ Team.aggregate([
 											if(newres.kpi_venue==venue &&  newres.kpi_month==m+1 && newres.kpi_year==year){	
 											
 													newresults[xx].welcome=welcome.cash+welcome.card	
-													newresults[xx].welcome_gift_aid=welcome.giftaid_amount*1.25	
+													newresults[xx].welcome_gift_aid=newresults[xx].welcome*1.25	
 													newresults[xx].combined=newresults[xx].donations_other+newresults[xx].welcome+newresults[xx].gift_aid_amountx+newresults[xx].donations		
 													
 											}
@@ -427,7 +427,8 @@ Team.aggregate([
 													
 													console.log('kiosk')
 													newresults[xx].donations_other=visits.donations	
-													newresults[xx].type="Donations kiosk"
+													newresults[xx].kioks_gitf_aid=visits.donations	*1.25	
+													newresults[xx].type="Contactless Donations kiosk"
 													newresults[xx].combined=newresults[xx].welcome+newresults[xx].gift_aid_amountx+newresults[xx].donations	+newresults[xx].donations_other
 										}							
 										}								
@@ -438,12 +439,14 @@ Team.aggregate([
 									_.each(Patron,function(patron,i){
 																		
 												//n.b. not data for some months or years so will need to create these and loop - see monthly gift aid
-												if( newres.kpi_venue=="Patron" && venue=="Patron" && newres.kpi_month==m+1 && newres.kpi_year==year){		
+												if( newres.kpi_venue=="Patron Circle" && venue=="Patron Circle" && newres.kpi_month==m+1 && newres.kpi_year==year){		
 													if( patron.month==m+1 && patron.year==year){
 																	
-																	newresults[xx].kpi_venue="Patron"					
+																	newresults[xx].kpi_venue="Patron Circle Membership"					
 																	newresults[xx].combined=patron.donations
 																	newresults[xx].donations=patron.donations
+																	newresults[xx].patron_gift_aid=patron.donations	*1.25	
+
 														}
 													}								
 												})
@@ -1408,17 +1411,18 @@ var self = this
 					
 					
 					
-					
-					var returned_row={}
-					returned_row.museum=venue
-					returned_row.stat="Donation boxes gift aid amount + 25%"
-					returned_row.xtype="currency"
-					returned_row.typex="currency"
-					row = self.wind_up_Stats(	result,returned_row,"gift_aid_amountx",venue)
-					
-					if(row.delete_row==false){
-						returned_data.push(	row)
-					}
+					if(	venue=="BMAG" || venue=="M-SHED"){
+								var returned_row={}
+								returned_row.museum=venue
+								returned_row.stat="Donation boxes gift aid amount + 25%"
+								returned_row.xtype="currency"
+								returned_row.typex="currency"
+								row = self.wind_up_Stats(	result,returned_row,"gift_aid_amountx",venue)
+								
+								if(row.delete_row==false){
+									returned_data.push(	row)
+								}
+						}
 					
 					var returned_row={}
 					returned_row.museum=venue
@@ -1431,13 +1435,43 @@ var self = this
 						returned_data.push(	row)
 					}
 					
+
+					
+
 					var returned_row={}
 					returned_row.museum=venue
-					returned_row.stat="Welcome desk gift aid + 25%"
+					returned_row.stat="Contactless Donation Kiosk Gift Aid + 25%"
+					returned_row.xtype="currency"
+					returned_row.typex="currency"
+					row =  self.wind_up_Stats(result,returned_row,"kioks_gitf_aid",venue,"")
+				
+					
+					if(row.delete_row==false){
+						returned_data.push(	row)
+					}
+
+
+
+					var returned_row={}
+					returned_row.museum=venue
+					returned_row.stat="Patron Circle Membership Gift Aid + 25%"
+					returned_row.xtype="currency"
+					returned_row.typex="currency"
+					row =  self.wind_up_Stats(result,returned_row,"patron_gift_aid",venue,"")
+				
+					
+					if(row.delete_row==false){
+						returned_data.push(	row)
+					}
+
+					var returned_row={}
+					returned_row.museum=venue
+					returned_row.stat="Welcome desk Gift Aid + 25%"
 					returned_row.xtype="currency"
 					returned_row.typex="currency"
 					row =  self.wind_up_Stats(result,returned_row,"welcome_gift_aid",venue,"")
 				
+					
 					if(row.delete_row==false){
 						returned_data.push(	row)
 					}

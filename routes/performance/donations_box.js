@@ -19,7 +19,7 @@ var isAuthenticated = function (req, res, next) {
 	return false
 }
 
-var Team = require('../../models/performance/Donations_kiosk.js');
+var Team = require('../../models/performance/Donations.js');
 
 
 
@@ -40,9 +40,10 @@ Team.aggregate([
 						"day": { "$dayOfMonth": route_functions.mongo_aggregator }, 
 						
 						venue:'$museum_id',
-					   type:'$type'
+					  // type:'$type'
 					 },  
-               amount: {$sum: '$donation_amount' },
+			   amount: {$sum: '$donation_box_amount' },
+			   
 			   no_transactions: {$sum:1 },
             }
 		 }			
@@ -84,7 +85,7 @@ get_kpis( function ( result) {
 						returned_row.museum_id=row._id.venue
 						returned_row.date_value=new Date(row._id.year+"-"+moment.monthsShort(row._id.month-1)+"-"+row._id.day)	
 						returned_row.donation_amount=row.amount
-						returned_row.no_transactions=row.no_transactions
+					//	returned_row.no_transactions=row.no_transactions
 						returned_row.amount_including_gift_aid=row.amount*1.2
 						returned_data.push(	returned_row)
 					//}
@@ -122,7 +123,7 @@ Team.aggregate([
 						venue:'$museum_id',
 					   type:'$type'
 					 },  
-               amount: {$sum: '$donation_amount' }
+               amount: {$sum: '$donation_box_amount' }
             }
 		 }			
 
@@ -164,6 +165,8 @@ get_kpis( function ( result) {
 		returned_row.museum=venue
 		returned_row.typex="retail"
 		
+
+
 			var years = [2016,2017,2018,2019,2020,2021,2022,2023]
 			_.each(years,function(year){
 			_.each(moment.monthsShort(),function(month){
@@ -171,7 +174,7 @@ get_kpis( function ( result) {
 			returned_row[month+" "+year]=""
 				_.each(result,function(row){
 					if(month==moment.monthsShort(row._id.month-1) &&venue==row._id.venue &&row._id.year==year){
-						returned_row[month+" "+year]=row.amount
+						returned_row[month+" "+year]=Math.round(row.amount)
 					}
 				})
 			})

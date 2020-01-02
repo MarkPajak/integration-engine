@@ -118,6 +118,10 @@ var donations_other_performance_form = require('../components/performance/donati
 
 
 var monthly_donations_kiosk_controller = require('../components/performance/donations-kiosk/monthly-donations_kiosk-controller');
+var monthly_donations_box_controller = require('../components/performance/donations-boxes/monthly-donations-controller');
+
+
+
 var raw_donations_kiosk_controller = require('../components/performance/donations-kiosk/raw-donations_kiosk-controller');
 var donations_kiosk_performance_form = require('../components/performance/donations-kiosk/performance-form-controller');
 var kiosk_uploader = require('../components/performance/donations-kiosk/kiosk-uploader-controller');
@@ -742,6 +746,12 @@ _.each(donations_other_performance_form, function(controller, name) {
 
 
 
+
+_.each(monthly_donations_box_controller, function(controller, name) {
+  app.controller(name, controller);
+});
+
+
 _.each(monthly_donations_kiosk_controller, function(controller, name) {
   app.controller(name, controller);
 });
@@ -1036,7 +1046,7 @@ app.filter('valueFilter', function () {
 		 value=value.replace("M-SHED","M Shed")
 		 value=value.replace("GEORGIAN-HOUSE","Georgian House")
 		 value=value.replace("RED-LODGE","Red Lodge")
-		 value=value.replace("BLAISE","Blaise Castle")
+		 value=value.replace("BLAISE","Blaise Museum")
 		 value=value.replace("BRISTOL-ARCHIVES","Bristol Archives")
 	     value=value.replace("ROMAN-VILLA","Kings Weston")
 		 
@@ -1460,6 +1470,13 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
 		   .when('/monthly-donations', {
                template: '<donations-dashboard></donations-dashboard>'
            })
+
+
+          .when('/monthly-donation-boxes', {
+            template: '<donationboxes-dashboard></donationboxes-dashboard>'
+        })
+
+
 		   
 		      .when('/record-patron', {
                template: '<patron-Formdata></patron-Formdata>'
@@ -1506,6 +1523,11 @@ app.config(['$stateProvider','$routeProvider', function ($stateProvider,$routePr
 			.when('/monthly-donations', {
                template: '<donations-dashboard></donations-dashboard>'
            })
+
+           .when('/monthly-donations-box', {
+            template: '<donationsboxes-dashboard></donationsboxes-dashboard>'
+        })
+    
 		   
 		    .when('/raw-donations-other', {
                  templateUrl: './components/performance/donations-other/data.html'
