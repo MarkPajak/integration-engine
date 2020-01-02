@@ -1799,7 +1799,7 @@ _.each(venues,function(venue){
 									returned_row_compare_last_year.museum="% difference" 
 									
 									if(lastmonth<checkmonth_num-1){
-										returned_row_compare_last_year[month+" "+year]=((row.visits/previous_data.visits)*100-100).toFixed(2)+"%";
+										//returned_row_compare_last_year[month+" "+year]=((row.visits/previous_data.visits)*100-100).toFixed(2)+"%";
 									}
 									
 									returned_row_compare_last_year_total[month+" "+year]=previous_data.visits
@@ -1863,23 +1863,25 @@ _.each(venues,function(venue){
 						for (compare_previous_years = 1; compare_previous_years <= 2; compare_previous_years++) { 
 
 
-						_.each(result,function(previous_data){
+						
+						
+							_.each(result,function(previous_data){
 							compare_previous_year = year-compare_previous_years
 						
 							if(previous_data._id.month){
 							if(month==moment.monthsShort(previous_data._id.month-1)
-								&&booking_type==previous_data._id.booking_type 
-							   &&venue==previous_data._id.venue 
-							   &&previous_data._id.year==compare_previous_year){
+							   
+							   && booking_type==previous_data._id.booking_type 
+							   && venue==previous_data._id.venue 
+							   && previous_data._id.year==compare_previous_year){
 								
-									returned_row_compare_last_year_total.museum=compare_previous_year+ " - " + year
-									returned_row_compare_last_year.museum="% difference" 
+									
 									
 									if(lastmonth<checkmonth_num-1){
-										returned_row_compare_last_year[month+" "+year]=((row.visits/previous_data.visits)*100-100).toFixed(2)+"%";
+										//returned_row_compare_last_year[month+" "+year]=((row.visits/previous_data.visits)*100-100).toFixed(2)+"%";
 									}
 									
-									returned_row_compare_last_year_total[month+" "+year]=previous_data.visits
+								//	returned_row_compare_last_year_total[month+" "+year]=previous_data.visits
 									if(currency){
 										returned_row_compare_last_year_total.typex="currency"
 									}
@@ -1894,6 +1896,25 @@ _.each(venues,function(venue){
 						
 					}
 				})
+
+				_.each(result,function(previous_data){
+					if(previous_data.visits){
+						
+						compare_previous_year = year-1						
+						if(previous_data._id.venue==venue &&  previous_data._id.year==compare_previous_year &&  moment.monthsShort(previous_data._id.month-1)==month  ){	
+							console.log('here')
+						//if(previous_data.combined){
+							returned_row_compare_last_year_total.museum="last year"
+									returned_row_compare_last_year.museum="% difference" 
+							returned_row_compare_last_year_total[month+" "+year]=previous_data.visits
+							returned_row_compare_last_year[month+" "+year]=((returned_row[month+" "+year]/previous_data.visits)*100-100).toFixed(2)+"%";
+								//result[i].last_year =((kpi.combined/previous_data.combined)*100-100).toFixed(2)+"%"			
+							
+						//}
+					
+						}
+					}
+		})
 			})
 		})
 	returned_data.push(	returned_row)
