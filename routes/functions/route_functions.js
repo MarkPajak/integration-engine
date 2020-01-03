@@ -598,11 +598,7 @@ Team.aggregate([
 						_.each(result,function(row){
 							if(!isNaN(parseInt(row[data_field_name]	))){
 								
-								
-							
-								//console.log(row)
-								
-								    
+  
 									if(row._id) {;
 									if(venue!="" && row._id.venue!=venue) return;
 									if(session_type!="" && row._id.session_type!=session_type) return;
@@ -1505,7 +1501,7 @@ var self = this
 					returned_row.xtype="currency"
 
 					
-					returned_data.push(	 self.wind_up_Stats_monthly_variable(result,returned_row,"last_year_total",venue,"","currency"))
+				//	returned_data.push(	 self.wind_up_Stats_monthly_variable(result,returned_row,"last_year_total",venue,"","currency"))
 
 					var returned_row={}
 					returned_row.museum=venue
@@ -1515,7 +1511,7 @@ var self = this
 					
 				})
 
-			var returned_row={}
+				var returned_row={}
 					returned_row.museum="Total"
 					returned_row.stat="Total"
 					returned_row.typex="retail"

@@ -433,10 +433,14 @@ get_kpis( function ( result) {
 				returned_row.typex="retail"
 				returned_data.push(	route_functions.wind_up_Stats_monthly_variable(		result,returned_row,"net_sales",venue))
 			var returned_row={}
-				returned_row.museum="last year"
+				
+			returned_row.museum="last year"
 				returned_row.stat="last year"
+				returned_row.typex="currency"
 				returned_row.typex="retail"
-				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"last_year_total",venue))
+		
+				//problem here as it wont display last year past current month which skews the yearly total
+				returned_data.push(	 route_functions.wind_up_Stats_monthly_variable(	result,returned_row,"total_sales_last_year","",'net_sales',"currency"))
 			var returned_row={}
 				returned_row.museum=venue
 				returned_row.stat="% last year"

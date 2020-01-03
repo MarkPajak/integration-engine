@@ -1242,20 +1242,21 @@ exports.yearly_totals = function(){
 						
 						if(month_num<4){
 							
-							if( !(scope._rows[i]["Total " + (parseInt(year)-1)])){
-								scope._rows[i]["Total " + (parseInt(year)-1)]=0
+							
+							if( !(scope._rows[i]["Total " + (parseInt(year))])){
+								scope._rows[i]["Total " + (parseInt(year))]=0
 							}
 						
 							if((row[month+" "+(parseInt(year))])){
 								
-								if((row[month+" "+(parseInt(year))])>0){
+								//if((row[month+" "+(parseInt(year))])>0){
 															
 									scope._rows[i]["Total " + (parseInt(year)-1)]+=parseInt(row[month+" "+(parseInt(year))]) 
 								
 								
 							
 								
-								}
+								//}
 						
 							}
 							
@@ -1270,11 +1271,11 @@ exports.yearly_totals = function(){
 						
 							if( (row[month+" "+(parseInt(year))])){
 								
-								if( (row[month+" "+(parseInt(year))])>0){
+								//if( (row[month+" "+(parseInt(year))])>0){
 															
 								scope._rows[i]["Total " + (parseInt(year))]=parseInt(row[month+" "+(parseInt(year))])
 								
-								}
+								//}
 						
 							}
 							
@@ -1288,11 +1289,11 @@ exports.yearly_totals = function(){
 						
 							if( (row[month+" "+(parseInt(year))])){
 								
-								if( (row[month+" "+(parseInt(year))])>0){
+							//	if( (row[month+" "+(parseInt(year))])>0){
 															
 								scope._rows[i]["Total " + (parseInt(year))]+=parseInt(row[month+" "+(parseInt(year))])
 								
-								}
+								//}
 						
 							}
 							
