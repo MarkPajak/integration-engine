@@ -1,6 +1,7 @@
 exports.customers_giftaid_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Customers_giftaid,data_table_reload,get_table_data,grid_ui_settings ,table_security
     ) {
 		
+	
 		$scope.show_all_Button=true
 		$scope.gridOptions=[]
 		$scope.gridOptions.data=[]

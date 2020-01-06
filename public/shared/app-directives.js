@@ -10,7 +10,7 @@ module.exports = function (app) {
     var iframe_directives = require('../components/iframe/iframe-directive');
     var turnstiles_directives = require('../components/turnstiles/turnstiles-directive');
     var resources_directives = require('../components/resource-bookings/directive');
-    
+    var giftaid_directives = require('../components/gift-aid/customers-directive');
 
 
     var directiveArray=[
@@ -23,7 +23,8 @@ module.exports = function (app) {
       performance_directives,
       iframe_directives,
       turnstiles_directives,
-      resources_directives
+      resources_directives,
+      giftaid_directives
 
     ]
 

@@ -250,20 +250,18 @@ module.exports = function(app) {
                 template: '<learning-dashboard></learning-dashboard>'
             })
             //PERFORMANCE	DONATIONS	    
-            .when('/record-giftaid', {
-                template: '<giftaid-Formdata></giftaid-Formdata>'
-            })
+       
 
             .when('/age-learning', {
                 template: '<learning-dashboard></learning-dashboard>'
             })
+
             //PERFORMANCE	DONATIONS	    
             .when('/record-giftaid', {
                 template: '<giftaid-Formdata></giftaid-Formdata>'
             })
 
             //customers-shopify
-
             .when('/gift-aid-customers', {
                 templateUrl: './components/gift-aid/data.html'
             })

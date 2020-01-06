@@ -8559,6 +8559,7 @@ exports.customersGiftaid = function() {
 exports.customers_giftaid_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Customers_giftaid,data_table_reload,get_table_data,grid_ui_settings ,table_security
     ) {
 		
+	
 		$scope.show_all_Button=true
 		$scope.gridOptions=[]
 		$scope.gridOptions.data=[]
@@ -29494,20 +29495,18 @@ module.exports = function(app) {
                 template: '<learning-dashboard></learning-dashboard>'
             })
             //PERFORMANCE	DONATIONS	    
-            .when('/record-giftaid', {
-                template: '<giftaid-Formdata></giftaid-Formdata>'
-            })
+       
 
             .when('/age-learning', {
                 template: '<learning-dashboard></learning-dashboard>'
             })
+
             //PERFORMANCE	DONATIONS	    
             .when('/record-giftaid', {
                 template: '<giftaid-Formdata></giftaid-Formdata>'
             })
 
             //customers-shopify
-
             .when('/gift-aid-customers', {
                 templateUrl: './components/gift-aid/data.html'
             })
@@ -30218,7 +30217,7 @@ module.exports = function (app) {
     var iframe_directives = require('../components/iframe/iframe-directive');
     var turnstiles_directives = require('../components/turnstiles/turnstiles-directive');
     var resources_directives = require('../components/resource-bookings/directive');
-    
+    var giftaid_directives = require('../components/gift-aid/customers-directive');
 
 
     var directiveArray=[
@@ -30231,7 +30230,8 @@ module.exports = function (app) {
       performance_directives,
       iframe_directives,
       turnstiles_directives,
-      resources_directives
+      resources_directives,
+      giftaid_directives
 
     ]
 
@@ -30245,7 +30245,7 @@ module.exports = function (app) {
     return module;
 };
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app-directives.js","/")
-},{"../components/iframe/iframe-directive":15,"../components/performance/performance-directive":86,"../components/resource-bookings/directive":117,"../components/shopify/shopify-directive":125,"../components/tech-support/tech-support-directive":135,"../components/timeline-settings/timeline-settings-directive":139,"../components/timeline/timeline-directive":142,"../components/turnstiles/turnstiles-directive":153,"../components/user-admin/users-directive":155,"../shared/directives/directives":165,"b55mWE":4,"buffer":3}],159:[function(require,module,exports){
+},{"../components/gift-aid/customers-directive":12,"../components/iframe/iframe-directive":15,"../components/performance/performance-directive":86,"../components/resource-bookings/directive":117,"../components/shopify/shopify-directive":125,"../components/tech-support/tech-support-directive":135,"../components/timeline-settings/timeline-settings-directive":139,"../components/timeline/timeline-directive":142,"../components/turnstiles/turnstiles-directive":153,"../components/user-admin/users-directive":155,"../shared/directives/directives":165,"b55mWE":4,"buffer":3}],159:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 module.exports = function(app) {
 
@@ -31480,7 +31480,7 @@ require('../shared/app-directives')(app);
 require('../shared/app-services')(app);
 require('../shared/app-filters')(app);
 require('../shared/app-config')(app);
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_6150dc79.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_ee0b6696.js","/")
 },{"../shared/app-config":156,"../shared/app-controllers":157,"../shared/app-directives":158,"../shared/app-filters":159,"../shared/app-services":160,"async":1,"b55mWE":4,"buffer":3,"underscore":7}],167:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
