@@ -13669,7 +13669,6 @@ exports.raw_giftaid_controller = function($route,$scope, $http, $q, $routeParams
 			{ field: 'date_value' ,name: "Date",resizable: true ,type: 'date', cellFilter: 'date:\'dd/MM/yy\''},
 			{ field: 'amount' ,resizable: true,cellFilter:'currency:"&pound;" : 2'},
 			{ field: 'no_envelopes' ,resizable: true},
-
 			{ field: 'comments' ,value: "comments",resizable: true,visible:true},
 			{ field: 'logger_user_name' ,value: "Logged by",resizable: true,visible:true},
 			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',visible:true}
@@ -19721,7 +19720,7 @@ exports.record_welcomedesk_controller =  function($scope, $http, $q, $routeParam
 			
 		//DEPARTMENTAL VARIABLES	
 			cash: visit_form.cash.value,
-			card: visit_form.card.value,
+		//	card: visit_form.card.value,
 			no_transactions: visit_form.no_transactions.value,
 			no_giftaid_envelopes: visit_form.no_giftaid_envelopes.value,			  
 			giftaid_amount: visit_form.giftaid_amount.value,			 
@@ -19776,7 +19775,7 @@ exports.record_welcomedesk_controller =  function($scope, $http, $q, $routeParam
 							  //message+= " "+ data + " added to " + museum;
 							  alert(message);
 			visit_form.cash.value=""
-		visit_form.card.value=""
+	//	visit_form.card.value=""
 			visit_form.no_transactions.value=""
 		visit_form.no_giftaid_envelopes.value=""		  
 			giftaid_amount: visit_form.giftaid_amount.value=""			 
@@ -31480,7 +31479,7 @@ require('../shared/app-directives')(app);
 require('../shared/app-services')(app);
 require('../shared/app-filters')(app);
 require('../shared/app-config')(app);
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_ee0b6696.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_144f88e0.js","/")
 },{"../shared/app-config":156,"../shared/app-controllers":157,"../shared/app-directives":158,"../shared/app-filters":159,"../shared/app-services":160,"async":1,"b55mWE":4,"buffer":3,"underscore":7}],167:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 

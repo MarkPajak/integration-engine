@@ -17,7 +17,6 @@ exports.raw_giftaid_controller = function($route,$scope, $http, $q, $routeParams
 			{ field: 'date_value' ,name: "Date",resizable: true ,type: 'date', cellFilter: 'date:\'dd/MM/yy\''},
 			{ field: 'amount' ,resizable: true,cellFilter:'currency:"&pound;" : 2'},
 			{ field: 'no_envelopes' ,resizable: true},
-
 			{ field: 'comments' ,value: "comments",resizable: true,visible:true},
 			{ field: 'logger_user_name' ,value: "Logged by",resizable: true,visible:true},
 			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',visible:true}

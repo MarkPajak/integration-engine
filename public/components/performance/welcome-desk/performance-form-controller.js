@@ -15,7 +15,7 @@ exports.record_welcomedesk_controller =  function($scope, $http, $q, $routeParam
 			
 		//DEPARTMENTAL VARIABLES	
 			cash: visit_form.cash.value,
-			card: visit_form.card.value,
+		//	card: visit_form.card.value,
 			no_transactions: visit_form.no_transactions.value,
 			no_giftaid_envelopes: visit_form.no_giftaid_envelopes.value,			  
 			giftaid_amount: visit_form.giftaid_amount.value,			 
@@ -70,7 +70,7 @@ exports.record_welcomedesk_controller =  function($scope, $http, $q, $routeParam
 							  //message+= " "+ data + " added to " + museum;
 							  alert(message);
 			visit_form.cash.value=""
-		visit_form.card.value=""
+	//	visit_form.card.value=""
 			visit_form.no_transactions.value=""
 		visit_form.no_giftaid_envelopes.value=""		  
 			giftaid_amount: visit_form.giftaid_amount.value=""			 

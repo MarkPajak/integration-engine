@@ -358,7 +358,7 @@ if(process.env.machine=="turnstile"){
 	global.port_controller = port_control
 	port_control.listen_data(valid_tickets)
 	
-	
+	app.use(timeout('60s'))
 	app.use('/check_com_port', check_com_port)
 	app.use('/open_turnstile', open_turnstile);
 	/*
@@ -379,6 +379,9 @@ port.on('error', function(err) {
 	*/
 }
 // catch 404 and forward to error handler
+
+
+
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
@@ -399,6 +402,8 @@ if (app.get('env') === 'development') {
         });
     });
 }
+
+
 module.exports = app;
 
 

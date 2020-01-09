@@ -124,7 +124,11 @@ router.post('/confirmation', function(req, res, next) {
 
       });
     },
+
+
     function(token, user, done) {
+
+      
 var smtpTransport = require('nodemailer-smtp-transport');
 
 var transport = nodemailer.createTransport(smtpTransport({		  

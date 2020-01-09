@@ -18,14 +18,17 @@ var load_shopify_customers = function (keys,options){
     //mongoose.connect(dbConfig.url);
      var self=this
     var logger = require('../../../models/logging.js');
-  
+    var smtpTransport = require('nodemailer-smtp-transport');
+    var nodemailer = require('nodemailer');
+    var googe_keys=JSON.parse(fs.readFileSync('./secret/google_drive.json').toString());
+
 
     function unquote(value) {
         if (value.charAt(0) == '"' && value.charAt(value.length - 1) == '"') return value.substring(1, value.length - 1);
         return value;
     }
 
-    
+    var customer
     var nextpage
 
 
@@ -36,10 +39,10 @@ var load_shopify_customers = function (keys,options){
     }
 
     var allcustomers=[]
-    
+  
     function customers(cb){
         
-        
+     console.log('customers')   
         var page = 500
         var limit = 200
         var pages_in_total = 5
@@ -50,7 +53,7 @@ var load_shopify_customers = function (keys,options){
       
         
         function getNextset(url) {
-      
+            console.log('getNextset')
                 
                 var return_product_type = ""
                
@@ -59,11 +62,10 @@ var load_shopify_customers = function (keys,options){
                     url:url ,
                      json: true
                 }, function (error, response, body) {
+               console.log('request')
                 if (error ) console.log(error)
-         
-             
-                    if (!error && response.headers.link) {
-
+                if (!error && response.headers.link && response.statusCode === 200) {
+                    console.log('request - here')
                         
 
                     _.each(response.headers.link.split(","),function(row){
@@ -75,11 +77,13 @@ var load_shopify_customers = function (keys,options){
                     })
 
                     async.forEach( body.customers, function(_customer,cbb) { 
-                      
-                            var customer={}
+                       // console.log('reques - success for '+_customer.first_name) 
+                         
+                        
+                        var customer={}
                             if(_customer.note!=null && _customer.note!="" ) {
                              
-                                customer._id=_customer.id
+                                    customer._id=_customer.id
                                     customer.first_name=_customer.first_name
                                     customer.last_name=_customer.last_name
                                     customer.note=_customer.note
@@ -103,60 +107,78 @@ var load_shopify_customers = function (keys,options){
                                         url:  _last_order_url ,
                                          json: true
                                     }, function (_error, _response, _body) {
-                                   
+                                 //  console.log('reques - order for '+_customer.first_name)
                                    if(_error) console.log(_error)
-                                       
+                                    
         
-                                   if(_body.order){
+                                   if(_body.order && response.statusCode == 200) {
 
                                     customer.date = _body.order.created_at  
 
                                      _.each(_body.order.line_items,function(row){    
                                                
-                                       
                                         if( row.title.toLowerCase().indexOf("donation") !=-1 ){
-
                                             customer.donation_amount= row.quantity * row.price 
-                                        
                                         }
                                          customer.order=  customer.order.concat( row.title + " * " +row.quantity+" | " )                                    
                                          
                                     })
+                                    allcustomers.push(customer)
+                                    console.log('cbb 1' )
+                                    cbb()
+                                }
+                                else
+                                {
+                                    console.log('cbb 1 error no orders',response.statusCode )
+                                    cbb()
                                 }
                                 
-                                  allcustomers.push(customer)
-                                  setTimeout(function (){
-                                  cbb()
-                                }, 1000);
+                                  
+                                  
 
                             })
                        
                             }
-                            else{
-
+                            else
+                            {
+                                console.log('cbb 2 - no notes')
                                 cbb()
+                            }
+                     }, function done(){
+
+                        if(body.customers.length!=0 &&  nextpage==true){
+                      
+                            nextpage=false
+                          
+                            
+                       //  setTimeout(function (){
+                            
+                                current_page++
+                        
+                                console.log('getNextset')
+                          
+                                 getNextset(url);
+                       // }, 500);
+                                
+                            }     
+                             else     
+                             {
+                               // console.log('max reached',allcustomers)
+    
+                               self.got_customers(allcustomers,cb)
+                             
                             }
                      })
                    
 
              
-                    if(body.customers.length!=0 &&  nextpage==true){
-                        nextpage=false
-                      
-                        console.log(current_page)
-                     setTimeout(function (){
-						
-							current_page++
-					
-						
-                      
-                        getNextset(url);
-                    }, 2500);
-                            
-                        }      else      {
-                        console.log('max reached',allcustomers)
-                        cb(allcustomers)
-                        }
+                   
+                    }
+                    else
+                    {
+
+                        console.log('dead here')
+                        self.got_customers(allcustomers,cb)
                     }
                     
                 })	
@@ -171,6 +193,43 @@ var load_shopify_customers = function (keys,options){
     
         customers(cb2)
     
+    }
+
+    self.got_customers = function(allcustomers,cb){
+          /*
+        var transport = nodemailer.createTransport(smtpTransport({		  
+            
+            service: 'gmail',
+            auth: {
+                user: googe_keys.user,
+                pass: googe_keys.password
+            }
+    }));
+ 
+  
+      var mailOptions = {
+        to: options.logged_in_user.email,
+        from: 'giftaid@magicsquirrels.com',
+        subject: 'gift aid email',
+        text: "see attached file",
+        attachments: [
+           
+            {   // binary buffer as an attachment
+                filename: 'gift_aid_report.csv',
+                content: new Buffer(objectToCSVRow(allcustomers),'utf-8')
+            }
+           
+        ]
+      };
+      transport.sendMail(mailOptions, function(err) {
+          if(err) console.log(err)
+        options.req.flash('message', 'An e-mail has been sent to ' + options.logged_in_user.email+ ' with further instructions.');
+       
+       */
+       
+        cb(allcustomers);
+     // });
+      
     }
     
     }
