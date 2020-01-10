@@ -54,6 +54,7 @@ router.get('/',route_permissions.isAuthenticated, function(req, res, next) {
   var customers  = new Customers(keys,config)
   req.flash('message', 'your gift aid report will be transported by magic squirrels to '+ req.user .email);
 
+  
                                         customers.get_customers(function(data) {
                                           res.json(data);
                                        								

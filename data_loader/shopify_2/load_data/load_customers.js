@@ -195,6 +195,7 @@ var load_shopify_customers = function (keys,options){
     
     }
 
+    
     self.got_customers = function(allcustomers,cb){
           /*
         var transport = nodemailer.createTransport(smtpTransport({		  

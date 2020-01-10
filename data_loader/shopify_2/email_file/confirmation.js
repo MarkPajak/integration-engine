@@ -90,7 +90,8 @@ module.exports = function(passport){
         req.logout();
         res.redirect('/login');
     });
-	
+  
+    
 	router.get('/forgot', function(req, res) {
   res.render('forgot', {
     user: req.user
