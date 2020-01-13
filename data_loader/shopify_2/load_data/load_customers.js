@@ -151,14 +151,14 @@ var load_shopify_customers = function (keys,options){
                             nextpage=false
                           
                             
-                       //  setTimeout(function (){
+                        setTimeout(function (){
                             
                                 current_page++
                         
                                 console.log('getNextset')
                           
                                  getNextset(url);
-                       // }, 500);
+                        }, 500);
                                 
                             }     
                              else     
@@ -195,7 +195,7 @@ var load_shopify_customers = function (keys,options){
     
     }
 
-    
+
     self.got_customers = function(allcustomers,cb){
           /*
         var transport = nodemailer.createTransport(smtpTransport({		  

@@ -343,16 +343,147 @@ exports.Monthly_venue_hire =  function($resource){
        
 
   }
-      exports.Monthly_giftaid =  function($resource){
-	  
-	  
-	return $resource('/giftaid/all',{ }, {
-		openGates: {method:'GET', isArray: true}
-			
-  });
-       
 
-  }
+
+
+exports.Monthly_giftaid =  function($resource){
+		return $resource('/giftaid/all',{ }, {
+			openGates: {method:'GET', isArray: true}
+				
+	});
+
+}
+
+
+exports.Monthly_donations_treasure =  function($resource){
+
+	return $resource('/treasure/all',{ }, {
+		openGates: {method:'GET', isArray: true}			
+	});
+
+}
+
+exports.Raw_donations_treasure =  function($resource){
+
+	return $resource('/treasure/:id/:date_value/:exact/:end_value', null,
+	{ 
+		'get':    {method:'GET'},  // get individual record
+	    'save':   {method:'POST'}, // create record
+	    'query':  {method:'GET', isArray:true}, // get list all records
+	    'remove': {method:'DELETE'}, // remove record
+		'update': { method:'PUT' },
+	    'delete': {method:'DELETE'} // same, remove record
+  	});
+
+}
+exports.Monthly_donations_donors =  function($resource){
+
+	return $resource('/majordonor/all',{ }, {
+		openGates: {method:'GET', isArray: true}			
+	});
+
+}
+
+exports.Raw_donations_donors =  function($resource){
+
+	return $resource('/majordonor/:id/:date_value/:exact/:end_value', null,
+	{ 
+		'get':    {method:'GET'},  // get individual record
+	    'save':   {method:'POST'}, // create record
+	    'query':  {method:'GET', isArray:true}, // get list all records
+	    'remove': {method:'DELETE'}, // remove record
+		'update': { method:'PUT' },
+	    'delete': {method:'DELETE'} // same, remove record
+  	});
+
+}
+exports.Monthly_donations_online =  function($resource){
+
+	return $resource('/online/all',{ }, {
+		openGates: {method:'GET', isArray: true}			
+	});
+
+}
+
+exports.Raw_donations_online =  function($resource){
+
+	return $resource('/online/:id/:date_value/:exact/:end_value', null,
+	{ 
+		'get':    {method:'GET'},  // get individual record
+	    'save':   {method:'POST'}, // create record
+	    'query':  {method:'GET', isArray:true}, // get list all records
+	    'remove': {method:'DELETE'}, // remove record
+		'update': { method:'PUT' },
+	    'delete': {method:'DELETE'} // same, remove record
+  	});
+
+}
+
+exports.Monthly_donations_general =  function($resource){
+
+	return $resource('/donations_general/all',{ }, {
+		openGates: {method:'GET', isArray: true}			
+	});
+
+}
+
+exports.Raw_donations_general =  function($resource){
+
+	return $resource('/donations_general/:id/:date_value/:exact/:end_value', null,
+	{ 
+		'get':    {method:'GET'},  // get individual record
+	    'save':   {method:'POST'}, // create record
+	    'query':  {method:'GET', isArray:true}, // get list all records
+	    'remove': {method:'DELETE'}, // remove record
+		'update': { method:'PUT' },
+	    'delete': {method:'DELETE'} // same, remove record
+  	});
+
+}
+exports.Monthly_donations_trusts =  function($resource){
+
+	return $resource('/trusts/all',{ }, {
+		openGates: {method:'GET', isArray: true}			
+	});
+
+}
+
+exports.Raw_donations_trusts =  function($resource){
+
+	return $resource('/trusts/:id/:date_value/:exact/:end_value', null,
+	{ 
+		'get':    {method:'GET'},  // get individual record
+	    'save':   {method:'POST'}, // create record
+	    'query':  {method:'GET', isArray:true}, // get list all records
+	    'remove': {method:'DELETE'}, // remove record
+		'update': { method:'PUT' },
+	    'delete': {method:'DELETE'} // same, remove record
+  	});
+
+}
+
+
+exports.Monthly_donations_directdebit =  function($resource){
+
+	return $resource('/directdebit/all',{ }, {
+		openGates: {method:'GET', isArray: true}			
+	});
+
+}
+
+exports.Raw_donations_directdebit =  function($resource){
+
+	return $resource('/directdebit/:id/:date_value/:exact/:end_value', null,
+	{ 
+		'get':    {method:'GET'},  // get individual record
+	    'save':   {method:'POST'}, // create record
+	    'query':  {method:'GET', isArray:true}, // get list all records
+	    'remove': {method:'DELETE'}, // remove record
+		'update': { method:'PUT' },
+	    'delete': {method:'DELETE'} // same, remove record
+  	});
+
+}
   
   
   

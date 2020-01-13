@@ -11,6 +11,14 @@ module.exports = function (app) {
     var turnstiles_directives = require('../components/turnstiles/turnstiles-directive');
     var resources_directives = require('../components/resource-bookings/directive');
     var giftaid_directives = require('../components/gift-aid/customers-directive');
+    var directdebit_directives = require('../components/performance/donations-directdebit/directdebit-directive');
+    var treasure_directives = require('../components/performance/donations-treasure/treasure-directive');
+    var donors_directives = require('../components/performance/donations-donors/donors-directive');
+    var donors_trusts = require('../components/performance/donations-trusts/trusts-directive');
+    var donors_online = require('../components/performance/donations-online/online-directive');
+    var donors_general = require('../components/performance/donations-general/donors-directive');
+
+
 
 
     var directiveArray=[
@@ -24,8 +32,13 @@ module.exports = function (app) {
       iframe_directives,
       turnstiles_directives,
       resources_directives,
-      giftaid_directives
-
+      giftaid_directives,
+      directdebit_directives,
+      treasure_directives,
+      donors_directives,
+      donors_trusts,
+      donors_online,
+      donors_general
     ]
 
   _.each(directiveArray, function(directives, names) {

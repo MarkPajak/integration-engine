@@ -105,10 +105,44 @@ module.exports = function(app) {
     var monthly_donations_kiosk_controller = require('../components/performance/donations-kiosk/monthly-donations_kiosk-controller');
     var monthly_donations_box_controller = require('../components/performance/donations-boxes/monthly-donations-controller');
 
+    var raw_donations_donors_controller = require('../components/performance/donations-donors/raw-controller');
+    var monthly_donors_controller = require('../components/performance/donations-donors/monthly-controller');
+    var donations_donors_performance_form = require('../components/performance/donations-donors/performance-form-controller');
+    
+
+    var raw_donations_directdebit_controller = require('../components/performance/donations-directdebit/raw-controller');
+    var monthly_directdebit_controller = require('../components/performance/donations-directdebit/monthly-controller');
+    var donations_directdebit_performance_form = require('../components/performance/donations-directdebit/performance-form-controller');
+    
+    var raw_donations_treasure_controller = require('../components/performance/donations-treasure/raw-controller');
+    var monthly_treasure_controller = require('../components/performance/donations-treasure/monthly-controller');
+    
+    
+    var donations_treasure_performance_form = require('../components/performance/donations-treasure/performance-form-controller');
+    
+    var raw_donations_trusts_controller = require('../components/performance/donations-trusts/raw-controller');
+    var monthly_trusts_controller = require('../components/performance/donations-trusts/monthly-controller');
+    var donations_trusts_performance_form = require('../components/performance/donations-trusts/performance-form-controller');
+    
+
+    var raw_donations_online_controller = require('../components/performance/donations-online/raw-controller');
+    var monthly_online_controller = require('../components/performance/donations-online/monthly-controller');
+    var donations_online_performance_form = require('../components/performance/donations-online/performance-form-controller');
+    
+
+    var raw_donations_general_controller = require('../components/performance/donations-general/raw-controller');
+    var monthly_generaldonations_controller = require('../components/performance/donations-general/monthly-controller');
+    var donations_general_performance_form = require('../components/performance/donations-general/performance-form-controller');
+    
+
+
 
 
     var raw_donations_kiosk_controller = require('../components/performance/donations-kiosk/raw-donations_kiosk-controller');
     var donations_kiosk_performance_form = require('../components/performance/donations-kiosk/performance-form-controller');
+    
+    
+    
     var kiosk_uploader = require('../components/performance/donations-kiosk/kiosk-uploader-controller');
     var daily_donations_kiosk_controller = require('../components/performance/donations-kiosk/daily-donations_kiosk-controller');
 
@@ -360,10 +394,27 @@ var controllersArray=[
     performance_form,
     retail_performance_form,
     retail_uploader,
-    raw_timelinesettings_controller
+    raw_timelinesettings_controller,
+    monthly_directdebit_controller,
+    raw_donations_directdebit_controller,
+    donations_directdebit_performance_form,
+    raw_donations_treasure_controller,
+    monthly_treasure_controller,
+    donations_treasure_performance_form,
+    raw_donations_donors_controller,
+    monthly_donors_controller,
+    donations_donors_performance_form,
+    raw_donations_trusts_controller,
+    monthly_trusts_controller,
+    donations_trusts_performance_form,
+    raw_donations_online_controller,
+    monthly_online_controller,
+    donations_online_performance_form,
+    raw_donations_general_controller,
+    monthly_generaldonations_controller,
+    donations_general_performance_form
 
-
-]
+]   
 
     _.each(controllersArray, function(controllers, names) {
         _.each(controllers, function(controller, name) {

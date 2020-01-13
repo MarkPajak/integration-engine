@@ -261,6 +261,73 @@ module.exports = function(app) {
                 template: '<giftaid-Formdata></giftaid-Formdata>'
             })
 
+            .when('/record-directdebit', {
+                template: '<directdebit-Formdata></directdebit-Formdata>'
+            })
+            .when('/raw-directdebit', {
+                template: '<raw-directdebit></raw-directdebit>'
+            })
+            .when('/monthly-directdebit', {
+                template: '<directdebit-dashboard></directdebit-dashboard>'
+            })
+
+            .when('/record-treasure', {
+                template: '<treasure-Formdata></treasure-Formdata>'
+            })
+            .when('/raw-treasure', {
+                template: '<raw-treasure></raw-treasure>'
+            })
+            .when('/monthly-treasure', {
+                template: '<treasure-dashboard></treasure-dashboard>'
+            })
+
+
+            //Major Donors
+            .when('/record-donors', {
+                template: '<donors-Formdata></donors-Formdata>'
+            })
+            .when('/raw-donors', {
+                template: '<raw-donors></raw-donors>'
+            })
+            .when('/monthly-donors', {
+                template: '<donors-dashboard></donors-dashboard>'
+            })
+
+     //#online
+     .when('/record-online', {
+        template: '<online-Formdata></online-Formdata>'
+    })
+    .when('/raw-online', {
+        template: '<raw-online></raw-online>'
+    })
+    .when('/monthly-online', {
+        template: '<online-dashboard></online-dashboard>'
+    })
+
+
+         //#online
+         .when('/record-general', {
+            template: '<donationsgeneral-Formdata></donationsgeneral-Formdata>'
+        })
+        .when('/raw-general', {
+            template: '<raw-donationsgeneral></raw-donationsgeneral>'
+        })
+        .when('/monthly-general', {
+            template: '<donationsgeneral-dashboard></donationsgeneral-dashboard>'
+        })
+
+
+                //#trusts and foundations
+                .when('/record-trusts', {
+                    template: '<trusts-Formdata></trusts-Formdata>'
+                })
+                .when('/raw-trusts', {
+                    template: '<raw-trusts></raw-trusts>'
+                })
+                .when('/monthly-trusts', {
+                    template: '<trusts-dashboard></trusts-dashboard>'
+                })
+
             //customers-shopify
             .when('/gift-aid-customers', {
                 templateUrl: './components/gift-aid/data.html'

@@ -10871,6 +10871,926 @@ exports.monthly_donations_box_controller = function(yearly_percentage_difference
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-boxes/monthly-donations-controller.js","/../components/performance/donations-boxes")
 },{"b55mWE":4,"buffer":3}],31:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+exports.directdebitFormdata = function() {
+  return {
+  // controller: 'giftaid_performance_form',
+      templateUrl: './components/performance/donations-directdebit/kpi-form-and-data.html'
+  }
+}
+
+exports.directdebitDashboard = function() {
+  return {
+   controller: 'dashboard_controller',
+    templateUrl: './components/performance/donations-directdebit/dashboard.html'
+  }
+  }	
+
+exports.monthlyDonationsdirectdebit = function() {
+      return {    
+         controller: 'monthly_directdebit_controller',
+         templateUrl: './shared/templates/data_table.html'
+      }
+  }
+
+exports.rawDonationsdirectdebit = function() {
+        return {
+           controller: 'raw_directdebit_controller',
+           templateUrl: './shared/templates/data_table.html'
+        }
+}
+
+
+
+  
+
+exports.recordDonationsdirectdebit  = function() {
+         return {
+             controller: 'donations_directdebit_performance_form',
+            templateUrl: './components/performance/donations-directdebit/kpi-form.html'
+      }
+    }
+
+
+  
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-directdebit/directdebit-directive.js","/../components/performance/donations-directdebit")
+},{"b55mWE":4,"buffer":3}],32:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+exports.monthly_directdebit_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_donations_directdebit,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,data_table_reload,table_security,dynamicTableCellFilter_donations_other
+    ) {
+		
+		
+			$scope.chart_class = "col-md-8 col-lg-8 col-sm-5 pull-right"
+			$scope.table_class = "col-md-12 col-lg-12 col-sm-5"	
+			$scope.chart_heading = "Fundraised income  by month"
+			$scope.background_colour="donations_other"
+		$scope.show_all_Button=false
+		console.log('controller go')
+		$scope.table_heading = "Monthly Fundraised income"
+		$scope.pie_date = "Apr 2017"
+		$scope.gridOptions=[]
+		$scope.gridOptions.data=[]
+		$rootScope.canEdit_table=false
+		var columnDefs= []
+			$scope.filter_pie=[]
+			columnDefs.push(
+		//	{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "100", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other},
+			{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other}
+					
+			)
+			dates=getDateService.getDate()
+		$scope.start_date=dates[0]
+		$scope.end_date=dates[1]
+			columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))
+			console.log('columnDefs',columnDefs)		
+				$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
+	
+			
+			$scope.museums  =[]
+			$scope.selected_chart_stats=["donations_other"]
+			
+			
+			Monthly_donations_directdebit.query({}, function(team) {
+				$scope.rows=[]
+				$scope.data_rows=[]
+				$scope._rows=[]
+				_.each(team,function(row){
+					console.log(row)
+						if(row.museum!=""){
+							if($scope.museums.indexOf(row.museum)==-1){$scope.museums.push(row.museum)}
+							
+					$scope._rows.push(row)
+					if(row.stat=="donations_other"){
+						console.log("donations_other")
+						$scope.data_rows.push(row)
+						
+					}
+			}
+					
+							
+				})
+			
+			$scope.gridOptions.data=$scope._rows;
+			$scope.gridOptions.enableFiltering=false
+			
+			_.each([2016,2017],function(year){
+				_.each(moment.monthsShort(),function(month){				
+						$scope.filter_pie.push({value:month+" "+year,name:month+" "+year})
+					
+				})
+			})
+			make_a_pie.build($scope,"Apr 2017","museum")
+			make_a_line_chart.build($scope,columnDefs,"museum")
+			$scope.changedValue = function(item){ 
+					$scope.pie_date=item			
+					make_a_pie.build($scope,item,"museum")
+			}
+				
+					
+			  $scope.$on('date:updated', function(event,data) {
+					console.log(data)
+					$scope.start_date=data[0]
+					$scope.end_date=	data[1]	
+			
+				});
+			
+				
+				$scope.$watchGroup(['end_date','start_date'], function(newValue, oldValue) {
+  
+					columnDefs=[]
+				columnDefs.push(	
+				//{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "100", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other},
+			{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other}
+					)
+					columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))
+					$scope.gridOptions.columnDefs=columnDefs
+					make_a_line_chart.build($scope,columnDefs,"museum")
+			
+			
+			
+			});
+		})	
+}				
+
+
+
+
+
+
+
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-directdebit/monthly-controller.js","/../components/performance/donations-directdebit")
+},{"b55mWE":4,"buffer":3}],33:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+exports.donations_directdebit_performance_form =  function($scope, $http, $q,  
+          Raw_donations_directdebit,data_table_reload,get_table_data_nomusem_notype
+    ) {
+
+
+$scope.extraQuery = {}
+
+	
+ $scope.Raw_donations_directdebit=Raw_donations_directdebit
+	 
+ $scope.onSubmit=function() {
+		
+
+		
+		    var kpis = new Raw_donations_directdebit({
+								  
+					kpi_type: "visits",	
+			
+					amount: visit_form.amount.value,
+					gift_aid_amount: visit_form.gift_aid_amount.value,
+					
+				
+					date_logged:new Date(),	
+					date_value:visit_form.date_value.value,
+					comments:visit_form.comments.value,			
+					logger_user_name: $scope.user.username
+            });
+			
+			var query = {"date_value":visit_form.date_value.value,"exact":true,"end_value": moment(new Date()).format("YYYY-MM-DD") };
+			
+			Raw_donations_directdebit.query(query, function(visits) {
+				  $scope.$emit('form_submit');
+				console.log('Raw_visits',visits.length)
+				$scope.results=visits
+			if(visits.length>0) {
+			
+			
+			if (confirm("we already have a figure of " + visits[0].value + " for that date - are you sure you wnt to overwrite it ?")) {
+			
+				_.each(	visits	, function(visit) {
+				
+					Raw_donations_directdebit.remove({
+						id: visit._id
+					}, function() {
+					  console.log('removed old data')
+					});
+					})
+						save(kpis)
+				// Save it!
+			} else {
+				// Do nothing!
+			}
+			
+			
+			}
+			else
+			{			
+						save(kpis)
+			}
+			})	
+			
+            
+		
+	
+
+	
+
+    }
+		function save(kpis){
+
+	kpis.$save(function(err, user) {
+		
+						if(err) console.log(err)
+						 var  message = "data saved successfully";
+							  message+= "\n ";
+							  //message+= " "+ data + " added to " + museum;
+							  alert(message);
+							  get_table_data.get_table_data_nomusem_notype(moment(new Date()).subtract({'months':1})._d,$scope)			
+							$scope.message="data saved successfully";
+							visit_form.museum_id.value=""
+							visit_form.amount.value=""
+							visit_form. gift_aid_amount=""
+						
+								
+							 
+						})
+						
+
+}
+	
+	$( document ).ready(function() {
+     $scope.$emit('donations_other_performance_form');
+	 $scope.savex=function(kpis) {
+			save(kpis)
+	 }
+	
+});
+	
+
+	
+	}
+ 
+
+ 
+
+	
+	
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-directdebit/performance-form-controller.js","/../components/performance/donations-directdebit")
+},{"b55mWE":4,"buffer":3}],34:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+
+
+exports.raw_directdebit_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Raw_donations_directdebit,data_table_reload,get_table_data_nomusem_notype,grid_ui_settings,make_a_pie,make_a_line_chart,monthly_data_table_columns,table_security
+    ) {
+		
+		
+		$scope.show_all_Button=true
+		$scope.featured_collection=Raw_donations_directdebit
+		$rootScope.featured_collection=Raw_donations_directdebit
+		$scope.gridOptions=[]
+		$scope.gridOptions.data=[]
+		$scope.extraQuery = {}
+		
+		var columnDefs= []
+		
+
+		$rootScope.canEdit_table=true
+		 columnDefs.push(
+	
+			{ field: 'date_value' ,name: "Date",resizable: true ,type: 'date', cellFilter: 'date:\'dd/MM/yy\''},
+			{ field: 'amount' ,resizable: true ,cellFilter:'currency:"&pound;" : 2'},
+			{ field: 'gift_aid_amount' ,resizable: true ,cellFilter:'currency:"&pound;" : 2'},
+			
+			
+			{ field: 'comments' ,value: "comments",resizable: true,visible:false},
+			{ field: 'logger_user_name' ,value: "Logged by",resizable: true,visible:false},
+			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',visible:false}
+			)
+			
+			$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
+
+			console.log('get_table_data_nomusem_notype')
+			get_table_data_nomusem_notype.getData(moment(new Date()).subtract({'months':1})._d,$scope,true)
+			
+}				
+
+
+
+
+
+
+
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-directdebit/raw-controller.js","/../components/performance/donations-directdebit")
+},{"b55mWE":4,"buffer":3}],35:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+exports.donorsFormdata = function() {
+  return {
+  // controller: 'giftaid_performance_form',
+      templateUrl: './components/performance/donations-donors/kpi-form-and-data.html'
+  }
+}
+
+exports.donorsDashboard = function() {
+  return {
+   controller: 'dashboard_controller',
+    templateUrl: './components/performance/donations-donors/dashboard.html'
+  }
+  }	
+
+
+
+exports.monthlyDonationsdonors = function() {
+      return {    
+         controller: 'monthly_donors_controller',
+         templateUrl: './shared/templates/data_table.html'
+      }
+  }
+
+exports.rawDonationsdonors = function() {
+        return {
+           controller: 'raw_donors_controller',
+           templateUrl: './shared/templates/data_table.html'
+        }
+}
+
+
+
+exports.recordDonationsdonors  = function() {
+         return {
+             controller: 'donations_donors_performance_form',
+            templateUrl: './components/performance/donations-donors/kpi-form.html'
+      }
+    }
+
+
+  
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-donors/donors-directive.js","/../components/performance/donations-donors")
+},{"b55mWE":4,"buffer":3}],36:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+exports.monthly_donors_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_donations_donors,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,data_table_reload,table_security,dynamicTableCellFilter_donations_other
+    ) {
+		
+		
+			$scope.chart_class = "col-md-8 col-lg-8 col-sm-5 pull-right"
+			$scope.table_class = "col-md-12 col-lg-12 col-sm-5"	
+			$scope.chart_heading = "Fundraised income  by month"
+			$scope.background_colour="donations_other"
+		$scope.show_all_Button=false
+		console.log('controller go')
+		$scope.table_heading = "Monthly Major Donors income"
+		$scope.pie_date = "Apr 2017"
+		$scope.gridOptions=[]
+		$scope.gridOptions.data=[]
+		$rootScope.canEdit_table=false
+		var columnDefs= []
+			$scope.filter_pie=[]
+			columnDefs.push(
+		//	{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "100", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other},
+			{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other}
+					
+			)
+			dates=getDateService.getDate()
+		$scope.start_date=dates[0]
+		$scope.end_date=dates[1]
+			columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))
+			console.log('columnDefs',columnDefs)		
+				$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
+	
+			
+			$scope.museums  =[]
+			$scope.selected_chart_stats=["donations_other"]
+			
+			
+			Monthly_donations_donors.query({}, function(team) {
+				$scope.rows=[]
+				$scope.data_rows=[]
+				$scope._rows=[]
+				_.each(team,function(row){
+					console.log(row)
+						if(row.museum!=""){
+							if($scope.museums.indexOf(row.museum)==-1){$scope.museums.push(row.museum)}
+							
+					$scope._rows.push(row)
+					if(row.stat=="donations_other"){
+						console.log("donations_other")
+						$scope.data_rows.push(row)
+						
+					}
+			}
+					
+							
+				})
+			
+			$scope.gridOptions.data=$scope._rows;
+			$scope.gridOptions.enableFiltering=false
+			
+			_.each([2016,2017],function(year){
+				_.each(moment.monthsShort(),function(month){				
+						$scope.filter_pie.push({value:month+" "+year,name:month+" "+year})
+					
+				})
+			})
+			make_a_pie.build($scope,"Apr 2017","museum")
+			make_a_line_chart.build($scope,columnDefs,"museum")
+			$scope.changedValue = function(item){ 
+					$scope.pie_date=item			
+					make_a_pie.build($scope,item,"museum")
+			}
+				
+					
+			  $scope.$on('date:updated', function(event,data) {
+					console.log(data)
+					$scope.start_date=data[0]
+					$scope.end_date=	data[1]	
+			
+				});
+			
+				
+				$scope.$watchGroup(['end_date','start_date'], function(newValue, oldValue) {
+  
+					columnDefs=[]
+				columnDefs.push(	
+				//{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "100", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other},
+			{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other}
+					)
+					columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))
+					$scope.gridOptions.columnDefs=columnDefs
+					make_a_line_chart.build($scope,columnDefs,"museum")
+			
+			
+			
+			});
+		})	
+}				
+
+
+
+
+
+
+
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-donors/monthly-controller.js","/../components/performance/donations-donors")
+},{"b55mWE":4,"buffer":3}],37:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+exports.donations_donors_performance_form =  function($scope, $http, $q,  
+	Raw_donations_donors,data_table_reload,get_table_data_nomusem_notype
+    ) {
+
+
+$scope.extraQuery = {}
+
+	
+ $scope.Raw_donations_donors=Raw_donations_donors
+	 
+ $scope.onSubmit=function() {
+		
+
+		
+		    var kpis = new Raw_donations_donors({
+								  
+					kpi_type: "visits",	
+			
+					amount: visit_form.amount.value,
+					gift_aid_amount: visit_form.gift_aid_amount.value,
+					//issue: visit_form.issue.value,
+				
+					date_logged:new Date(),	
+					date_value:visit_form.date_value.value,
+					comments:visit_form.comments.value,			
+					logger_user_name: $scope.user.username
+            });
+			
+			var query = {"date_value":visit_form.date_value.value,"exact":true,"end_value": moment(new Date()).format("YYYY-MM-DD") };
+			
+			Raw_donations_donors.query(query, function(visits) {
+				  $scope.$emit('form_submit');
+				console.log('Raw_visits',visits.length)
+				$scope.results=visits
+			if(visits.length>0) {
+			
+			
+			if (confirm("we already have a figure of " + visits[0].value + " for that date - are you sure you wnt to overwrite it ?")) {
+			
+				_.each(	visits	, function(visit) {
+				
+					Raw_donations_donors.remove({
+						id: visit._id
+					}, function() {
+					  console.log('removed old data')
+					});
+					})
+						save(kpis)
+				// Save it!
+			} else {
+				// Do nothing!
+			}
+			
+			
+			}
+			else
+			{			
+						save(kpis)
+			}
+			})	
+			
+            
+		
+	
+
+	
+
+    }
+		function save(kpis){
+
+	kpis.$save(function(err, user) {
+		
+						if(err) console.log(err)
+						 var  message = "data saved successfully";
+							  message+= "\n ";
+							  //message+= " "+ data + " added to " + museum;
+							  alert(message);
+							  get_table_data.get_table_data_nomusem_notype(moment(new Date()).subtract({'months':1})._d,$scope)			
+							$scope.message="data saved successfully";
+							visit_form.museum_id.value=""
+							visit_form.amount.value=""
+							visit_form.gift_aid_amount=""
+							//visit_form.issue=""
+								
+							 
+						})
+						
+
+}
+	
+	$( document ).ready(function() {
+     $scope.$emit('donations_other_performance_form');
+	 $scope.savex=function(kpis) {
+			save(kpis)
+	 }
+	
+});
+	
+
+	
+	}
+ 
+
+ 
+
+	
+	
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-donors/performance-form-controller.js","/../components/performance/donations-donors")
+},{"b55mWE":4,"buffer":3}],38:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+
+
+exports.raw_donors_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Raw_donations_donors,data_table_reload,get_table_data_nomusem_notype,grid_ui_settings,make_a_pie,make_a_line_chart,monthly_data_table_columns,table_security
+    ) {
+		
+		
+		$scope.show_all_Button=true
+		$scope.featured_collection=Raw_donations_donors
+		$rootScope.featured_collection=Raw_donations_donors
+		$scope.gridOptions=[]
+		$scope.gridOptions.data=[]
+		$scope.extraQuery = {}
+		
+		var columnDefs= []
+		
+
+		$rootScope.canEdit_table=true
+		 columnDefs.push(
+	
+			{ field: 'date_value' ,name: "Date",resizable: true ,type: 'date', cellFilter: 'date:\'dd/MM/yy\''},
+			{ field: 'amount' ,resizable: true ,cellFilter:'currency:"&pound;" : 2'},
+			{ field: 'gift_aid_amount' ,resizable: true ,cellFilter:'currency:"&pound;" : 2'},
+					
+			{ field: 'comments' ,value: "comments",resizable: true,visible:false},
+			{ field: 'logger_user_name' ,value: "Logged by",resizable: true,visible:false},
+			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',visible:false}
+			)
+			
+			$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
+
+			console.log('get_table_data_nomusem_notype')
+			get_table_data_nomusem_notype.getData(moment(new Date()).subtract({'months':1})._d,$scope,true)
+			
+}				
+
+
+
+
+
+
+
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-donors/raw-controller.js","/../components/performance/donations-donors")
+},{"b55mWE":4,"buffer":3}],39:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+exports.donationsgeneralFormdata = function() {
+  return {
+  // controller: 'giftaid_performance_form',
+      templateUrl: './components/performance/donations-general/kpi-form-and-data.html'
+  }
+}
+
+exports.donationsgeneralDashboard = function() {
+  return {
+   controller: 'dashboard_controller',
+    templateUrl: './components/performance/donations-general/dashboard.html'
+  }
+  }	
+
+
+
+exports.monthlyDonationsgeneral = function() {
+      return {    
+         controller: 'monthly_donationsgeneral_controller',
+         templateUrl: './shared/templates/data_table.html'
+      }
+  }
+
+exports.rawDonationsgeneral = function() {
+        return {
+           controller: 'raw_donationsgeneral_controller',
+           templateUrl: './shared/templates/data_table.html'
+        }
+}
+
+
+
+exports.recordDonationsgeneral  = function() {
+         return {
+             controller: 'donations_general_performance_form',
+            templateUrl: './components/performance/donations-general/kpi-form.html'
+      }
+    }
+
+
+  
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-general/donors-directive.js","/../components/performance/donations-general")
+},{"b55mWE":4,"buffer":3}],40:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+exports.monthly_donationsgeneral_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_donations_general,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,data_table_reload,table_security,dynamicTableCellFilter_donations_other
+    ) {
+		
+		
+			$scope.chart_class = "col-md-8 col-lg-8 col-sm-5 pull-right"
+			$scope.table_class = "col-md-12 col-lg-12 col-sm-5"	
+			$scope.chart_heading = "Fundraised income  by month"
+			$scope.background_colour="donations_other"
+		$scope.show_all_Button=false
+		console.log('controller go')
+		$scope.table_heading = "Monthlygeneral donations income"
+		$scope.pie_date = "Apr 2017"
+		$scope.gridOptions=[]
+		$scope.gridOptions.data=[]
+		$rootScope.canEdit_table=false
+		var columnDefs= []
+			$scope.filter_pie=[]
+			columnDefs.push(
+		//	{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "100", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other},
+			{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other}
+					
+			)
+			dates=getDateService.getDate()
+		$scope.start_date=dates[0]
+		$scope.end_date=dates[1]
+			columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))
+			console.log('columnDefs',columnDefs)		
+				$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
+	
+			
+			$scope.museums  =[]
+			$scope.selected_chart_stats=["donations_other"]
+			
+			
+			Monthly_donations_general.query({}, function(team) {
+				$scope.rows=[]
+				$scope.data_rows=[]
+				$scope._rows=[]
+				_.each(team,function(row){
+					console.log(row)
+						if(row.museum!=""){
+							if($scope.museums.indexOf(row.museum)==-1){$scope.museums.push(row.museum)}
+							
+					$scope._rows.push(row)
+					if(row.stat=="donations_other"){
+						console.log("donations_other")
+						$scope.data_rows.push(row)
+						
+					}
+			}
+					
+							
+				})
+			
+			$scope.gridOptions.data=$scope._rows;
+			$scope.gridOptions.enableFiltering=false
+			
+			_.each([2016,2017],function(year){
+				_.each(moment.monthsShort(),function(month){				
+						$scope.filter_pie.push({value:month+" "+year,name:month+" "+year})
+					
+				})
+			})
+			make_a_pie.build($scope,"Apr 2017","museum")
+			make_a_line_chart.build($scope,columnDefs,"museum")
+			$scope.changedValue = function(item){ 
+					$scope.pie_date=item			
+					make_a_pie.build($scope,item,"museum")
+			}
+				
+					
+			  $scope.$on('date:updated', function(event,data) {
+					console.log(data)
+					$scope.start_date=data[0]
+					$scope.end_date=	data[1]	
+			
+				});
+			
+				
+				$scope.$watchGroup(['end_date','start_date'], function(newValue, oldValue) {
+  
+					columnDefs=[]
+				columnDefs.push(	
+				//{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "100", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other},
+			{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other}
+					)
+					columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))
+					$scope.gridOptions.columnDefs=columnDefs
+					make_a_line_chart.build($scope,columnDefs,"museum")
+			
+			
+			
+			});
+		})	
+}				
+
+
+
+
+
+
+
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-general/monthly-controller.js","/../components/performance/donations-general")
+},{"b55mWE":4,"buffer":3}],41:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+exports.donations_general_performance_form =  function($scope, $http, $q,  
+	Raw_donations_general,data_table_reload,get_table_data_nomusem_notype
+    ) {
+
+
+$scope.extraQuery = {}
+
+	
+ $scope.Raw_donations_general=Raw_donations_general
+	 
+ $scope.onSubmit=function() {
+		
+
+		
+		    var kpis = new Raw_donations_general({
+								  
+					kpi_type: "visits",	
+			
+					amount: visit_form.amount.value,
+					gift_aid_amount: visit_form.gift_aid_amount.value,
+					//issue: visit_form.issue.value,
+				
+					date_logged:new Date(),	
+					date_value:visit_form.date_value.value,
+					comments:visit_form.comments.value,			
+					logger_user_name: $scope.user.username
+            });
+			
+			var query = {"date_value":visit_form.date_value.value,"exact":true,"end_value": moment(new Date()).format("YYYY-MM-DD") };
+			
+			Raw_donations_general.query(query, function(visits) {
+				  $scope.$emit('form_submit');
+				console.log('Raw_visits',visits.length)
+				$scope.results=visits
+			if(visits.length>0) {
+			
+			
+			if (confirm("we already have a figure of " + visits[0].value + " for that date - are you sure you wnt to overwrite it ?")) {
+			
+				_.each(	visits	, function(visit) {
+				
+					Raw_donations_general.remove({
+						id: visit._id
+					}, function() {
+					  console.log('removed old data')
+					});
+					})
+						save(kpis)
+				// Save it!
+			} else {
+				// Do nothing!
+			}
+			
+			
+			}
+			else
+			{			
+						save(kpis)
+			}
+			})	
+			
+            
+		
+	
+
+	
+
+    }
+		function save(kpis){
+
+	kpis.$save(function(err, user) {
+		
+						if(err) console.log(err)
+						 var  message = "data saved successfully";
+							  message+= "\n ";
+							  //message+= " "+ data + " added to " + museum;
+							  alert(message);
+							  get_table_data.get_table_data_nomusem_notype(moment(new Date()).subtract({'months':1})._d,$scope)			
+							$scope.message="data saved successfully";
+							//visit_form.museum_id.value=""
+							visit_form.amount.value=""
+							visit_form.gift_aid_amount=""
+							//visit_form.issue=""
+								
+							 
+						})
+						
+
+}
+	
+	$( document ).ready(function() {
+     $scope.$emit('donations_other_performance_form');
+	 $scope.savex=function(kpis) {
+			save(kpis)
+	 }
+	
+});
+	
+
+	
+	}
+ 
+
+ 
+
+	
+	
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-general/performance-form-controller.js","/../components/performance/donations-general")
+},{"b55mWE":4,"buffer":3}],42:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+
+
+exports.raw_donationsgeneral_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Raw_donations_general,data_table_reload,get_table_data_nomusem_notype,grid_ui_settings,make_a_pie,make_a_line_chart,monthly_data_table_columns,table_security
+    ) {
+		
+		
+		$scope.show_all_Button=true
+		$scope.featured_collection=Raw_donations_general
+		$rootScope.featured_collection=Raw_donations_general
+		$scope.gridOptions=[]
+		$scope.gridOptions.data=[]
+		$scope.extraQuery = {}
+		
+		var columnDefs= []
+		
+
+		$rootScope.canEdit_table=true
+		
+		 columnDefs.push(
+	
+			{ field: 'date_value' ,name: "Date",resizable: true ,type: 'date', cellFilter: 'date:\'dd/MM/yy\''},
+			{ field: 'amount' ,resizable: true ,cellFilter:'currency:"&pound;" : 2'},	
+			{ field: 'gift_aid_amount' ,resizable: true ,cellFilter:'currency:"&pound;" : 2'},		
+			{ field: 'comments' ,value: "comments",resizable: true,visible:false},
+			{ field: 'logger_user_name' ,value: "Logged by",resizable: true,visible:false},
+			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',visible:false}
+			
+			)
+			
+			$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
+
+			console.log('get_table_data_nomusem_notype')
+			get_table_data_nomusem_notype.getData(moment(new Date()).subtract({'months':1})._d,$scope,false)
+			
+}				
+
+
+
+
+
+
+
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-general/raw-controller.js","/../components/performance/donations-general")
+},{"b55mWE":4,"buffer":3}],43:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 
 exports.daily_donations_kiosk_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Daily_donations_kiosk,data_table_reload,get_table_data,grid_ui_settings,make_a_pie,make_a_line_chart,monthly_data_table_columns,table_security
@@ -10917,7 +11837,7 @@ exports.daily_donations_kiosk_controller = function($route,$scope, $http, $q, $r
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-kiosk/daily-donations_kiosk-controller.js","/../components/performance/donations-kiosk")
-},{"b55mWE":4,"buffer":3}],32:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],44:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.kiosk_uploader =   function($scope, $http, $q,  
 		Resources,Posters,data_table_reload,get_table_data,timeline_functions,$routeParams
@@ -11095,7 +12015,7 @@ if (files.length > 0){
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-kiosk/kiosk-uploader-controller.js","/../components/performance/donations-kiosk")
-},{"b55mWE":4,"buffer":3}],33:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],45:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.monthly_donations_kiosk_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_donations_kiosk,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,data_table_reload,table_security,dynamicTableCellFilter_donations_kiosk
     ) {
@@ -11201,7 +12121,7 @@ exports.monthly_donations_kiosk_controller = function(getDateService,$route,$sco
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-kiosk/monthly-donations_kiosk-controller.js","/../components/performance/donations-kiosk")
-},{"b55mWE":4,"buffer":3}],34:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],46:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.donations_kiosk_performance_form =  function($scope, $http, $q,  
           Raw_donations_kiosk,data_table_reload,get_table_data
@@ -11318,7 +12238,7 @@ exports.donations_kiosk_performance_form =  function($scope, $http, $q,
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-kiosk/performance-form-controller.js","/../components/performance/donations-kiosk")
-},{"b55mWE":4,"buffer":3}],35:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],47:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 
@@ -11366,7 +12286,312 @@ exports.raw_donations_kiosk_controller = function($route,$scope, $http, $q, $rou
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-kiosk/raw-donations_kiosk-controller.js","/../components/performance/donations-kiosk")
-},{"b55mWE":4,"buffer":3}],36:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],48:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+exports.monthly_online_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_donations_online,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,data_table_reload,table_security,dynamicTableCellFilter_donations_other
+    ) {
+		
+		
+			$scope.chart_class = "col-md-8 col-lg-8 col-sm-5 pull-right"
+			$scope.table_class = "col-md-12 col-lg-12 col-sm-5"	
+			$scope.chart_heading = "Online shop donations  by month"
+			$scope.background_colour="donations_other"
+		$scope.show_all_Button=false
+		console.log('controller go')
+		$scope.table_heading = "Monthly online shop donations"
+		$scope.pie_date = "Apr 2017"
+		$scope.gridOptions=[]
+		$scope.gridOptions.data=[]
+		$rootScope.canEdit_table=false
+		var columnDefs= []
+			$scope.filter_pie=[]
+			columnDefs.push(
+		//	{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "100", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other},
+			{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other}
+					
+			)
+			dates=getDateService.getDate()
+		$scope.start_date=dates[0]
+		$scope.end_date=dates[1]
+			columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))
+			console.log('columnDefs',columnDefs)		
+				$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
+	
+			
+			$scope.museums  =[]
+			$scope.selected_chart_stats=["donations_other"]
+			
+			
+			Monthly_donations_online.query({}, function(team) {
+				$scope.rows=[]
+				$scope.data_rows=[]
+				$scope._rows=[]
+				_.each(team,function(row){
+					console.log(row)
+						if(row.museum!=""){
+							if($scope.museums.indexOf(row.museum)==-1){$scope.museums.push(row.museum)}
+							
+					$scope._rows.push(row)
+					if(row.stat=="donations_other"){
+						console.log("donations_other")
+						$scope.data_rows.push(row)
+						
+					}
+			}
+					
+							
+				})
+			
+			$scope.gridOptions.data=$scope._rows;
+			$scope.gridOptions.enableFiltering=false
+			
+			_.each([2016,2017],function(year){
+				_.each(moment.monthsShort(),function(month){				
+						$scope.filter_pie.push({value:month+" "+year,name:month+" "+year})
+					
+				})
+			})
+			make_a_pie.build($scope,"Apr 2017","museum")
+			make_a_line_chart.build($scope,columnDefs,"museum")
+			$scope.changedValue = function(item){ 
+					$scope.pie_date=item			
+					make_a_pie.build($scope,item,"museum")
+			}
+				
+					
+			  $scope.$on('date:updated', function(event,data) {
+					console.log(data)
+					$scope.start_date=data[0]
+					$scope.end_date=	data[1]	
+			
+				});
+			
+				
+				$scope.$watchGroup(['end_date','start_date'], function(newValue, oldValue) {
+  
+					columnDefs=[]
+				columnDefs.push(	
+				//{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "100", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other},
+			{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other}
+					)
+					columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))
+					$scope.gridOptions.columnDefs=columnDefs
+					make_a_line_chart.build($scope,columnDefs,"museum")
+			
+			
+			
+			});
+		})	
+}				
+
+
+
+
+
+
+
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-online/monthly-controller.js","/../components/performance/donations-online")
+},{"b55mWE":4,"buffer":3}],49:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+exports.onlineFormdata = function() {
+  return {
+  // controller: 'giftaid_performance_form',
+      templateUrl: './components/performance/donations-online/kpi-form-and-data.html'
+  }
+}
+
+exports.onlineDashboard = function() {
+  return {
+   controller: 'dashboard_controller',
+    templateUrl: './components/performance/donations-online/dashboard.html'
+  }
+  }	
+
+exports.monthlyDonationsonline = function() {
+      return {    
+         controller: 'monthly_online_controller',
+         templateUrl: './shared/templates/data_table.html'
+      }
+  }
+
+exports.rawDonationsonline = function() {
+        return {
+           controller: 'raw_online_controller',
+           templateUrl: './shared/templates/data_table.html'
+        }
+}
+
+
+
+  
+
+exports.recordDonationsonline  = function() {
+         return {
+             controller: 'donations_online_performance_form',
+            templateUrl: './components/performance/donations-online/kpi-form.html'
+      }
+    }
+
+
+  
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-online/online-directive.js","/../components/performance/donations-online")
+},{"b55mWE":4,"buffer":3}],50:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+exports.donations_online_performance_form =  function($scope, $http, $q,  
+	Raw_donations_online,data_table_reload,get_table_data_nomusem_notype
+    ) {
+
+
+$scope.extraQuery = {}
+
+	
+ $scope.Raw_donations_online=Raw_donations_online
+	 
+ $scope.onSubmit=function() {
+		
+
+		
+		    var kpis = new Raw_donations_online({
+								  
+					kpi_type: "visits",	
+			
+					amount: visit_form.amount.value,
+					
+				
+				
+					date_logged:new Date(),	
+					date_value:visit_form.date_value.value,
+					comments:visit_form.comments.value,			
+					logger_user_name: $scope.user.username
+            });
+			
+			var query = {"date_value":visit_form.date_value.value,"exact":true,"end_value": moment(new Date()).format("YYYY-MM-DD") };
+			
+			Raw_donations_online.query(query, function(visits) {
+				  $scope.$emit('form_submit');
+				console.log('Raw_visits',visits.length)
+				$scope.results=visits
+			if(visits.length>0) {
+			
+			
+			if (confirm("we already have a figure of " + visits[0].value + " for that date - are you sure you wnt to overwrite it ?")) {
+			
+				_.each(	visits	, function(visit) {
+				
+					Raw_donations_online.remove({
+						id: visit._id
+					}, function() {
+					  console.log('removed old data')
+					});
+					})
+						save(kpis)
+				// Save it!
+			} else {
+				// Do nothing!
+			}
+			
+			
+			}
+			else
+			{			
+						save(kpis)
+			}
+			})	
+			
+            
+		
+	
+
+	
+
+    }
+		function save(kpis){
+
+	kpis.$save(function(err, user) {
+		
+						if(err) console.log(err)
+						 var  message = "data saved successfully";
+							  message+= "\n ";
+							  //message+= " "+ data + " added to " + museum;
+							  alert(message);
+							  get_table_data.get_table_data_nomusem_notype(moment(new Date()).subtract({'months':1})._d,$scope)			
+							$scope.message="data saved successfully";
+						
+							visit_form.amount.value=""
+						
+							visit_form.issue=""
+								
+							 
+						})
+						
+
+}
+	
+	$( document ).ready(function() {
+     $scope.$emit('donations_other_performance_form');
+	 $scope.savex=function(kpis) {
+			save(kpis)
+	 }
+	
+});
+	
+
+	
+	}
+ 
+
+ 
+
+	
+	
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-online/performance-form-controller.js","/../components/performance/donations-online")
+},{"b55mWE":4,"buffer":3}],51:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+
+
+exports.raw_online_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Raw_donations_online,data_table_reload,get_table_data_nomusem_notype,grid_ui_settings,make_a_pie,make_a_line_chart,monthly_data_table_columns,table_security
+    ) {
+		
+		
+		$scope.show_all_Button=true
+		$scope.featured_collection=Raw_donations_online
+		$rootScope.featured_collection=Raw_donations_online
+		$scope.gridOptions=[]
+		$scope.gridOptions.data=[]
+		$scope.extraQuery = {}
+		
+		var columnDefs= []
+		
+
+		$rootScope.canEdit_table=true
+		 columnDefs.push(
+	
+			{ field: 'date_value' ,name: "Date",resizable: true ,type: 'date', cellFilter: 'date:\'dd/MM/yy\''},
+			{ field: 'amount' ,resizable: true ,cellFilter:'currency:"&pound;" : 2'},
+					
+			{ field: 'comments' ,value: "comments",resizable: true,visible:false},
+			{ field: 'logger_user_name' ,value: "Logged by",resizable: true,visible:false},
+			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',visible:false}
+			)
+			
+			$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
+
+			console.log('get_table_data_nomusem_notype')
+			get_table_data_nomusem_notype.getData(moment(new Date()).subtract({'months':1})._d,$scope,true)
+			
+}				
+
+
+
+
+
+
+
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-online/raw-controller.js","/../components/performance/donations-online")
+},{"b55mWE":4,"buffer":3}],52:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.monthly_donations_other_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_donations_other,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,data_table_reload,table_security,dynamicTableCellFilter_donations_other
     ) {
@@ -11472,7 +12697,7 @@ exports.monthly_donations_other_controller = function(getDateService,$route,$sco
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-other/monthly-donations_other-controller.js","/../components/performance/donations-other")
-},{"b55mWE":4,"buffer":3}],37:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],53:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.donations_other_performance_form =  function($scope, $http, $q,  
           Raw_donations_other,data_table_reload,get_table_data
@@ -11589,7 +12814,7 @@ exports.donations_other_performance_form =  function($scope, $http, $q,
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-other/performance-form-controller.js","/../components/performance/donations-other")
-},{"b55mWE":4,"buffer":3}],38:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],54:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 
@@ -11636,7 +12861,7 @@ exports.raw_donations_other_controller = function($route,$scope, $http, $q, $rou
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-other/raw-donations_other-controller.js","/../components/performance/donations-other")
-},{"b55mWE":4,"buffer":3}],39:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],55:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.yearly_donations_other_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Yearly_donations_other,make_a_pie,make_a_line_chart,yearly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -11720,7 +12945,619 @@ exports.yearly_donations_other_controller = function($route,$scope, $http, $q, $
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-other/yearly-donations_other-controller.js","/../components/performance/donations-other")
-},{"b55mWE":4,"buffer":3}],40:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],56:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+exports.monthly_treasure_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_donations_treasure,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,data_table_reload,table_security,dynamicTableCellFilter_donations_other
+    ) {
+		
+		
+			$scope.chart_class = "col-md-8 col-lg-8 col-sm-5 pull-right"
+			$scope.table_class = "col-md-12 col-lg-12 col-sm-5"	
+			$scope.chart_heading = "Fundraised income  by month"
+			$scope.background_colour="donations_other"
+		$scope.show_all_Button=false
+		console.log('controller go')
+		$scope.table_heading = "Monthly Treasure income"
+		$scope.pie_date = "Apr 2017"
+		$scope.gridOptions=[]
+		$scope.gridOptions.data=[]
+		$rootScope.canEdit_table=false
+		var columnDefs= []
+			$scope.filter_pie=[]
+			columnDefs.push(
+		//	{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "100", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other},
+			{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other}
+					
+			)
+			dates=getDateService.getDate()
+		$scope.start_date=dates[0]
+		$scope.end_date=dates[1]
+			columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))
+			console.log('columnDefs',columnDefs)		
+				$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
+	
+			
+			$scope.museums  =[]
+			$scope.selected_chart_stats=["donations_other"]
+			
+			
+			Monthly_donations_treasure.query({}, function(team) {
+				$scope.rows=[]
+				$scope.data_rows=[]
+				$scope._rows=[]
+				_.each(team,function(row){
+					console.log(row)
+						if(row.museum!=""){
+							if($scope.museums.indexOf(row.museum)==-1){$scope.museums.push(row.museum)}
+							
+					$scope._rows.push(row)
+					if(row.stat=="donations_other"){
+						console.log("donations_other")
+						$scope.data_rows.push(row)
+						
+					}
+			}
+					
+							
+				})
+			
+			$scope.gridOptions.data=$scope._rows;
+			$scope.gridOptions.enableFiltering=false
+			
+			_.each([2016,2017],function(year){
+				_.each(moment.monthsShort(),function(month){				
+						$scope.filter_pie.push({value:month+" "+year,name:month+" "+year})
+					
+				})
+			})
+			make_a_pie.build($scope,"Apr 2017","museum")
+			make_a_line_chart.build($scope,columnDefs,"museum")
+			$scope.changedValue = function(item){ 
+					$scope.pie_date=item			
+					make_a_pie.build($scope,item,"museum")
+			}
+				
+					
+			  $scope.$on('date:updated', function(event,data) {
+					console.log(data)
+					$scope.start_date=data[0]
+					$scope.end_date=	data[1]	
+			
+				});
+			
+				
+				$scope.$watchGroup(['end_date','start_date'], function(newValue, oldValue) {
+  
+					columnDefs=[]
+				columnDefs.push(	
+				//{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "100", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other},
+			{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other}
+					)
+					columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))
+					$scope.gridOptions.columnDefs=columnDefs
+					make_a_line_chart.build($scope,columnDefs,"museum")
+			
+			
+			
+			});
+		})	
+}				
+
+
+
+
+
+
+
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-treasure/monthly-controller.js","/../components/performance/donations-treasure")
+},{"b55mWE":4,"buffer":3}],57:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+exports.donations_treasure_performance_form =  function($scope, $http, $q,  
+	Raw_donations_treasure,data_table_reload,get_table_data_nomusem_notype
+    ) {
+
+
+$scope.extraQuery = {}
+
+	
+ $scope.Raw_donations_treasure=Raw_donations_treasure
+	 
+ $scope.onSubmit=function() {
+		
+
+		
+		    var kpis = new Raw_donations_treasure({
+								  
+					kpi_type: "visits",	
+			
+					amount: visit_form.amount.value,
+					gift_aid_amount: visit_form.gift_aid_amount.value,
+					issue: visit_form.issue.value,
+				
+					date_logged:new Date(),	
+					date_value:visit_form.date_value.value,
+					comments:visit_form.comments.value,			
+					logger_user_name: $scope.user.username
+            });
+			
+			var query = {"date_value":visit_form.date_value.value,"exact":true,"end_value": moment(new Date()).format("YYYY-MM-DD") };
+			
+			Raw_donations_treasure.query(query, function(visits) {
+				  $scope.$emit('form_submit');
+				console.log('Raw_visits',visits.length)
+				$scope.results=visits
+			if(visits.length>0) {
+			
+			
+			if (confirm("we already have a figure of " + visits[0].value + " for that date - are you sure you wnt to overwrite it ?")) {
+			
+				_.each(	visits	, function(visit) {
+				
+					Raw_donations_treasure.remove({
+						id: visit._id
+					}, function() {
+					  console.log('removed old data')
+					});
+					})
+						save(kpis)
+				// Save it!
+			} else {
+				// Do nothing!
+			}
+			
+			
+			}
+			else
+			{			
+						save(kpis)
+			}
+			})	
+			
+            
+		
+	
+
+	
+
+    }
+		function save(kpis){
+
+	kpis.$save(function(err, user) {
+		
+						if(err) console.log(err)
+						 var  message = "data saved successfully";
+							  message+= "\n ";
+							  //message+= " "+ data + " added to " + museum;
+							  alert(message);
+							  get_table_data.get_table_data_nomusem_notype(moment(new Date()).subtract({'months':1})._d,$scope)			
+							$scope.message="data saved successfully";
+							visit_form.museum_id.value=""
+							visit_form.amount.value=""
+							visit_form.gift_aid_amount=""
+							visit_form.issue=""
+								
+							 
+						})
+						
+
+}
+	
+	$( document ).ready(function() {
+     $scope.$emit('donations_other_performance_form');
+	 $scope.savex=function(kpis) {
+			save(kpis)
+	 }
+	
+});
+	
+
+	
+	}
+ 
+
+ 
+
+	
+	
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-treasure/performance-form-controller.js","/../components/performance/donations-treasure")
+},{"b55mWE":4,"buffer":3}],58:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+
+
+exports.raw_treasure_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Raw_donations_treasure,data_table_reload,get_table_data_nomusem_notype,grid_ui_settings,make_a_pie,make_a_line_chart,monthly_data_table_columns,table_security
+    ) {
+		
+		
+		$scope.show_all_Button=true
+		$scope.featured_collection=Raw_donations_treasure
+		$rootScope.featured_collection=Raw_donations_treasure
+		$scope.gridOptions=[]
+		$scope.gridOptions.data=[]
+		$scope.extraQuery = {}
+		
+		var columnDefs= []
+		
+
+		$rootScope.canEdit_table=true
+		 columnDefs.push(
+	
+			{ field: 'date_value' ,name: "Date",resizable: true ,type: 'date', cellFilter: 'date:\'dd/MM/yy\''},
+			{ field: 'amount' ,resizable: true ,cellFilter:'currency:"&pound;" : 2'},
+			{ field: 'gift_aid_amount' ,resizable: true ,cellFilter:'currency:"&pound;" : 2'},
+			{ field: 'issue' ,resizable: true ,cellFilter:'currency:"&pound;" : 2'},			
+			{ field: 'comments' ,value: "comments",resizable: true,visible:false},
+			{ field: 'logger_user_name' ,value: "Logged by",resizable: true,visible:false},
+			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',visible:false}
+			)
+			
+			$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
+
+			console.log('get_table_data_nomusem_notype')
+			get_table_data_nomusem_notype.getData(moment(new Date()).subtract({'months':1})._d,$scope,true)
+			
+}				
+
+
+
+
+
+
+
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-treasure/raw-controller.js","/../components/performance/donations-treasure")
+},{"b55mWE":4,"buffer":3}],59:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+exports.treasureFormdata = function() {
+  return {
+  // controller: 'giftaid_performance_form',
+      templateUrl: './components/performance/donations-treasure/kpi-form-and-data.html'
+  }
+}
+
+exports.treasureDashboard = function() {
+  return {
+   controller: 'dashboard_controller',
+    templateUrl: './components/performance/donations-treasure/dashboard.html'
+  }
+  }	
+
+exports.monthlyDonationstreasure = function() {
+      return {    
+         controller: 'monthly_treasure_controller',
+         templateUrl: './shared/templates/data_table.html'
+      }
+  }
+
+exports.rawDonationstreasure = function() {
+        return {
+           controller: 'raw_treasure_controller',
+           templateUrl: './shared/templates/data_table.html'
+        }
+}
+
+
+
+  
+
+exports.recordDonationstreasure  = function() {
+         return {
+             controller: 'donations_treasure_performance_form',
+            templateUrl: './components/performance/donations-treasure/kpi-form.html'
+      }
+    }
+
+
+  
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-treasure/treasure-directive.js","/../components/performance/donations-treasure")
+},{"b55mWE":4,"buffer":3}],60:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+exports.monthly_trusts_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_donations_trusts,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,data_table_reload,table_security,dynamicTableCellFilter_donations_other
+    ) {
+		
+		
+			$scope.chart_class = "col-md-8 col-lg-8 col-sm-5 pull-right"
+			$scope.table_class = "col-md-12 col-lg-12 col-sm-5"	
+			$scope.chart_heading = "Fundraised income  by month"
+			$scope.background_colour="donations_other"
+		$scope.show_all_Button=false
+		console.log('controller go')
+		$scope.table_heading = "Monthly Trusts and Foundations income"
+		$scope.pie_date = "Apr 2017"
+		$scope.gridOptions=[]
+		$scope.gridOptions.data=[]
+		$rootScope.canEdit_table=false
+		var columnDefs= []
+			$scope.filter_pie=[]
+			columnDefs.push(
+		//	{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "100", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other},
+			{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other}
+					
+			)
+			dates=getDateService.getDate()
+		$scope.start_date=dates[0]
+		$scope.end_date=dates[1]
+			columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))
+			console.log('columnDefs',columnDefs)		
+				$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
+	
+			
+			$scope.museums  =[]
+			$scope.selected_chart_stats=["donations_other"]
+			
+			
+			Monthly_donations_trusts.query({}, function(team) {
+				$scope.rows=[]
+				$scope.data_rows=[]
+				$scope._rows=[]
+				_.each(team,function(row){
+					console.log(row)
+						if(row.museum!=""){
+							if($scope.museums.indexOf(row.museum)==-1){$scope.museums.push(row.museum)}
+							
+					$scope._rows.push(row)
+					if(row.stat=="donations_other"){
+						console.log("donations_other")
+						$scope.data_rows.push(row)
+						
+					}
+			}
+					
+							
+				})
+			
+			$scope.gridOptions.data=$scope._rows;
+			$scope.gridOptions.enableFiltering=false
+			
+			_.each([2016,2017],function(year){
+				_.each(moment.monthsShort(),function(month){				
+						$scope.filter_pie.push({value:month+" "+year,name:month+" "+year})
+					
+				})
+			})
+			make_a_pie.build($scope,"Apr 2017","museum")
+			make_a_line_chart.build($scope,columnDefs,"museum")
+			$scope.changedValue = function(item){ 
+					$scope.pie_date=item			
+					make_a_pie.build($scope,item,"museum")
+			}
+				
+					
+			  $scope.$on('date:updated', function(event,data) {
+					console.log(data)
+					$scope.start_date=data[0]
+					$scope.end_date=	data[1]	
+			
+				});
+			
+				
+				$scope.$watchGroup(['end_date','start_date'], function(newValue, oldValue) {
+  
+					columnDefs=[]
+				columnDefs.push(	
+				//{ field: 'museum',	cellFilter:'valueFilter',	name: "Museum",width: "100", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other},
+			{ field: 'stat',	cellFilter:'valueFilter',	name: "Statistic",width: "300", pinnedLeft:true,cellClass:dynamicTableCellFilter_donations_other}
+					)
+					columnDefs=columnDefs.concat(monthly_data_table_columns_retail.build($scope,$scope.start_date,$scope.end_date))
+					$scope.gridOptions.columnDefs=columnDefs
+					make_a_line_chart.build($scope,columnDefs,"museum")
+			
+			
+			
+			});
+		})	
+}				
+
+
+
+
+
+
+
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-trusts/monthly-controller.js","/../components/performance/donations-trusts")
+},{"b55mWE":4,"buffer":3}],61:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+exports.donations_trusts_performance_form =  function($scope, $http, $q,  
+	Raw_donations_trusts,data_table_reload,get_table_data_nomusem_notype
+    ) {
+
+
+$scope.extraQuery = {}
+
+	
+ $scope.Raw_donations_trusts=Raw_donations_trusts
+	 
+ $scope.onSubmit=function() {
+		
+
+		
+		    var kpis = new Raw_donations_trusts({
+								  
+					kpi_type: "visits",	
+			
+					amount: visit_form.amount.value,
+					trust_name: visit_form.trust_name.value,
+					installment_number: visit_form.installment_number.value,
+				
+					date_logged:new Date(),	
+					date_value:visit_form.date_value.value,
+					comments:visit_form.comments.value,			
+					logger_user_name: $scope.user.username
+            });
+			
+			var query = {"date_value":visit_form.date_value.value,"exact":true,"end_value": moment(new Date()).format("YYYY-MM-DD") };
+			
+			Raw_donations_trusts.query(query, function(visits) {
+				  $scope.$emit('form_submit');
+				console.log('Raw_visits',visits.length)
+				$scope.results=visits
+			if(visits.length>0) {
+			
+			
+			if (confirm("we already have a figure of " + visits[0].value + " for that date - are you sure you wnt to overwrite it ?")) {
+			
+				_.each(	visits	, function(visit) {
+				
+					Raw_donations_trusts.remove({
+						id: visit._id
+					}, function() {
+					  console.log('removed old data')
+					});
+					})
+						save(kpis)
+				// Save it!
+			} else {
+				// Do nothing!
+			}
+			
+			
+			}
+			else
+			{			
+						save(kpis)
+			}
+			})	
+			
+            
+		
+	
+
+	
+
+    }
+		function save(kpis){
+
+	kpis.$save(function(err, user) {
+		
+						if(err) console.log(err)
+						 var  message = "data saved successfully";
+							  message+= "\n ";
+							  //message+= " "+ data + " added to " + museum;
+							  alert(message);
+							  get_table_data.get_table_data_nomusem_notype(moment(new Date()).subtract({'months':1})._d,$scope)			
+							$scope.message="data saved successfully";
+							//visit_form.museum_id.value=""
+							visit_form.amount.value=""
+							visit_form.installment_number=""
+							visit_form.trust_name=""
+								
+							 
+						})
+						
+
+}
+	
+	$( document ).ready(function() {
+     $scope.$emit('donations_other_performance_form');
+	 $scope.savex=function(kpis) {
+			save(kpis)
+	 }
+	
+});
+	
+
+	
+	}
+ 
+
+ 
+
+	
+	
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-trusts/performance-form-controller.js","/../components/performance/donations-trusts")
+},{"b55mWE":4,"buffer":3}],62:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+
+
+exports.raw_trusts_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Raw_donations_trusts,data_table_reload,get_table_data_nomusem_notype,grid_ui_settings,make_a_pie,make_a_line_chart,monthly_data_table_columns,table_security
+    ) {
+		
+		
+		$scope.show_all_Button=true
+		$scope.featured_collection=Raw_donations_trusts
+		$rootScope.featured_collection=Raw_donations_trusts
+		$scope.gridOptions=[]
+		$scope.gridOptions.data=[]
+		$scope.extraQuery = {}
+		
+		var columnDefs= []
+		
+
+		$rootScope.canEdit_table=true
+		 columnDefs.push(
+	
+			{ field: 'date_value' ,name: "Date",resizable: true ,type: 'date', cellFilter: 'date:\'dd/MM/yy\''},
+			{ field: 'amount' ,resizable: true ,cellFilter:'currency:"&pound;" : 2'},
+			{ field: 'trust_name' ,resizable: true },
+			{ field: 'installment_number' ,resizable: true },			
+			{ field: 'comments' ,value: "comments",resizable: true,visible:false},
+			{ field: 'logger_user_name' ,value: "Logged by",resizable: true,visible:false},
+			{ field: 'date_logged', value: "Date logged" ,type: 'date', cellFilter: 'date:\'dd/MM/yy HH:mm\'',visible:false}
+			)
+			
+			$scope.gridOptions = grid_ui_settings.monthly(   columnDefs,$scope);
+
+			console.log('get_table_data_nomusem_notype')
+			get_table_data_nomusem_notype.getData(moment(new Date()).subtract({'months':1})._d,$scope,true)
+			
+}				
+
+
+
+
+
+
+
+
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-trusts/raw-controller.js","/../components/performance/donations-trusts")
+},{"b55mWE":4,"buffer":3}],63:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+exports.trustsFormdata = function() {
+  return {
+  // controller: 'giftaid_performance_form',
+      templateUrl: './components/performance/donations-trusts/kpi-form-and-data.html'
+  }
+}
+
+exports.trustsDashboard = function() {
+  return {
+   controller: 'dashboard_controller',
+    templateUrl: './components/performance/donations-trusts/dashboard.html'
+  }
+  }	
+
+exports.monthlyDonationstrusts = function() {
+      return {    
+         controller: 'monthly_trusts_controller',
+         templateUrl: './shared/templates/data_table.html'
+      }
+  }
+
+exports.rawDonationstrusts= function() {
+        return {
+           controller: 'raw_trusts_controller',
+           templateUrl: './shared/templates/data_table.html'
+        }
+}
+
+
+
+  
+
+exports.recordDonationstrusts  = function() {
+         return {
+             controller: 'donations_trusts_performance_form',
+            templateUrl: './components/performance/donations-trusts/kpi-form.html'
+      }
+    }
+
+
+  
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations-trusts/trusts-directive.js","/../components/performance/donations-trusts")
+},{"b55mWE":4,"buffer":3}],64:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.monthly_donations_controller = function(yearly_percentage_difference,yearly_totals,getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_donations,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,data_table_reload,table_security,dynamicTableCellFilter_donations
     ) {
@@ -11834,7 +13671,7 @@ exports.monthly_donations_controller = function(yearly_percentage_difference,yea
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations/monthly-donations-controller.js","/../components/performance/donations")
-},{"b55mWE":4,"buffer":3}],41:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],65:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.donations_performance_form =  function($scope, $http, $q,  
           Raw_donations,data_table_reload,get_table_data
@@ -11947,7 +13784,7 @@ visit_form.no_envelopes.value=""
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations/performance-form-controller.js","/../components/performance/donations")
-},{"b55mWE":4,"buffer":3}],42:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],66:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 
@@ -11992,7 +13829,7 @@ exports.raw_donations_controller = function($route,$scope, $http, $q, $routePara
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations/raw-donations-controller.js","/../components/performance/donations")
-},{"b55mWE":4,"buffer":3}],43:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],67:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.yearly_donations_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Yearly_donations,make_a_pie,make_a_line_chart,yearly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -12076,7 +13913,7 @@ exports.yearly_donations_controller = function($route,$scope, $http, $q, $routeP
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/donations/yearly-donations-controller.js","/../components/performance/donations")
-},{"b55mWE":4,"buffer":3}],44:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],68:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.monthly_events_controller = function(yearly_totals,yearly_percentage_difference,getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter_retail
     ) {
@@ -12196,7 +14033,7 @@ exports.monthly_events_controller = function(yearly_totals,yearly_percentage_dif
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/events/monthly-events-controller.js","/../components/performance/events")
-},{"b55mWE":4,"buffer":3}],45:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],69:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.record_events_controller =  function($scope, $http, $q, $routeParams, $location,
           $rootScope,Raw_events,Event_names,data_table_reload,Emu_events,get_table_data,Community_groups
@@ -12520,7 +14357,7 @@ function sortJSON(data, key, way) {
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/events/performance-form-controller.js","/../components/performance/events")
-},{"b55mWE":4,"buffer":3}],46:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],70:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.raw_events_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Raw_events,data_table_reload,AuthService,grid_ui_settings,get_table_data,table_security
     ) {
@@ -12569,7 +14406,7 @@ exports.raw_events_controller = function($route,$scope, $http, $q, $routeParams,
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/events/raw-events-controller.js","/../components/performance/events")
-},{"b55mWE":4,"buffer":3}],47:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],71:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.yearly_events_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Yearly_events,make_a_pie,make_a_line_chart,yearly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -12655,7 +14492,7 @@ exports.yearly_events_controller = function($route,$scope, $http, $q, $routePara
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/events/yearly-events-controller.js","/../components/performance/events")
-},{"b55mWE":4,"buffer":3}],48:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],72:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.monthly_exhibitions_pwyt_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_exhibitions_pwyt,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -12737,7 +14574,7 @@ exports.monthly_exhibitions_pwyt_controller = function($route,$scope, $http, $q,
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/exhibitions-pwyt/monthly-donations-controller.js","/../components/performance/exhibitions-pwyt")
-},{"b55mWE":4,"buffer":3}],49:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],73:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.exhibitions_pwyt_performance_form =  function($scope, $http, $q, $routeParams, $location,
           $rootScope,Raw_exhibitions_pwyt,data_table_reload,get_table_data
@@ -12831,7 +14668,7 @@ $scope.extraQuery = { "donation_box_no":"#"}
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/exhibitions-pwyt/performance-form-controller.js","/../components/performance/exhibitions-pwyt")
-},{"b55mWE":4,"buffer":3}],50:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],74:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.raw_exhibitions_pwyt_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Raw_exhibitions_pwyt,data_table_reload,get_table_data,grid_ui_settings ,	table_security
     ) {
@@ -12883,7 +14720,7 @@ $rootScope.canEdit_table=true
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/exhibitions-pwyt/raw-donations-controller.js","/../components/performance/exhibitions-pwyt")
-},{"b55mWE":4,"buffer":3}],51:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],75:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.exhibitions_summary_controller = function(monthly_data_table_columns,$route,$scope, $http, $q, $routeParams, $location,$rootScope,Emu_events,grid_ui_settings)
      {
@@ -12953,7 +14790,7 @@ exports.exhibitions_summary_controller = function(monthly_data_table_columns,$ro
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/exhibitions/exhibitions-summary-controller.js","/../components/performance/exhibitions")
-},{"b55mWE":4,"buffer":3}],52:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],76:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.exhibitions_teg_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Exhibitions_teg,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -13059,7 +14896,7 @@ exports.exhibitions_teg_controller = function($route,$scope, $http, $q, $routePa
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/gallery-visits/exhibitions-teg-controller.js","/../components/performance/gallery-visits")
-},{"b55mWE":4,"buffer":3}],53:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],77:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.monthly_teg_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_teg,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -13156,7 +14993,7 @@ exports.monthly_teg_controller = function($route,$scope, $http, $q, $routeParams
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/gallery-visits/monthly-teg-controller.js","/../components/performance/gallery-visits")
-},{"b55mWE":4,"buffer":3}],54:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],78:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.teg_performance_form =  function($scope, $http, $q, $routeParams, $location,
           $rootScope,Raw_teg,data_table_reload,get_table_data
@@ -13245,7 +15082,7 @@ exports.teg_performance_form =  function($scope, $http, $q, $routeParams, $locat
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/gallery-visits/performance-form-controller.js","/../components/performance/gallery-visits")
-},{"b55mWE":4,"buffer":3}],55:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],79:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.raw_teg_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Raw_teg,data_table_reload,get_table_data,grid_ui_settings ,$rootScope,table_security
     ) {
@@ -13281,7 +15118,7 @@ exports.raw_teg_controller = function($route,$scope, $http, $q, $routeParams, $l
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/gallery-visits/raw-teg-controller.js","/../components/performance/gallery-visits")
-},{"b55mWE":4,"buffer":3}],56:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],80:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.weekly_teg_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Weekly_teg,make_a_pie,make_a_line_chart,weekly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -13364,7 +15201,7 @@ exports.weekly_teg_controller = function($route,$scope, $http, $q, $routeParams,
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/gallery-visits/weekly-teg-controller.js","/../components/performance/gallery-visits")
-},{"b55mWE":4,"buffer":3}],57:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],81:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.yearly_teg_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Yearly_teg,make_a_pie,make_a_line_chart,yearly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -13448,7 +15285,7 @@ exports.yearly_teg_controller = function($route,$scope, $http, $q, $routeParams,
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/gallery-visits/yearly-teg-controller.js","/../components/performance/gallery-visits")
-},{"b55mWE":4,"buffer":3}],58:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],82:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.monthly_all_giftaid_controller = function(getDateService,$route,$scope, $http, $q, $routeParams,monthly_data_table_columns_retail, dynamicTableCellFilter_donations,$location,$rootScope, Monthly_all_giftaid,grid_ui_settings,table_security) {
 		
@@ -13501,7 +15338,7 @@ exports.monthly_all_giftaid_controller = function(getDateService,$route,$scope, 
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/gift-aid/monthly-allgiftaid-controller.js","/../components/performance/gift-aid")
-},{"b55mWE":4,"buffer":3}],59:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],83:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.monthly_giftaid_controller = function(getDateService,$route,$scope, $http, $q, $routeParams,monthly_data_table_columns_retail, dynamicTableCellFilter_donations,$location,$rootScope, Monthly_giftaid,grid_ui_settings,table_security
     ) {
@@ -13557,7 +15394,7 @@ exports.monthly_giftaid_controller = function(getDateService,$route,$scope, $htt
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/gift-aid/monthly-giftaid-controller.js","/../components/performance/gift-aid")
-},{"b55mWE":4,"buffer":3}],60:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],84:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.record_giftaid_controller =  function($scope, $http, $q, $routeParams, $location,
           $rootScope,Raw_giftaid,data_table_reload,get_table_data
@@ -13648,7 +15485,7 @@ exports.record_giftaid_controller =  function($scope, $http, $q, $routeParams, $
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/gift-aid/performance-form-controller.js","/../components/performance/gift-aid")
-},{"b55mWE":4,"buffer":3}],61:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],85:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.raw_giftaid_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Raw_giftaid,data_table_reload,get_table_data,grid_ui_settings ,table_security
     ) {
@@ -13687,7 +15524,7 @@ exports.raw_giftaid_controller = function($route,$scope, $http, $q, $routeParams
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/gift-aid/raw-giftaid-controller.js","/../components/performance/gift-aid")
-},{"b55mWE":4,"buffer":3}],62:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],86:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.kpi_home_controller = function(get_kpis,get_team_kpis,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Raw_events,data_table_reload,AuthService,grid_ui_settings,get_table_data,table_security
     ) {
@@ -13934,7 +15771,7 @@ $.getJSON('https://sheets.googleapis.com/v4/spreadsheets/1dZ1UMfIbNpbUEgGLy7nLeE
 
 }
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/home/kpi-home-controller.js","/../components/performance/home")
-},{"b55mWE":4,"buffer":3}],63:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],87:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.master_kpi_home_controller = function(get_kpis,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Raw_events,data_table_reload,AuthService,grid_ui_settings,get_table_data,table_security
     ) {
@@ -14088,7 +15925,7 @@ $.getJSON('https://sheets.googleapis.com/v4/spreadsheets/1dZ1UMfIbNpbUEgGLy7nLeE
 
 }
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/home/master-kpi-home-controller.js","/../components/performance/home")
-},{"b55mWE":4,"buffer":3}],64:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],88:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.monthly_kpi_events_controller = function(yearly_percentage_difference,yearly_totals,getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope,Monthly_kpi_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -14283,7 +16120,7 @@ function isNumeric(n) {
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/kpi-events/monthly-events-controller.js","/../components/performance/kpi-events")
-},{"b55mWE":4,"buffer":3}],65:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],89:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.record_kpi_events_controller =  function($scope, $http, $q, $routeParams, $location,
           $rootScope,Raw_kpi_events,data_table_reload,Emu_events,get_table_data_team,Community_groups
@@ -14604,7 +16441,7 @@ visit_form.date_value_end.value=moment(target_group).format('YYYY-MM-DD');
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/kpi-events/performance-form-controller.js","/../components/performance/kpi-events")
-},{"b55mWE":4,"buffer":3}],66:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],90:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	
 
@@ -14681,7 +16518,7 @@ exports.raw_kpi_events_controller = function($route,$scope, AuthService,get_tabl
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/kpi-events/raw-events-controller.js","/../components/performance/kpi-events")
-},{"b55mWE":4,"buffer":3}],67:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],91:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.standard_monthly_kpi_events_controller = function(yearly_totals,yearly_percentage_difference,$route,$scope, $http, $q, $routeParams, $location,$rootScope,Monthly_standard_kpi_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter_retail
     ) {
@@ -14792,7 +16629,7 @@ exports.standard_monthly_kpi_events_controller = function(yearly_totals,yearly_p
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/kpi-events/standard-monthly-events-controller.js","/../components/performance/kpi-events")
-},{"b55mWE":4,"buffer":3}],68:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],92:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.age_learning_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Age_learning,make_a_pie
     ) {
@@ -14911,7 +16748,7 @@ $scope.chart_title="Age groups"
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/learning/age-learning-controller.js","/../components/performance/learning")
-},{"b55mWE":4,"buffer":3}],69:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],93:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.monthly_learning_controller = function(yearly_totals,yearly_percentage_difference,getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_learning,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter_retail
     ) {
@@ -15031,7 +16868,7 @@ exports.monthly_learning_controller = function(yearly_totals,yearly_percentage_d
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/learning/monthly-learning-controller.js","/../components/performance/learning")
-},{"b55mWE":4,"buffer":3}],70:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],94:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.record_learning_controller =  function($scope, $http, $q, $routeParams, $location,
           $rootScope,Raw_learning,data_table_reload,get_table_data
@@ -15139,7 +16976,7 @@ exports.record_learning_controller =  function($scope, $http, $q, $routeParams, 
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/learning/performance-form-controller.js","/../components/performance/learning")
-},{"b55mWE":4,"buffer":3}],71:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],95:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.raw_learning_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Raw_learning,data_table_reload,AuthService,grid_ui_settings,get_table_data,table_security
     ) {
@@ -15186,7 +17023,7 @@ exports.raw_learning_controller = function($route,$scope, $http, $q, $routeParam
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/learning/raw-learning-controller.js","/../components/performance/learning")
-},{"b55mWE":4,"buffer":3}],72:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],96:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.yearly_learning_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Yearly_learning,make_a_pie,make_a_line_chart,yearly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -15282,7 +17119,7 @@ exports.yearly_learning_controller = function($route,$scope, $http, $q, $routePa
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/learning/yearly-learning-controller.js","/../components/performance/learning")
-},{"b55mWE":4,"buffer":3}],73:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],97:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.monthly_operations_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_operations,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -15370,7 +17207,7 @@ exports.monthly_operations_controller = function($route,$scope, $http, $q, $rout
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/operations/monthly-operations-controller.js","/../components/performance/operations")
-},{"b55mWE":4,"buffer":3}],74:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],98:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.record_operations_controller =  function($scope, $http, $q, $routeParams, $location,
           $rootScope,Raw_operations,data_table_reload
@@ -15459,7 +17296,7 @@ exports.record_operations_controller =  function($scope, $http, $q, $routeParams
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/operations/performance-form-controller.js","/../components/performance/operations")
-},{"b55mWE":4,"buffer":3}],75:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],99:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.raw_operations_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Raw_operations,data_table_reload,get_table_data,grid_ui_settings ,$rootScope,table_security
     ) {
@@ -15497,7 +17334,7 @@ exports.raw_operations_controller = function($route,$scope, $http, $q, $routePar
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/operations/raw-operations-controller.js","/../components/performance/operations")
-},{"b55mWE":4,"buffer":3}],76:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],100:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.yearly_operations_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Yearly_operations,make_a_pie,make_a_line_chart,yearly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -15582,7 +17419,7 @@ exports.yearly_operations_controller = function($route,$scope, $http, $q, $route
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/operations/yearly-operations-controller.js","/../components/performance/operations")
-},{"b55mWE":4,"buffer":3}],77:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],101:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.community_events_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -15699,7 +17536,7 @@ exports.community_events_controller = function($route,$scope, $http, $q, $routeP
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/participation/monthly-participation-controller.js","/../components/performance/participation")
-},{"b55mWE":4,"buffer":3}],78:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],102:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.record_participation_controller =  function($scope, $http, $q, $routeParams, $location,
           $rootScope,Raw_events,data_table_reload,Emu_events,get_table_data,Community_groups
@@ -15990,7 +17827,7 @@ $scope.museums.push({value:"ROMAN-VILLA",name:'Kings Weston Roman Villas'});
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/participation/performance-form-controller.js","/../components/performance/participation")
-},{"b55mWE":4,"buffer":3}],79:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],103:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.raw_events_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Raw_events,data_table_reload,AuthService,grid_ui_settings,get_table_data,table_security
     ) {
@@ -16037,7 +17874,7 @@ exports.raw_events_controller = function($route,$scope, $http, $q, $routeParams,
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/participation/raw-participation-controller.js","/../components/performance/participation")
-},{"b55mWE":4,"buffer":3}],80:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],104:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.target_audience_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Target_audience_event_count,make_a_pie,make_a_line_chart,yearly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -16122,7 +17959,7 @@ exports.target_audience_controller = function($route,$scope, $http, $q, $routePa
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/participation/target-audience-controller.js","/../components/performance/participation")
-},{"b55mWE":4,"buffer":3}],81:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],105:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.yearly_participation_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Yearly_community_groups,make_a_pie,make_a_line_chart,yearly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -16207,7 +18044,7 @@ exports.yearly_participation_controller = function($route,$scope, $http, $q, $ro
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/participation/yearly-participation-controller.js","/../components/performance/participation")
-},{"b55mWE":4,"buffer":3}],82:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],106:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.monthly_patron_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_patron,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,data_table_reload,table_security,dynamicTableCellFilter_patron
     ) {
@@ -16313,7 +18150,7 @@ exports.monthly_patron_controller = function(getDateService,$route,$scope, $http
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/patron/monthly-patron-controller.js","/../components/performance/patron")
-},{"b55mWE":4,"buffer":3}],83:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],107:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.patron_performance_form =  function($scope, $http, $q,  
           Raw_patron,data_table_reload,get_table_data
@@ -16425,7 +18262,7 @@ exports.patron_performance_form =  function($scope, $http, $q,
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/patron/performance-form-controller.js","/../components/performance/patron")
-},{"b55mWE":4,"buffer":3}],84:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],108:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 
@@ -16469,7 +18306,7 @@ exports.raw_patron_controller = function($route,$scope, $http, $q, $routeParams,
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/patron/raw-patron-controller.js","/../components/performance/patron")
-},{"b55mWE":4,"buffer":3}],85:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],109:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.yearly_corporate_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Yearly_corporate,make_a_pie,make_a_line_chart,yearly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -16553,7 +18390,7 @@ exports.yearly_corporate_controller = function($route,$scope, $http, $q, $routeP
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/patron/yearly-patron-controller.js","/../components/performance/patron")
-},{"b55mWE":4,"buffer":3}],86:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],110:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 
@@ -17772,7 +19609,7 @@ exports.giftaidDashboard = function() {
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/performance-directive.js","/../components/performance")
-},{"b55mWE":4,"buffer":3}],87:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],111:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.monthly_retail_sales_controller = function(yearly_percentage_difference,yearly_totals,getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_retail_sales,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,table_security,dynamicTableCellFilter_retail
     ) {
@@ -17891,7 +19728,7 @@ exports.monthly_retail_sales_controller = function(yearly_percentage_difference,
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/retail/monthly-retail-sales-controller.js","/../components/performance/retail")
-},{"b55mWE":4,"buffer":3}],88:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],112:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.retail_performance_form =  function($scope, $http, $q, $routeParams, $location,
           $rootScope,Retail_sales,data_table_reload,get_table_data
@@ -17987,7 +19824,7 @@ exports.retail_performance_form =  function($scope, $http, $q, $routeParams, $lo
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/retail/performance-form-controller.js","/../components/performance/retail")
-},{"b55mWE":4,"buffer":3}],89:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],113:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.raw_retail_sales_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Retail_sales,data_table_reload,AuthService,get_table_data,grid_ui_settings ,table_security
     ) {
@@ -18036,7 +19873,7 @@ exports.raw_retail_sales_controller = function($route,$scope, $http, $q, $routeP
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/retail/raw-retail-sales-controller.js","/../components/performance/retail")
-},{"b55mWE":4,"buffer":3}],90:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],114:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.retail_uploader =   function($scope, $http, $q,  
 		Resources,Posters,data_table_reload,get_table_data,timeline_functions,$routeParams
@@ -18213,7 +20050,7 @@ if (files.length > 0){
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/retail/retail-uploader-controller.js","/../components/performance/retail")
-},{"b55mWE":4,"buffer":3}],91:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],115:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.yearly_retail_sales_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Yearly_retail_sales,make_a_pie,make_a_line_chart,yearly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -18297,7 +20134,7 @@ exports.yearly_retail_sales_controller = function($route,$scope, $http, $q, $rou
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/retail/yearly-retail-sales-controller.js","/../components/performance/retail")
-},{"b55mWE":4,"buffer":3}],92:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],116:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.monthly_site_permissions_controller = function(getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_site_permissions,make_a_pie,make_a_line_chart,monthly_data_table_columns_retail,grid_ui_settings,data_table_reload,table_security,dynamicTableCellFilter_donations
     ) {
@@ -18403,7 +20240,7 @@ exports.monthly_site_permissions_controller = function(getDateService,$route,$sc
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/site_permissions/monthly-site_permissions-controller.js","/../components/performance/site_permissions")
-},{"b55mWE":4,"buffer":3}],93:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],117:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.site_permissions_performance_form =  function($scope, $http, $q,  
           Raw_site_permissions,data_table_reload,get_table_data_nomusem
@@ -18528,7 +20365,7 @@ exports.site_permissions_performance_form =  function($scope, $http, $q,
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/site_permissions/performance-form-controller.js","/../components/performance/site_permissions")
-},{"b55mWE":4,"buffer":3}],94:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],118:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 
@@ -18577,7 +20414,7 @@ exports.raw_site_permissions_controller = function($route,$scope, $http, $q, $ro
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/site_permissions/raw-site_permissions-controller.js","/../components/performance/site_permissions")
-},{"b55mWE":4,"buffer":3}],95:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],119:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.yearly_corporate_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Yearly_corporate,make_a_pie,make_a_line_chart,yearly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -18661,7 +20498,7 @@ exports.yearly_corporate_controller = function($route,$scope, $http, $q, $routeP
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/site_permissions/yearly-site_permissions-controller.js","/../components/performance/site_permissions")
-},{"b55mWE":4,"buffer":3}],96:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],120:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.team_monthly_kpi_events_controller = function(yearly_totals,yearly_percentage_difference,getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope,Monthly_standard_kpi_events,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter_retail
     ) {
@@ -18776,7 +20613,7 @@ $scope.team=team
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/team-kpis/standard-monthly-events-controller.js","/../components/performance/team-kpis")
-},{"b55mWE":4,"buffer":3}],97:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],121:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.monthly_turnstiles_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_turnstiles,grid_ui_settings,table_security
     ) {
@@ -18835,7 +20672,7 @@ exports.monthly_turnstiles_controller = function($route,$scope, $http, $q, $rout
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/turnstiles/monthly-turnstiles-controller.js","/../components/performance/turnstiles")
-},{"b55mWE":4,"buffer":3}],98:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],122:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.raw_turnstiles_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, day_turnstiles,data_table_reload,get_table_data,grid_ui_settings ,table_security
     ) {
@@ -18871,7 +20708,7 @@ exports.raw_turnstiles_controller = function($route,$scope, $http, $q, $routePar
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/turnstiles/raw-turnstiles-controller.js","/../components/performance/turnstiles")
-},{"b55mWE":4,"buffer":3}],99:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],123:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.monthly_venue_hire_controller = function(yearly_percentage_difference,yearly_totals,getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_venue_hire,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter
     ) {
@@ -19002,7 +20839,7 @@ exports.monthly_venue_hire_controller = function(yearly_percentage_difference,ye
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/venue-hire/monthly-visits-controller.js","/../components/performance/venue-hire")
-},{"b55mWE":4,"buffer":3}],100:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],124:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.raw_venue_hire_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Raw_venue_hire,data_table_reload,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,get_table_data,table_security
     ) {
@@ -19050,7 +20887,7 @@ $scope.start=new Date("04/01/2018")
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/venue-hire/raw-visits-controller.js","/../components/performance/venue-hire")
-},{"b55mWE":4,"buffer":3}],101:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],125:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.venue_hire_form =  function($scope, $http, $q, $routeParams, $location
           ,Raw_venue_hire,data_table_reload,get_table_data
@@ -19155,7 +20992,7 @@ exports.venue_hire_form =  function($scope, $http, $q, $routeParams, $location
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/venue-hire/visits-form-controller.js","/../components/performance/venue-hire")
-},{"b55mWE":4,"buffer":3}],102:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],126:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.yearly_venue_hire_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Yearly_venue_hire,make_a_pie,make_a_line_chart,yearly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -19239,7 +21076,7 @@ exports.yearly_venue_hire_controller = function($route,$scope, $http, $q, $route
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/venue-hire/yearly-visits-controller.js","/../components/performance/venue-hire")
-},{"b55mWE":4,"buffer":3}],103:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],127:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.monthly_visitor_numbers_controller = function(yearly_totals,yearly_percentage_difference,getDateService,$route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_visits,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security,dynamicTableCellFilter
     ) {
@@ -19361,7 +21198,7 @@ exports.monthly_visitor_numbers_controller = function(yearly_totals,yearly_perce
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/visits/monthly-visits-controller.js","/../components/performance/visits")
-},{"b55mWE":4,"buffer":3}],104:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],128:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.raw_visitor_numbers_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Raw_visits,data_table_reload,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,get_table_data,table_security
     ) {
@@ -19406,7 +21243,7 @@ exports.raw_visitor_numbers_controller = function($route,$scope, $http, $q, $rou
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/visits/raw-visits-controller.js","/../components/performance/visits")
-},{"b55mWE":4,"buffer":3}],105:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],129:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.visits_form =  function($scope, $http, $q, $routeParams, $location
           ,Raw_visits,data_table_reload,get_table_data
@@ -19530,7 +21367,7 @@ exports.visits_form =  function($scope, $http, $q, $routeParams, $location
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/visits/visits-form-controller.js","/../components/performance/visits")
-},{"b55mWE":4,"buffer":3}],106:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],130:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.yearly_visitor_numbers_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Yearly_visits,make_a_pie,make_a_line_chart,yearly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -19614,7 +21451,7 @@ exports.yearly_visitor_numbers_controller = function($route,$scope, $http, $q, $
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/visits/yearly-visits-controller.js","/../components/performance/visits")
-},{"b55mWE":4,"buffer":3}],107:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],131:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.monthly_welcomedesk_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_welcomedesk,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -19701,7 +21538,7 @@ exports.monthly_welcomedesk_controller = function($route,$scope, $http, $q, $rou
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/welcome-desk/monthly-welcomedesk-controller.js","/../components/performance/welcome-desk")
-},{"b55mWE":4,"buffer":3}],108:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],132:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.record_welcomedesk_controller =  function($scope, $http, $q, $routeParams, $location,
           $rootScope,Raw_welcomedesk,data_table_reload,grid_ui_settings ,get_table_data
@@ -19799,7 +21636,7 @@ exports.record_welcomedesk_controller =  function($scope, $http, $q, $routeParam
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/welcome-desk/performance-form-controller.js","/../components/performance/welcome-desk")
-},{"b55mWE":4,"buffer":3}],109:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],133:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.raw_welcomedesk_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Raw_welcomedesk,data_table_reload,get_table_data,grid_ui_settings ,table_security
     ) {
@@ -19844,7 +21681,7 @@ exports.raw_welcomedesk_controller = function($route,$scope, $http, $q, $routePa
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/welcome-desk/raw-welcomedesk-controller.js","/../components/performance/welcome-desk")
-},{"b55mWE":4,"buffer":3}],110:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],134:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.yearly_welcomedesk_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Yearly_welcomedesk,make_a_pie,make_a_line_chart,yearly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -19929,7 +21766,7 @@ exports.yearly_welcomedesk_controller = function($route,$scope, $http, $q, $rout
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/performance/welcome-desk/yearly-welcomedesk-controller.js","/../components/performance/welcome-desk")
-},{"b55mWE":4,"buffer":3}],111:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],135:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.edit_booking_controller =  function($scope, $http, $q,  
           Resources,Bookings,data_table_reload,get_table_data,timeline_functions,$routeParams
@@ -20193,7 +22030,7 @@ $('#upload-input').on('change', function(){
  
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/resource-bookings/bookings/edit-form-controller.js","/../components/resource-bookings/bookings")
-},{"b55mWE":4,"buffer":3}],112:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],136:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.record_bookings_controller =  function($scope, $http, $q,  
           Resources,Bookings,data_table_reload,get_table_data,timeline_functions,$routeParams
@@ -20771,7 +22608,7 @@ $scope.$watch('ctrl.input_start', function (input_start) {console.log('input_sta
  
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/resource-bookings/bookings/form-controller.js","/../components/resource-bookings/bookings")
-},{"b55mWE":4,"buffer":3}],113:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],137:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.monthly_bookings_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Monthly_bookings,make_a_pie,make_a_line_chart,monthly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -20865,7 +22702,7 @@ exports.monthly_bookings_controller = function($route,$scope, $http, $q, $routeP
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/resource-bookings/bookings/monthly-bookings-controller.js","/../components/resource-bookings/bookings")
-},{"b55mWE":4,"buffer":3}],114:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],138:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 
@@ -20979,7 +22816,7 @@ var mode_name = "EQUIPMENT BOOKING"
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/resource-bookings/bookings/raw-bookings-controller.js","/../components/resource-bookings/bookings")
-},{"b55mWE":4,"buffer":3}],115:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],139:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.recurring_events_controller =  function($scope, $http, $q,  
           Resources,Bookings,data_table_reload,get_table_data,timeline_functions,$routeParams
@@ -21254,7 +23091,7 @@ exports.recurring_events_controller =  function($scope, $http, $q,
  
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/resource-bookings/bookings/recurring-events-controller.js","/../components/resource-bookings/bookings")
-},{"b55mWE":4,"buffer":3}],116:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],140:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.yearly_bookings_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Yearly_bookings,make_a_pie,make_a_line_chart,yearly_data_table_columns,grid_ui_settings,table_security
     ) {
@@ -21338,7 +23175,7 @@ exports.yearly_bookings_controller = function($route,$scope, $http, $q, $routePa
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/resource-bookings/bookings/yearly-bookings-controller.js","/../components/resource-bookings/bookings")
-},{"b55mWE":4,"buffer":3}],117:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],141:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 
@@ -21457,7 +23294,7 @@ exports.bookingsReport = function() {
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/resource-bookings/directive.js","/../components/resource-bookings")
-},{"b55mWE":4,"buffer":3}],118:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],142:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.record_equipment_controller =  function($scope, $http, $q,  
           Resources,data_table_reload,get_table_data,AuthService
@@ -21572,7 +23409,7 @@ $scope.haspermissions=false
  
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/resource-bookings/equipment/form-controller.js","/../components/resource-bookings/equipment")
-},{"b55mWE":4,"buffer":3}],119:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],143:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 
@@ -21627,7 +23464,7 @@ exports.raw_equipment_controller = function($route,$scope, $http, $q, $routePara
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/resource-bookings/equipment/raw-equipment-controller.js","/../components/resource-bookings/equipment")
-},{"b55mWE":4,"buffer":3}],120:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],144:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.record_rooms_controller =  function($scope, $http, $q,  
           Resources,data_table_reload,get_table_data
@@ -21728,7 +23565,7 @@ function guid() {
  
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/resource-bookings/rooms/form-controller.js","/../components/resource-bookings/rooms")
-},{"b55mWE":4,"buffer":3}],121:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],145:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 
@@ -21770,7 +23607,7 @@ exports.raw_rooms_controller = function($route,$scope, $http, $q, $routeParams, 
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/resource-bookings/rooms/raw-rooms-controller.js","/../components/resource-bookings/rooms")
-},{"b55mWE":4,"buffer":3}],122:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],146:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.timeline_resources_controller=     function($compile,  $scope, $http, $q, $routeParams, $location,
          $location, $rootScope, trello,timeline_bookings_functions, get_trello_board, date_calc, Todos, Timeline, Bookings,Team, kiosk_activity,timeline_functions_resources,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate,Raw_visits,timeline_visitor_figures_functions,timeline_install_functions, $timeout,timeline_exhibitions_functions
@@ -22348,7 +24185,7 @@ exports.add_timeline_items_controller=    function($scope, $http, $q, $routePara
   
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/resource-bookings/timeline-resources-controller.js","/../components/resource-bookings")
-},{"b55mWE":4,"buffer":3}],123:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],147:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 
@@ -23226,7 +25063,7 @@ console.log('changeTracks selection',selection)
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/resource-bookings/timeline-resources-services.js","/../components/resource-bookings")
-},{"b55mWE":4,"buffer":3}],124:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],148:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.shopify_controller = function(log_messages,$scope, AuthService,$http, $q, $routeParams, $location,$rootScope, shopify_app
     ) {
@@ -23396,7 +25233,7 @@ Use of this source code is governed by an MIT-style license that can be foundin 
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/shopify/shopify-controller.js","/../components/shopify")
-},{"b55mWE":4,"buffer":3}],125:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],149:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	exports.shopifyStatus = function() {
   return {
@@ -23429,7 +25266,7 @@ Use of this source code is governed by an MIT-style license that can be foundin 
 	}
 	
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/shopify/shopify-directive.js","/../components/shopify")
-},{"b55mWE":4,"buffer":3}],126:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],150:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.shopify_monthly_controller = function(log_messages,$scope, AuthService,$http, $q, $routeParams, $location,$rootScope, Shopify_monthly_report
     ) {
@@ -23554,7 +25391,7 @@ $scope.report_running=true
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/shopify/shopify-monthly-controller.js","/../components/shopify")
-},{"b55mWE":4,"buffer":3}],127:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],151:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.rawPosters = function() {
@@ -23586,7 +25423,7 @@ exports.postersFormdata = function() {
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/signage/directive.js","/../components/signage")
-},{"b55mWE":4,"buffer":3}],128:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],152:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.record_posters_controller =  function($scope, $http, $q,  
@@ -23839,7 +25676,7 @@ $('#upload-input').on('change', function(){
  
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/signage/posters/form-controller.js","/../components/signage/posters")
-},{"b55mWE":4,"buffer":3}],129:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],153:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 
@@ -23950,7 +25787,7 @@ var mode = "signage"
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/signage/posters/raw-poster-controller.js","/../components/signage/posters")
-},{"b55mWE":4,"buffer":3}],130:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],154:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.TallyController =  function($scope, Tallys) {
 
@@ -24179,7 +26016,7 @@ exports.trello =   function($scope, $http, $q, $routeParams, $location,
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/team/app-controllers.js","/../components/team")
-},{"b55mWE":4,"buffer":3}],131:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],155:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.form_to_trellox =  function($scope, $http, $q, $routeParams, $location,
         screen_saver_loop,  $rootScope, detect_dragging, trello, get_trello_board, date_calc, Todos, Tallys,Team
@@ -24440,7 +26277,7 @@ var trelloroken=formData.token
 	}
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/team/form-controller.js","/../components/team")
-},{"b55mWE":4,"buffer":3}],132:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],156:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.leave_controller =  function($scope, $http, $q, $routeParams, $location,
           $rootScope, date_calc, Tallys,Team,Timeline
@@ -24727,7 +26564,7 @@ $scope.overlapalert=[]
 	}
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/team/leave-controller.js","/../components/team")
-},{"b55mWE":4,"buffer":3}],133:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],157:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.timeline_settings_controller =  function($scope, $http, $q, $routeParams, $location,
         screen_saver_loop,  $rootScope, detect_dragging, trello, get_trello_board, date_calc, Todos, Tallys,Team,Timeline,$mdEditDialog
@@ -24827,7 +26664,7 @@ myArray.push(obj);
   
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/team/team-controller.js","/../components/team")
-},{"b55mWE":4,"buffer":3}],134:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],158:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var async = require('async')
 
@@ -25037,7 +26874,7 @@ console.log(team)
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/tech-support/tech-support-controller.js","/../components/tech-support")
-},{"async":1,"b55mWE":4,"buffer":3}],135:[function(require,module,exports){
+},{"async":1,"b55mWE":4,"buffer":3}],159:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	exports.techSupport = function() {
   return {
@@ -25049,7 +26886,7 @@ console.log(team)
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/tech-support/tech-support-directive.js","/../components/tech-support")
-},{"b55mWE":4,"buffer":3}],136:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],160:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 var async = require('async')
@@ -25131,7 +26968,7 @@ console.log('trello card',card)
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/tech-support/trello-services.js","/../components/tech-support")
-},{"async":1,"b55mWE":4,"buffer":3}],137:[function(require,module,exports){
+},{"async":1,"b55mWE":4,"buffer":3}],161:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.raw_timelinesettings_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Timeline_data,data_table_reload,get_table_data,grid_ui_settings,make_a_pie,make_a_line_chart,monthly_data_table_columns,table_security
     ) {
@@ -25289,7 +27126,7 @@ exports.raw_timelinesettings_controller = function($route,$scope, $http, $q, $ro
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline-settings/raw-timeline-settings-controller.js","/../components/timeline-settings")
-},{"b55mWE":4,"buffer":3}],138:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],162:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.record_timelinesettings_controller =  function($scope, $http, $q,  
           Timeline_data,data_table_reload,get_table_data
@@ -25399,7 +27236,7 @@ exports.record_timelinesettings_controller =  function($scope, $http, $q,
 	
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline-settings/settings-form-controller.js","/../components/timeline-settings")
-},{"b55mWE":4,"buffer":3}],139:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],163:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 	exports.timelinesettingsFormdata = function() {
@@ -25425,7 +27262,7 @@ exports.record_timelinesettings_controller =  function($scope, $http, $q,
 	
 	
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline-settings/timeline-settings-directive.js","/../components/timeline-settings")
-},{"b55mWE":4,"buffer":3}],140:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],164:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_bookings_functions  =  function (timeline_functions,$http,Timeline,$rootScope,$location) {
@@ -25588,7 +27425,7 @@ console.log('Current route name: ' + $location.path());
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-bookings-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],141:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],165:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.timeline_controller=     function($compile,  $scope, $http, $q, $routeParams, $location,
          $location, $rootScope, trello,timeline_bookings_functions, Timeline_data,get_trello_board, date_calc, Todos, Timeline, Bookings,Team, kiosk_activity,timeline_functions,timeline_leave_functions,timeline_learning_functions,timeline_loans_functions,timeline_googlesheets_functions,Timeline_data,AuthService,timeline_shopify_functions,Shopify_aggregate,Raw_visits,timeline_visitor_figures_functions,timeline_install_functions, $timeout,timeline_exhibitions_functions
@@ -26272,7 +28109,7 @@ exports.add_timeline_items_controller=    function($scope, $http, $q, $routePara
   
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-controller.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],142:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],166:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	exports.timeLine = function() {
   return {
@@ -26371,7 +28208,7 @@ exports.timelineInfobox = function() {
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-directive.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],143:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],167:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_exhibitions_functions =  function (timeline_functions,$http,Timeline,$rootScope,$routeParams) {
@@ -26558,7 +28395,7 @@ exports.timeline_exhibitions_functions =  function (timeline_functions,$http,Tim
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-exhibitions-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],144:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],168:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_googlesheets_functions =  function (timeline_functions,$http,Timeline,$rootScope,$routeParams) {
@@ -26834,7 +28671,7 @@ exports.timeline_googlesheets_functions =  function (timeline_functions,$http,Ti
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-googlesheets-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],145:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],169:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_install_functions =  function (timeline_functions,$http,Timeline,$rootScope) {
@@ -26985,7 +28822,7 @@ exports.timeline_install_functions =  function (timeline_functions,$http,Timelin
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-installs-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],146:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],170:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_learning_functions = function ($http,Timeline,$rootScope) {
@@ -27105,7 +28942,7 @@ exports.timeline_learning_functions = function ($http,Timeline,$rootScope) {
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-learning-bookings-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],147:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],171:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_leave_functions =  function ($http,Timeline,$rootScope) {
@@ -27536,7 +29373,7 @@ exports.timeline_leave_functions =  function ($http,Timeline,$rootScope) {
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-leave-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],148:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],172:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_loans_functions =  function ($http,Timeline,$rootScope) {
@@ -27655,7 +29492,7 @@ exports.timeline_loans_functions =  function ($http,Timeline,$rootScope) {
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-loans-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],149:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],173:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 
@@ -28593,7 +30430,7 @@ console.log('on add called')
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],150:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],174:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_shopify_functions =  function ($http,Timeline,$rootScope) {
@@ -28736,7 +30573,7 @@ exports.timeline_shopify_functions =  function ($http,Timeline,$rootScope) {
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-shopify-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],151:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],175:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.timeline_visitor_figures_functions =  function ($http,Timeline,$rootScope) {
@@ -28877,7 +30714,7 @@ exports.timeline_visitor_figures_functions =  function ($http,Timeline,$rootScop
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/timeline/timeline-visitor-figures-services.js","/../components/timeline")
-},{"b55mWE":4,"buffer":3}],152:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],176:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 exports.turnstiles_controller = function(log_messages,$scope, AuthService,$http, $q, $routeParams, $location,$rootScope, turnstile_app
@@ -29072,7 +30909,7 @@ $scope.settings=[]
 }
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/turnstiles/turnstiles-controller.js","/../components/turnstiles")
-},{"b55mWE":4,"buffer":3}],153:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],177:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	exports.turnstilesController = function() {
   return {
@@ -29100,7 +30937,7 @@ $scope.settings=[]
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/turnstiles/turnstiles-directive.js","/../components/turnstiles")
-},{"b55mWE":4,"buffer":3}],154:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],178:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.users_controller = function($route,$scope, $http, $q, $routeParams, $location,$rootScope, Team
     ) {
@@ -29228,7 +31065,7 @@ exports.users_controller = function($route,$scope, $http, $q, $routeParams, $loc
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/user-admin/users-controller.js","/../components/user-admin")
-},{"b55mWE":4,"buffer":3}],155:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],179:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	exports.userAdmin = function() {
   return {
@@ -29240,7 +31077,7 @@ exports.users_controller = function($route,$scope, $http, $q, $routeParams, $loc
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../components/user-admin/users-directive.js","/../components/user-admin")
-},{"b55mWE":4,"buffer":3}],156:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],180:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 module.exports = function(app) {
 
@@ -29504,6 +31341,73 @@ module.exports = function(app) {
             .when('/record-giftaid', {
                 template: '<giftaid-Formdata></giftaid-Formdata>'
             })
+
+            .when('/record-directdebit', {
+                template: '<directdebit-Formdata></directdebit-Formdata>'
+            })
+            .when('/raw-directdebit', {
+                template: '<raw-directdebit></raw-directdebit>'
+            })
+            .when('/monthly-directdebit', {
+                template: '<directdebit-dashboard></directdebit-dashboard>'
+            })
+
+            .when('/record-treasure', {
+                template: '<treasure-Formdata></treasure-Formdata>'
+            })
+            .when('/raw-treasure', {
+                template: '<raw-treasure></raw-treasure>'
+            })
+            .when('/monthly-treasure', {
+                template: '<treasure-dashboard></treasure-dashboard>'
+            })
+
+
+            //Major Donors
+            .when('/record-donors', {
+                template: '<donors-Formdata></donors-Formdata>'
+            })
+            .when('/raw-donors', {
+                template: '<raw-donors></raw-donors>'
+            })
+            .when('/monthly-donors', {
+                template: '<donors-dashboard></donors-dashboard>'
+            })
+
+     //#online
+     .when('/record-online', {
+        template: '<online-Formdata></online-Formdata>'
+    })
+    .when('/raw-online', {
+        template: '<raw-online></raw-online>'
+    })
+    .when('/monthly-online', {
+        template: '<online-dashboard></online-dashboard>'
+    })
+
+
+         //#online
+         .when('/record-general', {
+            template: '<donationsgeneral-Formdata></donationsgeneral-Formdata>'
+        })
+        .when('/raw-general', {
+            template: '<raw-donationsgeneral></raw-donationsgeneral>'
+        })
+        .when('/monthly-general', {
+            template: '<donationsgeneral-dashboard></donationsgeneral-dashboard>'
+        })
+
+
+                //#trusts and foundations
+                .when('/record-trusts', {
+                    template: '<trusts-Formdata></trusts-Formdata>'
+                })
+                .when('/raw-trusts', {
+                    template: '<raw-trusts></raw-trusts>'
+                })
+                .when('/monthly-trusts', {
+                    template: '<trusts-dashboard></trusts-dashboard>'
+                })
 
             //customers-shopify
             .when('/gift-aid-customers', {
@@ -29823,7 +31727,7 @@ module.exports = function(app) {
     return module;
 };
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app-config.js","/")
-},{"b55mWE":4,"buffer":3}],157:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],181:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 module.exports = function(app) {
    
@@ -29932,10 +31836,44 @@ module.exports = function(app) {
     var monthly_donations_kiosk_controller = require('../components/performance/donations-kiosk/monthly-donations_kiosk-controller');
     var monthly_donations_box_controller = require('../components/performance/donations-boxes/monthly-donations-controller');
 
+    var raw_donations_donors_controller = require('../components/performance/donations-donors/raw-controller');
+    var monthly_donors_controller = require('../components/performance/donations-donors/monthly-controller');
+    var donations_donors_performance_form = require('../components/performance/donations-donors/performance-form-controller');
+    
+
+    var raw_donations_directdebit_controller = require('../components/performance/donations-directdebit/raw-controller');
+    var monthly_directdebit_controller = require('../components/performance/donations-directdebit/monthly-controller');
+    var donations_directdebit_performance_form = require('../components/performance/donations-directdebit/performance-form-controller');
+    
+    var raw_donations_treasure_controller = require('../components/performance/donations-treasure/raw-controller');
+    var monthly_treasure_controller = require('../components/performance/donations-treasure/monthly-controller');
+    
+    
+    var donations_treasure_performance_form = require('../components/performance/donations-treasure/performance-form-controller');
+    
+    var raw_donations_trusts_controller = require('../components/performance/donations-trusts/raw-controller');
+    var monthly_trusts_controller = require('../components/performance/donations-trusts/monthly-controller');
+    var donations_trusts_performance_form = require('../components/performance/donations-trusts/performance-form-controller');
+    
+
+    var raw_donations_online_controller = require('../components/performance/donations-online/raw-controller');
+    var monthly_online_controller = require('../components/performance/donations-online/monthly-controller');
+    var donations_online_performance_form = require('../components/performance/donations-online/performance-form-controller');
+    
+
+    var raw_donations_general_controller = require('../components/performance/donations-general/raw-controller');
+    var monthly_generaldonations_controller = require('../components/performance/donations-general/monthly-controller');
+    var donations_general_performance_form = require('../components/performance/donations-general/performance-form-controller');
+    
+
+
 
 
     var raw_donations_kiosk_controller = require('../components/performance/donations-kiosk/raw-donations_kiosk-controller');
     var donations_kiosk_performance_form = require('../components/performance/donations-kiosk/performance-form-controller');
+    
+    
+    
     var kiosk_uploader = require('../components/performance/donations-kiosk/kiosk-uploader-controller');
     var daily_donations_kiosk_controller = require('../components/performance/donations-kiosk/daily-donations_kiosk-controller');
 
@@ -30187,10 +32125,27 @@ var controllersArray=[
     performance_form,
     retail_performance_form,
     retail_uploader,
-    raw_timelinesettings_controller
+    raw_timelinesettings_controller,
+    monthly_directdebit_controller,
+    raw_donations_directdebit_controller,
+    donations_directdebit_performance_form,
+    raw_donations_treasure_controller,
+    monthly_treasure_controller,
+    donations_treasure_performance_form,
+    raw_donations_donors_controller,
+    monthly_donors_controller,
+    donations_donors_performance_form,
+    raw_donations_trusts_controller,
+    monthly_trusts_controller,
+    donations_trusts_performance_form,
+    raw_donations_online_controller,
+    monthly_online_controller,
+    donations_online_performance_form,
+    raw_donations_general_controller,
+    monthly_generaldonations_controller,
+    donations_general_performance_form
 
-
-]
+]   
 
     _.each(controllersArray, function(controllers, names) {
         _.each(controllers, function(controller, name) {
@@ -30202,7 +32157,7 @@ var controllersArray=[
     return module;
 };
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app-controllers.js","/")
-},{"../components/exhibitions/directive":8,"../components/exhibitions/music/monthly-votes-controller":9,"../components/exhibitions/music/raw-votes-controller":10,"../components/exhibitions/music/votes-form-controller":11,"../components/gift-aid/customers-directive":12,"../components/gift-aid/raw-giftaid-controller":13,"../components/iframe/iframe-controller":14,"../components/machine-monitor/dashboard-controller":16,"../components/machine-monitor/dead-controller":17,"../components/machine-monitor/downtime-controller":18,"../components/machine-monitor/feedback-controller":20,"../components/machine-monitor/satisfaction-controller":22,"../components/member/member-controller":23,"../components/performance/analyser/analyser-controller":24,"../components/performance/corporate/monthly-corporate-controller":25,"../components/performance/corporate/performance-form-controller":26,"../components/performance/corporate/raw-corporate-controller":27,"../components/performance/corporate/yearly-corporate-controller":28,"../components/performance/dashboard-controllers":29,"../components/performance/donations-boxes/monthly-donations-controller":30,"../components/performance/donations-kiosk/daily-donations_kiosk-controller":31,"../components/performance/donations-kiosk/kiosk-uploader-controller":32,"../components/performance/donations-kiosk/monthly-donations_kiosk-controller":33,"../components/performance/donations-kiosk/performance-form-controller":34,"../components/performance/donations-kiosk/raw-donations_kiosk-controller":35,"../components/performance/donations-other/monthly-donations_other-controller":36,"../components/performance/donations-other/performance-form-controller":37,"../components/performance/donations-other/raw-donations_other-controller":38,"../components/performance/donations-other/yearly-donations_other-controller":39,"../components/performance/donations/monthly-donations-controller":40,"../components/performance/donations/performance-form-controller":41,"../components/performance/donations/raw-donations-controller":42,"../components/performance/donations/yearly-donations-controller":43,"../components/performance/events/monthly-events-controller":44,"../components/performance/events/performance-form-controller":45,"../components/performance/events/raw-events-controller":46,"../components/performance/events/yearly-events-controller":47,"../components/performance/exhibitions-pwyt/monthly-donations-controller":48,"../components/performance/exhibitions-pwyt/performance-form-controller":49,"../components/performance/exhibitions-pwyt/raw-donations-controller":50,"../components/performance/exhibitions/exhibitions-summary-controller":51,"../components/performance/gallery-visits/exhibitions-teg-controller":52,"../components/performance/gallery-visits/monthly-teg-controller":53,"../components/performance/gallery-visits/performance-form-controller":54,"../components/performance/gallery-visits/raw-teg-controller":55,"../components/performance/gallery-visits/weekly-teg-controller":56,"../components/performance/gallery-visits/yearly-teg-controller":57,"../components/performance/gift-aid/monthly-allgiftaid-controller":58,"../components/performance/gift-aid/monthly-giftaid-controller":59,"../components/performance/gift-aid/performance-form-controller":60,"../components/performance/gift-aid/raw-giftaid-controller":61,"../components/performance/home/kpi-home-controller":62,"../components/performance/home/master-kpi-home-controller":63,"../components/performance/kpi-events/monthly-events-controller":64,"../components/performance/kpi-events/performance-form-controller":65,"../components/performance/kpi-events/raw-events-controller":66,"../components/performance/kpi-events/standard-monthly-events-controller":67,"../components/performance/learning/age-learning-controller":68,"../components/performance/learning/monthly-learning-controller":69,"../components/performance/learning/performance-form-controller":70,"../components/performance/learning/raw-learning-controller":71,"../components/performance/learning/yearly-learning-controller":72,"../components/performance/operations/monthly-operations-controller":73,"../components/performance/operations/performance-form-controller":74,"../components/performance/operations/raw-operations-controller":75,"../components/performance/operations/yearly-operations-controller":76,"../components/performance/participation/monthly-participation-controller":77,"../components/performance/participation/performance-form-controller":78,"../components/performance/participation/raw-participation-controller":79,"../components/performance/participation/target-audience-controller":80,"../components/performance/participation/yearly-participation-controller":81,"../components/performance/patron/monthly-patron-controller":82,"../components/performance/patron/performance-form-controller":83,"../components/performance/patron/raw-patron-controller":84,"../components/performance/patron/yearly-patron-controller":85,"../components/performance/retail/monthly-retail-sales-controller":87,"../components/performance/retail/performance-form-controller":88,"../components/performance/retail/raw-retail-sales-controller":89,"../components/performance/retail/retail-uploader-controller":90,"../components/performance/retail/yearly-retail-sales-controller":91,"../components/performance/site_permissions/monthly-site_permissions-controller":92,"../components/performance/site_permissions/performance-form-controller":93,"../components/performance/site_permissions/raw-site_permissions-controller":94,"../components/performance/site_permissions/yearly-site_permissions-controller":95,"../components/performance/team-kpis/standard-monthly-events-controller":96,"../components/performance/turnstiles/monthly-turnstiles-controller":97,"../components/performance/turnstiles/raw-turnstiles-controller":98,"../components/performance/venue-hire/monthly-visits-controller":99,"../components/performance/venue-hire/raw-visits-controller":100,"../components/performance/venue-hire/visits-form-controller":101,"../components/performance/venue-hire/yearly-visits-controller":102,"../components/performance/visits/monthly-visits-controller":103,"../components/performance/visits/raw-visits-controller":104,"../components/performance/visits/visits-form-controller":105,"../components/performance/visits/yearly-visits-controller":106,"../components/performance/welcome-desk/monthly-welcomedesk-controller":107,"../components/performance/welcome-desk/performance-form-controller":108,"../components/performance/welcome-desk/raw-welcomedesk-controller":109,"../components/performance/welcome-desk/yearly-welcomedesk-controller":110,"../components/resource-bookings/bookings/edit-form-controller":111,"../components/resource-bookings/bookings/form-controller":112,"../components/resource-bookings/bookings/monthly-bookings-controller":113,"../components/resource-bookings/bookings/raw-bookings-controller":114,"../components/resource-bookings/bookings/recurring-events-controller":115,"../components/resource-bookings/bookings/yearly-bookings-controller":116,"../components/resource-bookings/equipment/form-controller":118,"../components/resource-bookings/equipment/raw-equipment-controller":119,"../components/resource-bookings/rooms/form-controller":120,"../components/resource-bookings/rooms/raw-rooms-controller":121,"../components/resource-bookings/timeline-resources-controller":122,"../components/shopify/shopify-controller":124,"../components/shopify/shopify-monthly-controller":126,"../components/signage/directive":127,"../components/signage/posters/form-controller":128,"../components/signage/posters/raw-poster-controller":129,"../components/team/app-controllers":130,"../components/team/form-controller":131,"../components/team/leave-controller":132,"../components/team/team-controller":133,"../components/tech-support/tech-support-controller":134,"../components/timeline-settings/raw-timeline-settings-controller":137,"../components/timeline-settings/settings-form-controller":138,"../components/timeline/timeline-controller":141,"../components/turnstiles/turnstiles-controller":152,"../components/user-admin/users-controller":154,"../shared/controllers/colourkey-controller":161,"../shared/controllers/controllers":162,"../shared/controllers/navbar-controller":163,"../shared/controllers/tablefilter-controller":164,"b55mWE":4,"buffer":3}],158:[function(require,module,exports){
+},{"../components/exhibitions/directive":8,"../components/exhibitions/music/monthly-votes-controller":9,"../components/exhibitions/music/raw-votes-controller":10,"../components/exhibitions/music/votes-form-controller":11,"../components/gift-aid/customers-directive":12,"../components/gift-aid/raw-giftaid-controller":13,"../components/iframe/iframe-controller":14,"../components/machine-monitor/dashboard-controller":16,"../components/machine-monitor/dead-controller":17,"../components/machine-monitor/downtime-controller":18,"../components/machine-monitor/feedback-controller":20,"../components/machine-monitor/satisfaction-controller":22,"../components/member/member-controller":23,"../components/performance/analyser/analyser-controller":24,"../components/performance/corporate/monthly-corporate-controller":25,"../components/performance/corporate/performance-form-controller":26,"../components/performance/corporate/raw-corporate-controller":27,"../components/performance/corporate/yearly-corporate-controller":28,"../components/performance/dashboard-controllers":29,"../components/performance/donations-boxes/monthly-donations-controller":30,"../components/performance/donations-directdebit/monthly-controller":32,"../components/performance/donations-directdebit/performance-form-controller":33,"../components/performance/donations-directdebit/raw-controller":34,"../components/performance/donations-donors/monthly-controller":36,"../components/performance/donations-donors/performance-form-controller":37,"../components/performance/donations-donors/raw-controller":38,"../components/performance/donations-general/monthly-controller":40,"../components/performance/donations-general/performance-form-controller":41,"../components/performance/donations-general/raw-controller":42,"../components/performance/donations-kiosk/daily-donations_kiosk-controller":43,"../components/performance/donations-kiosk/kiosk-uploader-controller":44,"../components/performance/donations-kiosk/monthly-donations_kiosk-controller":45,"../components/performance/donations-kiosk/performance-form-controller":46,"../components/performance/donations-kiosk/raw-donations_kiosk-controller":47,"../components/performance/donations-online/monthly-controller":48,"../components/performance/donations-online/performance-form-controller":50,"../components/performance/donations-online/raw-controller":51,"../components/performance/donations-other/monthly-donations_other-controller":52,"../components/performance/donations-other/performance-form-controller":53,"../components/performance/donations-other/raw-donations_other-controller":54,"../components/performance/donations-other/yearly-donations_other-controller":55,"../components/performance/donations-treasure/monthly-controller":56,"../components/performance/donations-treasure/performance-form-controller":57,"../components/performance/donations-treasure/raw-controller":58,"../components/performance/donations-trusts/monthly-controller":60,"../components/performance/donations-trusts/performance-form-controller":61,"../components/performance/donations-trusts/raw-controller":62,"../components/performance/donations/monthly-donations-controller":64,"../components/performance/donations/performance-form-controller":65,"../components/performance/donations/raw-donations-controller":66,"../components/performance/donations/yearly-donations-controller":67,"../components/performance/events/monthly-events-controller":68,"../components/performance/events/performance-form-controller":69,"../components/performance/events/raw-events-controller":70,"../components/performance/events/yearly-events-controller":71,"../components/performance/exhibitions-pwyt/monthly-donations-controller":72,"../components/performance/exhibitions-pwyt/performance-form-controller":73,"../components/performance/exhibitions-pwyt/raw-donations-controller":74,"../components/performance/exhibitions/exhibitions-summary-controller":75,"../components/performance/gallery-visits/exhibitions-teg-controller":76,"../components/performance/gallery-visits/monthly-teg-controller":77,"../components/performance/gallery-visits/performance-form-controller":78,"../components/performance/gallery-visits/raw-teg-controller":79,"../components/performance/gallery-visits/weekly-teg-controller":80,"../components/performance/gallery-visits/yearly-teg-controller":81,"../components/performance/gift-aid/monthly-allgiftaid-controller":82,"../components/performance/gift-aid/monthly-giftaid-controller":83,"../components/performance/gift-aid/performance-form-controller":84,"../components/performance/gift-aid/raw-giftaid-controller":85,"../components/performance/home/kpi-home-controller":86,"../components/performance/home/master-kpi-home-controller":87,"../components/performance/kpi-events/monthly-events-controller":88,"../components/performance/kpi-events/performance-form-controller":89,"../components/performance/kpi-events/raw-events-controller":90,"../components/performance/kpi-events/standard-monthly-events-controller":91,"../components/performance/learning/age-learning-controller":92,"../components/performance/learning/monthly-learning-controller":93,"../components/performance/learning/performance-form-controller":94,"../components/performance/learning/raw-learning-controller":95,"../components/performance/learning/yearly-learning-controller":96,"../components/performance/operations/monthly-operations-controller":97,"../components/performance/operations/performance-form-controller":98,"../components/performance/operations/raw-operations-controller":99,"../components/performance/operations/yearly-operations-controller":100,"../components/performance/participation/monthly-participation-controller":101,"../components/performance/participation/performance-form-controller":102,"../components/performance/participation/raw-participation-controller":103,"../components/performance/participation/target-audience-controller":104,"../components/performance/participation/yearly-participation-controller":105,"../components/performance/patron/monthly-patron-controller":106,"../components/performance/patron/performance-form-controller":107,"../components/performance/patron/raw-patron-controller":108,"../components/performance/patron/yearly-patron-controller":109,"../components/performance/retail/monthly-retail-sales-controller":111,"../components/performance/retail/performance-form-controller":112,"../components/performance/retail/raw-retail-sales-controller":113,"../components/performance/retail/retail-uploader-controller":114,"../components/performance/retail/yearly-retail-sales-controller":115,"../components/performance/site_permissions/monthly-site_permissions-controller":116,"../components/performance/site_permissions/performance-form-controller":117,"../components/performance/site_permissions/raw-site_permissions-controller":118,"../components/performance/site_permissions/yearly-site_permissions-controller":119,"../components/performance/team-kpis/standard-monthly-events-controller":120,"../components/performance/turnstiles/monthly-turnstiles-controller":121,"../components/performance/turnstiles/raw-turnstiles-controller":122,"../components/performance/venue-hire/monthly-visits-controller":123,"../components/performance/venue-hire/raw-visits-controller":124,"../components/performance/venue-hire/visits-form-controller":125,"../components/performance/venue-hire/yearly-visits-controller":126,"../components/performance/visits/monthly-visits-controller":127,"../components/performance/visits/raw-visits-controller":128,"../components/performance/visits/visits-form-controller":129,"../components/performance/visits/yearly-visits-controller":130,"../components/performance/welcome-desk/monthly-welcomedesk-controller":131,"../components/performance/welcome-desk/performance-form-controller":132,"../components/performance/welcome-desk/raw-welcomedesk-controller":133,"../components/performance/welcome-desk/yearly-welcomedesk-controller":134,"../components/resource-bookings/bookings/edit-form-controller":135,"../components/resource-bookings/bookings/form-controller":136,"../components/resource-bookings/bookings/monthly-bookings-controller":137,"../components/resource-bookings/bookings/raw-bookings-controller":138,"../components/resource-bookings/bookings/recurring-events-controller":139,"../components/resource-bookings/bookings/yearly-bookings-controller":140,"../components/resource-bookings/equipment/form-controller":142,"../components/resource-bookings/equipment/raw-equipment-controller":143,"../components/resource-bookings/rooms/form-controller":144,"../components/resource-bookings/rooms/raw-rooms-controller":145,"../components/resource-bookings/timeline-resources-controller":146,"../components/shopify/shopify-controller":148,"../components/shopify/shopify-monthly-controller":150,"../components/signage/directive":151,"../components/signage/posters/form-controller":152,"../components/signage/posters/raw-poster-controller":153,"../components/team/app-controllers":154,"../components/team/form-controller":155,"../components/team/leave-controller":156,"../components/team/team-controller":157,"../components/tech-support/tech-support-controller":158,"../components/timeline-settings/raw-timeline-settings-controller":161,"../components/timeline-settings/settings-form-controller":162,"../components/timeline/timeline-controller":165,"../components/turnstiles/turnstiles-controller":176,"../components/user-admin/users-controller":178,"../shared/controllers/colourkey-controller":185,"../shared/controllers/controllers":186,"../shared/controllers/navbar-controller":187,"../shared/controllers/tablefilter-controller":191,"b55mWE":4,"buffer":3}],182:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 module.exports = function (app) {
 
@@ -30217,6 +32172,14 @@ module.exports = function (app) {
     var turnstiles_directives = require('../components/turnstiles/turnstiles-directive');
     var resources_directives = require('../components/resource-bookings/directive');
     var giftaid_directives = require('../components/gift-aid/customers-directive');
+    var directdebit_directives = require('../components/performance/donations-directdebit/directdebit-directive');
+    var treasure_directives = require('../components/performance/donations-treasure/treasure-directive');
+    var donors_directives = require('../components/performance/donations-donors/donors-directive');
+    var donors_trusts = require('../components/performance/donations-trusts/trusts-directive');
+    var donors_online = require('../components/performance/donations-online/online-directive');
+    var donors_general = require('../components/performance/donations-general/donors-directive');
+
+
 
 
     var directiveArray=[
@@ -30230,8 +32193,13 @@ module.exports = function (app) {
       iframe_directives,
       turnstiles_directives,
       resources_directives,
-      giftaid_directives
-
+      giftaid_directives,
+      directdebit_directives,
+      treasure_directives,
+      donors_directives,
+      donors_trusts,
+      donors_online,
+      donors_general
     ]
 
   _.each(directiveArray, function(directives, names) {
@@ -30244,7 +32212,7 @@ module.exports = function (app) {
     return module;
 };
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app-directives.js","/")
-},{"../components/gift-aid/customers-directive":12,"../components/iframe/iframe-directive":15,"../components/performance/performance-directive":86,"../components/resource-bookings/directive":117,"../components/shopify/shopify-directive":125,"../components/tech-support/tech-support-directive":135,"../components/timeline-settings/timeline-settings-directive":139,"../components/timeline/timeline-directive":142,"../components/turnstiles/turnstiles-directive":153,"../components/user-admin/users-directive":155,"../shared/directives/directives":165,"b55mWE":4,"buffer":3}],159:[function(require,module,exports){
+},{"../components/gift-aid/customers-directive":12,"../components/iframe/iframe-directive":15,"../components/performance/donations-directdebit/directdebit-directive":31,"../components/performance/donations-donors/donors-directive":35,"../components/performance/donations-general/donors-directive":39,"../components/performance/donations-online/online-directive":49,"../components/performance/donations-treasure/treasure-directive":59,"../components/performance/donations-trusts/trusts-directive":63,"../components/performance/performance-directive":110,"../components/resource-bookings/directive":141,"../components/shopify/shopify-directive":149,"../components/tech-support/tech-support-directive":159,"../components/timeline-settings/timeline-settings-directive":163,"../components/timeline/timeline-directive":166,"../components/turnstiles/turnstiles-directive":177,"../components/user-admin/users-directive":179,"../shared/directives/directives":192,"b55mWE":4,"buffer":3}],183:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 module.exports = function(app) {
 
@@ -30355,7 +32323,7 @@ module.exports = function(app) {
     return module;
 };
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app-filters.js","/")
-},{"b55mWE":4,"buffer":3}],160:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],184:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 module.exports = function(app) {
 
@@ -30407,7 +32375,7 @@ module.exports = function(app) {
     return module;
 };
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app-services.js","/")
-},{"../components/machine-monitor/downtime-services":19,"../components/machine-monitor/feedback-services":21,"../components/resource-bookings/timeline-resources-services":123,"../components/tech-support/trello-services":136,"../components/timeline/timeline-bookings-services":140,"../components/timeline/timeline-exhibitions-services":143,"../components/timeline/timeline-googlesheets-services":144,"../components/timeline/timeline-installs-services":145,"../components/timeline/timeline-learning-bookings-services":146,"../components/timeline/timeline-leave-services":147,"../components/timeline/timeline-loans-services":148,"../components/timeline/timeline-services":149,"../components/timeline/timeline-shopify-services":150,"../components/timeline/timeline-visitor-figures-services":151,"../shared/services/app-services":167,"../shared/services/data-services":168,"b55mWE":4,"buffer":3}],161:[function(require,module,exports){
+},{"../components/machine-monitor/downtime-services":19,"../components/machine-monitor/feedback-services":21,"../components/resource-bookings/timeline-resources-services":147,"../components/tech-support/trello-services":160,"../components/timeline/timeline-bookings-services":164,"../components/timeline/timeline-exhibitions-services":167,"../components/timeline/timeline-googlesheets-services":168,"../components/timeline/timeline-installs-services":169,"../components/timeline/timeline-learning-bookings-services":170,"../components/timeline/timeline-leave-services":171,"../components/timeline/timeline-loans-services":172,"../components/timeline/timeline-services":173,"../components/timeline/timeline-shopify-services":174,"../components/timeline/timeline-visitor-figures-services":175,"../shared/services/app-services":194,"../shared/services/data-services":195,"b55mWE":4,"buffer":3}],185:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	
 exports.ColourKeycontroller = function($location,AuthService,$scope,$http) {
@@ -30420,7 +32388,7 @@ exports.ColourKeycontroller = function($location,AuthService,$scope,$http) {
 };
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/controllers/colourkey-controller.js","/controllers")
-},{"b55mWE":4,"buffer":3}],162:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],186:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.ProductDetailsController = function($location, $scope, $routeParams, $http) {
 
@@ -30463,7 +32431,7 @@ exports.refreshButtonKeycontroller = function($location, $scope, $routeParams, $
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/controllers/controllers.js","/controllers")
-},{"b55mWE":4,"buffer":3}],163:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],187:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 //NB this errors silently and causes issues with nav bar so users dont think they are logged in
 
@@ -30495,18 +32463,15 @@ default_permissions = [{
 
 
 
-
-
+var views = {}
 
 
 $scope.user_groups = []
 $scope.user_groups['AV']=[]
-$scope.user_groups['ADMIN']=[]
 $scope.user_groups['RETAIL']=[]
 $scope.user_groups['DIGITAL']=[]
-$scope.user_groups['STAFF']=[]
-$scope.user_groups['DEFAULT']=[]
-$scope.user_groups['DEVELOPMENT']=[]	  
+
+$scope.user_groups['DEFAULT']=[]	  
 $scope.user_groups['VENUE HIRE']=[]	 
 $scope.user_groups['LEARNING']=[]	
 $scope.user_groups['EXHIBITIONS']=[]	
@@ -30515,142 +32480,488 @@ $scope.user_groups['OPERATIONS']=[]
 $scope.user_groups['COMMERCIAL']=[]
 	
 var timeline 		  = {teamx:"_DONATIONS" ,link:"timeline",value:"Timeline"}
-var masterkpi 		  = {teamx:"MASTER" ,link:"master",value:"Master KPIs"}
-var dead 			  = {teamx:"_DONATIONS" ,link:"dead",value:"Downtime"}
-var activity		  = {teamx:"_DONATIONS" ,link:"activity",value:"Machine Activity"}
-var feedback		  = {teamx:"_DONATIONS" ,link:"feedback",value:"Kiosk feedback"}
-var tech_support	  = {teamx:"_DONATIONS" ,link:"tech-support",value:"Tech-support"}
-var shopify 		  = {teamx:"_DONATIONS" ,link:"shopify_app",value:"Shopify"}
-var users 			  = {teamx:"_DONATIONS" ,link:"users",value:"ADMIN: Users"}
-var timeline_settings = {teamx:"_DONATIONS" ,link:"timeline_settings",value:"Timeline settings"}
-var doom 			  = {teamx:"_DONATIONS" ,link:"doom",value:"DOOM!"}
-var analyser 		  = {teamx:"_DONATIONS" ,link:"analyser",value:"Performance analyser (BETA)"}
+views.timeline=timeline
 
+var masterkpi 		  = {teamx:"MASTER" ,link:"master",value:"Master KPIs"}
+views.masterkpi=masterkpi
+
+
+var dead 			  = {teamx:"_DONATIONS" ,link:"dead",value:"Downtime"}
+views.dead=dead
+
+
+var activity		  = {teamx:"_DONATIONS" ,link:"activity",value:"Machine Activity"}
+views.activity=activity
+
+
+
+var feedback		  = {teamx:"_DONATIONS" ,link:"feedback",value:"Kiosk feedback"}
+views.feedback=feedback
+
+
+
+var tech_support	  = {teamx:"_DONATIONS" ,link:"tech-support",value:"Tech-support"}
+views.tech_support=tech_support
+
+
+var shopify 		  = {teamx:"_DONATIONS" ,link:"shopify_app",value:"Shopify"}
+views.shopify=shopify
+
+
+
+var users 			  = {teamx:"_DONATIONS" ,link:"users",value:"ADMIN: Users"}
+views.users=users
+
+
+
+
+
+
+
+var timeline_settings = {teamx:"_DONATIONS" ,link:"timeline_settings",value:"Timeline settings"}
+views.timeline_settings=timeline_settings
+
+
+
+
+var doom 			  = {teamx:"_DONATIONS" ,link:"doom",value:"DOOM!"}
+views.doom=doom
+
+
+
+
+var analyser 		  = {teamx:"_DONATIONS" ,link:"analyser",value:"Performance analyser (BETA)"}
+views.analyser=analyser
 //resource booking
 
 var rooms 			   = {teamx:"_DONATIONS" ,link:"rooms",value:"Add rooms"}
+views.rooms=rooms
+
+
 var equipment 		   = {teamx:"_DONATIONS" ,link:"equipment",value:"Add equipment"}
+views.equipment=equipment
+
+
+
 var equipment_bookings = {teamx:"_DONATIONS" ,link:"bookings/equipment",value:"Equipment booking"}
+views.equipment_bookings=equipment_bookings
+
+
+
 var room_bookings	   = {teamx:"_DONATIONS" ,link:"bookings/rooms",value:"Add a room booking"}
+views.room_bookings=room_bookings
+
+
 var room_bookings_list = {teamx:"_DONATIONS" ,link:"bookingslist/rooms",value:"Room bookings list"}
+views.room_bookings_list=room_bookings_list
+
+
+
 var bookings_report    = {teamx:"_DONATIONS" ,link:"bookings-report",value:"Bookings report"}
+views.bookings_report=bookings_report
+
+
+
 
 
 //signage
 var posters_list 		= {teamx:"_DONATIONS" ,link:"posters",value:"Posters list"}
+views.posters_list=posters_list
+
+
+
 var add_posters 		= {teamx:"_DONATIONS" ,link:"add-poster",value:"Add poster"}
+views.add_posters=add_posters
+
+
 
 
 var room_hire = {teamx:"_DONATIONS" ,link:"room-hire",value:"Room booking timeline"}
-var equipment_booking_timeline = {teamx:"_DONATIONS" ,link:"equipment-timeline",value:"Equipment booking timeline"}
-var participation = {teamx:"PARTICIPATION" ,link:"participation-dashboard",value:"Participation dashboard"}
+views.room_hire=room_hire
 
+
+
+var equipment_booking_timeline = {teamx:"_DONATIONS" ,link:"equipment-timeline",value:"Equipment booking timeline"}
+views.equipment_booking_timeline=equipment_booking_timeline
+
+
+var participation = {teamx:"PARTICIPATION" ,link:"participation-dashboard",value:"Participation dashboard"}
+views.participation=participation
 
 var performance = {teamx:"VISITS" ,link:"record-visitor-numbers",value:"Record visitor figures"}
+views.performance=performance
+
+
 
 var record_retail_sales = {teamx:"RETAIL" ,link:"record-retail-sales",value:"Record retail sales"}
+views.record_retail_sales=record_retail_sales
+
+
+
 
 var upload_retail_sales = {teamx:"RETAIL" ,link:"upload-retail-sales",value:"Upload retail sales"}
+views.upload_retail_sales=upload_retail_sales
+
+
+
+
 
 var raw_retail_sales = {teamx:"RETAIL" ,link:"raw-retail-sales",value:"Raw retail sales"}
+views.raw_retail_sales=raw_retail_sales
+
+
+
+
+
 var monthly_retail_sales = {teamx:"RETAIL" ,link:"monthly-retail-sales",value:"Monthly retail sales"}
+views.monthly_retail_sales=monthly_retail_sales
+
 
 
 var record_donations_other =		 {teamx:"DONATIONS" ,link:"record-donations-other",value:"Record exhibition ticket donations"}
+views.record_donations_other=record_donations_other
+
+
+
+
 
 var donations_other = 				 {teamx:"DONATIONS" ,link:"raw-donations-other",value:"Raw exhibition ticket donations"}
-var gift_aid_customers = 				 {teamx:"DONATIONS" ,link:"gift-aid-customers",value:"Gift Aid Customers"}
+views.donations_other=donations_other
 
+
+
+
+
+var gift_aid_customers = 				 {teamx:"DONATIONS" ,link:"gift-aid-customers",value:"Gift Aid Customers"}
+views.gift_aid_customers=gift_aid_customers
 
 
 var monthly_donations_other = 		 {teamx:"DONATIONS" ,link:"monthly-donations-other",value:"Monthly exhibition ticket donations"}
+views.monthly_donations_other=monthly_donations_other
+
+
+
+
 
 var record_donations_kiosk =		 {teamx:"DONATIONS" ,link:"record-donations-kiosk",value:"Record kiosk donations"}
+views.record_donations_kiosk=monthly_donations_other
+
+
+
+
 var upload_kiosk_donations =		 {teamx:"DONATIONS" ,link:"upload-kiosk-donations",value:"Upload kiosk donations"}
+views.upload_kiosk_donations=upload_kiosk_donations
+
+
+
+
 
 var donations_kiosk = 				 {teamx:"DONATIONS" ,link:"raw-donations-kiosk",value:"Raw kiosk donation data"}
+views.donations_kiosk=donations_kiosk
+
+
+
+
 var daily_donations_kiosk = 				 {teamx:"DONATIONS" ,link:"day-donations-kiosk",value:"Daily kiosk donation data"}
+views.daily_donations_kiosk=daily_donations_kiosk
+
+
+
 
 var monthly_donations_kiosk = 		 {teamx:"DONATIONS" ,link:"monthly-donations-kiosk",value:"Monthly kiosk donations"}
-var monthly_donations_box = 		 {teamx:"DONATIONS" ,link:"monthly-donations-box",value:"Monthly donations boxes"}
+views.monthly_donations_kiosk=monthly_donations_kiosk
 
+
+var monthly_donations_box = 		 {teamx:"DONATIONS" ,link:"monthly-donations-box",value:"Monthly donations boxes"}
+views.monthly_donations_box=monthly_donations_box
 
 
 var record_site_permissions=		 {teamx:"ARTS AND EVENTS" ,link:"record-site-permissions",value:"Record  site permissions"}
-var site_permissions = 				 {teamx:"ARTS AND EVENTS" ,link:"raw-site-permissions",value:"Raw site permissions data"}
-var monthly_site_permissions = 		 {teamx:"ARTS AND EVENTS" ,link:"monthly-site-permissions",value:"Monthly site permissions"}
+views.record_site_permissions=record_site_permissions
 
+
+
+
+var site_permissions = 				 {teamx:"ARTS AND EVENTS" ,link:"raw-site-permissions",value:"Raw site permissions data"}
+views.site_permissions=site_permissions
+
+
+
+var monthly_site_permissions = 		 {teamx:"ARTS AND EVENTS" ,link:"monthly-site-permissions",value:"Monthly site permissions"}
+views.monthly_site_permissions=monthly_site_permissions
 
 
 var record_donations =			 {teamx:"DONATIONS" ,link:"record-donations",value:"Record donation boxes"}
+views.record_donations=record_donations
+
+
+
+
+
+
 var donations = 				 {teamx:"DONATIONS" ,link:"raw-donations",value:"Raw donation boxes data"}
+views.donations=donations
+
+
+
+
+
+
 var monthly_donations_boxes = 	 {teamx:"DONATIONS" ,link:"monthly-donations-kiosks",value:"Monthly donation boxes and kiosks"}//still going
+views.monthly_donations_boxes=monthly_donations_boxes
+
+
+
+
+
+
+
 var monthly_donations = 		 {teamx:"DONATIONS" ,link:"monthly-donations",value:" Monthly total income"}
+views.monthly_donations=monthly_donations
+
+
+
+
+
 
 var record_patron =			 {teamx:"DONATIONS" ,link:"record-patron",value:"Record patron"}
+views.record_patron=record_patron
+
+
+
+
+
 var raw_patron = 				 {teamx:"DONATIONS" ,link:"raw-patron",value:"Raw patron data"}
+views.raw_patron=raw_patron
+
+
+
+
 var monthly_patron = 		 {teamx:"DONATIONS" ,link:"monthly-patron",value:"Monthly patron"}
+views.monthly_patron=monthly_patron
+
+
+
 
 var record_corporate =			 {teamx:"DONATIONS" ,link:"record-corporate",value:"Record corporate"}
-var raw_corporate = 				 {teamx:"DONATIONS" ,link:"raw-corporate",value:"Raw corporate data"}
-var monthly_corporate = 		 {teamx:"DONATIONS" ,link:"monthly-corporate",value:"Monthly corporate"}
+views.record_corporate=record_corporate
 
+
+var raw_corporate = 				 {teamx:"DONATIONS" ,link:"raw-corporate",value:"Raw corporate data"}
+views.raw_corporate=raw_corporate
+
+
+var monthly_corporate = 		 {teamx:"DONATIONS" ,link:"monthly-corporate",value:"Monthly corporate"}
+views.monthly_corporate=monthly_corporate
 
 
 var transformation_kpis = 		 {teamx:"TEAM" ,link:"transformation-kpis",value:"Transformation"}
+views.transformation_kpis=transformation_kpis
+
+
 var engagement_kpis = 		 {teamx:"TEAM" ,link:"engagement-kpis",value:"Engagement"}
+views.engagement_kpis=engagement_kpis
+
+
 var collections_kpis = 		 {teamx:"TEAM" ,link:"collections-kpis",value:"Collections"}
+views.collections_kpis=collections_kpis
+
+
+
 
 var record_operations = {teamx:"OPERATIONS" ,link:"record-operations",value:"Record operations"}
+views.record_operations=record_operations
+
+
+
 var operations = {teamx:"OPERATIONS" ,link:"raw-operations",value:"OPERATIONS: Raw operations data"}
+views.operations=operations
+
+
+
 var monthly_operations = {teamx:"OPERATIONS" ,link:"monthly-operations",value:"Monthly operations"}
+views.monthly_operations=monthly_operations
+
+
+
 
 var record_events = {teamx:"EVENTS" ,link:"record-events",value:"Record events"}
-var record_kpi_events = {teamx:"TEAM" ,link:"record-kpi-events",value:"record income, enquiries, etc"}
-var events = {teamx:"EVENTS" ,link:"raw-events",value:"EVENTS: Raw events data"}
-var kpi_events = {teamx:"TEAM" ,link:"raw-kpi-events",value:"enquiries,income, sessions"}
+views.record_events=record_events
 
+
+var record_kpi_events = {teamx:"TEAM" ,link:"record-kpi-events",value:"record income, enquiries, etc"}
+views.record_kpi_events=record_kpi_events
+
+
+
+var events = {teamx:"EVENTS" ,link:"raw-events",value:"EVENTS: Raw events data"}
+views.events=events
+
+var kpi_events = {teamx:"TEAM" ,link:"raw-kpi-events",value:"enquiries,income, sessions"}
+views.kpi_events=kpi_events
 
 
 var monthly_events = {teamx:"EVENTS" ,link:"monthly-events",value:"Monthly events"}
+views.monthly_events=monthly_events
+
 
 var record_teg = {teamx:"EXHIBITIONS" ,link:"record-teg",value:"Record TEG figures"}
+views.record_teg=record_teg
+
+
 var teg = {teamx:"EXHIBITIONS" ,link:"raw-teg",value:"Raw TEG figures"}
+views.teg=teg
+
+
 var monthly_teg = {teamx:"EXHIBITIONS" ,link:"monthly-teg",value:"Monthly TEG figures"}
+views.monthly_teg=monthly_teg
+
 
  var record_exhibitions_pwyt = {teamx:"EXHIBITIONS" ,link:"record-exhibitions-pwyt",value:"Record income"}
-// var exhibitions_pwyt_monthly = {link:"monthly-exhibitions-pwyt",value:"EXHIBITIONS: Monthly Pay What you think"}
+ views.record_exhibitions_pwyt=record_exhibitions_pwyt
+
+
  var raw_exhibitions_pwyt = {teamx:"EXHIBITIONS" ,link:"raw-exhibitions-pwyt",value:"income"}
-  //var exhibitions_summary = {link:"exhibitions-summary",value:"EXHIBITIONS: summary"}
- 
+ views.raw_exhibitions_pwyt=raw_exhibitions_pwyt
  
  var record_learning = {teamx:"LEARNING" ,link:"record-learning",value:"Record learning"}
-var learning = {teamx:"LEARNING" ,link:"raw-learning",value:"Raw learning data"}
-var monthly_learning = {teamx:"LEARNING" ,link:"monthly-learning",value:"Monthly learning"}
+ views.record_learning=record_learning
 
+
+
+var learning = {teamx:"LEARNING" ,link:"raw-learning",value:"Raw learning data"}
+views.learning=learning
+
+
+var monthly_learning = {teamx:"LEARNING" ,link:"monthly-learning",value:"Monthly learning"}
+views.monthly_learning=monthly_learning
  
 var raw_visits = {teamx:"VISITS" ,link:"raw-visits",value:"Raw visits data"}
+views.raw_visits=raw_visits
+
+
 var monthly_visits = {teamx:"VISITS" ,link:"monthly-visits",value:"Monthly visits"}
+views.monthly_visits=monthly_visits
+
+
+
 
 var record_venue_hire = {teamx:"VENUE HIRE" ,link:"record-venue-hire",value:"Record venue hire"}
-var raw_venue_hire = {teamx:"VENUE HIRE" ,link:"raw-venue-hire",value:"Raw venue hire"}
-var monthly_venue_hire = {teamx:"VENUE HIRE"  ,link:"monthly-venue-hire",value:"Monthly venue hire"}
+views.record_venue_hire=record_venue_hire
 
+
+var raw_venue_hire = {teamx:"VENUE HIRE" ,link:"raw-venue-hire",value:"Raw venue hire"}
+views.raw_venue_hire=raw_venue_hire
+
+
+var monthly_venue_hire = {teamx:"VENUE HIRE"  ,link:"monthly-venue-hire",value:"Monthly venue hire"}
+views.monthly_venue_hire=monthly_venue_hire
 
 
 
 
 var record_giftaid = {teamx:"DONATIONS" ,link:"record-giftaid",value:"Record gift aid"}
-var raw_giftaid = {teamx:"DONATIONS" ,link:"raw-giftaid",value:"Raw gift aid"}
-var monthly_giftaid = {teamx:"DONATIONS" ,link:"monthly-giftaid",value:"Monthly gift aid"}
+views.record_giftaid=record_giftaid
 
-//var raw_turnstiles = {link:"raw-turnstiles",value:"EXHIBITIONS: turnstiles raw data"}
-//var monthly_turnstiles = {link:"monthly-turnstiles",value:"EXHIBITIONS: turnstiles Monthly"}
+
+var raw_giftaid = {teamx:"DONATIONS" ,link:"raw-giftaid",value:"Raw gift aid"}
+views.raw_giftaid=raw_giftaid
+
+
+var monthly_giftaid = {teamx:"DONATIONS" ,link:"monthly-giftaid",value:"Monthly gift aid"}
+views.monthly_giftaid=monthly_giftaid
+
+//DIRECT DEBIT
+
+var raw_directdebit = {teamx:"DONATIONS" ,link:"raw-directdebit",value:"Raw direct debit"}
+views.raw_giftaid=raw_directdebit
+
+
+var monthly_directdebit = {teamx:"DONATIONS" ,link:"monthly-directdebit",value:"Monthly direct debit"}
+views.monthly_directdebit=monthly_directdebit
+
+
+var record_directdebit = {teamx:"DONATIONS" ,link:"record-directdebit",value:"Record direct debit"}
+views.record_directdebit=record_directdebit
+
+//Major Donors
+//Treasure
+
+var raw_donors = {teamx:"DONATIONS" ,link:"raw-donors",value:"Raw Major Donors"}
+views.raw_donors=raw_donors
+
+
+var monthly_donors = {teamx:"DONATIONS" ,link:"monthly-donors",value:"Monthly Major Donors"}
+views.monthly_donors=monthly_donors
+
+
+var record_donors  = {teamx:"DONATIONS" ,link:"record-donors",value:"Record Major Donors"}
+views.record_donors=record_donors
+
+
+//trusts and foundations
+var raw_trusts = {teamx:"DONATIONS" ,link:"raw-trusts",value:"Raw Trusts and foundations"}
+views.raw_trusts=raw_trusts
+
+
+var monthly_trusts = {teamx:"DONATIONS" ,link:"monthly-trusts",value:"Monthly Trusts and foundations"}
+views.monthly_trusts=monthly_trusts
+
+
+var record_trusts  = {teamx:"DONATIONS" ,link:"record-trusts",value:"Record Trusts and foundationss"}
+views.record_trusts=record_trusts
+
+
+//online donations
+var raw_online = {teamx:"DONATIONS" ,link:"raw-online",value:"Raw online donations"}
+views.raw_online=raw_online
+
+
+var monthly_online = {teamx:"DONATIONS" ,link:"monthly-online",value:"Monthly online donations"}
+views.monthly_online=monthly_online
+
+
+var record_online = {teamx:"DONATIONS" ,link:"record-online",value:"Record online donations"}
+views.record_online=record_online
+
+//general donations
+var raw_general = {teamx:"DONATIONS" ,link:"raw-general",value:"Raw general donations"}
+views.raw_general=raw_general
+
+
+var monthly_general = {teamx:"DONATIONS" ,link:"monthly-general",value:"Monthly general donations"}
+views.monthly_general=monthly_general
+
+
+var record_general = {teamx:"DONATIONS" ,link:"record-general",value:"Record general donations"}
+views.record_general=record_general
+
+
+//Treasure
+
+var raw_treasure = {teamx:"DONATIONS" ,link:"raw-treasure",value:"Raw treasure"}
+views.raw_treasure=raw_treasure
+
+
+var monthly_treasure = {teamx:"DONATIONS" ,link:"monthly-treasure",value:"Monthly treasure"}
+views.monthly_treasure=monthly_treasure
+
+
+var record_treasure = {teamx:"DONATIONS" ,link:"record-treasure",value:"Record treasure"}
+views.record_treasure=record_treasure
+
+
 
 var record_welcomedesk = {teamx:"DONATIONS" ,link:"record-welcomedesk",value:"Record Welcome desk"}
-var raw_welcomedesk = {teamx:"DONATIONS" ,link:"raw-welcomedesk",value:"Raw Welcome desk"}
-var monthly_welcomedesk = {teamx:"DONATIONS" ,link:"monthly-welcomedesk",value:"Monthly Welcome desk"}
+views.record_welcomedesk=record_welcomedesk
 
+
+var raw_welcomedesk = {teamx:"DONATIONS" ,link:"raw-welcomedesk",value:"Raw Welcome desk"}
+views.raw_welcomedesk=raw_welcomedesk
+
+
+var monthly_welcomedesk = {teamx:"DONATIONS" ,link:"monthly-welcomedesk",value:"Monthly Welcome desk"}
+views.monthly_welcomedesk=monthly_welcomedesk
 
 
 var signage=[]
@@ -30684,86 +32995,6 @@ $scope.user_groups['COMMERCIAL'].resources=resources
 $scope.user_groups['COMMERCIAL'].performance=performance_data
 
 
-
-
-var enter_data=[]
-enter_data.push(performance)
-//enter_data.push(record_retail_sales)
-enter_data.push(record_corporate)
-enter_data.push(record_patron)
-enter_data.push(record_donations)
-enter_data.push(record_donations_other)
-
-
-enter_data.push(upload_kiosk_donations)
-//enter_data.push(record_donations_kiosk)
-//enter_data.push(record_giftaid)
-enter_data.push(record_welcomedesk)
-enter_data.push(record_events)
-enter_data.push(record_kpi_events)
-enter_data.push(record_venue_hire)
-
-var performance_data=[]
-performance_data.push(raw_visits)
-performance_data.push(monthly_visits)
-performance_data.push(raw_venue_hire)
-performance_data.push(monthly_venue_hire)
-performance_data.push(gift_aid_customers)
-
-
-//performance_data.push(raw_retail_sales)
-performance_data.push(monthly_retail_sales)
-
-performance_data.push(raw_giftaid)
-performance_data.push(raw_patron)
-performance_data.push(raw_corporate)
-performance_data.push(monthly_giftaid)
-performance_data.push(monthly_donations)
-performance_data.push(monthly_donations_other)
-performance_data.push(monthly_donations_kiosk)
-performance_data.push(monthly_donations_box)
-
-
-
-performance_data.push(monthly_patron)
-performance_data.push(monthly_corporate)
-performance_data.push(transformation_kpis)
-performance_data.push(engagement_kpis)
-performance_data.push(collections_kpis)
-
-performance_data.push(donations_kiosk)
-performance_data.push(daily_donations_kiosk)
-
-
-performance_data.push(donations)
-
-performance_data.push(donations_other)
-performance_data.push(monthly_welcomedesk)
-performance_data.push(raw_welcomedesk)
-
-performance_data.push(participation)
-performance_data.push(events)
-performance_data.push(kpi_events)
-performance_data.push(monthly_events)
-
-$scope.user_groups['DEVELOPMENT'].permissions=default_permissions
-$scope.user_groups['DEVELOPMENT'].views=[]
-$scope.user_groups['DEVELOPMENT'].enter_data=[]
-$scope.user_groups['DEVELOPMENT'].resources=[]
-
-$scope.user_groups['DEVELOPMENT'].views.push(masterkpi)
-$scope.user_groups['DEVELOPMENT'].views.push(timeline)
-$scope.user_groups['DEVELOPMENT'].views.push(analyser)
-
-
-
-$scope.user_groups['DEVELOPMENT'].enter_data=enter_data
-$scope.user_groups['DEVELOPMENT'].performance=performance_data
-
-
-
-
-
 var enter_data=[]
 
 enter_data.push(record_site_permissions)
@@ -30794,107 +33025,9 @@ $scope.user_groups['ARTS AND EVENTS'].views.push(analyser)
 $scope.user_groups['ARTS AND EVENTS'].enter_data=enter_data
 $scope.user_groups['ARTS AND EVENTS'].performance=performance_data
  
-var enter_data=[]
-enter_data.push(performance)
-enter_data.push(record_retail_sales)
-enter_data.push(upload_retail_sales)
-
-
-enter_data.push(record_donations)
-enter_data.push(record_site_permissions)
-enter_data.push(record_donations_other)
-
-//enter_data.push(record_donations_kiosk)
-enter_data.push(upload_kiosk_donations)
-enter_data.push(record_corporate)
-enter_data.push(record_patron)
-//enter_data.push(record_giftaid)
-enter_data.push(record_welcomedesk)
-enter_data.push(record_learning)
-enter_data.push(record_exhibitions_pwyt)
-enter_data.push(record_teg)
-enter_data.push(record_events)
-enter_data.push(record_kpi_events)
-enter_data.push(record_venue_hire)
-
-enter_data.push(record_operations)
-
-
-enter_data=enter_data.sort()
-
-var performance_data=[]
-performance_data.push(raw_visits)
-performance_data.push(monthly_visits)
-performance_data.push(raw_venue_hire)
-performance_data.push(monthly_venue_hire)
-performance_data.push(raw_retail_sales)
-performance_data.push(monthly_retail_sales)
-performance_data.push(monthly_site_permissions)
-performance_data.push(site_permissions)
-performance_data.push(raw_giftaid)
-performance_data.push(raw_patron)
-performance_data.push(raw_corporate)
-performance_data.push(monthly_giftaid)
-performance_data.push(monthly_donations)
-performance_data.push(monthly_patron)
-performance_data.push(monthly_corporate)
-performance_data.push(monthly_donations_other)
-performance_data.push(monthly_donations_kiosk)
-performance_data.push(monthly_donations_box)
-performance_data.push(donations)
-performance_data.push(donations_kiosk)
-performance_data.push(daily_donations_kiosk)
-performance_data.push(donations_other)
-
-
-//performance_data.push(corporate)
-//performance_data.push(patron)
-performance_data.push(raw_welcomedesk)
-performance_data.push(monthly_welcomedesk)
-performance_data.push(participation)
-performance_data.push(learning)
-performance_data.push(monthly_learning)
-performance_data.push(raw_exhibitions_pwyt)
-performance_data.push(teg)
-performance_data.push(monthly_teg)
-performance_data.push(events)
-performance_data.push(kpi_events)
-performance_data.push(monthly_events)
-performance_data.push(operations)
-performance_data.push(monthly_operations)
-performance_data.push(transformation_kpis)
-performance_data.push(engagement_kpis)
-performance_data.push(collections_kpis)
-performance_data.push(gift_aid_customers)
-
-
-performance_data=performance_data.sort()
-
-
-$scope.user_groups['ADMIN'].views=[]
-$scope.user_groups['ADMIN'].enter_data=[]
-$scope.user_groups['ADMIN'].resources=[]
-$scope.user_groups['ADMIN'].signage=[]
-$scope.user_groups['ADMIN'].permissions=default_permissions
-
-
-$scope.user_groups['ADMIN'].views.push(masterkpi)
-$scope.user_groups['ADMIN'].views.push(room_hire)
-$scope.user_groups['ADMIN'].views.push(timeline)
-$scope.user_groups['ADMIN'].views.push(analyser)
-$scope.user_groups['ADMIN'].views.push(dead)
-$scope.user_groups['ADMIN'].views.push(activity)
-$scope.user_groups['ADMIN'].views.push(feedback)
-$scope.user_groups['ADMIN'].views.push(tech_support)
-$scope.user_groups['ADMIN'].views.push(shopify)
-$scope.user_groups['ADMIN'].views.push(users)
-$scope.user_groups['ADMIN'].views.push(timeline_settings)
-
-
-$scope.user_groups['ADMIN'].enter_data=enter_data
-$scope.user_groups['ADMIN'].performance=performance_data
-$scope.user_groups['ADMIN'].resources=resources
-$scope.user_groups['ADMIN'].signage=signage
+require('./navigation/admin')($scope,views);
+require('./navigation/development')($scope,views);
+require('./navigation/staff')($scope,views);
 
 var enter_data=[]
 
@@ -31109,52 +33242,6 @@ $scope.user_groups['DEFAULT'].views.push(monthly_visits)
 $scope.user_groups['DEFAULT'].performance=performance_data
 $scope.user_groups['DEFAULT'].enter_data=enter_data
 
-var enter_data=[]
-enter_data.push(performance)
-enter_data.push(record_exhibitions_pwyt)
-enter_data.push(record_events)
-enter_data.push(record_kpi_events)
-enter_data.push(record_venue_hire)
-enter_data.push(record_operations)
-enter_data.push(record_teg)
-var resources=[]
-
-performance_data.push(teg)
-
-var performance_data=[]
-performance_data.push(raw_visits)
-performance_data.push(monthly_visits)
-performance_data.push(raw_venue_hire)
-performance_data.push(monthly_venue_hire)
-performance_data.push(monthly_retail_sales)
-//performance_data.push(monthly_turnstiles)
-performance_data.push(monthly_donations)
-performance_data.push(transformation_kpis)
-performance_data.push(engagement_kpis)
-performance_data.push(collections_kpis)
-
-performance_data.push(raw_exhibitions_pwyt)
-//performance_data.push(exhibitions_pwyt_monthly)
-performance_data.push(monthly_teg)
-performance_data.push(events)
-performance_data.push(kpi_events)
-performance_data.push(monthly_events)
-performance_data.push(participation)
-
-$scope.user_groups['STAFF'].views=[]
-$scope.user_groups['STAFF'].enter_data=[]
-$scope.user_groups['STAFF'].resources=[]
-$scope.user_groups['STAFF'].permissions=default_permissions
-
-
-$scope.user_groups['STAFF'].views.push(masterkpi)
-$scope.user_groups['STAFF'].views.push(timeline) 
-$scope.user_groups['STAFF'].views.push(analyser) 
-resources.push(equipment_booking_timeline)
-
-$scope.user_groups['STAFF'].enter_data=enter_data
-$scope.user_groups['STAFF'].performance=performance_data
-$scope.user_groups['STAFF'].resources=resources
 
 
 
@@ -31336,7 +33423,348 @@ $scope.user_groups['RETAIL'].performance=performance_data
 };
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/controllers/navbar-controller.js","/controllers")
-},{"b55mWE":4,"buffer":3}],164:[function(require,module,exports){
+},{"./navigation/admin":188,"./navigation/development":189,"./navigation/staff":190,"b55mWE":4,"buffer":3}],188:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+
+module.exports = function ($scope,views) {
+
+ 
+
+
+  var signage=[]
+signage.push(views.posters_list)
+signage.push(views.add_posters)
+
+
+
+var resources=[]
+
+resources.push(views.rooms)
+resources.push(views.equipment)
+resources.push(views.equipment_bookings)
+//resources.push(room_bookings)
+//resources.push(room_bookings_list)
+resources.push(views.bookings_report)
+
+resources.push(views.room_hire)
+resources.push(views.equipment_booking_timeline)
+
+
+
+
+$scope.user_groups['ADMIN']=[]
+
+ 
+var enter_data=[]
+enter_data.push(views.performance)
+enter_data.push(views.record_retail_sales)
+enter_data.push(views.upload_retail_sales)
+
+
+enter_data.push(views.record_donations)
+enter_data.push(views.record_site_permissions)
+enter_data.push(views.record_donations_other)
+
+//enter_data.push(record_donations_kiosk)
+enter_data.push(views.upload_kiosk_donations)
+enter_data.push(views.record_corporate)
+enter_data.push(views.record_directdebit)
+enter_data.push(views.record_treasure)
+enter_data.push(views.record_trusts)
+enter_data.push(views.record_online)
+enter_data.push(views.record_general)
+
+
+
+enter_data.push(views.record_donors)
+enter_data.push(views.record_patron)
+//enter_data.push(record_giftaid)
+enter_data.push(views.record_welcomedesk)
+enter_data.push(views.record_learning)
+enter_data.push(views.record_exhibitions_pwyt)
+enter_data.push(views.record_teg)
+enter_data.push(views.record_events)
+enter_data.push(views.record_kpi_events)
+enter_data.push(views.record_venue_hire)
+
+enter_data.push(views.record_operations)
+
+
+enter_data=enter_data.sort()
+
+var performance_data=[]
+performance_data.push(views.raw_visits)
+performance_data.push(views.monthly_visits)
+performance_data.push(views.raw_venue_hire)
+performance_data.push(views.monthly_venue_hire)
+performance_data.push(views.raw_retail_sales)
+performance_data.push(views.monthly_retail_sales)
+performance_data.push(views.monthly_site_permissions)
+performance_data.push(views.site_permissions)
+performance_data.push(views.raw_giftaid)
+performance_data.push(views.raw_patron)
+performance_data.push(views.raw_general)
+performance_data.push(views.raw_corporate)
+performance_data.push(views.raw_directdebit)
+performance_data.push(views.raw_treasure)
+performance_data.push(views.raw_donors)
+performance_data.push(views.raw_trusts)
+performance_data.push(views.raw_online)
+performance_data.push(views.monthly_giftaid)
+performance_data.push(views.monthly_donations)
+performance_data.push(views.monthly_patron)
+performance_data.push(views.monthly_directdebit)
+performance_data.push(views.monthly_treasure)
+performance_data.push(views.monthly_donors)
+performance_data.push(views.monthly_general)
+performance_data.push(views.monthly_trusts)
+performance_data.push(views.monthly_online)
+performance_data.push(views.monthly_corporate)
+performance_data.push(views.monthly_donations_other)
+performance_data.push(views.monthly_donations_kiosk)
+performance_data.push(views.monthly_donations_box)
+performance_data.push(views.donations)
+performance_data.push(views.donations_kiosk)
+performance_data.push(views.daily_donations_kiosk)
+performance_data.push(views.donations_other)
+
+
+//performance_data.push(corporate)
+//performance_data.push(patron)
+performance_data.push(views.raw_welcomedesk)
+performance_data.push(views.monthly_welcomedesk)
+performance_data.push(views.participation)
+performance_data.push(views.learning)
+performance_data.push(views.monthly_learning)
+performance_data.push(views.raw_exhibitions_pwyt)
+performance_data.push(views.teg)
+performance_data.push(views.monthly_teg)
+performance_data.push(views.events)
+performance_data.push(views.kpi_events)
+performance_data.push(views.monthly_events)
+performance_data.push(views.operations)
+performance_data.push(views.monthly_operations)
+performance_data.push(views.transformation_kpis)
+performance_data.push(views.engagement_kpis)
+performance_data.push(views.collections_kpis)
+performance_data.push(views.gift_aid_customers)
+
+
+performance_data=performance_data.sort()
+
+
+$scope.user_groups['ADMIN'].views=[]
+$scope.user_groups['ADMIN'].enter_data=[]
+$scope.user_groups['ADMIN'].resources=[]
+$scope.user_groups['ADMIN'].signage=[]
+$scope.user_groups['ADMIN'].permissions=default_permissions
+
+
+$scope.user_groups['ADMIN'].views.push(views.masterkpi)
+$scope.user_groups['ADMIN'].views.push(views.room_hire)
+$scope.user_groups['ADMIN'].views.push(views.timeline)
+$scope.user_groups['ADMIN'].views.push(views.analyser)
+$scope.user_groups['ADMIN'].views.push(views.dead)
+$scope.user_groups['ADMIN'].views.push(views.activity)
+$scope.user_groups['ADMIN'].views.push(views.feedback)
+$scope.user_groups['ADMIN'].views.push(views.tech_support)
+$scope.user_groups['ADMIN'].views.push(views.shopify)
+$scope.user_groups['ADMIN'].views.push(views.users)
+$scope.user_groups['ADMIN'].views.push(views.timeline_settings)
+
+
+$scope.user_groups['ADMIN'].enter_data=enter_data
+$scope.user_groups['ADMIN'].performance=performance_data
+$scope.user_groups['ADMIN'].resources=resources
+$scope.user_groups['ADMIN'].signage=signage
+
+return module;
+};
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/controllers/navigation/admin.js","/controllers/navigation")
+},{"b55mWE":4,"buffer":3}],189:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+module.exports = function ($scope,views) {
+
+ 
+var signage=[]
+signage.push(views.posters_list)
+signage.push(views.add_posters)
+
+
+var resources=[]
+resources.push(views.rooms)
+resources.push(views.equipment)
+resources.push(views.equipment_bookings)
+resources.push(views.bookings_report)
+resources.push(views.room_hire)
+resources.push(views.equipment_booking_timeline)
+
+
+
+var enter_data=[]
+enter_data.push(views.performance)
+enter_data.push(views.record_corporate)
+enter_data.push(views.record_patron)
+enter_data.push(views.record_donations)
+enter_data.push(views.record_donations_other)
+enter_data.push(views.upload_kiosk_donations)
+enter_data.push(views.record_welcomedesk)
+enter_data.push(views.record_directdebit)
+enter_data.push(views.record_treasure)
+enter_data.push(views.record_donors)
+enter_data.push(views.record_trusts)
+enter_data.push(views.record_online)
+enter_data.push(views.record_general)
+
+enter_data.push(views.record_events)
+enter_data.push(views.record_kpi_events)
+enter_data.push(views.record_venue_hire)
+
+var performance_data=[]
+performance_data.push(views.raw_visits)
+performance_data.push(views.monthly_visits)
+performance_data.push(views.raw_venue_hire)
+performance_data.push(views.monthly_venue_hire)
+performance_data.push(views.gift_aid_customers)
+performance_data.push(views.monthly_retail_sales)
+performance_data.push(views.raw_giftaid)
+performance_data.push(views.raw_patron)
+performance_data.push(views.raw_trusts)
+performance_data.push(views.raw_directdebit)
+performance_data.push(views.raw_treasure)
+performance_data.push(views.raw_donors)
+performance_data.push(views.raw_online)
+performance_data.push(views.raw_general)
+
+performance_data.push(views.raw_corporate)
+performance_data.push(views.monthly_giftaid)
+performance_data.push(views.monthly_directdebit)
+performance_data.push(views.monthly_treasure)
+performance_data.push(views.monthly_donors)
+performance_data.push(views.monthly_trusts)
+performance_data.push(views.monthly_online)
+performance_data.push(views.monthly_general)
+
+performance_data.push(views.monthly_donations)
+performance_data.push(views.monthly_donations_other)
+performance_data.push(views.monthly_donations_kiosk)
+performance_data.push(views.monthly_donations_box)
+performance_data.push(views.monthly_patron)
+performance_data.push(views.monthly_corporate)
+performance_data.push(views.transformation_kpis)
+performance_data.push(views.engagement_kpis)
+performance_data.push(views.collections_kpis)
+performance_data.push(views.donations_kiosk)
+performance_data.push(views.daily_donations_kiosk)
+performance_data.push(views.donations)
+performance_data.push(views.donations_other)
+performance_data.push(views.monthly_welcomedesk)
+performance_data.push(views.raw_welcomedesk)
+performance_data.push(views.participation)
+performance_data.push(views.events)
+performance_data.push(views.kpi_events)
+performance_data.push(views.monthly_events)
+
+
+$scope.user_groups['DEVELOPMENT']=[]
+
+$scope.user_groups['DEVELOPMENT'].views=[]
+$scope.user_groups['DEVELOPMENT'].enter_data=[]
+$scope.user_groups['DEVELOPMENT'].resources=[]
+
+$scope.user_groups['DEVELOPMENT'].views.push(views.masterkpi)
+$scope.user_groups['DEVELOPMENT'].views.push(views.timeline)
+$scope.user_groups['DEVELOPMENT'].views.push(views.analyser)
+
+
+$scope.user_groups['DEVELOPMENT'].enter_data=enter_data
+$scope.user_groups['DEVELOPMENT'].performance=performance_data
+$scope.user_groups['DEVELOPMENT'].permissions=default_permissions
+
+
+return module;
+};
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/controllers/navigation/development.js","/controllers/navigation")
+},{"b55mWE":4,"buffer":3}],190:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+
+module.exports = function ($scope,views) {
+
+ 
+  $scope.user_groups['STAFF']=[]
+
+  var signage=[]
+signage.push(views.posters_list)
+signage.push(views.add_posters)
+
+
+
+var resources=[]
+
+resources.push(views.rooms)
+resources.push(views.equipment)
+resources.push(views.equipment_bookings)
+//resources.push(room_bookings)
+//resources.push(room_bookings_list)
+resources.push(views.bookings_report)
+
+resources.push(views.room_hire)
+resources.push(views.equipment_booking_timeline)
+
+var enter_data=[]
+enter_data.push(views.performance)
+enter_data.push(views.record_exhibitions_pwyt)
+enter_data.push(views.record_events)
+enter_data.push(views.record_kpi_events)
+enter_data.push(views.record_venue_hire)
+enter_data.push(views.record_operations)
+enter_data.push(views.record_teg)
+var resources=[]
+
+
+var performance_data=[]
+
+
+performance_data.push(views.teg)
+performance_data.push(views.raw_visits)
+performance_data.push(views.monthly_visits)
+performance_data.push(views.raw_venue_hire)
+performance_data.push(views.monthly_venue_hire)
+performance_data.push(views.monthly_retail_sales)
+//performance_data.push(monthly_turnstiles)
+performance_data.push(views.monthly_donations)
+performance_data.push(views.transformation_kpis)
+performance_data.push(views.engagement_kpis)
+performance_data.push(views.collections_kpis)
+
+performance_data.push(views.raw_exhibitions_pwyt)
+//performance_data.push(exhibitions_pwyt_monthly)
+performance_data.push(views.monthly_teg)
+performance_data.push(views.events)
+performance_data.push(views.kpi_events)
+performance_data.push(views.monthly_events)
+performance_data.push(views.participation)
+
+$scope.user_groups['STAFF'].views=[]
+$scope.user_groups['STAFF'].enter_data=[]
+$scope.user_groups['STAFF'].resources=[]
+$scope.user_groups['STAFF'].permissions=default_permissions
+
+
+$scope.user_groups['STAFF'].views.push(views.masterkpi)
+$scope.user_groups['STAFF'].views.push(views.timeline) 
+$scope.user_groups['STAFF'].views.push(views.analyser) 
+
+
+$scope.user_groups['STAFF'].enter_data=enter_data
+$scope.user_groups['STAFF'].performance=performance_data
+$scope.user_groups['STAFF'].resources=resources
+
+
+return module;
+};
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/controllers/navigation/staff.js","/controllers/navigation")
+},{"b55mWE":4,"buffer":3}],191:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 	
 exports.TableFilterController = function(getDateService,$location,AuthService,tableFilterService, $scope,$http,get_table_data) {
@@ -31359,7 +33787,7 @@ exports.TableFilterController = function(getDateService,$location,AuthService,ta
 };
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/controllers/tablefilter-controller.js","/controllers")
-},{"b55mWE":4,"buffer":3}],165:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],192:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.colourKey = function() {
 	
@@ -31432,7 +33860,7 @@ exports.tableFilter = function() {
   }
 	}
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/directives/directives.js","/directives")
-},{"b55mWE":4,"buffer":3}],166:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],193:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 'use strict';
 /* app */
@@ -31479,8 +33907,8 @@ require('../shared/app-directives')(app);
 require('../shared/app-services')(app);
 require('../shared/app-filters')(app);
 require('../shared/app-config')(app);
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_144f88e0.js","/")
-},{"../shared/app-config":156,"../shared/app-controllers":157,"../shared/app-directives":158,"../shared/app-filters":159,"../shared/app-services":160,"async":1,"b55mWE":4,"buffer":3,"underscore":7}],167:[function(require,module,exports){
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_4ea86488.js","/")
+},{"../shared/app-config":180,"../shared/app-controllers":181,"../shared/app-directives":182,"../shared/app-filters":183,"../shared/app-services":184,"async":1,"b55mWE":4,"buffer":3,"underscore":7}],194:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 
@@ -31919,6 +34347,205 @@ var myScope
 		
    return array;
 }
+
+exports.get_table_data_nomusem_notype = function($rootScope,data_table_reload) {	
+
+
+
+	var self = this
+	var array = {};
+	var myScope
+	
+	
+				
+				array.filter_x= function(filter_key,filter_value,$scope){
+				
+			
+				
+				
+				if($scope){
+					myScope=$scope
+				}
+				
+				
+		
+				
+				
+				var query = {"exact":false};
+				query[filter_key]=filter_value
+				
+				if($scope.extraQuery){
+									_.extend(query, $scope.extraQuery)
+									// $scope.extraQuery[filter_key]	=filter_value
+								}
+					
+					$rootScope.featured_collection.query(query, function(team) {
+								$scope.rows=[]
+								$scope._rows=[]
+								
+								console.log('filtering ' + team.length + " results")
+								
+								
+								_.each(team,function(row){
+										
+										$scope._rows.push(row)
+											
+								})
+	
+							 $scope.gridOptions.data.length = 0;
+							  angular.forEach( $scope._rows, function( row ) {
+								$scope.gridOptions.data.push( row );
+							  });
+							  
+							  
+								  $scope.$watch(function () {
+				
+									return data_table_reload.getDate();
+	
+	
+				},
+				
+			   function (value) {
+			 
+			   
+			   }
+			);
+							
+						})			 
+				}
+				
+			
+				
+				
+				array.getData= function(filterdate,$scope){
+				console.log('getData')
+				console.log('filterdate',filterdate)
+				if($scope){
+				myScope=$scope
+				}
+						if(filterdate){
+						console.log('all dates after',filterdate)
+								console.log(filterdate)
+								var filter_month = moment().month()
+								console.log('filter_month',filter_month)
+								filterdate=moment(filterdate)._d
+								
+						}
+						else
+						{
+							
+							
+								var filter_month = moment().month()
+								filterdate=moment(new Date()).subtract({'years': 1})
+								filterdate=moment(filterdate)._d
+								console.log('all dates after',filterdate)
+						
+						}
+						
+								var query = {"date_value":moment(filterdate).format("YYYY-MM-DD"),"exact":false,"end_value":moment($scope.end).format("YYYY-MM-DD")};
+								
+								if($scope.extraQuery){
+									_.extend(query, $scope.extraQuery)
+								}
+								 
+								 console.log('query',query)
+								 
+								$rootScope.featured_collection.query(query, function(team) {
+								$scope.rows=[]
+								$scope._rows=[]
+								
+								console.log('filtering ' + team.length + " results")
+								
+								
+								_.each(team,function(row){
+								
+								if(filterdate){
+										var data_month = moment(row.date_value).month()
+																			
+										
+									if(moment(row.date_value)._d>=moment(filterdate)._d  && row.museum_id!=""){					
+										
+										$scope._rows.push(row)
+										
+									}
+								}
+								else
+								{
+									console.log('displaying all data')
+									$scope._rows.push(row)
+								
+								}
+									
+											
+								})
+	
+							 $scope.gridOptions.data.length = 0;
+							  angular.forEach( $scope._rows, function( row ) {
+								$scope.gridOptions.data.push( row );
+							  });
+							  
+							  
+								  $scope.$watch(function () {
+				
+				return data_table_reload.getDate();
+	
+	
+				},
+				
+			   function (value) {
+			 
+			   
+			   }
+			);
+							
+						})	
+						
+				$rootScope.alldata=function (val) {
+	
+							if (val=="month"){
+							
+								console.log('show month data')
+								var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+								var firstDay = new Date(y, m, 1);
+								var lastDay = new Date(y, m + 1, 0);
+								firstDay = moment(firstDay);
+								array.getData(firstDay,myScope)
+							}
+								
+							
+							else if (val)
+							{
+									console.log('show month data',myScope.start)
+								var date = new Date(val), y = date.getFullYear(val), m = date.getMonth(val);
+								console.log('filtering on month', m)
+								var firstDay = new Date(myScope.start);
+								var lastDay = new Date(myScope.end);
+								firstDay = moment(firstDay)._d;
+								array.getData(firstDay,myScope)	
+	
+							}
+							else 
+							{
+								console.log('show all data')
+								array.getData("",myScope)		
+	
+							}
+	
+	
+				}
+				
+				
+				$rootScope.dynamic_filter=function (filter_key,filter_value) {
+				
+				array.filter_x(filter_key,filter_value,myScope)
+				
+				}
+				
+			}	
+	
+			
+	   return array;
+	}
 
 exports.get_table_data_nomusem = function($rootScope,data_table_reload) {	
 
@@ -33454,7 +36081,7 @@ exports.screen_saver_loop=function($rootScope,$location,$interval,Team) {
 
 
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/services/app-services.js","/services")
-},{"b55mWE":4,"buffer":3}],168:[function(require,module,exports){
+},{"b55mWE":4,"buffer":3}],195:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var status = require('http-status');
          
@@ -33801,16 +36428,147 @@ exports.Monthly_venue_hire =  function($resource){
        
 
   }
-      exports.Monthly_giftaid =  function($resource){
-	  
-	  
-	return $resource('/giftaid/all',{ }, {
-		openGates: {method:'GET', isArray: true}
-			
-  });
-       
 
-  }
+
+
+exports.Monthly_giftaid =  function($resource){
+		return $resource('/giftaid/all',{ }, {
+			openGates: {method:'GET', isArray: true}
+				
+	});
+
+}
+
+
+exports.Monthly_donations_treasure =  function($resource){
+
+	return $resource('/treasure/all',{ }, {
+		openGates: {method:'GET', isArray: true}			
+	});
+
+}
+
+exports.Raw_donations_treasure =  function($resource){
+
+	return $resource('/treasure/:id/:date_value/:exact/:end_value', null,
+	{ 
+		'get':    {method:'GET'},  // get individual record
+	    'save':   {method:'POST'}, // create record
+	    'query':  {method:'GET', isArray:true}, // get list all records
+	    'remove': {method:'DELETE'}, // remove record
+		'update': { method:'PUT' },
+	    'delete': {method:'DELETE'} // same, remove record
+  	});
+
+}
+exports.Monthly_donations_donors =  function($resource){
+
+	return $resource('/majordonor/all',{ }, {
+		openGates: {method:'GET', isArray: true}			
+	});
+
+}
+
+exports.Raw_donations_donors =  function($resource){
+
+	return $resource('/majordonor/:id/:date_value/:exact/:end_value', null,
+	{ 
+		'get':    {method:'GET'},  // get individual record
+	    'save':   {method:'POST'}, // create record
+	    'query':  {method:'GET', isArray:true}, // get list all records
+	    'remove': {method:'DELETE'}, // remove record
+		'update': { method:'PUT' },
+	    'delete': {method:'DELETE'} // same, remove record
+  	});
+
+}
+exports.Monthly_donations_online =  function($resource){
+
+	return $resource('/online/all',{ }, {
+		openGates: {method:'GET', isArray: true}			
+	});
+
+}
+
+exports.Raw_donations_online =  function($resource){
+
+	return $resource('/online/:id/:date_value/:exact/:end_value', null,
+	{ 
+		'get':    {method:'GET'},  // get individual record
+	    'save':   {method:'POST'}, // create record
+	    'query':  {method:'GET', isArray:true}, // get list all records
+	    'remove': {method:'DELETE'}, // remove record
+		'update': { method:'PUT' },
+	    'delete': {method:'DELETE'} // same, remove record
+  	});
+
+}
+
+exports.Monthly_donations_general =  function($resource){
+
+	return $resource('/donations_general/all',{ }, {
+		openGates: {method:'GET', isArray: true}			
+	});
+
+}
+
+exports.Raw_donations_general =  function($resource){
+
+	return $resource('/donations_general/:id/:date_value/:exact/:end_value', null,
+	{ 
+		'get':    {method:'GET'},  // get individual record
+	    'save':   {method:'POST'}, // create record
+	    'query':  {method:'GET', isArray:true}, // get list all records
+	    'remove': {method:'DELETE'}, // remove record
+		'update': { method:'PUT' },
+	    'delete': {method:'DELETE'} // same, remove record
+  	});
+
+}
+exports.Monthly_donations_trusts =  function($resource){
+
+	return $resource('/trusts/all',{ }, {
+		openGates: {method:'GET', isArray: true}			
+	});
+
+}
+
+exports.Raw_donations_trusts =  function($resource){
+
+	return $resource('/trusts/:id/:date_value/:exact/:end_value', null,
+	{ 
+		'get':    {method:'GET'},  // get individual record
+	    'save':   {method:'POST'}, // create record
+	    'query':  {method:'GET', isArray:true}, // get list all records
+	    'remove': {method:'DELETE'}, // remove record
+		'update': { method:'PUT' },
+	    'delete': {method:'DELETE'} // same, remove record
+  	});
+
+}
+
+
+exports.Monthly_donations_directdebit =  function($resource){
+
+	return $resource('/directdebit/all',{ }, {
+		openGates: {method:'GET', isArray: true}			
+	});
+
+}
+
+exports.Raw_donations_directdebit =  function($resource){
+
+	return $resource('/directdebit/:id/:date_value/:exact/:end_value', null,
+	{ 
+		'get':    {method:'GET'},  // get individual record
+	    'save':   {method:'POST'}, // create record
+	    'query':  {method:'GET', isArray:true}, // get list all records
+	    'remove': {method:'DELETE'}, // remove record
+		'update': { method:'PUT' },
+	    'delete': {method:'DELETE'} // same, remove record
+  	});
+
+}
   
   
   
@@ -34752,4 +37510,4 @@ exports.Tallys = function($resource){
 	}
 	
 }).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/services/data-services.js","/services")
-},{"b55mWE":4,"buffer":3,"http-status":5}]},{},[166])
+},{"b55mWE":4,"buffer":3,"http-status":5}]},{},[193])

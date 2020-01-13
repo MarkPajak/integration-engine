@@ -179,6 +179,15 @@ var venue_hire = require('./routes/performance/venue_hire')
 var retail_sales = require('./routes/performance/retail_sales')
 var donations = require('./routes/performance/donations')
 var donations_other = require('./routes/performance/donations_other')
+var donations_directdebit = require('./routes/performance/donations_directdebit')
+var donations_treasure = require('./routes/performance/donations_treasure')
+var donations_donors = require('./routes/performance/donations_donors')
+var trusts = require('./routes/performance/donations_trusts')
+var online = require('./routes/performance/donations_online')
+var donations_general = require('./routes/performance/donations_general')
+
+
+
 var donations_kiosk = require('./routes/performance/donations_kiosk')
 var donations_box = require('./routes/performance/donations_box')
 var corporate = require('./routes/performance/corporate')
@@ -292,6 +301,12 @@ app.use('/donations', donations);
 app.use('/donations-other', donations_other);
 app.use('/donations-kiosk', donations_kiosk);
 app.use('/donations-box', donations_box);
+app.use('/directdebit', donations_directdebit);
+app.use('/treasure', donations_treasure);
+app.use('/majordonor', donations_donors);
+app.use('/trusts', trusts);
+app.use('/donations_general', donations_general);
+
 
 
 
@@ -299,6 +314,9 @@ app.use('/donations-box', donations_box);
 app.use('/corporate', corporate);
 app.use('/patron', patron);
 app.use('/giftaid', giftaid);
+
+
+
 app.use('/allgiftaid', allgiftaid);
 app.use('/site-permissions', site_permissions);
 

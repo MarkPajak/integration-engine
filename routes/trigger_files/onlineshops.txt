@@ -1,0 +1,1 @@
+"{\"kpi_type\":\"visits\",\"amount\":\"7676\",\"date_logged\":\"2020-01-10T16:51:24.586Z\",\"date_value\":\"2020-01-10\",\"comments\":\"67676\",\"logger_user_name\":\"mark\"}"

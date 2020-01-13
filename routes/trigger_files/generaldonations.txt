@@ -1,0 +1,1 @@
+"{\"kpi_type\":\"visits\",\"amount\":\"77\",\"gift_aid_amount\":\"88\",\"date_logged\":\"2020-01-13T16:19:57.705Z\",\"date_value\":\"2020-01-10\",\"comments\":\"\",\"logger_user_name\":\"mark\"}"

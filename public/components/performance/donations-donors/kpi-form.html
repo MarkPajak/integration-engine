@@ -1,0 +1,57 @@
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <style>
+  .panel > .panel-heading {
+    background-image: none;
+    background-color: red;
+    color: white;
+
+}
+  .panel > .panel-body {
+ 
+    background-color: white;
+
+}
+
+
+</style>
+	
+<div  ng-show="user.username" class="panel panel-default col-xs-5 col-sm-5 col-md-5">
+<div class="panel-heading">Enter major donors data</div>
+	<div class="panel-body">
+		<form name="visit_form"  id="visit_form">
+			  
+			
+			  <div class="form-group">
+				<label for="comments">Date</label>
+				<input type = "date" class="form-control input-lg" id="date_value" rows="3"></input>
+			  </div>
+			  
+			  <div class="form-group">
+				<label for="comments">Amount (without gift aid)</label>
+				<input  step="any" type = "number" class="form-control input-lg" id="amount" rows="3"></input>
+			  </div>
+			  
+			  	  <div class="form-group">
+				<label for="comments">Amount gift aided</label>
+				<input  step="any" type = "number" class="form-control input-lg" id="gift_aid_amount" rows="3"></input>
+			  </div>
+			
+			
+			
+			 
+			  <div class="form-group">
+				<label for="comments">Comments</label>
+				<textarea class="form-control input-lg" id="comments" rows="3"></textarea>
+			  </div>
+			   <button id="form_submit_button" name="form_submit_button" ng-click="onSubmit()" type="button" class="btn btn-primary submit-button" ng-disabled="vm.form.$invalid">Submit</button>
+			   <button type="button" class="btn btn-lg input-lg btn-default input-lg" ng-click="vm.options.resetModel()">Reset</button>
+		</form>
+	</div>
+</div>
+
+  <script>
+  $( function() {
+   if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent))
+    $( "#date_value" ).datepicker();
+  } );
+  </script>

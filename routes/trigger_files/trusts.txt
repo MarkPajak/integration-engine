@@ -1,0 +1,1 @@
+"{\"kpi_type\":\"visits\",\"amount\":\"5453\",\"trust_name\":\"tyt\",\"installment_number\":\"4\",\"date_logged\":\"2020-01-10T16:37:08.191Z\",\"date_value\":\"2020-01-10\",\"comments\":\"4545\",\"logger_user_name\":\"mark\"}"
