@@ -120,7 +120,7 @@ get_kpis( function ( result) {
 	function wind_up_Stats(	result,returned_row,analysis_field,venue,session_type){
 		
 		
-				var years = [2014,2015,2016,2017,2018,2019,2020,2021]
+				var years = [2014,2015,2016,2017,2018,2019,2020,2021,2022]
 								_.each(years,function(year){
 									var financial_yesr_text = ["last","this"]
 									_.each(financial_yesr_text,function(financial_yer_text){
@@ -313,7 +313,7 @@ get_kpis( function ( result) {
 		var checkyear_num = checkmonth.getFullYear()
 		
 		
-				var years = [2017,2018,2019]
+				var years = [2017,2018,2019,2020,2021,2022]
 				_.each(years,function(year){
 					_.each(months,function(month){
 						_.each(rows,function(row){
@@ -707,7 +707,7 @@ get_kpis( function ( result) {
 	function wind_up_Stats(	result,returned_row,analysis_fields,venue,age_group){
 		
 		
-			var years = [2014,2015,2016,2017,2018,2019,2020]
+			var years = [2014,2015,2016,2017,2018,2019,2020,2021,2022]
 			_.each(years,function(year){
 			//_.each(moment.monthsShort(),function(month){
 				returned_row[year]=""
