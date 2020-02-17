@@ -325,9 +325,9 @@ router.get('/new', function(req, res, next) {
  
  }
  
-  if(req.query.kiosk_id){
+  if(req.query.kiosk){
  
-	_.extend(query, {kiosk_id:  req.query.kiosk_id})
+	_.extend(query, {kiosk:  req.query.kiosk})
  
  }
  
@@ -336,15 +336,16 @@ router.get('/new', function(req, res, next) {
 	_.extend(query, {date:  req.query.date})
  
  }
-   if(req.query.description){
+   if(req.query.nomination_name){
  
-	_.extend(query, {description:  req.query.description})
+	_.extend(query, {nomination_name:  req.query.nomination_name})
  
  }
+
   
-  if(req.query.app_type){
+  if(req.query.reason){
  
-	_.extend(query, {app_type:  req.query.app_type})
+	_.extend(query, {reason:  req.query.reason})
  
  }
   if(req.query.page_type){
