@@ -31206,6 +31206,14 @@ module.exports = function(app) {
        })
        */
 
+             //kiosk
+             .when('/raw-nominate', {
+                  template: '<raw-nominate></raw-nominate>'
+              })
+            .when('/raw-feedback', {
+                template: '<raw-feedback></raw-feedback>'
+            })
+
 
             .when('/people', {
                 templateUrl: '../views/people.html',
@@ -33907,7 +33915,7 @@ require('../shared/app-directives')(app);
 require('../shared/app-services')(app);
 require('../shared/app-filters')(app);
 require('../shared/app-config')(app);
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_aa47d13e.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_b83e6c9e.js","/")
 },{"../shared/app-config":180,"../shared/app-controllers":181,"../shared/app-directives":182,"../shared/app-filters":183,"../shared/app-services":184,"async":1,"b55mWE":4,"buffer":3,"underscore":7}],194:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
@@ -37107,7 +37115,33 @@ exports.Raw_donations_directdebit =  function($resource){
           });
  }
  
- 
+ exports.Raw_nominate =  function($resource){
+	 
+		 
+	return $resource('/nominate/:id/:date_value/:donation_box_no/:exact/:end_value', null,
+	{ 'get':    {method:'GET'},  // get individual record
+	  'save':   {method:'POST'}, // create record
+	  'query':  {method:'GET', isArray:true}, // get list all records
+	  'remove': {method:'DELETE'}, // remove record
+		'update': { method:'PUT' },
+	  'delete': {method:'DELETE'} // same, remove record
+  });
+}
+
+exports.Raw_feedback =  function($resource){
+	 
+		 
+	return $resource('/feedback/:id/:date_value/:donation_box_no/:exact/:end_value', null,
+	{ 'get':    {method:'GET'},  // get individual record
+	  'save':   {method:'POST'}, // create record
+	  'query':  {method:'GET', isArray:true}, // get list all records
+	  'remove': {method:'DELETE'}, // remove record
+		'update': { method:'PUT' },
+	  'delete': {method:'DELETE'} // same, remove record
+  });
+}
+
+
    exports.Raw_corporate =  function($resource){
 	 
 		 

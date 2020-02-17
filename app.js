@@ -170,7 +170,8 @@ var top_40 = require('./routes/exhibitions/bristol_music_top_40')
 	
 //feedback
 var feedback = require('./routes/feedback/kiosk')		
-var analytics = require('./routes/feedback/analytics')		
+var analytics = require('./routes/feedback/analytics')	
+var nominate = require('./routes/feedback/nominate')			
 //PERFORMANCE KPIS	
 var raw_visits = require('./routes/raw_visits')
 
@@ -346,6 +347,7 @@ app.use('/top_40', top_40);
 
 app.use('/feedback', feedback);
 app.use('/analytics', analytics);
+app.use('/nominate', nominate);
 
 
 //signage

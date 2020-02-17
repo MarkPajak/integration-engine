@@ -1022,7 +1022,33 @@ exports.Raw_donations_directdebit =  function($resource){
           });
  }
  
- 
+ exports.Raw_nominate =  function($resource){
+	 
+		 
+	return $resource('/nominate/:id/:date_value/:donation_box_no/:exact/:end_value', null,
+	{ 'get':    {method:'GET'},  // get individual record
+	  'save':   {method:'POST'}, // create record
+	  'query':  {method:'GET', isArray:true}, // get list all records
+	  'remove': {method:'DELETE'}, // remove record
+		'update': { method:'PUT' },
+	  'delete': {method:'DELETE'} // same, remove record
+  });
+}
+
+exports.Raw_feedback =  function($resource){
+	 
+		 
+	return $resource('/feedback/:id/:date_value/:donation_box_no/:exact/:end_value', null,
+	{ 'get':    {method:'GET'},  // get individual record
+	  'save':   {method:'POST'}, // create record
+	  'query':  {method:'GET', isArray:true}, // get list all records
+	  'remove': {method:'DELETE'}, // remove record
+		'update': { method:'PUT' },
+	  'delete': {method:'DELETE'} // same, remove record
+  });
+}
+
+
    exports.Raw_corporate =  function($resource){
 	 
 		 

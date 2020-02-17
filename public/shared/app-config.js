@@ -125,6 +125,14 @@ module.exports = function(app) {
        })
        */
 
+             //kiosk
+             .when('/raw-nominate', {
+                  template: '<raw-nominate></raw-nominate>'
+              })
+            .when('/raw-feedback', {
+                template: '<raw-feedback></raw-feedback>'
+            })
+
 
             .when('/people', {
                 templateUrl: '../views/people.html',
