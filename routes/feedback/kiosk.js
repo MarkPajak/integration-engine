@@ -238,21 +238,23 @@ res.json(returned_data)
 
 
 });
+
+
+
 var json2csv =  require('json2csv');
 /* GET /todos listing. */
-router.get('/csv', function(req, res, next) {
+router.get('/csvx', function(req, res, next) {
 
-  Likes_log.find()
-	   .populate('leave_taken')
+	console.log('kiosk csv download')
+
+  Likes_log.find({})
+	 //  .populate('leave_taken')
 	   .exec (  function (err, todos) {
     if (err) return next(err);
     
-
-
-
- res.setHeader('Content-disposition', 'attachment; filename=tunstiles.csv');
+ res.setHeader('Content-disposition', 'attachment; filename=kiosk_feedback.csv');
   res.set('Content-Type', 'text/csv');
-    var fields = ['museum_id', 'exhibition_id', 'result','date_of_scan','comments','logger_user_name','date_recorded'];
+    var fields = ['kiosk', 'satisfaction', 'description','date'];
      var csv = json2csv({ data: todos, fields: fields });
   res.status(200).send(csv);
 
@@ -291,11 +293,30 @@ if(decodeURIComponent(req.params.exhibition_id)!="#"){
 
 router.get('/', function(req, res, next) {
   Likes_log.find()
+ 
    .sort({'date': 'desc'})
      .exec(function(err, todos) {
   
      if (err) return next(err);
-    res.json(todos);
+	 if(req.params.csv){ 
+		 
+		console.log('csv download')
+
+
+		res.setHeader('Content-disposition', 'attachment; filename=donations.csv');
+	  res.set('Content-Type', 'text/csv');
+	  var fields = ['kiosk','satisfaction','description','date'];
+	  var csv = json2csv({ data: todos, fields: fields });
+	  res.status(200).send(csv);
+	  
+	  
+	  }
+	  else
+	  {
+		console.log('no dowload')
+		  res.json(todos);
+		  
+	  }
   });
 });
 
@@ -334,33 +355,7 @@ router.get('/new', function(req, res, next) {
 });
 
 
-router.get('/:date_value/:donation_box_no/:exact/:end_value',isAuthenticated, function(req, res, next) {
 
-	var query = {}
-	
-	console.log('feedback')
-	if( req.params.exact=="false"){
-		 _.extend(query, {date: {$gte: req.params.date_value,$lte: req.params.end_value}})
-		// _.extend(query, {date: {$lte: req.params.end_value}})
-		 console.log(query)
-		 console.log('date query')
-	
-	}
-	else
-	{
-	  _.extend(query,{date:req.params.date_value})
-	}
-	
-
-	
-	
-	Likes_log.find(query)
-			.sort({date: 'desc'})
-		   .exec (  function (err, todos) {
-		if (err) return next(err);
-		res.json(todos);
-	  })
-	});
 /* GET /todos/id */
 router.get('/:id', function(req, res, next) {
   Likes_log.findById(req.params.id, function (err, post) {

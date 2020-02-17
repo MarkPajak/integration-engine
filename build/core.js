@@ -8632,8 +8632,9 @@ exports.raw_nominate_controller = function($route,$scope, $http, $q, $routeParam
 		$rootScope.canEdit_table=true
 		 columnDefs.push(
 			{ field: 'nomination_name' ,name: "name",resizable: true,width:"150"},
-			{ field: 'kiosk' ,name: "kiosk",resizable: true,width:"150"},
+			
 			{ field: 'reason' ,name: "reason",resizable: true,width:"300"},
+			{ field: 'kiosk' ,name: "kiosk",resizable: true,width:"150"},
 			{ field: 'date' ,name: "Date",resizable: true ,type: 'date', cellFilter: 'date:\'dd/MM/yy\''}
 			
 
@@ -34044,7 +34045,7 @@ require('../shared/app-directives')(app);
 require('../shared/app-services')(app);
 require('../shared/app-filters')(app);
 require('../shared/app-config')(app);
-}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_bed0322f.js","/")
+}).call(this,require("b55mWE"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_b0a9842d.js","/")
 },{"../shared/app-config":183,"../shared/app-controllers":184,"../shared/app-directives":185,"../shared/app-filters":186,"../shared/app-services":187,"async":1,"b55mWE":4,"buffer":3,"underscore":7}],197:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
