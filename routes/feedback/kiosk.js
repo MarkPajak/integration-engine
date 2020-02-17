@@ -334,7 +334,33 @@ router.get('/new', function(req, res, next) {
 });
 
 
+router.get('/:date_value/:donation_box_no/:exact/:end_value',isAuthenticated, function(req, res, next) {
 
+	var query = {}
+	
+	console.log('feedback')
+	if( req.params.exact=="false"){
+		 _.extend(query, {date: {$gte: req.params.date_value,$lte: req.params.end_value}})
+		// _.extend(query, {date: {$lte: req.params.end_value}})
+		 console.log(query)
+		 console.log('date query')
+	
+	}
+	else
+	{
+	  _.extend(query,{date:req.params.date_value})
+	}
+	
+
+	
+	
+	Likes_log.find(query)
+			.sort({date: 'desc'})
+		   .exec (  function (err, todos) {
+		if (err) return next(err);
+		res.json(todos);
+	  })
+	});
 /* GET /todos/id */
 router.get('/:id', function(req, res, next) {
   Likes_log.findById(req.params.id, function (err, post) {

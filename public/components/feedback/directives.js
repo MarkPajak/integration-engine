@@ -10,4 +10,17 @@ exports.rawFeedback= function() {
        templateUrl: './shared/templates/data_table.html'
     }
       }
+      exports.feedbackData = function() {
+        return {
+        // controller: 'raw_nominate_controller',
+           templateUrl: './components/feedback/feedback-data.html'
+        }
+          }
+          exports.nominateData = function() {
+            return {
+            // controller: 'raw_nominate_controller',
+            templateUrl: './components/feedback/nominate-data.html'
+              }
+
            
+            }

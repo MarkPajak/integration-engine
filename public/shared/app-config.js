@@ -127,10 +127,10 @@ module.exports = function(app) {
 
              //kiosk
              .when('/raw-nominate', {
-                  template: '<raw-nominate></raw-nominate>'
+                  template: '<nominate-data></nominate-data>'
               })
             .when('/raw-feedback', {
-                template: '<raw-feedback></raw-feedback>'
+                template: '<feedback-data></feedback-data>'
             })
 
 

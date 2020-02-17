@@ -64,6 +64,8 @@ $scope.user_groups['STAFF'].permissions=default_permissions
 
 $scope.user_groups['STAFF'].views.push(views.masterkpi)
 $scope.user_groups['STAFF'].views.push(views.timeline) 
+$scope.user_groups['STAFF'].views.push(views.feedback) 
+$scope.user_groups['STAFF'].views.push(views.nominate) 
 $scope.user_groups['STAFF'].views.push(views.analyser) 
 
 

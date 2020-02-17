@@ -17,6 +17,7 @@ module.exports = function (app) {
     var donors_trusts = require('../components/performance/donations-trusts/trusts-directive');
     var donors_online = require('../components/performance/donations-online/online-directive');
     var donors_general = require('../components/performance/donations-general/donors-directive');
+    var feedback_directives = require('../components/feedback/directives');
 
 
 
@@ -38,7 +39,9 @@ module.exports = function (app) {
       donors_directives,
       donors_trusts,
       donors_online,
-      donors_general
+      donors_general,
+     feedback_directives
+
     ]
 
   _.each(directiveArray, function(directives, names) {

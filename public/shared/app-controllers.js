@@ -260,6 +260,10 @@ module.exports = function(app) {
     var iframe_controller = require('../components/iframe/iframe-controller');
     var turnstiles_controller = require('../components/turnstiles/turnstiles-controller');
 
+//kiosk
+
+var raw_feedback_controller = require('../components/feedback/raw-feedback-controller');
+var raw_nominate_controller = require('../components/feedback/raw-nominate-controller');
 
 
 var controllersArray=[
@@ -412,7 +416,9 @@ var controllersArray=[
     donations_online_performance_form,
     raw_donations_general_controller,
     monthly_generaldonations_controller,
-    donations_general_performance_form
+    donations_general_performance_form,
+    raw_nominate_controller,
+    raw_feedback_controller
 
 ]   
 

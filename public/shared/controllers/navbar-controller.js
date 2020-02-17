@@ -60,8 +60,10 @@ views.activity=activity
 
 
 
-var feedback		  = {teamx:"_DONATIONS" ,link:"feedback",value:"Kiosk feedback"}
+var feedback		  = {teamx:"_DONATIONS" ,link:"raw-feedback",value:"Kiosk feedback"}
 views.feedback=feedback
+var nominate		  = {teamx:"_DONATIONS" ,link:"raw-nominate",value:"Youmake Bristol"}
+views.nominate=nominate
 
 
 

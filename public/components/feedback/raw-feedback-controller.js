@@ -19,8 +19,8 @@ exports.raw_feedback_controller = function($route,$scope, $http, $q, $routeParam
 			{ field: 'satisfaction' ,name: "satisfaction",resizable: true,width:"150"},
 			{ field: 'description' ,name: "description",resizable: true,width:"300"},
 			{ field: 'kiosk' ,name: "kiosk",resizable: true,width:"150"},
-			{ field: 'date' ,name: "Date",resizable: true ,type: 'date', cellFilter: 'date:\'dd/MM/yy\''},
-			{ field: 'reason' ,name: "reason",resizable: true,width:"300"}
+			{ field: 'date' ,name: "Date",resizable: true ,type: 'date', cellFilter: 'date:\'dd/MM/yy\''}
+			
 
 			
 			)

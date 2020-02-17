@@ -370,22 +370,10 @@ router.get('/:date_value/:donation_box_no/:exact/:end_value',isAuthenticated, fu
 
     var query = {}
     
-    
-    if( req.params.exact=="false"){
-         _.extend(query, {date_value: {$gte: req.params.date_value}})
-         console.log(query)
-    }
-    else
-    {
-      _.extend(query,{date_value:req.params.date_value})
-    }
-    
-    if(decodeURIComponent(req.params.type)!="#"){
-     _.extend(query,{type: decodeURIComponent(req.params.type)})
-    }
+ console.log('nominate')
     
     
-      Team.find(query)
+ Likes_log.find(query)
             .sort({date_value: 'desc'})
            .exec (  function (err, todos) {
         if (err) return next(err);
