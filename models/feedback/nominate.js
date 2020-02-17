@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 
 var kiosk_nominate = new mongoose.Schema({
 			
-		nominateion_name: { type: String ,required:true},
+		nomination_name: { type: String ,required:true},
 		date: { type: Date, default :new Date()},
 		kiosk: { type: String,required:true},
 		reason: { type: String}
