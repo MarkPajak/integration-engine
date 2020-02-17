@@ -355,6 +355,29 @@ router.get('/new', function(req, res, next) {
 });
 
 
+router.get('/:date_value/:donation_box_no/:exact/:end_value',isAuthenticated, function(req, res, next) {
+
+	var query = {}
+	
+	
+	if( req.params.exact=="false"){
+		 _.extend(query, {date: {$gte: req.params.date_value,$lte: req.params.end_value}})
+		 console.log(query)
+	}
+	else
+	{
+	  _.extend(query,{date_value:req.params.date_value})
+	}
+	
+
+	
+	Likes_log.find(query)
+			.sort({date_value: 'desc'})
+		   .exec (  function (err, todos) {
+		if (err) return next(err);
+		res.json(todos);
+	  })
+	});
 
 /* GET /todos/id */
 router.get('/:id', function(req, res, next) {

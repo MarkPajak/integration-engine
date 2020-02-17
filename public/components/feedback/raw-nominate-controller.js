@@ -16,9 +16,9 @@ exports.raw_nominate_controller = function($route,$scope, $http, $q, $routeParam
 
 		$rootScope.canEdit_table=true
 		 columnDefs.push(
-			{ field: 'nomination_name' ,name: "name",resizable: true,width:"150"},
+			{ field: 'nomination_name' ,name: "name",resizable: true,width:"200"},
 			
-			{ field: 'reason' ,name: "reason",resizable: true,width:"300"},
+			{ field: 'reason' ,name: "reason",resizable: true,width:"450"},
 			{ field: 'kiosk' ,name: "kiosk",resizable: true,width:"150"},
 			{ field: 'date' ,name: "Date",resizable: true ,type: 'date', cellFilter: 'date:\'dd/MM/yy\''}
 			
