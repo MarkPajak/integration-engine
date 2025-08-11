@@ -29,7 +29,7 @@ var self=this
   
  function validate_Ticket(ticket_qr){
 	
-
+//return true;	  //NB THIS IS A HACK FOR WHEN THE QR CODES GO WRONG mp comment out 2021
 			if(valid_ticket_types.csvTickets.indexOf(ticket_qr.toString())!=-1){									
 				console.log('ticket validated against file')
 return true;				
@@ -53,47 +53,59 @@ self.listen_data = function(shopify_transaction) {
 
 self.use_ticket = function(ticket) {
 	
-	
-	
+		//This function logs scan attempts in a database in order to validae or restrict multiple scans
+		//date of first scan
 		var doc = {_id:ticket, date_scanned:new Date(),scan_attempts:1};
-		console.log('adding ticket to database');
+		console.log('adding ticket to database - ');
 		var server = new Server('localhost', 27017);
 		// retrieve a database reference
 		var dbref2 = new mongo.Db('tickets', server);
 
 		// connect to database server
 		dbref2.open(function(err, dbref2) {
-			// now a connection is established
+		// now a connection is established
 		
-		// retrieve a collection reference
+		//get the database
 		dbref2.collection('myCollectionName', function(err, collectionref) { 
-		// this is an asynchroneous operation
-		
-			
-			// find exactly one item in a collection which has foo:"bar"
-			collectionref.insert(doc, function (err, result) {
-			if(err) console.log(err)
-				console.log(result)
-			console.log('---------------------------------------------------------------------------------------');
+			//find if a ticket has already been scanned
+			collectionref.findOne({_id:ticket}, function(err, doc) {
+				console.log('search returned')
+				if(err) console.log(err)
+				if(doc) {
+						//ticket has already been scanned - lets update the scan attempts
+						if(doc.scan_attempts){
+							var u = doc.scan_attempts+1
+						}
+						else{
+							var u = 1	
+						}
+						collectionref.updateOne({_id:doc._id}, {scan_attempts:u, date_last_attempt: new Date()},function (err) {
+							console.log('ticket details updated ')
+							if(err) console.log(err)
+						});
+					}
+					else{
+						//this is a nnew ticket, lets log it anyway
+						collectionref.insert(doc, function (err, result) {
+							if(err) console.log(err)
+							console.log(result)
+						});
+						
+					}
 			});
-				
-		
+			// close a database connection
+		console.log('---------------------------------------------------------------------------------------');
+		dbref2.close();
 		});
-		
+
 		// close a database connection
+		console.log('---------------------------------------------------------------------------------------');
 		dbref2.close();
 		});
 
 }
 	
 	
-	
-
-
-
-	
-
-
   
 self.simulate = function(shopify_transaction,data) {
 	
@@ -105,7 +117,7 @@ self.simulate = function(shopify_transaction,data) {
 		
 				if(self.validate_Ticket(data)){
 					console.log('ticket is valid')
-					open_serialport.openPort()
+					open_serialport.openPort("")
 					self.use_ticket(data)
 				}
 				else
@@ -113,7 +125,7 @@ self.simulate = function(shopify_transaction,data) {
 				shopify_transaction.count_all_orders(data, function(cb) {
 				if(cb==1){
 					console.log('ticket validated against shopify')
-					open_serialport.openPort()
+					open_serialport.openPort("")
 					self.use_ticket(data)
 				}	
 				})
@@ -193,7 +205,7 @@ function listPorts() {
 
 
 self.openPort = function(settings) {
-console.log(settings)
+console.log('openPort'+ settings)
  console.log('open seriall port using command: '+open_turnstile_command)
 	  port.write(open_turnstile_command, function(err) {
 		if (err) {
@@ -201,11 +213,37 @@ console.log(settings)
 		}
 		console.log('command sent                                                     SUCCESS');
 		//log id to database
+		self.save_data_to_file()
 	  });
 
 
 
 }
+
+
+self.save_data_to_file = function() {
+	
+	var server = new Server('localhost', 27017);
+		// retrieve a database reference
+		var database = new mongo.Db('tickets', server);
+
+	database.find({})
+	.toArray((err, data) => {
+	  if (err) throw err;
+
+	  console.log(data);
+	  
+	  // TODO: write data to CSV file
+
+	  database.close();
+	});
+		 
+	
+	
+	
+	}
+
+
 }
 
 module.exports= ticket_database

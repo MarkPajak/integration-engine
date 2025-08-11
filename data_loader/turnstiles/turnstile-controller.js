@@ -14,16 +14,12 @@ install mongodb
 /*
 WORKING
 QR code   = order id
-when an order id is scanned, the app will check the order in shopify ans see if there is a validticket type against the order
+when an order id is scanned, the app will check the order in pretix ans see if there is a validticket type against the order
 once validated, a command is sent to the COM port
-upload qr code data from pre printed tickets to also validate against
-user interface to view valdation data
-load listener on pc reboot
+
 
 TODO
-list of validated orders need to be logged to allow one time entry (logged aftter x minutes)
-investigate event espresso api for ticket QR codes also
-log errors to google docs for remote monitoring
+log each scanned QR code with datestamp to a csv
 
 */
 
@@ -35,13 +31,17 @@ var self = this
 var valid_tickets_from_file=require('./csv-ticket-codes.js');
 var shopify_checkorder=require('../shopify/shopify_checkorder.js');
 var database = require('./database.js');
+var Pretix = require('./pretix-authenticate.js');
+
 
 
 self.connect = function(port,cb) {
 
 	
 		database= new database()
-
+		pretix= new Pretix()
+		
+	pretix.connect(function(online_tickets){ //N.B. need a workaround for new ticket purchases
 
 		database.connect(function(scanned_tickets){
 
@@ -50,23 +50,28 @@ self.connect = function(port,cb) {
 		valid_tickets_from_file.load_tickets(function (csv_tickets){
 			
 				
-			console.log('    ||   ||')
+			console.log('    |/   \|')
 			console.log('     \\()//')
-			console.log('   //(__)\\')
-			console.log('   ||    ||')
+			console.log('    //(  )\\')
+			console.log('    |\ "" /|')
 
-
+			online_tickets=csv_tickets.concat(online_tickets)
+			console.log('adding online tickets to preprinted tickets.')
+			//console.log( online_tickets.filter(i => i === 2).length + " tickets now in database")
 			var valid_ticket_types = []
 			valid_ticket_types.product_id = 8593353416
 			valid_ticket_types.product_type = "Exhibition ticket"
-			valid_ticket_types.csvTickets = csv_tickets
-			valid_ticket_types.scanned_tickets = scanned_tickets
+			valid_ticket_types.csvTickets = online_tickets
+			valid_ticket_types.ticketfile = csv_tickets
+			//valid_ticket_types.scanned_tickets = scanned_tickets
 
 			global.valid_ticket_types=valid_ticket_types
-			
-
+				
+		
 		})
-
+	})
+		
+		
 		})
 
 }
